@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	Mode string `env:"MODE" default:""`
+	WorldSize      int `env:"WORLD_SIZE"`
+	ReligionNumber int `env:"RELIGION_NUMBER"`
 }
 
 func New() *Config {

@@ -1,11 +1,20 @@
 package probabilitymachine
 
-import "math/rand"
+import (
+	"crypto/rand"
+	"math/big"
+)
 
-func GetRandomBool(trueProb float64) bool {
-	return GetRandomFloatInRange(0, 100) < trueProb
+// func init() {
+// 	rand.Seed(time.Now().UTC().UnixNano())
+// }
+
+func GetRandomBool(trueProb int) bool {
+	n := randInt(0, 100)
+	return n < trueProb
 }
 
-func GetRandomFloatInRange(min, max float64) float64 {
-	return min + rand.Float64()*(max-min)
+func randInt(min int, max int) int {
+	n, _ := rand.Int(rand.Reader, big.NewInt(int64(max-min)))
+	return int(int64(min) + n.Int64())
 }

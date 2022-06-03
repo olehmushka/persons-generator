@@ -8,7 +8,7 @@ install:
 just-run:
 	go run main.go
 
-run: install
+run: install just-run
 
 test:
 	go test ./...

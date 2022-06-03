@@ -1,15 +1,21 @@
 package main
 
 import (
-	"fmt"
+	"math/rand"
+	"time"
+
 	"persons_generator/config"
-	"persons_generator/person"
+	"persons_generator/orchestrator"
 )
+
+func init() {
+	rand.Seed(time.Now().UTC().UnixNano())
+}
 
 func main() {
 	cfg := config.New()
-	persons := person.GenerateMany(&person.GenerateManyConfig{
-		Mode: cfg.Mode,
-	})
-	fmt.Println(persons)
+	orchestrator.New(&orchestrator.Config{
+		WorldSize:      cfg.WorldSize,
+		ReligionNumber: cfg.ReligionNumber,
+	}).ShowReligions()
 }
