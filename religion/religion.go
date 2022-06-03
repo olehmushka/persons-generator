@@ -7,6 +7,9 @@ import (
 func New() *entities.Religion {
 	r := &entities.Religion{}
 	generateDoctrine(r)
+	generateTheology(r)
+	generateTaboos(r)
+	generateClerics(r)
 
 	return r
 }
