@@ -6,6 +6,7 @@ func GetRandomFromSeveral[T string](values map[T]int) T {
 	if len(values) == 0 {
 		fmt.Printf("[GetRandomFromSeveral] Values count is zero!!!\n\n\n")
 	}
+
 	var valuesWithZeroCount int
 	for _, prob := range values {
 		if prob == 0 {
@@ -16,12 +17,26 @@ func GetRandomFromSeveral[T string](values map[T]int) T {
 		fmt.Printf("[GetRandomFromSeveral] All values are zero!!!\n\n\n")
 	}
 
+	var valuesWith100Count int
+	for _, prob := range values {
+		if prob == 100 {
+			valuesWith100Count++
+		}
+	}
+	if valuesWith100Count > 1 {
+		fmt.Printf("[GetRandomFromSeveral] Several values are 100!!!\n\n\n")
+	}
+	preparedValues := cloneStringProbabilityMap(values)
+	for value, prob := range preparedValues {
+		preparedValues[value] = PrepareProbability(prob - 1)
+	}
+
 	tempValues := make(map[T]int)
 
 	for {
 		var iterValues map[T]int
 		if len(tempValues) == 0 {
-			iterValues = cloneStringProbabilityMap(values)
+			iterValues = cloneStringProbabilityMap(preparedValues)
 		} else {
 			iterValues = cloneStringProbabilityMap(tempValues)
 		}
