@@ -1,7 +1,8 @@
 package religion
 
 type Doctrines struct {
-	Main *MainDoctrine
+	Base   *BaseDoctrine
+	Gender *GenderDoctrine
 
 	FullTolerance              bool
 	Messiah                    bool
@@ -36,7 +37,7 @@ type Doctrines struct {
 	Hedonism                   bool
 }
 
-type MainDoctrine struct {
+type BaseDoctrine struct {
 	Monotheism   bool // 60%
 	Polytheism   bool // 60%
 	DeityDualism bool // 60%
@@ -44,4 +45,10 @@ type MainDoctrine struct {
 	Henothism    bool // 40% is the worship of a single, supreme god while not denying the existence or possible existence of other lower deities.[
 	Monolatry    bool // 55% is the belief in the existence of many gods, but with the consistent worship of only one deity
 	Omnism       bool // 20%
+}
+
+type GenderDoctrine struct {
+	MaleDominance   bool
+	Equality        bool
+	FemaleDominance bool
 }

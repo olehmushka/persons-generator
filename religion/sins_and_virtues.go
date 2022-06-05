@@ -3,6 +3,7 @@ package religion
 import (
 	"persons_generator/entities"
 	"persons_generator/entities/religion"
+	pm "persons_generator/probability-machine"
 )
 
 func generateSinsAndVirtues(r *entities.Religion) {
@@ -29,211 +30,261 @@ func generateSinsAndVirtues(r *entities.Religion) {
 	r.Theology.Precepts.SinsAndVirtues.HonorParents = getHonorParents(r)
 }
 
-func getAttitude(virtue, neutral, sin int) religion.Attitude {
-	if virtue >= neutral && virtue > sin {
-		return religion.Virtue
+func getAttitudeByProbability(virtue, neutral, sin int) religion.Attitude {
+	m := map[string]int{
+		string(religion.Virtue):          pm.PrepareProbability(virtue),
+		string(religion.NeutralAttitude): pm.PrepareProbability(neutral),
+		string(religion.Sin):             pm.PrepareProbability(sin),
 	}
-	if sin >= neutral && sin > virtue {
-		return religion.Sin
-	}
-
-	return religion.NeutralAttitude
+	return religion.Attitude(pm.GetRandomFromSeveral(m))
 }
 
 func getProfanity(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
+	case r.Doctrines.Base.Monotheism:
+		sin += 40
+	case r.Doctrines.Base.Polytheism:
+		sin += 40
+	case r.Doctrines.Base.DeityDualism:
+		sin += 40
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		sin += 10
+	case r.Doctrines.Base.Monolatry:
+		sin += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 7
+	case r.Doctrines.Gender.Equality:
 		sin += 2
-	case r.Doctrines.Main.Polytheism:
-		sin += 2
-	case r.Doctrines.Main.DeityDualism:
-		sin += 2
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		sin++
-	case r.Doctrines.Main.Monolatry:
-		sin++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 1
 	}
 
 	if r.Doctrines.FullTolerance {
-		neutral++
-		virtue++
+		neutral += 10
+		virtue += 10
 	}
 	if r.Doctrines.Messiah {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Prophets {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Asceticism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Legalism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.ReligiousLaw {
-		sin += 2
+		sin += 20
 	}
 	if r.Doctrines.TaxNonbelievers {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.UnrelentingFaith {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Darkness {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Proselytizer {
-		sin++
+		sin += 30
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getHaveOtherGods(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
+	case r.Doctrines.Base.Monotheism:
+		sin += 50
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+		virtue += 10
+	case r.Doctrines.Base.DeityDualism:
+		neutral += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+		virtue += 10
+	case r.Doctrines.Base.Henothism:
+		sin += 20
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+		virtue += 10
+	case r.Doctrines.Base.Omnism:
+		virtue += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 6
+	case r.Doctrines.Gender.Equality:
 		sin += 2
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-		virtue++
-	case r.Doctrines.Main.DeityDualism:
-		neutral++
-	case r.Doctrines.Main.Deism:
-		neutral++
-		virtue++
-	case r.Doctrines.Main.Henothism:
-		sin++
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-		virtue++
-	case r.Doctrines.Main.Omnism:
-		virtue++
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 1
 	}
 
 	if r.Doctrines.Messiah {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Prophets {
-		sin += 2
+		sin += 20
 	}
 	if r.Doctrines.MendicantPreachers {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Polyamory {
-		virtue++
-		neutral++
+		virtue += 10
+		neutral += 10
 	}
 	if r.Doctrines.ReligiousLaw {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.TaxNonbelievers {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.UnrelentingFaith {
-		sin += 2
+		sin += 30
 	}
 	if r.Doctrines.AncestorWorship {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Proselytizer {
-		sin += 2
+		sin += 30
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getSloth(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		sin++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		sin++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		sin++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		sin += 10
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		sin += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		sin += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 7
+	case r.Doctrines.Gender.Equality:
+		sin += 4
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 3
 	}
 
 	if r.Doctrines.FullTolerance {
-		neutral++
-		virtue++
+		neutral += 10
+		virtue += 10
 	}
 	if r.Doctrines.Asceticism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Legalism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Monasticism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Polyamory {
-		neutral++
-		virtue++
+		neutral += 10
+		virtue += 10
 	}
 	if r.Doctrines.ReligiousLaw {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Hedonism {
-		virtue++
+		virtue += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getGreed(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		sin++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		sin++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		sin += 10
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		sin += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 15
+	case r.Doctrines.Gender.Equality:
+		sin += 20
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 30
 	}
 
 	if r.Doctrines.ReligiousLaw {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Monasticism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Raider {
-		virtue++
+		virtue += 20
 	}
 	if r.Doctrines.Hedonism {
-		virtue++
+		virtue += 20
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getCharity(r *entities.Religion) religion.Attitude {
@@ -244,92 +295,118 @@ func getCharity(r *entities.Religion) religion.Attitude {
 		return religion.Sin
 	}
 
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		virtue++
-	case r.Doctrines.Main.Polytheism:
-		virtue++
-	case r.Doctrines.Main.DeityDualism:
-		virtue++
-	case r.Doctrines.Main.Deism:
-		virtue++
-	case r.Doctrines.Main.Henothism:
-		virtue++
-	case r.Doctrines.Main.Monolatry:
-		virtue++
-	case r.Doctrines.Main.Omnism:
-		virtue++
+	case r.Doctrines.Base.Monotheism:
+		virtue += 20
+	case r.Doctrines.Base.Polytheism:
+		virtue += 20
+	case r.Doctrines.Base.DeityDualism:
+		virtue += 20
+	case r.Doctrines.Base.Deism:
+		virtue += 20
+	case r.Doctrines.Base.Henothism:
+		virtue += 20
+	case r.Doctrines.Base.Monolatry:
+		virtue += 20
+	case r.Doctrines.Base.Omnism:
+		virtue += 20
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		virtue += 10
+	case r.Doctrines.Gender.Equality:
+		virtue += 30
+	case r.Doctrines.Gender.FemaleDominance:
+		virtue += 35
 	}
 
 	if r.Doctrines.FullTolerance {
-		virtue++
+		virtue += 20
 	}
 	if r.Doctrines.Asceticism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Darkness {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.Raider {
-		sin++
+		sin += 30
 	}
 	if r.Doctrines.Hedonism {
-		sin++
+		sin += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getGluttony(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		sin++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		sin++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		sin += 10
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		sin += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 10
+	case r.Doctrines.Gender.Equality:
+		sin += 14
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 18
 	}
 
 	if r.Doctrines.Asceticism {
-		sin++
+		sin += 30
 	}
 	if r.Doctrines.Legalism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.MendicantPreachers {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Monasticism {
-		sin++
+		sin += 30
 	}
 	if r.Doctrines.Polyamory {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		neutral++
-		sin++
+		neutral += 10
+		sin += 10
 	}
 	if r.Doctrines.PainIsVirtue {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Raider {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Hedonism {
-		virtue++
+		virtue += 40
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getTemperance(r *entities.Religion) religion.Attitude {
@@ -340,111 +417,137 @@ func getTemperance(r *entities.Religion) religion.Attitude {
 		return religion.Sin
 	}
 
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		virtue++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		virtue++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		virtue += 10
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		virtue += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		virtue += 12
+	case r.Doctrines.Gender.Equality:
+		virtue += 12
+	case r.Doctrines.Gender.FemaleDominance:
+		virtue += 11
 	}
 
 	if r.Doctrines.Asceticism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Legalism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.MendicantPreachers {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Monasticism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Polyamory {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		neutral++
-		virtue++
+		neutral += 10
+		virtue += 10
 	}
 	if r.Doctrines.PainIsVirtue {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Raider {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Hedonism {
-		sin++
+		sin += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getPride(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		virtue++
-		neutral++
-		sin++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		neutral++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		virtue += 10
+		neutral += 10
+		sin += 30
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		neutral += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 9
+	case r.Doctrines.Gender.Equality:
+		sin += 8
+	case r.Doctrines.Gender.FemaleDominance:
+		neutral += 10
 	}
 
 	if r.Doctrines.Messiah {
-		sin++
+		sin += 20
 	}
 	if r.Doctrines.Prophets {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Legalism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Polyamory {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.AncestorWorship {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Pacifism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		sin++
+		sin += 15
 	}
 	if r.Doctrines.SanctionedFalseConversions {
-		sin++
+		sin += 20
 	}
 	if r.Doctrines.Proselytizer {
-		virtue++
-		sin++
-		neutral++
+		virtue += 10
+		sin += 10
+		neutral += 10
 	}
 	if r.Doctrines.Hedonism {
-		virtue++
+		virtue += 30
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getHumility(r *entities.Religion) religion.Attitude {
@@ -455,110 +558,135 @@ func getHumility(r *entities.Religion) religion.Attitude {
 		return religion.Sin
 	}
 
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		virtue++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		virtue++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		virtue += 10
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		virtue += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		neutral += 5
+	case r.Doctrines.Gender.Equality:
+		neutral += 5
+	case r.Doctrines.Gender.FemaleDominance:
+		virtue += 5
 	}
 
 	if r.Doctrines.Asceticism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Legalism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.MendicantPreachers {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Monasticism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.SanctionedFalseConversions {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Darkness {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Raider {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Hedonism {
-		sin++
+		sin += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getLust(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		sin++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-		virtue++
-	case r.Doctrines.Main.DeityDualism:
-		sin++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		sin += 30
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+		virtue += 10
+	case r.Doctrines.Base.DeityDualism:
+		sin += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 15
+	case r.Doctrines.Gender.Equality:
+	case r.Doctrines.Gender.FemaleDominance:
+		neutral += 15
 	}
 
 	if r.Doctrines.FullTolerance {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Prophets {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Asceticism {
-		sin++
+		sin += 40
 	}
 	if r.Doctrines.Legalism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Monasticism {
-		sin++
+		sin += 30
 	}
 	if r.Doctrines.Polyamory {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.SanctityOfNature {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Pacifism {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.SacredChildbirth {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Raider {
-		virtue++
+		virtue += 20
 	}
 	if r.Doctrines.Hedonism {
-		virtue++
+		virtue += 40
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getChaste(r *entities.Religion) religion.Attitude {
@@ -569,115 +697,141 @@ func getChaste(r *entities.Religion) religion.Attitude {
 		return religion.Sin
 	}
 
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		virtue++
-	case r.Doctrines.Main.Polytheism:
-		virtue++
-	case r.Doctrines.Main.DeityDualism:
-		virtue++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
-		virtue++
+	case r.Doctrines.Base.Monotheism:
+		virtue += 10
+	case r.Doctrines.Base.Polytheism:
+		virtue += 10
+	case r.Doctrines.Base.DeityDualism:
+		virtue += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+		virtue += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		virtue += 20
+	case r.Doctrines.Gender.Equality:
+		neutral += 10
+	case r.Doctrines.Gender.FemaleDominance:
+		virtue += 10
 	}
 
 	if r.Doctrines.FullTolerance {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.Messiah {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Asceticism {
-		virtue++
+		virtue += 40
 	}
 	if r.Doctrines.Legalism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Monasticism {
-		virtue++
+		virtue += 20
 	}
 	if r.Doctrines.Polyamory {
-		sin++
+		sin += 30
 	}
 	if r.Doctrines.ReligiousLaw {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.SacredChildbirth {
-		neutral++
+		neutral += 30
 	}
 	if r.Doctrines.Raider {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.Hedonism {
-		sin++
+		sin += 30
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getWrath(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		neutral++
-		sin++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		neutral++
-		sin++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		neutral += 10
+		sin += 10
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		neutral += 10
+		sin += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		neutral += 10
+	case r.Doctrines.Gender.Equality:
+		sin += 7
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 10
 	}
 
 	if r.Doctrines.Asceticism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Esotericism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Polyamory {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.UnrelentingFaith {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.Pacifism {
-		sin++
+		sin += 40
 	}
 	if r.Doctrines.SacredChildbirth {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Darkness {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.PainIsVirtue {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Raider {
-		virtue++
+		virtue += 50
 	}
 	if r.Doctrines.Proselytizer {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.Hedonism {
-		neutral++
+		neutral += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getPatience(r *entities.Religion) religion.Attitude {
@@ -688,135 +842,174 @@ func getPatience(r *entities.Religion) religion.Attitude {
 		return religion.Sin
 	}
 
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		virtue++
-	case r.Doctrines.Main.Polytheism:
-		virtue++
-	case r.Doctrines.Main.DeityDualism:
-		virtue++
-	case r.Doctrines.Main.Deism:
-		virtue++
-	case r.Doctrines.Main.Henothism:
-		virtue++
-	case r.Doctrines.Main.Monolatry:
-		virtue++
-	case r.Doctrines.Main.Omnism:
-		virtue++
+	case r.Doctrines.Base.Monotheism:
+		virtue += 10
+	case r.Doctrines.Base.Polytheism:
+		virtue += 10
+	case r.Doctrines.Base.DeityDualism:
+		virtue += 10
+	case r.Doctrines.Base.Deism:
+		virtue += 10
+	case r.Doctrines.Base.Henothism:
+		virtue += 10
+	case r.Doctrines.Base.Monolatry:
+		virtue += 10
+	case r.Doctrines.Base.Omnism:
+		virtue += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		virtue += 5
+	case r.Doctrines.Gender.Equality:
+		virtue += 6
+	case r.Doctrines.Gender.FemaleDominance:
+		virtue += 8
 	}
 
 	if r.Doctrines.Asceticism {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Astrology {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Pacifism {
-		virtue++
+		virtue += 40
 	}
 	if r.Doctrines.PainIsVirtue {
-		virtue++
+		virtue += 20
 	}
 	if r.Doctrines.Raider {
-		sin++
+		sin += 30
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getPain(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		neutral++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		neutral++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		neutral += 10
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		neutral += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		neutral += 5
+	case r.Doctrines.Gender.Equality:
+		neutral += 5
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 5
 	}
 
 	if r.Doctrines.PainIsVirtue {
-		virtue += 3
+		virtue += 60
 	}
 	if r.Doctrines.Hedonism {
-		sin++
+		sin += 20
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getSadism(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		sin++
-	case r.Doctrines.Main.Polytheism:
-		sin++
-	case r.Doctrines.Main.DeityDualism:
-		sin++
-	case r.Doctrines.Main.Deism:
-		sin++
-	case r.Doctrines.Main.Henothism:
-		sin++
-	case r.Doctrines.Main.Monolatry:
-		sin++
-	case r.Doctrines.Main.Omnism:
-		sin++
+	case r.Doctrines.Base.Monotheism:
+		sin += 20
+	case r.Doctrines.Base.Polytheism:
+		sin += 20
+	case r.Doctrines.Base.DeityDualism:
+		sin += 20
+	case r.Doctrines.Base.Deism:
+		sin += 20
+	case r.Doctrines.Base.Henothism:
+		sin += 20
+	case r.Doctrines.Base.Monolatry:
+		sin += 20
+	case r.Doctrines.Base.Omnism:
+		sin += 20
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 10
+	case r.Doctrines.Gender.Equality:
+		sin += 15
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 18
 	}
 
 	if r.Doctrines.FullTolerance {
-		sin++
+		sin += 20
 	}
 	if r.Doctrines.Legalism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Polyamory {
-		sin++
+		sin += 20
 	}
 	if r.Doctrines.ReligiousLaw {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.SanctityOfNature {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Pacifism {
-		sin++
+		sin += 40
 	}
 	if r.Doctrines.Reincarnation {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		sin++
+		sin += 20
 	}
 	if r.Doctrines.PainIsVirtue {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Darkness {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.TreeConnection {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.AnimalConnection {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Raider {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Hedonism {
-		neutral++
+		neutral += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getEmpathy(r *entities.Religion) religion.Attitude {
@@ -827,168 +1020,207 @@ func getEmpathy(r *entities.Religion) religion.Attitude {
 		return religion.Sin
 	}
 
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		virtue++
-	case r.Doctrines.Main.Polytheism:
-		virtue++
-	case r.Doctrines.Main.DeityDualism:
-		virtue++
-	case r.Doctrines.Main.Deism:
-		virtue++
-	case r.Doctrines.Main.Henothism:
-		virtue++
-	case r.Doctrines.Main.Monolatry:
-		virtue++
-	case r.Doctrines.Main.Omnism:
-		virtue++
+	case r.Doctrines.Base.Monotheism:
+		virtue += 10
+	case r.Doctrines.Base.Polytheism:
+		virtue += 10
+	case r.Doctrines.Base.DeityDualism:
+		virtue += 10
+	case r.Doctrines.Base.Deism:
+		virtue += 10
+	case r.Doctrines.Base.Henothism:
+		virtue += 10
+	case r.Doctrines.Base.Monolatry:
+		virtue += 10
+	case r.Doctrines.Base.Omnism:
+		virtue += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		virtue += 10
+	case r.Doctrines.Gender.Equality:
+		virtue += 15
+	case r.Doctrines.Gender.FemaleDominance:
+		virtue += 20
 	}
 
 	if r.Doctrines.FullTolerance {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Legalism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Polyamory {
-		virtue++
+		virtue += 20
 	}
 	if r.Doctrines.ReligiousLaw {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.SanctityOfNature {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Pacifism {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Reincarnation {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.PainIsVirtue {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.Darkness {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.TreeConnection {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.AnimalConnection {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Raider {
-		sin++
+		sin += 20
 	}
 	if r.Doctrines.Hedonism {
-		neutral++
+		neutral += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getStealing(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		sin++
-	case r.Doctrines.Main.Polytheism:
-		sin++
-	case r.Doctrines.Main.DeityDualism:
-		sin++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		sin++
-	case r.Doctrines.Main.Monolatry:
-		sin++
-	case r.Doctrines.Main.Omnism:
-		sin++
+	case r.Doctrines.Base.Monotheism:
+		sin += 10
+	case r.Doctrines.Base.Polytheism:
+		sin += 10
+	case r.Doctrines.Base.DeityDualism:
+		sin += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		sin += 10
+	case r.Doctrines.Base.Monolatry:
+		sin += 10
+	case r.Doctrines.Base.Omnism:
+		sin += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 20
+	case r.Doctrines.Gender.Equality:
+		sin += 15
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 10
 	}
 
 	if r.Doctrines.Prophets {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Legalism {
-		sin++
+		sin += 20
 	}
 	if r.Doctrines.ReligiousLaw {
-		sin++
+		sin += 20
 	}
 	if r.Doctrines.TaxNonbelievers {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.UnrelentingFaith {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Darkness {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.LiveUnderGround {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Hedonism {
-		neutral++
+		neutral += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getLie(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		sin++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		sin++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		neutral++
-	case r.Doctrines.Main.Monolatry:
-		neutral++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		sin += 10
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		sin += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		neutral += 10
+	case r.Doctrines.Base.Monolatry:
+		neutral += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		sin += 20
+	case r.Doctrines.Gender.Equality:
+		sin += 15
+	case r.Doctrines.Gender.FemaleDominance:
+		sin += 10
 	}
 
 	if r.Doctrines.Prophets {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Monasticism {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Legalism {
-		sin++
+		sin += 20
 	}
 	if r.Doctrines.Polyamory {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.ReligiousLaw {
-		sin++
+		sin += 30
 	}
 	if r.Doctrines.Pacifism {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.Darkness {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Raider {
-		sin++
+		sin += 10
 	}
 	if r.Doctrines.Hedonism {
-		neutral++
+		neutral += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getHonest(r *entities.Religion) religion.Attitude {
@@ -999,101 +1231,127 @@ func getHonest(r *entities.Religion) religion.Attitude {
 		return religion.Sin
 	}
 
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		virtue++
-	case r.Doctrines.Main.Polytheism:
-		virtue++
-	case r.Doctrines.Main.DeityDualism:
-		virtue++
-	case r.Doctrines.Main.Deism:
-		virtue++
-	case r.Doctrines.Main.Henothism:
-		virtue++
-	case r.Doctrines.Main.Monolatry:
-		virtue++
-	case r.Doctrines.Main.Omnism:
-		virtue++
+	case r.Doctrines.Base.Monotheism:
+		virtue += 20
+	case r.Doctrines.Base.Polytheism:
+		virtue += 10
+	case r.Doctrines.Base.DeityDualism:
+		virtue += 20
+	case r.Doctrines.Base.Deism:
+		virtue += 10
+	case r.Doctrines.Base.Henothism:
+		virtue += 10
+	case r.Doctrines.Base.Monolatry:
+		virtue += 10
+	case r.Doctrines.Base.Omnism:
+		virtue += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		virtue += 20
+	case r.Doctrines.Gender.Equality:
+		virtue += 20
+	case r.Doctrines.Gender.FemaleDominance:
+		virtue += 15
 	}
 
 	if r.Doctrines.Prophets {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Legalism {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Polyamory {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.ReligiousLaw {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.Pacifism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Darkness {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.Raider {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Hedonism {
-		virtue++
+		virtue += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }
 
 func getHonorParents(r *entities.Religion) religion.Attitude {
-	var virtue, neutral, sin int
+	var (
+		virtue  = 10
+		neutral = 10
+		sin     = 10
+	)
 	switch {
-	case r.Doctrines.Main.Monotheism:
-		virtue++
-	case r.Doctrines.Main.Polytheism:
-		neutral++
-	case r.Doctrines.Main.DeityDualism:
-		virtue++
-	case r.Doctrines.Main.Deism:
-		neutral++
-	case r.Doctrines.Main.Henothism:
-		virtue++
-	case r.Doctrines.Main.Monolatry:
-		virtue++
-	case r.Doctrines.Main.Omnism:
-		neutral++
+	case r.Doctrines.Base.Monotheism:
+		virtue += 10
+	case r.Doctrines.Base.Polytheism:
+		neutral += 10
+	case r.Doctrines.Base.DeityDualism:
+		virtue += 10
+	case r.Doctrines.Base.Deism:
+		neutral += 10
+	case r.Doctrines.Base.Henothism:
+		virtue += 10
+	case r.Doctrines.Base.Monolatry:
+		virtue += 10
+	case r.Doctrines.Base.Omnism:
+		neutral += 10
+	}
+
+	switch {
+	case r.Doctrines.Gender.MaleDominance:
+		virtue += 25
+	case r.Doctrines.Gender.Equality:
+		virtue += 20
+	case r.Doctrines.Gender.FemaleDominance:
+		virtue += 15
 	}
 
 	if r.Doctrines.Prophets {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Legalism {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Polyamory {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.ReligiousLaw {
-		virtue++
+		virtue += 30
 	}
 	if r.Doctrines.AncestorWorship {
-		virtue += 2
+		virtue += 60
 	}
 	if r.Doctrines.Reincarnation {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.RitualHospitality {
-		virtue++
+		virtue += 10
 	}
 	if r.Doctrines.Darkness {
-		neutral++
+		neutral += 10
 	}
 	if r.Doctrines.Hedonism {
-		neutral++
+		neutral += 10
 	}
 
-	return getAttitude(virtue, neutral, sin)
+	return getAttitudeByProbability(virtue, neutral, sin)
 }

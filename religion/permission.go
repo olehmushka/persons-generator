@@ -1,15 +1,15 @@
 package religion
 
-import "persons_generator/entities/religion"
+import (
+	"persons_generator/entities/religion"
+	pm "persons_generator/probability-machine"
+)
 
-func getPermission(alwaysAllowed, mustBeApproved, disallowed int) religion.Permission {
-	if disallowed >= alwaysAllowed && disallowed >= mustBeApproved {
-		return religion.Disallowed
+func getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed int) religion.Permission {
+	m := map[string]int{
+		string(religion.AlwaysAllowed):  pm.PrepareProbability(alwaysAllowed),
+		string(religion.MustBeApproved): pm.PrepareProbability(mustBeApproved),
+		string(religion.Disallowed):     pm.PrepareProbability(disallowed),
 	}
-
-	if mustBeApproved >= alwaysAllowed {
-		return religion.MustBeApproved
-	}
-
-	return religion.AlwaysAllowed
+	return religion.Permission(pm.GetRandomFromSeveral(m))
 }

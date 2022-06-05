@@ -36,7 +36,6 @@ type SexualTaboos struct {
 	MaleAdultery     Acceptance
 	FemaleAdultery   Acceptance
 	Deviancy         Acceptance
-	Zoophilia        Acceptance
 }
 
 type KillingTaboos struct {

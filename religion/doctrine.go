@@ -8,9 +8,10 @@ import (
 
 func generateDoctrine(r *entities.Religion) {
 	doc := &rel.Doctrines{
-		Main: getMainDoctrine(),
+		Base: getMainDoctrine(),
 	}
 
+	doc.Gender = getGenderDoctrine(doc)
 	doc.FullTolerance = getFullTolerance(doc)
 	doc.Messiah = getMessiah(doc)
 	doc.Prophets = getProphets(doc)
@@ -46,8 +47,8 @@ func generateDoctrine(r *entities.Religion) {
 	r.Doctrines = doc
 }
 
-func getMainDoctrine() *rel.MainDoctrine {
-	md := &rel.MainDoctrine{}
+func getMainDoctrine() *rel.BaseDoctrine {
+	md := &rel.BaseDoctrine{}
 	count := 0
 	for {
 		if pm.GetRandomBool(60) {
@@ -88,23 +89,92 @@ func getMainDoctrine() *rel.MainDoctrine {
 	return md
 }
 
+func getGenderDoctrine(doc *rel.Doctrines) *rel.GenderDoctrine {
+	var (
+		male     = 30
+		equality = 25
+		female   = 10
+	)
+	switch {
+	case doc.Base.Monotheism:
+		male += 15
+		equality += 8
+	case doc.Base.Polytheism:
+		male += 15
+		equality += 10
+		female += 5
+	case doc.Base.DeityDualism:
+		male += 12
+		equality += 10
+		female += 7
+	case doc.Base.Deism:
+		male += 10
+		equality += 20
+		female += 5
+	case doc.Base.Henothism:
+		male += 15
+		equality += 10
+		female += 5
+	case doc.Base.Monolatry:
+		male += 15
+		equality += 10
+		female += 10
+	case doc.Base.Omnism:
+		male += 10
+		equality += 15
+		female += 5
+	}
+
+	gd := &rel.GenderDoctrine{}
+	count := 0
+	for {
+		if pm.GetRandomBool(male) {
+			gd.MaleDominance = true
+			break
+		}
+		if pm.GetRandomBool(equality) {
+			gd.Equality = true
+			break
+		}
+		if pm.GetRandomBool(female) {
+			gd.FemaleDominance = true
+			break
+		}
+		if count == 10 {
+			gd.Equality = true
+			break
+		}
+		count++
+	}
+	return gd
+}
+
 func getFullTolerance(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
-		primaryProb = 5
-	case doc.Main.Polytheism:
+	case doc.Base.Monotheism:
+		primaryProb = 10
+	case doc.Base.Polytheism:
 		primaryProb = 15
-	case doc.Main.DeityDualism:
-		primaryProb = 7
-	case doc.Main.Deism:
-		primaryProb = 80
-	case doc.Main.Henothism:
+	case doc.Base.DeityDualism:
 		primaryProb = 12
-	case doc.Main.Monolatry:
+	case doc.Base.Deism:
+		primaryProb = 80
+	case doc.Base.Henothism:
+		primaryProb = 13
+	case doc.Base.Monolatry:
 		primaryProb = 20
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 85
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb -= 30
+	case doc.Gender.Equality:
+		primaryProb += 30
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 20
 	}
 
 	return pm.GetRandomBool(preparePrimaryProbability(primaryProb))
@@ -113,20 +183,29 @@ func getFullTolerance(doc *rel.Doctrines) bool {
 func getMessiah(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
-		primaryProb = 80
-	case doc.Main.Polytheism:
+	case doc.Base.Monotheism:
+		primaryProb = 70
+	case doc.Base.Polytheism:
 		primaryProb = 15
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 60
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 2
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 20
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 12
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 30
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 10
+	case doc.Gender.Equality:
+		primaryProb += 5
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 5
 	}
 
 	return pm.GetRandomBool(preparePrimaryProbability(primaryProb))
@@ -135,20 +214,28 @@ func getMessiah(doc *rel.Doctrines) bool {
 func getProphets(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 80
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 50
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 70
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 10
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 50
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 50
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 50
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 10
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 10
 	}
 
 	if doc.Messiah {
@@ -160,20 +247,28 @@ func getProphets(doc *rel.Doctrines) bool {
 func getAsceticism(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 45
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 15
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 45
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 5
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 20
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 20
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 7
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 10
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 10
 	}
 
 	return pm.GetRandomBool(preparePrimaryProbability(primaryProb))
@@ -182,20 +277,28 @@ func getAsceticism(doc *rel.Doctrines) bool {
 func getAstrology(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 40
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 70
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 55
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 70
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 65
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 65
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 55
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 10
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
+		primaryProb += 5
 	}
 
 	return pm.GetRandomBool(preparePrimaryProbability(primaryProb))
@@ -204,20 +307,29 @@ func getAstrology(doc *rel.Doctrines) bool {
 func getEsotericism(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 40
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 70
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 55
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 70
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 65
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 65
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 55
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 5
+	case doc.Gender.Equality:
+		primaryProb += 7
+	case doc.Gender.FemaleDominance:
+		primaryProb += 5
 	}
 
 	if doc.Astrology {
@@ -229,20 +341,29 @@ func getEsotericism(doc *rel.Doctrines) bool {
 func getMendicantPreachers(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 55
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 45
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 45
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 0
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 10
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 10
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 5
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 5
+	case doc.Gender.Equality:
+		primaryProb += 2
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 5
 	}
 
 	if doc.Asceticism {
@@ -254,21 +375,31 @@ func getMendicantPreachers(doc *rel.Doctrines) bool {
 func getMonasticism(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 45
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 25
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 30
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 5
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 30
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 30
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 40
 	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 7
+	case doc.Gender.Equality:
+		primaryProb += 2
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 3
+	}
+
 	if doc.Asceticism {
 		primaryProb += 45
 	}
@@ -278,20 +409,29 @@ func getMonasticism(doc *rel.Doctrines) bool {
 func getPolyamory(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 20
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 30
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 25
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 40
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 28
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 29
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 38
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 5
+	case doc.Gender.Equality:
+		primaryProb += 20
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 2
 	}
 
 	if doc.FullTolerance {
@@ -316,20 +456,29 @@ func getPolyamory(doc *rel.Doctrines) bool {
 func getReligiousLaw(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 50
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 18
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 45
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 3
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 40
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 25
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 18
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 10
+	case doc.Gender.Equality:
+		primaryProb -= 5
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 15
 	}
 
 	if doc.FullTolerance {
@@ -351,20 +500,29 @@ func getReligiousLaw(doc *rel.Doctrines) bool {
 func getLegalism(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 30
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 10
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 20
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 30
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 20
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 18
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 30
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 7
+	case doc.Gender.Equality:
+		primaryProb += 2
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 5
 	}
 
 	if doc.FullTolerance {
@@ -386,20 +544,29 @@ func getLegalism(doc *rel.Doctrines) bool {
 func getSanctityOfNature(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 40
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 60
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 50
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 60
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 50
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 55
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 50
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 2
+	case doc.Gender.Equality:
+		primaryProb += 5
+	case doc.Gender.FemaleDominance:
+		primaryProb += 15
 	}
 
 	if doc.Prophets {
@@ -424,20 +591,28 @@ func getSanctityOfNature(doc *rel.Doctrines) bool {
 func getTaxNonbelievers(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 50
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 5
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 20
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 0
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 15
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 10
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 0
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 7
+	case doc.Gender.Equality:
+		primaryProb += 5
+	case doc.Gender.FemaleDominance:
 	}
 
 	if doc.FullTolerance {
@@ -465,20 +640,29 @@ func getTaxNonbelievers(doc *rel.Doctrines) bool {
 func getUnrelentingFaith(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 50
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 22
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 25
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 0
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 24
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 23
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 0
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 10
+	case doc.Gender.Equality:
+		primaryProb -= 15
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 15
 	}
 
 	if doc.FullTolerance {
@@ -512,20 +696,29 @@ func getUnrelentingFaith(doc *rel.Doctrines) bool {
 func getAncestorWorship(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 10
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 80
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 40
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 50
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 85
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 86
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 70
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 10
+	case doc.Gender.Equality:
+		primaryProb -= 10
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 2
 	}
 
 	if doc.Astrology {
@@ -544,20 +737,28 @@ func getAncestorWorship(doc *rel.Doctrines) bool {
 func getPacifism(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 15
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 15
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 15
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 25
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 15
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 15
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 35
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb -= 10
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
+		primaryProb += 20
 	}
 
 	if doc.FullTolerance {
@@ -579,20 +780,28 @@ func getPacifism(doc *rel.Doctrines) bool {
 func getReincarnation(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 40
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 50
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 45
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 55
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 45
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 50
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 55
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+	case doc.Gender.Equality:
+		primaryProb += 1
+	case doc.Gender.FemaleDominance:
+		primaryProb += 1
 	}
 
 	if doc.FullTolerance {
@@ -620,20 +829,29 @@ func getReincarnation(doc *rel.Doctrines) bool {
 func getRitualHospitality(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 40
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 40
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 40
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 20
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 40
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 40
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 50
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 5
+	case doc.Gender.Equality:
+		primaryProb += 7
+	case doc.Gender.FemaleDominance:
+		primaryProb += 10
 	}
 
 	if doc.FullTolerance {
@@ -661,20 +879,29 @@ func getRitualHospitality(doc *rel.Doctrines) bool {
 func getSacredChildbirth(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 20
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 60
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 50
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 20
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 40
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 40
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 50
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb -= 10
+	case doc.Gender.Equality:
+		primaryProb += 5
+	case doc.Gender.FemaleDominance:
+		primaryProb += 40
 	}
 
 	if doc.Messiah {
@@ -699,20 +926,29 @@ func getSacredChildbirth(doc *rel.Doctrines) bool {
 func getSanctionedFalseConversions(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 30
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 30
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 30
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 100
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 40
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 40
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 40
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb -= 10
+	case doc.Gender.Equality:
+		primaryProb += 15
+	case doc.Gender.FemaleDominance:
+		primaryProb += 20
 	}
 
 	if doc.Asceticism {
@@ -731,20 +967,27 @@ func getSanctionedFalseConversions(doc *rel.Doctrines) bool {
 func getSunWorship(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 50
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 90
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 60
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 40
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 80
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 70
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 60
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 5
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
 	}
 
 	if doc.Astrology {
@@ -757,20 +1000,28 @@ func getSunWorship(doc *rel.Doctrines) bool {
 func getMoonWorship(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 10
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 90
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 40
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 40
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 50
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 50
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 50
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 3
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
+		primaryProb += 7
 	}
 
 	if doc.Astrology {
@@ -783,20 +1034,29 @@ func getMoonWorship(doc *rel.Doctrines) bool {
 func getPainIsVirtue(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 20
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 20
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 20
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 21
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 20
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 20
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 19
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb -= 5
+	case doc.Gender.Equality:
+		primaryProb -= 6
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 7
 	}
 
 	if doc.Asceticism {
@@ -818,20 +1078,26 @@ func getPainIsVirtue(doc *rel.Doctrines) bool {
 func getDarkness(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 5
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 10
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 7
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 5
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 10
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 10
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 10
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
 	}
 
 	if doc.Astrology {
@@ -850,20 +1116,26 @@ func getDarkness(doc *rel.Doctrines) bool {
 func getLiveUnderGround(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 5
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 5
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 7
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 5
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 7
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 7
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 7
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
 	}
 
 	if doc.Astrology {
@@ -885,20 +1157,29 @@ func getLiveUnderGround(doc *rel.Doctrines) bool {
 func getTreeConnection(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 30
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 55
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 40
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 50
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 40
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 50
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 45
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb -= 5
+	case doc.Gender.Equality:
+		primaryProb += 5
+	case doc.Gender.FemaleDominance:
+		primaryProb += 3
 	}
 
 	if doc.Esotericism {
@@ -920,20 +1201,29 @@ func getTreeConnection(doc *rel.Doctrines) bool {
 func getAnimalConnection(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 30
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 60
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 40
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 60
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 60
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 60
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 50
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 3
+	case doc.Gender.Equality:
+		primaryProb += 5
+	case doc.Gender.FemaleDominance:
+		primaryProb += 7
 	}
 
 	if doc.Esotericism {
@@ -955,20 +1245,28 @@ func getAnimalConnection(doc *rel.Doctrines) bool {
 func getBlindsight(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 20
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 23
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 21
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 25
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 23
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 23
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 26
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+	case doc.Gender.Equality:
+		primaryProb -= 3
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 7
 	}
 
 	if doc.Astrology {
@@ -993,20 +1291,28 @@ func getBlindsight(doc *rel.Doctrines) bool {
 func getRaider(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 28
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 50
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 35
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 38
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 52
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 51
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 45
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 7
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 15
 	}
 
 	if doc.ReligiousLaw {
@@ -1040,20 +1346,28 @@ func getRaider(doc *rel.Doctrines) bool {
 func getProselytizer(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 55
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 20
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 30
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 10
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 30
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 22
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 10
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 7
+	case doc.Gender.Equality:
+	case doc.Gender.FemaleDominance:
+		primaryProb -= 3
 	}
 
 	if doc.FullTolerance {
@@ -1084,20 +1398,29 @@ func getProselytizer(doc *rel.Doctrines) bool {
 func getHedonism(doc *rel.Doctrines) bool {
 	var primaryProb int
 	switch {
-	case doc.Main.Monotheism:
+	case doc.Base.Monotheism:
 		primaryProb = 15
-	case doc.Main.Polytheism:
+	case doc.Base.Polytheism:
 		primaryProb = 60
-	case doc.Main.DeityDualism:
+	case doc.Base.DeityDualism:
 		primaryProb = 15
-	case doc.Main.Deism:
+	case doc.Base.Deism:
 		primaryProb = 60
-	case doc.Main.Henothism:
+	case doc.Base.Henothism:
 		primaryProb = 40
-	case doc.Main.Monolatry:
+	case doc.Base.Monolatry:
 		primaryProb = 45
-	case doc.Main.Omnism:
+	case doc.Base.Omnism:
 		primaryProb = 50
+	}
+
+	switch {
+	case doc.Gender.MaleDominance:
+		primaryProb += 10
+	case doc.Gender.Equality:
+		primaryProb += 5
+	case doc.Gender.FemaleDominance:
+		primaryProb += 10
 	}
 
 	if doc.FullTolerance {
