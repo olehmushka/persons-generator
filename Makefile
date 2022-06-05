@@ -16,6 +16,9 @@ test:
 test-force:
 	go clean -testcache && go test ./...
 
+test-force-v:
+	go clean -testcache && go test -v ./...
+
 test-coverage:
 	go test -cover ./...
 
