@@ -5,29 +5,43 @@ import "testing"
 func TestGetRandomBool(t *testing.T) {
 	tCases := []struct {
 		name           string
-		input          int
+		input          float64
 		expectedOutput bool
 		times          int
+		skip           bool
 	}{
 		{
 			name:           "should always get false",
 			input:          0,
 			expectedOutput: false,
 			times:          10_000,
+			skip:           false,
 		},
 		{
 			name:           "should always get true",
-			input:          100,
+			input:          1,
 			expectedOutput: true,
 			times:          10_000,
+			skip:           false,
+		},
+		{
+			name:           "should be skipped",
+			input:          0.5,
+			expectedOutput: true,
+			times:          10,
+			skip:           true,
 		},
 	}
 
 	for _, tc := range tCases {
 		t.Run(tc.name, func(tt *testing.T) {
 			for i := 0; i < tc.times; i++ {
-				if output := GetRandomBool(tc.input); output != tc.expectedOutput {
-					t.Errorf("unexpected output (expected=%t but actual=%t)", tc.expectedOutput, output)
+				output := GetRandomBool(tc.input)
+				if output != tc.expectedOutput && !tc.skip {
+					tt.Errorf("unexpected output (expected=%t but actual=%t)", tc.expectedOutput, output)
+				}
+				if tc.skip {
+					tt.Log(output)
 				}
 			}
 		})

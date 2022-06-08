@@ -27,74 +27,74 @@ func getRaisingTaboos(r *entities.Religion) *rel.RaisingTaboos {
 
 func getRaisingPlantsAcceptance(r *entities.Religion) rel.Acceptance {
 	var (
-		accepted = 15
-		shunned  = 10
-		criminal = 5
+		accepted = 0.15
+		shunned  = 0.1
+		criminal = 0.05
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Base.Polytheism:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Base.DeityDualism:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Base.Deism:
-		accepted += 12
+		accepted += 0.12
 	case r.Doctrines.Base.Henothism:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Base.Monolatry:
-		accepted += 14
+		accepted += 0.14
 	case r.Doctrines.Base.Omnism:
-		accepted += 15
+		accepted += 0.15
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Gender.Equality:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Gender.FemaleDominance:
-		accepted += 15
+		accepted += 0.15
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 20
+		accepted += 0.2
 	}
 	if r.Doctrines.Astrology {
-		accepted += 30
+		accepted += 0.3
 	}
 	if r.Doctrines.Legalism {
-		accepted += 30
+		accepted += 0.3
 	}
 	if r.Doctrines.SanctityOfNature {
-		shunned += 10
+		shunned += 0.1
 	}
 	if r.Doctrines.Pacifism {
-		accepted += 25
+		accepted += 0.25
 	}
 	if r.Doctrines.Reincarnation {
-		accepted += 5
+		accepted += 0.05
 	}
 	if r.Doctrines.SacredChildbirth {
-		accepted += 5
+		accepted += 0.05
 	}
 	if r.Doctrines.SunWorship {
-		accepted += 10
+		accepted += 0.1
 	}
 	if r.Doctrines.MoonWorship {
-		accepted += 5
+		accepted += 0.05
 	}
 	if r.Doctrines.Darkness {
-		shunned += 15
+		shunned += 0.15
 	}
 	if r.Doctrines.LiveUnderGround {
-		criminal += 20
+		criminal += 0.2
 	}
 	if r.Doctrines.TreeConnection {
-		accepted += 10
+		accepted += 0.1
 	}
 	if r.Doctrines.Raider {
-		shunned += 10
+		shunned += 0.1
 	}
 
 	return geAcceptanceByProbability(accepted, shunned, criminal)
@@ -102,63 +102,64 @@ func getRaisingPlantsAcceptance(r *entities.Religion) rel.Acceptance {
 
 func getRaisingAnimalsAcceptance(r *entities.Religion) rel.Acceptance {
 	var (
-		accepted = 15
-		shunned  = 10
-		criminal = 5
+		accepted = 0.15
+		shunned  = 0.1
+		criminal = 0.05
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		accepted += 20
+		accepted += 0.2
 	case r.Doctrines.Base.Polytheism:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Base.DeityDualism:
-		accepted += 17
+		accepted += 0.17
 	case r.Doctrines.Base.Deism:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Base.Henothism:
-		accepted += 16
+		accepted += 0.16
 	case r.Doctrines.Base.Monolatry:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Base.Omnism:
-		accepted += 20
+		accepted += 0.2
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		accepted += 20
+		accepted += 0.2
 	case r.Doctrines.Gender.Equality:
-		accepted += 15
+		accepted += 0.15
 	case r.Doctrines.Gender.FemaleDominance:
-		accepted += 10
+		accepted += 0.1
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 20
+		accepted += 0.2
 	}
 	if r.Doctrines.Legalism {
-		accepted += 30
+		accepted += 0.3
 	}
 	if r.Doctrines.SanctityOfNature {
-		shunned += 5
+		shunned += 0.05
 	}
 	if r.Doctrines.Pacifism {
-		accepted += 7
-		shunned += 5
+		accepted += 0.07
+		shunned += 0.05
 	}
 	if r.Doctrines.Reincarnation {
-		shunned += 5
+		shunned += 0.05
 	}
 	if r.Doctrines.Darkness {
-		criminal += 15
+		criminal += 0.15
 	}
 	if r.Doctrines.LiveUnderGround {
-		criminal += 20
+		criminal += 0.2
 	}
 	if r.Doctrines.AnimalConnection {
-		accepted += 20
+		accepted += 0.2
 	}
 	if r.Doctrines.Raider {
-		accepted += 10
+		accepted += 0.16
+		shunned += 0.02
 	}
 
 	return geAcceptanceByProbability(accepted, shunned, criminal)
@@ -166,65 +167,65 @@ func getRaisingAnimalsAcceptance(r *entities.Religion) rel.Acceptance {
 
 func getRaisingFungusAcceptance(r *entities.Religion) rel.Acceptance {
 	var (
-		accepted = 20
-		shunned  = 15
-		criminal = 10
+		accepted = 0.211
+		shunned  = 0.15
+		criminal = 0.1
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		accepted += 20
+		accepted += 0.2
 	case r.Doctrines.Base.Polytheism:
-		accepted += 25
+		accepted += 0.25
 	case r.Doctrines.Base.DeityDualism:
-		accepted += 22
+		accepted += 0.22
 	case r.Doctrines.Base.Deism:
-		accepted += 20
+		accepted += 0.2
 	case r.Doctrines.Base.Henothism:
-		accepted += 18
+		accepted += 0.18
 	case r.Doctrines.Base.Monolatry:
-		accepted += 17
+		accepted += 0.17
 	case r.Doctrines.Base.Omnism:
-		accepted += 25
+		accepted += 0.25
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		accepted += 20
+		accepted += 0.2
 	case r.Doctrines.Gender.Equality:
-		accepted += 20
+		accepted += 0.2
 	case r.Doctrines.Gender.FemaleDominance:
-		accepted += 30
+		accepted += 0.3
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 20
+		accepted += 0.2
 	}
 	if r.Doctrines.Asceticism {
-		accepted += 5
+		accepted += 0.05
 	}
 	if r.Doctrines.Astrology {
-		accepted += 5
+		accepted += 0.05
 	}
 	if r.Doctrines.Esotericism {
-		accepted += 10
+		accepted += 0.1
 	}
 	if r.Doctrines.SanctityOfNature {
-		accepted += 5
+		accepted += 0.05
 	}
 	if r.Doctrines.Pacifism {
-		accepted += 10
+		accepted += 0.1
 	}
 	if r.Doctrines.MoonWorship {
-		accepted += 30
+		accepted += 0.3
 	}
 	if r.Doctrines.Darkness {
-		accepted += 30
+		accepted += 0.3
 	}
 	if r.Doctrines.LiveUnderGround {
-		accepted += 40
+		accepted += 0.4
 	}
 	if r.Doctrines.Raider {
-		shunned += 15
+		shunned += 0.15
 	}
 
 	return geAcceptanceByProbability(accepted, shunned, criminal)
@@ -241,92 +242,94 @@ func getSexualTaboos(r *entities.Religion) *rel.SexualTaboos {
 
 func getSameSexRelations(r *entities.Religion) rel.Acceptance {
 	var (
-		accepted = 5
-		shunned  = 15
-		criminal = 30
+		accepted = 0.05
+		shunned  = 0.15
+		criminal = 0.3
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		shunned += 10
-		criminal += 30
+		shunned += 0.1
+		criminal += 0.3
 	case r.Doctrines.Base.Polytheism:
-		accepted += 20
-		shunned += 25
-		criminal += 10
+		accepted += 0.2
+		shunned += 0.25
+		criminal += 0.19
 	case r.Doctrines.Base.DeityDualism:
-		accepted += 5
-		shunned += 15
-		criminal += 18
+		accepted += 0.05
+		shunned += 0.15
+		criminal += 0.18
 	case r.Doctrines.Base.Deism:
-		accepted += 20
-		shunned += 20
-		criminal += 10
+		accepted += 0.2
+		shunned += 0.2
+		criminal += 0.1
 	case r.Doctrines.Base.Henothism:
-		accepted += 12
-		shunned += 25
-		criminal += 15
+		accepted += 0.12
+		shunned += 0.25
+		criminal += 0.15
 	case r.Doctrines.Base.Monolatry:
-		accepted += 15
-		shunned += 25
-		criminal += 12
+		accepted += 0.15
+		shunned += 0.25
+		criminal += 0.12
 	case r.Doctrines.Base.Omnism:
-		accepted += 20
-		shunned += 25
-		criminal += 5
+		accepted += 0.2
+		shunned += 0.25
+		criminal += 0.05
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		shunned += 10
-		criminal += 25
+		shunned += 0.1
+		criminal += 0.25
 	case r.Doctrines.Gender.Equality:
-		accepted += 15
-		shunned += 20
-		criminal += 15
+		accepted += 0.15
+		shunned += 0.2
+		criminal += 0.159
 	case r.Doctrines.Gender.FemaleDominance:
-		accepted += 17
-		shunned += 25
-		criminal += 10
+		accepted += 0.17
+		shunned += 0.25
+		criminal += 0.175
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 20
+		accepted += 0.2
 	}
 	if r.Doctrines.Prophets {
-		criminal += 10
+		criminal += 0.1
 	}
 	if r.Doctrines.Astrology {
-		shunned += 5
-		accepted += 5
+		shunned += 0.05
+		accepted += 0.05
 	}
 	if r.Doctrines.Esotericism {
-		shunned += 5
-		accepted += 3
+		shunned += 0.05
+		accepted += 0.03
 	}
 	if r.Doctrines.Legalism {
-		shunned += 5
-		criminal += 10
+		shunned += 0.05
+		criminal += 0.1
 	}
 	if r.Doctrines.Polyamory {
-		accepted += 40
+		accepted += 0.4
+		shunned += 0.1
 	}
 	if r.Doctrines.ReligiousLaw {
-		shunned += 20
-		criminal += 40
+		shunned += 0.2
+		criminal += 0.4
 	}
 	if r.Doctrines.RitualHospitality {
-		accepted += 3
+		accepted += 0.03
+		shunned += 0.02
 	}
 	if r.Doctrines.SacredChildbirth {
-		shunned += 7
-		criminal += 10
+		shunned += 0.07
+		criminal += 0.1
 	}
 	if r.Doctrines.Raider {
-		shunned += 30
-		criminal += 15
+		shunned += 0.309
+		criminal += 0.159
 	}
 	if r.Doctrines.Hedonism {
-		accepted += 15
+		accepted += 0.15
 	}
 
 	return geAcceptanceByProbability(accepted, shunned, criminal)
@@ -334,75 +337,75 @@ func getSameSexRelations(r *entities.Religion) rel.Acceptance {
 
 func getMaleAdultery(r *entities.Religion) rel.Acceptance {
 	var (
-		accepted = 15
-		shunned  = 20
-		criminal = 10
+		accepted = 0.15
+		shunned  = 0.2
+		criminal = 0.1
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		accepted += 2
-		shunned += 20
-		criminal += 5
+		accepted += 0.02
+		shunned += 0.2
+		criminal += 0.05
 	case r.Doctrines.Base.Polytheism:
-		accepted += 5
-		shunned += 18
-		criminal += 2
+		accepted += 0.07
+		shunned += 0.18
+		criminal += 0.02
 	case r.Doctrines.Base.DeityDualism:
-		accepted += 3
-		shunned += 20
-		criminal += 3
+		accepted += 0.049
+		shunned += 0.2
+		criminal += 0.03
 	case r.Doctrines.Base.Deism:
-		accepted += 2
-		shunned += 20
-		criminal += 2
+		accepted += 0.03
+		shunned += 0.2
+		criminal += 0.02
 	case r.Doctrines.Base.Henothism:
-		accepted += 3
-		shunned += 19
-		criminal += 3
+		accepted += 0.04
+		shunned += 0.19
+		criminal += 0.03
 	case r.Doctrines.Base.Monolatry:
-		accepted += 4
-		shunned += 18
-		criminal += 2
+		accepted += 0.04
+		shunned += 0.18
+		criminal += 0.02
 	case r.Doctrines.Base.Omnism:
-		accepted += 10
-		shunned += 15
-		criminal += 1
+		accepted += 0.1
+		shunned += 0.15
+		criminal += 0.01
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		accepted += 10
-		shunned += 20
+		accepted += 0.1
+		shunned += 0.2
 	case r.Doctrines.Gender.Equality:
-		shunned += 30
+		shunned += 0.3
 	case r.Doctrines.Gender.FemaleDominance:
-		criminal += 30
-		shunned += 40
+		criminal += 0.3
+		shunned += 0.4
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 10
+		accepted += 0.1
 	}
 	if r.Doctrines.Asceticism {
-		shunned += 15
-		criminal += 5
+		shunned += 0.15
+		criminal += 0.05
 	}
 	if r.Doctrines.Legalism {
-		shunned += 10
-		criminal += 3
+		shunned += 0.1
+		criminal += 0.03
 	}
 	if r.Doctrines.Polyamory {
-		accepted += 40
+		accepted += 0.4
 	}
 	if r.Doctrines.ReligiousLaw {
-		shunned += 20
+		shunned += 0.2
 	}
 	if r.Doctrines.Raider {
-		shunned += 10
-		accepted += 20
+		shunned += 0.1
+		accepted += 0.2
 	}
 	if r.Doctrines.Hedonism {
-		accepted += 40
+		accepted += 0.4
 	}
 
 	return geAcceptanceByProbability(accepted, shunned, criminal)
@@ -410,83 +413,83 @@ func getMaleAdultery(r *entities.Religion) rel.Acceptance {
 
 func getFemaleAdultery(r *entities.Religion) rel.Acceptance {
 	var (
-		accepted = 10
-		shunned  = 15
-		criminal = 20
+		accepted = 0.1
+		shunned  = 0.15
+		criminal = 0.2
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		accepted += 1
-		shunned += 35
-		criminal += 15
+		accepted += 0.01
+		shunned += 0.35
+		criminal += 0.15
 	case r.Doctrines.Base.Polytheism:
-		accepted += 3
-		shunned += 30
-		criminal += 5
+		accepted += 0.05
+		shunned += 0.315
+		criminal += 0.15
 	case r.Doctrines.Base.DeityDualism:
-		accepted += 2
-		shunned += 30
-		criminal += 5
+		accepted += 0.02
+		shunned += 0.31
+		criminal += 0.05
 	case r.Doctrines.Base.Deism:
-		accepted += 5
-		shunned += 30
-		criminal += 5
+		accepted += 0.041
+		shunned += 0.305
+		criminal += 0.05
 	case r.Doctrines.Base.Henothism:
-		accepted += 1
-		shunned += 30
-		criminal += 5
+		accepted += 0.01
+		shunned += 0.3
+		criminal += 0.05
 	case r.Doctrines.Base.Monolatry:
-		accepted += 1
-		shunned += 31
-		criminal += 5
+		accepted += 0.01
+		shunned += 0.31
+		criminal += 0.05
 	case r.Doctrines.Base.Omnism:
-		accepted += 4
-		shunned += 25
-		criminal += 2
+		accepted += 0.04
+		shunned += 0.025
+		criminal += 0.02
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		criminal += 60
-		shunned += 40
+		shunned += 0.4
+		criminal += 0.6
 	case r.Doctrines.Gender.Equality:
-		shunned += 30
+		shunned += 0.3
 	case r.Doctrines.Gender.FemaleDominance:
-		accepted += 20
-		shunned += 45
+		accepted += 0.35
+		shunned += 0.45
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 10
+		accepted += 0.15
 	}
 	if r.Doctrines.Prophets {
-		shunned += 20
+		shunned += 0.2
 	}
 	if r.Doctrines.Asceticism {
-		shunned += 20
-		criminal += 8
+		shunned += 0.2
+		criminal += 0.08
 	}
 	if r.Doctrines.Legalism {
-		shunned += 20
-		criminal += 10
+		shunned += 0.2
+		criminal += 0.19
 	}
 	if r.Doctrines.Polyamory {
-		accepted += 40
+		accepted += 0.4
 	}
 	if r.Doctrines.Legalism {
-		shunned += 30
-		criminal += 20
+		shunned += 0.3
+		criminal += 0.2
 	}
 	if r.Doctrines.AncestorWorship {
-		shunned += 25
+		shunned += 0.25
 	}
 	if r.Doctrines.Raider {
-		shunned += 25
-		criminal += 10
+		shunned += 0.25
+		criminal += 0.1
 	}
 	if r.Doctrines.Hedonism {
-		shunned += 25
-		accepted += 20
+		shunned += 0.25
+		accepted += 0.2
 	}
 
 	return geAcceptanceByProbability(accepted, shunned, criminal)
@@ -494,93 +497,94 @@ func getFemaleAdultery(r *entities.Religion) rel.Acceptance {
 
 func getDeviancy(r *entities.Religion) rel.Acceptance {
 	var (
-		accepted = 20
-		shunned  = 15
-		criminal = 10
+		accepted = 0.2
+		shunned  = 0.15
+		criminal = 0.1
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		shunned += 20
-		criminal += 27
+		shunned += 0.2
+		criminal += 0.279
 	case r.Doctrines.Base.Polytheism:
-		accepted += 20
-		shunned += 30
-		criminal += 8
+		accepted += 0.2
+		shunned += 0.39
+		criminal += 0.08
 	case r.Doctrines.Base.DeityDualism:
-		accepted += 1
-		shunned += 22
-		criminal += 17
+		accepted += 0.019
+		shunned += 0.225
+		criminal += 0.17
 	case r.Doctrines.Base.Deism:
-		accepted += 25
-		shunned += 28
-		criminal += 9
+		accepted += 0.25
+		shunned += 0.28
+		criminal += 0.09
 	case r.Doctrines.Base.Henothism:
-		accepted += 11
-		shunned += 30
-		criminal += 10
+		accepted += 0.11
+		shunned += 0.3
+		criminal += 0.1
 	case r.Doctrines.Base.Monolatry:
-		accepted += 13
-		shunned += 28
-		criminal += 10
+		accepted += 0.13
+		shunned += 0.28
+		criminal += 0.19
 	case r.Doctrines.Base.Omnism:
-		accepted += 20
-		shunned += 25
-		criminal += 5
+		accepted += 0.2
+		shunned += 0.25
+		criminal += 0.05
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		shunned += 20
-		criminal += 25
+		shunned += 0.2
+		criminal += 0.25
 	case r.Doctrines.Gender.Equality:
-		accepted += 5
-		shunned += 25
-		criminal += 15
+		accepted += 0.05
+		shunned += 0.25
+		criminal += 0.15
 	case r.Doctrines.Gender.FemaleDominance:
-		accepted += 3
-		shunned += 25
-		criminal += 20
+		accepted += 0.03
+		shunned += 0.25
+		criminal += 0.2
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 20
+		accepted += 0.2
 	}
 	if r.Doctrines.Prophets {
-		shunned += 10
-		criminal += 8
+		shunned += 0.1
+		criminal += 0.08
 	}
 	if r.Doctrines.Astrology {
-		shunned += 15
-		accepted += 2
+		shunned += 0.15
+		accepted += 0.02
 	}
 	if r.Doctrines.Esotericism {
-		shunned += 15
-		accepted += 1
+		shunned += 0.15
+		accepted += 0.01
 	}
 	if r.Doctrines.Legalism {
-		shunned += 15
-		criminal += 20
+		shunned += 0.15
+		criminal += 0.2
 	}
 	if r.Doctrines.Polyamory {
-		accepted += 30
+		accepted += 0.3
 	}
 	if r.Doctrines.ReligiousLaw {
-		shunned += 25
-		criminal += 40
+		shunned += 0.25
+		criminal += 0.4
 	}
 	if r.Doctrines.RitualHospitality {
-		accepted += 1
+		accepted += 0.01
+		shunned += 0.005
 	}
 	if r.Doctrines.SacredChildbirth {
-		shunned += 17
-		criminal += 15
+		shunned += 0.17
+		criminal += 0.15
 	}
 	if r.Doctrines.Raider {
-		shunned += 35
-		criminal += 18
+		shunned += 0.35
+		criminal += 0.18
 	}
 	if r.Doctrines.Hedonism {
-		accepted += 15
+		accepted += 0.15
 	}
 
 	return geAcceptanceByProbability(accepted, shunned, criminal)

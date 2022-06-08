@@ -5,8 +5,8 @@ import (
 	pm "persons_generator/probability-machine"
 )
 
-func getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed int) religion.Permission {
-	m := map[string]int{
+func getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed float64) religion.Permission {
+	m := map[string]float64{
 		string(religion.AlwaysAllowed):  pm.PrepareProbability(alwaysAllowed),
 		string(religion.MustBeApproved): pm.PrepareProbability(mustBeApproved),
 		string(religion.Disallowed):     pm.PrepareProbability(disallowed),

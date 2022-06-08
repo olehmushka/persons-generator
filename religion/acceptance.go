@@ -5,8 +5,8 @@ import (
 	pm "persons_generator/probability-machine"
 )
 
-func geAcceptanceByProbability(accepted, shunned, criminal int) religion.Acceptance {
-	m := map[string]int{
+func geAcceptanceByProbability(accepted, shunned, criminal float64) religion.Acceptance {
+	m := map[string]float64{
 		string(religion.Accepted): pm.PrepareProbability(accepted),
 		string(religion.Shunned):  pm.PrepareProbability(shunned),
 		string(religion.Criminal): pm.PrepareProbability(criminal),

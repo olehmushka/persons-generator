@@ -16,67 +16,71 @@ func generateMarriagePercepts(r *entities.Religion) {
 
 func getMarriageKind(r *entities.Religion) religion.MarriageKind {
 	var (
-		monogamy              = 30
-		consortsAndConcubines = 20
-		polygamy              = 10
+		monogamy              = 0.3
+		consortsAndConcubines = 0.2
+		polygamy              = 0.1
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		monogamy += 10
-		polygamy += 10
+		monogamy += 0.1
+		consortsAndConcubines += 0.05
+		polygamy += 0.1
 	case r.Doctrines.Base.Polytheism:
-		monogamy += 10
-		polygamy += 10
+		monogamy += 0.1
+		consortsAndConcubines += 0.05
+		polygamy += 0.1
 	case r.Doctrines.Base.DeityDualism:
-		monogamy += 10
-		consortsAndConcubines += 10
+		monogamy += 0.1
+		consortsAndConcubines += 0.1
 	case r.Doctrines.Base.Deism:
-		monogamy += 10
-		consortsAndConcubines += 10
-		polygamy += 10
+		monogamy += 0.1
+		consortsAndConcubines += 0.1
+		polygamy += 0.1
 	case r.Doctrines.Base.Henothism:
-		monogamy += 10
-		polygamy += 10
+		monogamy += 0.1
+		polygamy += 0.1
 	case r.Doctrines.Base.Monolatry:
-		monogamy += 10
-		polygamy += 10
+		monogamy += 0.1
+		polygamy += 0.1
 	case r.Doctrines.Base.Omnism:
-		polygamy += 10
-		consortsAndConcubines += 10
+		polygamy += 0.1
+		consortsAndConcubines += 0.1
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		polygamy += 5
+		consortsAndConcubines += 0.03
+		polygamy += 0.05
 	case r.Doctrines.Gender.Equality:
-		monogamy += 5
+		monogamy += 0.05
 	case r.Doctrines.Gender.FemaleDominance:
-		monogamy += 10
+		monogamy += 0.15
 	}
 
 	if r.Doctrines.Asceticism {
-		monogamy += 10
+		monogamy += 0.085
 	}
 	if r.Doctrines.Monasticism {
-		monogamy += 10
+		monogamy += 0.01
 	}
 	if r.Doctrines.Polyamory {
-		polygamy += 50
+		polygamy += 0.5
+		consortsAndConcubines += 0.1
 	}
 	if r.Doctrines.ReligiousLaw {
-		monogamy += 10
-		polygamy += 10
-		consortsAndConcubines += 10
+		monogamy += 0.1
+		polygamy += 0.1
+		consortsAndConcubines += 0.1
 	}
 	if r.Doctrines.Raider {
-		polygamy += 50
+		polygamy += 0.5
 	}
 	if r.Doctrines.Hedonism {
-		polygamy += 50
-		consortsAndConcubines += 50
+		polygamy += 0.5
+		consortsAndConcubines += 0.5
 	}
 
-	m := map[string]int{
+	m := map[string]float64{
 		string(religion.Monogamy):              pm.PrepareProbability(monogamy),
 		string(religion.ConsortsAndConcubines): pm.PrepareProbability(consortsAndConcubines),
 		string(religion.Polygamy):              pm.PrepareProbability(polygamy),
@@ -86,81 +90,83 @@ func getMarriageKind(r *entities.Religion) religion.MarriageKind {
 
 func getDivorce(r *entities.Religion) religion.Permission {
 	var (
-		alwaysAllowed  = 10
-		mustBeApproved = 20
-		disallowed     = 10
+		alwaysAllowed  = 0.1
+		mustBeApproved = 0.25
+		disallowed     = 0.1
 	)
 
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		alwaysAllowed += 10
-		mustBeApproved += 10
-		disallowed += 10
+		alwaysAllowed += 0.1
+		mustBeApproved += 0.18
+		disallowed += 0.15
 	case r.Doctrines.Base.Polytheism:
-		alwaysAllowed += 10
-		disallowed += 10
+		alwaysAllowed += 0.1
+		disallowed += 0.1
 	case r.Doctrines.Base.DeityDualism:
-		mustBeApproved += 10
-		disallowed += 10
+		mustBeApproved += 0.1
+		disallowed += 0.1
 	case r.Doctrines.Base.Deism:
-		alwaysAllowed++
+		alwaysAllowed += 0.01
 	case r.Doctrines.Base.Henothism:
-		alwaysAllowed += 10
-		disallowed += 10
+		alwaysAllowed += 0.1
+		disallowed += 0.1
 	case r.Doctrines.Base.Monolatry:
-		alwaysAllowed += 10
-		disallowed += 10
+		alwaysAllowed += 0.1
+		disallowed += 0.1
 	case r.Doctrines.Base.Omnism:
-		alwaysAllowed += 10
-		mustBeApproved += 10
-		disallowed += 10
+		alwaysAllowed += 0.1
+		mustBeApproved += 0.1
+		disallowed += 0.1
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		mustBeApproved += 10
-		disallowed += 15
+		mustBeApproved += 0.1
+		disallowed += 0.15
 	case r.Doctrines.Gender.Equality:
-		alwaysAllowed += 5
-		mustBeApproved += 10
+		alwaysAllowed += 0.05
+		mustBeApproved += 0.1
 	case r.Doctrines.Gender.FemaleDominance:
-		alwaysAllowed += 15
-		mustBeApproved += 5
+		alwaysAllowed += 0.15
+		mustBeApproved += 0.05
 	}
 
 	if r.Doctrines.FullTolerance {
-		alwaysAllowed += 10
+		alwaysAllowed += 0.1
 	}
 	if r.Doctrines.Asceticism {
-		mustBeApproved += 20
-		disallowed += 30
+		mustBeApproved += 0.2
+		disallowed += 0.3
 	}
 	if r.Doctrines.Legalism {
-		mustBeApproved += 20
+		mustBeApproved += 0.2
 	}
 	if r.Doctrines.Polyamory {
-		alwaysAllowed += 50
+		alwaysAllowed += 0.5
+		mustBeApproved += 0.1
 	}
 	if r.Doctrines.ReligiousLaw {
-		mustBeApproved += 20
+		mustBeApproved += 0.2
 	}
 	if r.Doctrines.Pacifism {
-		alwaysAllowed += 10
-		mustBeApproved += 10
+		alwaysAllowed += 0.1
+		mustBeApproved += 0.1
 	}
 	if r.Doctrines.Pacifism {
-		alwaysAllowed += 10
-		mustBeApproved += 10
+		alwaysAllowed += 0.1
+		mustBeApproved += 0.1
 	}
 	if r.Doctrines.Raider {
-		mustBeApproved += 10
-		disallowed += 10
+		alwaysAllowed += 0.01
+		mustBeApproved += 0.1
+		disallowed += 0.1
 	}
 	if r.Doctrines.Proselytizer {
-		disallowed += 10
+		disallowed += 0.1
 	}
 	if r.Doctrines.Hedonism {
-		alwaysAllowed += 30
+		alwaysAllowed += 0.3
 	}
 
 	return getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed)
@@ -168,75 +174,81 @@ func getDivorce(r *entities.Religion) religion.Permission {
 
 func getBastardry(r *entities.Religion) religion.Bastardry {
 	var (
-		noBastards       = 10
-		legitimization   = 20
-		noLegitimization = 10
+		noBastards       = 0.105
+		legitimization   = 0.2
+		noLegitimization = 0.11
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		noBastards += 10
-		legitimization += 10
-		noLegitimization += 10
+		noBastards += 0.12
+		legitimization += 0.18
+		noLegitimization += 0.15
 	case r.Doctrines.Base.Polytheism:
-		noBastards += 10
-		legitimization += 10
+		noBastards += 0.13
+		legitimization += 0.18
 	case r.Doctrines.Base.DeityDualism:
-		legitimization += 10
+		legitimization += 0.15
 	case r.Doctrines.Base.Deism:
-		noBastards += 10
-		legitimization += 10
+		noBastards += 0.17
+		legitimization += 0.19
 	case r.Doctrines.Base.Henothism:
-		noBastards += 10
-		legitimization += 10
+		noBastards += 0.15
+		legitimization += 0.16
 	case r.Doctrines.Base.Monolatry:
-		noBastards += 10
-		legitimization += 10
+		noBastards += 0.12
+		legitimization += 0.17
 	case r.Doctrines.Base.Omnism:
-		noBastards += 10
-		legitimization += 10
+		noBastards += 0.19
+		legitimization += 0.17
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		legitimization += 10
-		noBastards += 5
+		legitimization += 0.11
+		noBastards += 0.051
+		noLegitimization += 0.055
 	case r.Doctrines.Gender.Equality:
-		noBastards += 5
-		legitimization += 10
+		noBastards += 0.05
+		legitimization += 0.1
 	case r.Doctrines.Gender.FemaleDominance:
-		noBastards += 15
-		legitimization += 10
+		noBastards += 0.159
+		legitimization += 0.109
 	}
 
 	if r.Doctrines.FullTolerance {
-		noBastards += 30
+		noBastards += 0.3
+		legitimization += 0.05
 	}
 	if r.Doctrines.Asceticism {
-		noLegitimization += 30
+		noLegitimization += 0.3
+		legitimization += 0.05
 	}
 	if r.Doctrines.Legalism {
-		legitimization += 20
+		legitimization += 0.2
 	}
 	if r.Doctrines.Polyamory {
-		noBastards += 60
+		noBastards += 0.6
+		legitimization += 0.01
 	}
 	if r.Doctrines.ReligiousLaw {
-		legitimization += 20
-		noLegitimization += 20
+		legitimization += 0.21
+		noLegitimization += 0.29
 	}
 	if r.Doctrines.Pacifism {
-		legitimization += 10
+		legitimization += 0.1
+		noBastards += 0.07
 	}
 	if r.Doctrines.SacredChildbirth {
-		noBastards += 50
+		noBastards += 0.5
+		legitimization += 0.1
 	}
 	if r.Doctrines.Raider {
-		noBastards += 10
-		legitimization += 10
-		noLegitimization += 10
+		noBastards += 0.15
+		legitimization += 0.19
+		noLegitimization += 0.13
 	}
 
-	m := map[string]int{
+	m := map[string]float64{
 		string(religion.NoBastards):       pm.PrepareProbability(noBastards),
 		string(religion.Legitimization):   pm.PrepareProbability(legitimization),
 		string(religion.NoLegitimization): pm.PrepareProbability(noLegitimization),
@@ -246,72 +258,92 @@ func getBastardry(r *entities.Religion) religion.Bastardry {
 
 func getConsanguinity(r *entities.Religion) religion.Consanguinity {
 	var (
-		closeKinTaboo        = 20
-		cousinMarriage       = 20
-		avunculateMarriage   = 30
-		unrestrictedMarriage = 10
+		closeKinTaboo        = 0.2
+		cousinMarriage       = 0.2
+		avunculateMarriage   = 0.3
+		unrestrictedMarriage = 0.1
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		avunculateMarriage += 15
-		cousinMarriage += 10
+		avunculateMarriage += 0.15
+		cousinMarriage += 0.1
+		closeKinTaboo += 0.04
+		unrestrictedMarriage += 0.01
 	case r.Doctrines.Base.Polytheism:
-		avunculateMarriage += 10
-		cousinMarriage += 10
+		avunculateMarriage += 0.17
+		cousinMarriage += 0.12
+		closeKinTaboo += 0.02
+		unrestrictedMarriage += 0.01
 	case r.Doctrines.Base.DeityDualism:
-		avunculateMarriage += 10
-		cousinMarriage += 10
+		avunculateMarriage += 0.17
+		cousinMarriage += 0.12
+		closeKinTaboo += 0.05
+		unrestrictedMarriage += 0.015
 	case r.Doctrines.Base.Deism:
-		avunculateMarriage += 10
-		cousinMarriage += 10
+		avunculateMarriage += 0.13
+		cousinMarriage += 0.12
+		closeKinTaboo += 0.07
+		unrestrictedMarriage += 0.02
 	case r.Doctrines.Base.Henothism:
-		avunculateMarriage += 10
-		cousinMarriage += 10
+		avunculateMarriage += 0.12
+		cousinMarriage += 0.12
+		closeKinTaboo += 0.05
+		unrestrictedMarriage += 0.01
 	case r.Doctrines.Base.Monolatry:
-		avunculateMarriage += 10
-		cousinMarriage += 10
+		avunculateMarriage += 0.15
+		cousinMarriage += 0.12
+		closeKinTaboo += 0.045
+		unrestrictedMarriage += 0.015
 	case r.Doctrines.Base.Omnism:
-		closeKinTaboo += 10
-		avunculateMarriage += 10
-		cousinMarriage += 10
+		avunculateMarriage += 0.15
+		cousinMarriage += 0.14
+		closeKinTaboo += 0.13
+		unrestrictedMarriage += 0.03
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		unrestrictedMarriage += 6
-		closeKinTaboo += 5
-		cousinMarriage += 4
-		avunculateMarriage += 3
+		avunculateMarriage += 0.053
+		cousinMarriage += 0.044
+		closeKinTaboo += 0.045
+		unrestrictedMarriage += 0.06
 	case r.Doctrines.Gender.Equality:
-		avunculateMarriage += 5
+		avunculateMarriage += 0.15
+		cousinMarriage += 0.094
+		closeKinTaboo += 0.073
+		unrestrictedMarriage += 0.039
 	case r.Doctrines.Gender.FemaleDominance:
-		unrestrictedMarriage += 4
-		closeKinTaboo += 3
-		cousinMarriage += 6
-		avunculateMarriage += 5
+		avunculateMarriage += 0.085
+		cousinMarriage += 0.0999
+		closeKinTaboo += 0.045
+		unrestrictedMarriage += 0.055
 	}
 
 	if r.Doctrines.FullTolerance {
-		unrestrictedMarriage += 30
+		unrestrictedMarriage += 0.3
 	}
 	if r.Doctrines.Asceticism {
-		avunculateMarriage += 20
+		avunculateMarriage += 0.2
+		cousinMarriage += 0.02
 	}
 	if r.Doctrines.Polyamory {
-		unrestrictedMarriage += 40
+		cousinMarriage += 1
+		closeKinTaboo += 2
+		unrestrictedMarriage += 0.4
 	}
 	if r.Doctrines.ReligiousLaw {
-		avunculateMarriage += 20
-		cousinMarriage += 10
+		avunculateMarriage += 0.35
+		cousinMarriage += 0.15
 	}
 	if r.Doctrines.SacredChildbirth {
-		avunculateMarriage += 20
+		avunculateMarriage += 0.2
 	}
 	if r.Doctrines.Hedonism {
-		unrestrictedMarriage += 40
+		closeKinTaboo += 0.35
+		unrestrictedMarriage += 0.4
 	}
 
-	m := map[string]int{
+	m := map[string]float64{
 		string(religion.CloseKinTaboo):        pm.PrepareProbability(closeKinTaboo),
 		string(religion.CousinMarriage):       pm.PrepareProbability(cousinMarriage),
 		string(religion.AvunculateMarriage):   pm.PrepareProbability(avunculateMarriage),

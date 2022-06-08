@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/jinzhu/configor v1.2.1
+	golang.org/x/exp v0.0.0-20220608143224-64259d1afd70
 )
 
 require (
