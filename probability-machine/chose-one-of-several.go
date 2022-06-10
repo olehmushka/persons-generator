@@ -24,11 +24,11 @@ func GetRandomFromSeveral[T string](values map[T]float64) T {
 		}
 	}
 	if valuesWith100Count > 1 {
-		fmt.Printf("[GetRandomFromSeveral] Several values are 100!!!\n\n\n")
+		fmt.Printf("[GetRandomFromSeveral] Several values are 1!!!\n\n\n")
 	}
 	preparedValues := cloneStringProbabilityMap(values)
 	for value, prob := range preparedValues {
-		preparedValues[value] = PrepareProbability(prob - 0.0001)
+		preparedValues[value] = PrepareProbability(prob - 0.01)
 	}
 
 	tempValues := make(map[T]float64)

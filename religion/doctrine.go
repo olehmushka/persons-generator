@@ -383,32 +383,32 @@ func getMonasticism(doc *rel.Doctrines) bool {
 	var primaryProb float64
 	switch {
 	case doc.Base.Monotheism:
-		primaryProb = 0.45
+		primaryProb = 0.35
 	case doc.Base.Polytheism:
 		primaryProb = 0.25
 	case doc.Base.DeityDualism:
-		primaryProb = 0.3
+		primaryProb = 0.2
 	case doc.Base.Deism:
 		primaryProb = 0.05
 	case doc.Base.Henothism:
-		primaryProb = 0.3
+		primaryProb = 0.2
 	case doc.Base.Monolatry:
-		primaryProb = 0.3
+		primaryProb = 0.2
 	case doc.Base.Omnism:
-		primaryProb = 0.4
+		primaryProb = 0.21
 	}
 
 	switch {
 	case doc.Gender.MaleDominance:
-		primaryProb += 0.07
+		primaryProb += 0.05
 	case doc.Gender.Equality:
-		primaryProb += 0.02
+		primaryProb += 0.03
 	case doc.Gender.FemaleDominance:
-		primaryProb -= 0.03
+		primaryProb -= 0.025
 	}
 
 	if doc.Asceticism {
-		primaryProb += 0.45
+		primaryProb += 0.1
 	}
 	return pm.GetRandomBool(pm.PrepareProbability(primaryProb))
 }
