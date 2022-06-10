@@ -2,7 +2,6 @@ package probabilitymachine
 
 import (
 	"crypto/rand"
-	"math"
 	"math/big"
 
 	expRand "golang.org/x/exp/rand"
@@ -19,6 +18,6 @@ func randInt(min int, max int) int {
 }
 
 func randFloat64(min, max float64) float64 {
-	s := expRand.NewSource(uint64(randInt(0, math.MaxInt)))
+	s := expRand.NewSource(uint64(randInt(0, 100)))
 	return min + expRand.New(s).Float64()*(max-min)
 }

@@ -10,6 +10,18 @@ const (
 
 type Acceptance string
 
+func (a Acceptance) IsAccepted() bool {
+	return a == Accepted
+}
+
+func (a Acceptance) IsShunned() bool {
+	return a == Shunned
+}
+
+func (a Acceptance) IsCriminal() bool {
+	return a == Criminal
+}
+
 const (
 	Accepted Acceptance = "accepted"
 	Shunned  Acceptance = "shunned"
@@ -25,6 +37,18 @@ const (
 )
 
 type Attitude string
+
+func (a Attitude) IsVirtue() bool {
+	return a == Virtue
+}
+
+func (a Attitude) IsNeutral() bool {
+	return a == NeutralAttitude
+}
+
+func (a Attitude) IsSin() bool {
+	return a == Sin
+}
 
 const (
 	Virtue          Attitude = "virtue"

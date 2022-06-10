@@ -1,10 +1,15 @@
 package religion
 
 import (
+	"fmt"
+
 	"persons_generator/entities"
 )
 
 func New() *entities.Religion {
+	fmt.Println("[religion.New] started")
+	defer fmt.Println("[religion.New] finished")
+
 	r := &entities.Religion{}
 	generateDoctrine(r)
 	generateTheology(r)

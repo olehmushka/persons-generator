@@ -1,11 +1,16 @@
 package religion
 
 import (
+	"fmt"
+
 	"persons_generator/entities"
 	rel "persons_generator/entities/religion"
 )
 
 func generateTaboos(r *entities.Religion) {
+	fmt.Println("[generateTaboos] started")
+	defer fmt.Println("[generateTaboos] finished")
+
 	t := &rel.Taboos{}
 	t.RaisingTaboos = getRaisingTaboos(r)
 	t.SexualTaboos = getSexualTaboos(r)
@@ -50,48 +55,48 @@ func getRaisingPlantsAcceptance(r *entities.Religion) rel.Acceptance {
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		accepted += 0.15
+		accepted += 0.05
 	case r.Doctrines.Gender.Equality:
-		accepted += 0.15
+		accepted += 0.05
 	case r.Doctrines.Gender.FemaleDominance:
-		accepted += 0.15
+		accepted += 0.05
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 0.2
+		accepted += 0.01
 	}
 	if r.Doctrines.Astrology {
-		accepted += 0.3
+		accepted += 0.05
 	}
 	if r.Doctrines.Legalism {
-		accepted += 0.3
+		accepted += 0.05
 	}
 	if r.Doctrines.SanctityOfNature {
-		shunned += 0.1
+		shunned += 0.05
 	}
 	if r.Doctrines.Pacifism {
-		accepted += 0.25
+		accepted += 0.1
 	}
 	if r.Doctrines.Reincarnation {
-		accepted += 0.05
+		accepted += 0.01
 	}
 	if r.Doctrines.SacredChildbirth {
-		accepted += 0.05
+		accepted += 0.01
 	}
 	if r.Doctrines.SunWorship {
 		accepted += 0.1
 	}
 	if r.Doctrines.MoonWorship {
-		accepted += 0.05
+		accepted += 0.005
 	}
 	if r.Doctrines.Darkness {
-		shunned += 0.15
+		shunned += 0.05
 	}
 	if r.Doctrines.LiveUnderGround {
-		criminal += 0.2
+		criminal += 0.07
 	}
 	if r.Doctrines.TreeConnection {
-		accepted += 0.1
+		accepted += 0.08
 	}
 	if r.Doctrines.Raider {
 		shunned += 0.1
@@ -125,40 +130,40 @@ func getRaisingAnimalsAcceptance(r *entities.Religion) rel.Acceptance {
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		accepted += 0.2
+		accepted += 0.05
 	case r.Doctrines.Gender.Equality:
-		accepted += 0.15
+		accepted += 0.04
 	case r.Doctrines.Gender.FemaleDominance:
-		accepted += 0.1
+		accepted += 0.037
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 0.2
+		accepted += 0.05
 	}
 	if r.Doctrines.Legalism {
-		accepted += 0.3
+		accepted += 0.08
 	}
 	if r.Doctrines.SanctityOfNature {
-		shunned += 0.05
+		shunned += 0.01
 	}
 	if r.Doctrines.Pacifism {
-		accepted += 0.07
-		shunned += 0.05
+		accepted += 0.03
+		shunned += 0.01
 	}
 	if r.Doctrines.Reincarnation {
-		shunned += 0.05
+		shunned += 0.02
 	}
 	if r.Doctrines.Darkness {
-		criminal += 0.15
+		criminal += 0.09
 	}
 	if r.Doctrines.LiveUnderGround {
-		criminal += 0.2
+		criminal += 0.05
 	}
 	if r.Doctrines.AnimalConnection {
-		accepted += 0.2
+		accepted += 0.05
 	}
 	if r.Doctrines.Raider {
-		accepted += 0.16
+		accepted += 0.1
 		shunned += 0.02
 	}
 
@@ -190,42 +195,42 @@ func getRaisingFungusAcceptance(r *entities.Religion) rel.Acceptance {
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
-		accepted += 0.2
+		accepted += 0.05
 	case r.Doctrines.Gender.Equality:
-		accepted += 0.2
+		accepted += 0.05
 	case r.Doctrines.Gender.FemaleDominance:
-		accepted += 0.3
+		accepted += 0.07
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 0.2
+		accepted += 0.05
 	}
 	if r.Doctrines.Asceticism {
-		accepted += 0.05
+		accepted += 0.02
 	}
 	if r.Doctrines.Astrology {
 		accepted += 0.05
 	}
 	if r.Doctrines.Esotericism {
-		accepted += 0.1
+		accepted += 0.08
 	}
 	if r.Doctrines.SanctityOfNature {
-		accepted += 0.05
+		accepted += 0.01
 	}
 	if r.Doctrines.Pacifism {
-		accepted += 0.1
+		accepted += 0.02
 	}
 	if r.Doctrines.MoonWorship {
-		accepted += 0.3
+		accepted += 0.1
 	}
 	if r.Doctrines.Darkness {
-		accepted += 0.3
+		accepted += 0.11
 	}
 	if r.Doctrines.LiveUnderGround {
-		accepted += 0.4
+		accepted += 0.25
 	}
 	if r.Doctrines.Raider {
-		shunned += 0.15
+		shunned += 0.1
 	}
 
 	return geAcceptanceByProbability(accepted, shunned, criminal)
@@ -291,45 +296,45 @@ func getSameSexRelations(r *entities.Religion) rel.Acceptance {
 	}
 
 	if r.Doctrines.FullTolerance {
-		accepted += 0.2
-	}
-	if r.Doctrines.Prophets {
-		criminal += 0.1
-	}
-	if r.Doctrines.Astrology {
-		shunned += 0.05
 		accepted += 0.05
 	}
+	if r.Doctrines.Prophets {
+		criminal += 0.03
+	}
+	if r.Doctrines.Astrology {
+		shunned += 0.01
+		accepted += 0.01
+	}
 	if r.Doctrines.Esotericism {
-		shunned += 0.05
-		accepted += 0.03
+		shunned += 0.02
+		accepted += 0.01
 	}
 	if r.Doctrines.Legalism {
-		shunned += 0.05
-		criminal += 0.1
+		shunned += 0.02
+		criminal += 0.06
 	}
 	if r.Doctrines.Polyamory {
-		accepted += 0.4
-		shunned += 0.1
+		accepted += 0.15
+		shunned += 0.07
 	}
 	if r.Doctrines.ReligiousLaw {
-		shunned += 0.2
-		criminal += 0.4
+		shunned += 0.05
+		criminal += 0.2
 	}
 	if r.Doctrines.RitualHospitality {
 		accepted += 0.03
 		shunned += 0.02
 	}
 	if r.Doctrines.SacredChildbirth {
-		shunned += 0.07
-		criminal += 0.1
+		shunned += 0.03
+		criminal += 0.07
 	}
 	if r.Doctrines.Raider {
-		shunned += 0.309
-		criminal += 0.159
+		shunned += 0.15
+		criminal += 0.1
 	}
 	if r.Doctrines.Hedonism {
-		accepted += 0.15
+		accepted += 0.05
 	}
 
 	return geAcceptanceByProbability(accepted, shunned, criminal)

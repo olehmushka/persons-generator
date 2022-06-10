@@ -1,5 +1,12 @@
 package religion
 
-import "persons_generator/entities"
+import (
+	"fmt"
 
-func generateClerics(r *entities.Religion) {}
+	"persons_generator/entities"
+)
+
+func generateClerics(r *entities.Religion) {
+	fmt.Println("[generateClerics] started")
+	defer fmt.Println("[generateClerics] finished")
+}

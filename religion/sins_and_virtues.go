@@ -1,12 +1,17 @@
 package religion
 
 import (
+	"fmt"
+
 	"persons_generator/entities"
 	"persons_generator/entities/religion"
 	pm "persons_generator/probability-machine"
 )
 
 func generateSinsAndVirtues(r *entities.Religion) {
+	fmt.Println("[generateSinsAndVirtues] started")
+	defer fmt.Println("[rgenerateSinsAndVirtues] finished")
+
 	r.Theology.Precepts.SinsAndVirtues = &religion.SinsAndVirtues{}
 	r.Theology.Precepts.SinsAndVirtues.Profanity = getProfanity(r)
 	r.Theology.Precepts.SinsAndVirtues.HaveOtherGods = getHaveOtherGods(r)

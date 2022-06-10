@@ -1,12 +1,17 @@
 package religion
 
 import (
+	"fmt"
+
 	"persons_generator/entities"
 	rel "persons_generator/entities/religion"
 	pm "persons_generator/probability-machine"
 )
 
 func generateDoctrine(r *entities.Religion) {
+	fmt.Println("[generateDoctrine] started")
+	defer fmt.Println("[generateDoctrine] finished")
+
 	doc := &rel.Doctrines{
 		Base: getMainDoctrine(),
 	}
@@ -48,6 +53,9 @@ func generateDoctrine(r *entities.Religion) {
 }
 
 func getMainDoctrine() *rel.BaseDoctrine {
+	fmt.Println("[getMainDoctrine] started")
+	defer fmt.Println("[getMainDoctrine] finished")
+
 	md := &rel.BaseDoctrine{}
 	count := 0
 	for {
@@ -641,7 +649,7 @@ func getUnrelentingFaith(doc *rel.Doctrines) bool {
 	var primaryProb float64
 	switch {
 	case doc.Base.Monotheism:
-		primaryProb = 0.5
+		primaryProb = 0.39
 	case doc.Base.Polytheism:
 		primaryProb = 0.22
 	case doc.Base.DeityDualism:
@@ -666,28 +674,28 @@ func getUnrelentingFaith(doc *rel.Doctrines) bool {
 	}
 
 	if doc.FullTolerance {
-		primaryProb -= 0.2
+		primaryProb -= 0.25
 	}
 	if doc.Messiah {
-		primaryProb += 0.05
+		primaryProb += 0.03
 	}
 	if doc.Prophets {
-		primaryProb += 0.05
+		primaryProb += 0.03
 	}
 	if doc.Asceticism {
-		primaryProb += 0.1
+		primaryProb += 0.07
 	}
 	if doc.Esotericism {
-		primaryProb -= 0.1
-	}
-	if doc.Monasticism {
-		primaryProb += 0.1
-	}
-	if doc.Polyamory {
 		primaryProb -= 0.05
 	}
+	if doc.Monasticism {
+		primaryProb += 0.05
+	}
+	if doc.Polyamory {
+		primaryProb -= 0.02
+	}
 	if doc.TaxNonbelievers {
-		primaryProb += 0.03
+		primaryProb += 0.015
 	}
 
 	return pm.GetRandomBool(pm.PrepareProbability(primaryProb))

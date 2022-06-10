@@ -1,12 +1,17 @@
 package religion
 
 import (
+	"fmt"
+
 	"persons_generator/entities"
 	"persons_generator/entities/religion"
 	pm "persons_generator/probability-machine"
 )
 
 func generateMarriagePercepts(r *entities.Religion) {
+	fmt.Println("[generateMarriagePercepts] started")
+	defer fmt.Println("[generateMarriagePercepts] finished")
+
 	r.Theology.Precepts.Marriage = &religion.Marriage{}
 	r.Theology.Precepts.Marriage.Kind = getMarriageKind(r)
 	r.Theology.Precepts.Marriage.Divorce = getDivorce(r)
