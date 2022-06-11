@@ -3809,7 +3809,6 @@ func getUseOpium(r *entities.Religion) religion.Acceptance {
 	return geAcceptanceByProbability(accepted, shunned, criminal)
 }
 
-// @TODO I did not do it yet. So, it should be calibred
 func getKillingTaboos(r *entities.Religion) {
 	r.Taboos.KillingTaboos = &rel.KillingTaboos{}
 	r.Taboos.KillingTaboos.Killing = getKilling(r)
@@ -3822,63 +3821,71 @@ func getKillingTaboos(r *entities.Religion) {
 
 func getKilling(r *entities.Religion) religion.Acceptance {
 	var (
-		accepted = 0.15
-		shunned  = 0.2
-		criminal = 0.1
+		accepted = 0.2
+		shunned  = 0.16
+		criminal = 0.09
 	)
 	switch {
 	case r.Doctrines.Base.Monotheism:
-		accepted += 0.02
-		shunned += 0.2
+		accepted += 0.1
+		shunned += 0.1
 		criminal += 0.05
 	case r.Doctrines.Base.Polytheism:
-		accepted += 0.07
+		accepted += 0.12
 		shunned += 0.18
 		criminal += 0.02
 	case r.Doctrines.Base.DeityDualism:
-		accepted += 0.049
-		shunned += 0.2
-		criminal += 0.03
+		accepted += 0.105
+		shunned += 0.11
+		criminal += 0.05
 	case r.Doctrines.Base.Deism:
-		accepted += 0.03
-		shunned += 0.2
-		criminal += 0.02
+		accepted += 0.1
+		shunned += 0.1
+		criminal += 0.09
 	case r.Doctrines.Base.Henothism:
-		accepted += 0.04
-		shunned += 0.19
-		criminal += 0.03
+		accepted += 0.11
+		shunned += 0.12
+		criminal += 0.05
 	case r.Doctrines.Base.Monolatry:
-		accepted += 0.04
-		shunned += 0.18
-		criminal += 0.02
+		accepted += 0.115
+		shunned += 0.1
+		criminal += 0.04
 	case r.Doctrines.Base.Omnism:
 		accepted += 0.1
-		shunned += 0.15
-		criminal += 0.01
+		shunned += 0.1
+		criminal += 0.02
 	}
 
 	switch {
 	case r.Doctrines.Gender.MaleDominance:
 		accepted += 0.1
-		shunned += 0.2
+		shunned += 0.05
+		criminal += 0.05
 	case r.Doctrines.Gender.Equality:
-		shunned += 0.3
+		accepted += 0.05
+		shunned += 0.05
+		criminal += 0.055
 	case r.Doctrines.Gender.FemaleDominance:
-		criminal += 0.3
-		shunned += 0.4
+		accepted += 0.01
+		shunned += 0.05
+		criminal += 0.1
 	}
 
 	if r.Doctrines.FullTolerance {
+		criminal += 0.01
 	}
 	if r.Doctrines.Messiah {
 	}
 	if r.Doctrines.Prophets {
+		accepted += 0.01
+		shunned += 0.005
 	}
 	if r.Doctrines.Asceticism {
 	}
 	if r.Doctrines.Astrology {
 	}
 	if r.Doctrines.Esotericism {
+		accepted += 0.01
 	}
 	if r.Doctrines.Legalism {
 	}
@@ -3889,22 +3896,28 @@ func getKilling(r *entities.Religion) religion.Acceptance {
 	if r.Doctrines.Polyamory {
 	}
 	if r.Doctrines.ReligiousLaw {
+		accepted += 0.02
+		criminal += 0.02
 	}
 	if r.Doctrines.SanctityOfNature {
 	}
 	if r.Doctrines.TaxNonbelievers {
 	}
 	if r.Doctrines.UnrelentingFaith {
+		accepted += 0.05
 	}
 	if r.Doctrines.AncestorWorship {
 	}
 	if r.Doctrines.Pacifism {
+		shunned += 0.05
+		criminal += 0.1
 	}
 	if r.Doctrines.Reincarnation {
 	}
 	if r.Doctrines.RitualHospitality {
 	}
 	if r.Doctrines.SacredChildbirth {
+		shunned += 0.01
 	}
 	if r.Doctrines.SanctionedFalseConversions {
 	}
@@ -3913,8 +3926,10 @@ func getKilling(r *entities.Religion) religion.Acceptance {
 	if r.Doctrines.MoonWorship {
 	}
 	if r.Doctrines.PainIsVirtue {
+		accepted += 0.01
 	}
 	if r.Doctrines.Darkness {
+		accepted += 0.05
 	}
 	if r.Doctrines.LiveUnderGround {
 	}
@@ -3925,14 +3940,17 @@ func getKilling(r *entities.Religion) religion.Acceptance {
 	if r.Doctrines.Blindsight {
 	}
 	if r.Doctrines.Raider {
+		accepted += 0.1
 	}
 	if r.Doctrines.Proselytizer {
+		accepted += 0.01
 	}
 	if r.Doctrines.Hedonism {
 	}
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Profanity.IsVirtue():
+		accepted += 0.01
 	case r.Theology.Precepts.SinsAndVirtues.Profanity.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Profanity.IsSin():
 	}
@@ -3951,6 +3969,7 @@ func getKilling(r *entities.Religion) religion.Acceptance {
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Greed.IsVirtue():
+		accepted += 0.01
 	case r.Theology.Precepts.SinsAndVirtues.Greed.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Greed.IsSin():
 	}
@@ -3963,18 +3982,21 @@ func getKilling(r *entities.Religion) religion.Acceptance {
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Gluttony.IsVirtue():
+		accepted += 0.01
 	case r.Theology.Precepts.SinsAndVirtues.Gluttony.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Gluttony.IsSin():
 	}
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Temperance.IsVirtue():
+		shunned += 0.005
 	case r.Theology.Precepts.SinsAndVirtues.Temperance.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Temperance.IsSin():
 	}
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Pride.IsVirtue():
+		accepted += 0.01
 	case r.Theology.Precepts.SinsAndVirtues.Pride.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Pride.IsSin():
 	}
@@ -3999,32 +4021,43 @@ func getKilling(r *entities.Religion) religion.Acceptance {
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Wrath.IsVirtue():
+		accepted += 0.03
 	case r.Theology.Precepts.SinsAndVirtues.Wrath.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Wrath.IsSin():
 	}
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Patience.IsVirtue():
+		shunned += 0.01
+		criminal += 0.005
 	case r.Theology.Precepts.SinsAndVirtues.Patience.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Patience.IsSin():
 	}
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Pain.IsVirtue():
+		accepted += 0.01
 	case r.Theology.Precepts.SinsAndVirtues.Pain.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Pain.IsSin():
+		shunned += 0.005
+		criminal += 0.01
 	}
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Sadism.IsVirtue():
+		accepted += 0.05
 	case r.Theology.Precepts.SinsAndVirtues.Sadism.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Sadism.IsSin():
+		shunned += 0.02
+		criminal += 0.01
 	}
 
 	switch {
 	case r.Theology.Precepts.SinsAndVirtues.Empathy.IsVirtue():
+		criminal += 0.05
 	case r.Theology.Precepts.SinsAndVirtues.Empathy.IsNeutral():
 	case r.Theology.Precepts.SinsAndVirtues.Empathy.IsSin():
+		accepted += 0.05
 	}
 
 	switch {
@@ -4054,6 +4087,7 @@ func getKilling(r *entities.Religion) religion.Acceptance {
 	return geAcceptanceByProbability(accepted, shunned, criminal)
 }
 
+// @todo continue
 func getKillAnimals(r *entities.Religion) religion.Acceptance {
 	var (
 		accepted = 0.2

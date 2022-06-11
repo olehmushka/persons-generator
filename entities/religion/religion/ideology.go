@@ -1,32 +1,84 @@
 package religion
 
-import (
-	"fmt"
-
-	"persons_generator/entities"
-)
-
-func New() *entities.Religion {
-	fmt.Println("[religion.New] started")
-	defer fmt.Println("[religion.New] finished")
-
-	r := &entities.Religion{}
-	generateDoctrine(r)
-	generateTheology(r)
-	generateTaboos(r)
-	generateClerics(r)
-
-	return r
+type Ideology struct {
+	religion *Religion
 }
 
-func NewMany(n int) []*entities.Religion {
-	religions := make([]*entities.Religion, 0, n)
-	for i := 0; i < n; i++ {
-		religions = append(religions, New())
-	}
+func NewIdeology(r *Religion) *Ideology {
+	i := &Ideology{religion: r}
 
-	return religions
+	return i
 }
+
+/*
+
+	HighGoal:
+		TransformingIntoLikenessOfGod (only for monotheism)
+		AttainHeavenAndResidesThereWithGod (only for monotheism)
+		BringManToCompletenessAndToCloseRelationshipWithGod (only for monotheism)
+		BringHolinessDownToTheWorld
+		StopReincarnation (must have reincarnation)
+		NeverStopReincarnation (must have reincarnation)
+		ProduceChildren
+		BeHappy
+		GetMaxPleasure
+		SpreadReligion
+		LovePeople
+		BecomePerfectAndSaints
+		FightWithEvil
+		FightForEvil
+
+
+
+	Doctrines
+		GodIsGood bool
+		GodIsEvil bool
+		GodSourceOfMoralLaw bool
+		Gnosticism bool
+		Purity bool
+		LiveIsSacred bool
+		SanctityOfNature           bool
+		SacredChildbirth           bool
+		Karma bool
+		PeopleHaveSoul bool
+		Polyamory                  bool
+		Asceticism                 bool
+		BadThingForGoodPurpose bool
+		HumanNatureIsEvil bool
+		Raider                     bool // The strong should take from the weak
+		Hedonism                   bool
+
+	Rules:
+		DressCode           bool
+		BeHumble           bool
+		LearnKeyScriptures           bool
+		LiveUnderGround            bool
+		PrayWithFrequency bool
+		TaxNonbelievers            bool
+
+
+	teology:
+		Messiah                    bool
+		Prophets                   bool
+		Legalism                   boolLegalism                   bool
+		ReligiousLaw               bool
+		AncestorWorship            bool
+		Reincarnation              bool
+		SanctionedFalseConversions bool // If your life is threatened, it is acceptable to confess a false faith, as long as you keep the truth in your heart.
+		SunWorship                 bool
+		MoonWorship                bool
+		TreeConnection             bool // Trees are the essence of life, and we must be near them.
+		AnimalConnection           bool
+		Blindsight                 bool // Only the blind can perceive true reality
+		Astrology                  bool
+
+	clerics:
+		MendicantPreachers         bool
+		Monasticism                bool
+
+	rituals:
+		RitualHospitality          bool
+*/
 
 // temples, shelters, holy scripture, symbolics, initiation
 // religious art, religious literature, reliquary, sacred places

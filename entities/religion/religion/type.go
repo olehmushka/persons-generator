@@ -1,0 +1,104 @@
+package religion
+
+import (
+	pm "persons_generator/probability-machine"
+)
+
+type Type struct {
+	Type     TypeName
+	Subtype  SubtypeName
+	religion *Religion
+}
+
+func NewType(r *Religion) *Type {
+	t := &Type{religion: r}
+	t.Type = t.GenerateTypeName()
+	t.Subtype = t.GenerateSubtypeName()
+
+	return t
+}
+
+func (t *Type) IsMonotheism() bool {
+	return t.Type == MonotheismType
+}
+
+func (t *Type) IsPolytheism() bool {
+	return t.Type == PolytheismType
+}
+
+func (t *Type) IsDeityDualism() bool {
+	return t.Type == DeityDualismType
+}
+
+func (t *Type) IsDeism() bool {
+	return t.Type == DeismType
+}
+
+func (t *Type) IsAtheism() bool {
+	return t.Type == AtheismType
+}
+
+type TypeName string
+
+const (
+	MonotheismType   TypeName = "Monotheism"
+	PolytheismType   TypeName = "Polytheism"
+	DeityDualismType TypeName = "DeityDualism"
+	DeismType        TypeName = "Deism" // Deism is the belief in the existence of God solely based on rational thought without any reliance on revealed religions or religious authority
+	AtheismType      TypeName = "Atheism"
+)
+
+func (t *Type) GenerateTypeName() TypeName {
+	var (
+		monotheism   = 0.55
+		polytheism   = 0.61
+		deityDualism = 0.4
+		deism        = 0.35
+		atheism      = 0.05
+	)
+
+	m := map[string]float64{
+		string(MonotheismType):   pm.PrepareProbability(monotheism),
+		string(PolytheismType):   pm.PrepareProbability(polytheism),
+		string(DeityDualismType): pm.PrepareProbability(deityDualism),
+		string(DeismType):        pm.PrepareProbability(deism),
+		string(AtheismType):      pm.PrepareProbability(atheism),
+	}
+	return TypeName(pm.GetRandomFromSeveral(m))
+}
+
+type SubtypeName string
+
+const (
+	ClassicPolytheismSubtype   SubtypeName = "Classic"
+	HenothismPolytheismSubtype SubtypeName = "Henothism" //  is the worship of a single, supreme god while not denying the existence or possible existence of other lower deities.[
+	MonolatryPolytheismSubtype SubtypeName = "Monolatry" // is the belief in the existence of many gods, but with the consistent worship of only one deity
+	OmnismPolytheismSubtype    SubtypeName = "Omnism"
+)
+
+func (t *Type) GenerateSubtypeName() SubtypeName {
+	if t.Type == "" {
+		t.GenerateTypeName()
+	}
+
+	for _, tn := range []TypeName{MonotheismType, DeityDualismType, DeismType, AtheismType} {
+		if tn == t.Type {
+			return ""
+		}
+	}
+
+	var (
+		classic   = 0.65
+		henothism = 0.25
+		monolatry = 0.45
+		omnism    = 0.3
+	)
+
+	m := map[string]float64{
+		string(ClassicPolytheismSubtype):   pm.PrepareProbability(classic),
+		string(HenothismPolytheismSubtype): pm.PrepareProbability(henothism),
+		string(MonolatryPolytheismSubtype): pm.PrepareProbability(monolatry),
+		string(OmnismPolytheismSubtype):    pm.PrepareProbability(omnism),
+	}
+	return SubtypeName(pm.GetRandomFromSeveral(m))
+}

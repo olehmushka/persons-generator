@@ -2,7 +2,7 @@ package orchestrator
 
 import (
 	"persons_generator/entities"
-	"persons_generator/religion"
+	newReligion "persons_generator/entities/religion/religion"
 	"persons_generator/world"
 
 	"github.com/davecgh/go-spew/spew"
@@ -11,14 +11,14 @@ import (
 type Orchestrator struct {
 	w         *entities.World
 	cultures  []*entities.Culture
-	religions []*entities.Religion
+	religions []*newReligion.Religion
 }
 
 func New(cfg *Config) *Orchestrator {
 	w := world.FillWorld(&entities.World{
 		Size: cfg.WorldSize,
 	})
-	r := religion.NewMany(cfg.ReligionNumber)
+	r := newReligion.NewReligions(cfg.ReligionNumber)
 
 	return &Orchestrator{
 		w:         w,
@@ -31,6 +31,7 @@ func (o *Orchestrator) Orchestrate() {
 
 func (o *Orchestrator) ShowReligions() {
 	spew.Config.MaxDepth = 10
+	spew.Config.DisableMethods = true
 	for _, r := range o.religions {
 		spew.Dump(r)
 	}

@@ -1,11 +1,12 @@
 package religion
 
 type Clerics struct {
-	Function       ClericalFunction
-	WhoCanBeCleric GenderAcceptance
-	Appointment    *ClericAppointment
-	ClericMarriage Permission
-	NakedPriests   bool
+	Function             ClericalFunction
+	WhoCanBeCleric       GenderAcceptance
+	Appointment          *ClericAppointment
+	ClericMarriage       Permission
+	NakedPriests         bool
+	PrimacyOfHeadOfFaith bool
 }
 
 type ClericAppointment struct {
