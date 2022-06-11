@@ -20,7 +20,7 @@ func NewIdeology(r *Religion) *Ideology {
 		StopReincarnation (must have reincarnation)
 		NeverStopReincarnation (must have reincarnation)
 		ProduceChildren
-		BeHappy
+		InvestigateMyself
 		GetMaxPleasure
 		SpreadReligion
 		LovePeople
@@ -31,22 +31,36 @@ func NewIdeology(r *Religion) *Ideology {
 
 
 	Doctrines
-		GodIsGood bool
-		GodIsEvil bool
-		GodSourceOfMoralLaw bool
-		Gnosticism bool
-		Purity bool
-		LiveIsSacred bool
-		SanctityOfNature           bool
-		SacredChildbirth           bool
-		Karma bool
-		PeopleHaveSoul bool
-		Polyamory                  bool
-		Asceticism                 bool
-		BadThingForGoodPurpose bool
-		HumanNatureIsEvil bool
-		Raider                     bool // The strong should take from the weak
-		Hedonism                   bool
+		God:
+			GodIsGood bool
+			GodIsEvil bool
+			GodSourceOfMoralLaw bool
+			Gnosticism bool
+			Afterlife
+				DoesExist bool
+				ForAll (Good, Bad, Depends)
+				ForBelievers (Good, Bad, Depends)
+				ForTopBelievers (Good, Bad, Depends)
+				ForUntrueBelievers (Good, Bad, Depends)
+				ForAtheists (Good, Bad, Depends)
+		Human:
+			Purity bool
+			LiveIsSacred bool
+			SanctityOfNature           bool
+			SacredChildbirth           bool
+			Karma bool
+			PeopleHaveSoul bool
+			Polyamory                  bool
+			Asceticism                 bool
+			BadThingForGoodPurpose bool
+			HumanNatureIsEvil bool
+			Raider                     bool // The strong should take from the weak
+			Hedonism                   bool
+			CanBeSaint bool
+
+
+
+
 
 	Rules:
 		DressCode           bool
@@ -104,6 +118,7 @@ func NewIdeology(r *Religion) *Ideology {
 
 // rich ideology: buying your sins, inviolacy of temples, god of king cult, cult of justice, god of prosperity and wealth, sacred stone, patron saint of merchants
 // poor ideology: oracles, diviners, libations, holy animals, all father's watchmen, ordeals,
+// ... mother goddess
 
 // developed ideology: seminaries, libraries, schools of philosophers, kalokagathos, galdbarok, runes, volhvs, periapts
 // undeveloped ideology: hecatombs, pharmakos, inferiae, god of erebus, trickster, samhain
@@ -114,7 +129,7 @@ func NewIdeology(r *Religion) *Ideology {
 // primitive ideology: symposium, music, theatre,, liturgical drama, mead of poetry, visas, sages
 // organized ideology: theogony, scapegoat, psychopomp, spoken word, norns, tapestry, prophesy, honorable death
 
-// mother goddess, deed of expiation, mysteries, nithing
+// , deed of expiation, mysteries, nithing
 
 // deism
 

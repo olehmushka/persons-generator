@@ -1,14 +1,18 @@
 package religion
 
 type Religion struct {
+	metadata *religionMetadata
+
 	Type            *Type
 	GenderDominance *GenderDominance
+	Doctrine        *Doctrine
 }
 
 func NewReligion() *Religion {
 	r := &Religion{}
 	r.Type = NewType(r)
 	r.GenderDominance = NewGenderDominance(r)
+	r.Doctrine = NewDoctrine(r)
 
 	return r
 }
