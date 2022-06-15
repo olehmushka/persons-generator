@@ -1,5 +1,7 @@
 package religion
 
+import "fmt"
+
 type Doctrine struct {
 	religion *Religion
 
@@ -19,4 +21,12 @@ func NewDoctrine(r *Religion) *Doctrine {
 	d.Afterlife = d.generateAfterlife()
 
 	return d
+}
+
+func (d *Doctrine) Print() {
+	fmt.Printf("Doctrine (religion=%s)\n", d.religion.Name)
+	d.Deity.Print()
+	d.Human.Print()
+	d.Social.Print()
+	fmt.Printf("Source of moral law is %s\n", d.SourceOfMoralLaw)
 }

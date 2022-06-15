@@ -1,13 +1,16 @@
 package religion
 
 import (
+	"fmt"
+
 	pm "persons_generator/probability-machine"
 )
 
 type Type struct {
-	Type     TypeName
-	Subtype  SubtypeName
 	religion *Religion
+
+	Type    TypeName
+	Subtype SubtypeName
 }
 
 func NewType(r *Religion) *Type {
@@ -16,6 +19,13 @@ func NewType(r *Religion) *Type {
 	t.Subtype = t.GenerateSubtypeName()
 
 	return t
+}
+
+func (t *Type) Print() {
+	fmt.Printf("Type=%s\n", t.Type)
+	if t.Subtype != "" {
+		fmt.Printf("Subtype=%s\n", t.Subtype)
+	}
 }
 
 func (t *Type) IsMonotheism() bool {

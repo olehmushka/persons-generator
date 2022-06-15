@@ -33,6 +33,6 @@ func (o *Orchestrator) ShowReligions() {
 	spew.Config.MaxDepth = 10
 	spew.Config.DisableMethods = true
 	for _, r := range o.religions {
-		spew.Dump(r)
+		r.Print()
 	}
 }

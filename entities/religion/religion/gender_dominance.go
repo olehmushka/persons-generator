@@ -1,11 +1,16 @@
 package religion
 
-import pm "persons_generator/probability-machine"
+import (
+	"fmt"
+
+	pm "persons_generator/probability-machine"
+)
 
 type GenderDominance struct {
+	religion *Religion
+
 	Dominance Dominance
 	Influence Influence
-	religion  *Religion
 }
 
 func NewGenderDominance(r *Religion) *GenderDominance {
@@ -14,6 +19,11 @@ func NewGenderDominance(r *Religion) *GenderDominance {
 	gd.Influence = gd.generateInfluence()
 
 	return gd
+}
+
+func (gd *GenderDominance) Print() {
+	fmt.Printf("Dominated gender=%s\n", gd.Dominance)
+	fmt.Printf("Dominated gender influence=%s\n", gd.Influence)
 }
 
 func (gd *GenderDominance) IsMaleDominate() bool {
