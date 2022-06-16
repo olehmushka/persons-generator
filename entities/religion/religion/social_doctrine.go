@@ -25,6 +25,9 @@ func (d *Doctrine) generateSocialDoctrine() *SocialDoctrine {
 }
 
 func (sd *SocialDoctrine) Print() {
+	if true {
+		return
+	}
 	socialTraits := make([]string, 0)
 	if sd.Purity {
 		socialTraits = append(socialTraits, "purity")

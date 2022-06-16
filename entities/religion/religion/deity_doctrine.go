@@ -33,6 +33,9 @@ type DeityNature struct {
 }
 
 func (dn *DeityNature) Print() {
+	if true {
+		return
+	}
 	fmt.Printf("Deity(s) is/are %s and level of it is %s\n", dn.Goodness.Goodness, dn.Goodness.Level)
 	deityNatureTraits := make([]string, 0)
 	if dn.IsJust {

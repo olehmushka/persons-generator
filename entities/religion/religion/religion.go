@@ -38,5 +38,6 @@ func (r *Religion) Print() {
 	fmt.Printf("Religion (name=%s)\n", r.Name)
 	r.Type.Print()
 	r.GenderDominance.Print()
+	r.Doctrine.Print()
 	fmt.Printf("=====================\n\n")
 }

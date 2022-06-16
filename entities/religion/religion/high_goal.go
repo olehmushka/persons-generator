@@ -1,6 +1,8 @@
 package religion
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type HighGoal struct {
 	religion *Religion
@@ -23,21 +25,22 @@ func (hg *HighGoal) Print() {
 }
 
 type highGoal struct {
-	_religionMetadata *religionMetadata
+	_religionMetadata *updateReligionMetadata
 
 	Index int
 	Name  string
-	Calc  func(r *Religion, self *highGoal) bool
+	Calc  func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool
 }
 
 func (hg *HighGoal) generateGoals() []*highGoal {
 	allGoals := hg.getAllGoals()
 	goals := make([]*highGoal, 0, len(allGoals))
 	for i, goal := range allGoals {
-		if goal.Calc(hg.religion, goal) {
+		if goal.Calc(hg.religion, goal, goals) {
 			goals = append(goals, &highGoal{
 				_religionMetadata: goal._religionMetadata,
 				Index:             i,
+				Name:              goal.Name,
 				Calc:              goal.Calc,
 			})
 		}
@@ -50,18 +53,287 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 	return []*highGoal{
 		{
 			Name: "TransformingIntoLikenessOfGod",
-			_religionMetadata: &religionMetadata{
-				RealLifeOriented:  0.2,
-				AfterlifeOriented: 0.05,
-				InsideDirected:    0.3,
-				OutsideDirected:   0.2,
-				Strictness:        0.05,
-				Ascetic:           0.01,
-				Elitaric:          0.01,
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.05),
+				InsideDirected:   Float64(0.09),
+				Strictness:       Float64(0.05),
+				Ascetic:          Float64(0.01),
+				Elitaric:         Float64(0.01),
 			},
-			Calc: func(r *Religion, self *highGoal) bool {
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
 				if !r.Type.IsMonotheism() {
 					return false
+				}
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "AttainHeavenAndResidesThereWithGod",
+			_religionMetadata: &updateReligionMetadata{
+				AfterlifeOriented: Float64(0.1),
+				InsideDirected:    Float64(0.05),
+				Fanaticism:        Float64(0.05),
+				Strictness:        Float64(0.09),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if r.Type.IsAtheism() {
+					return false
+				}
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "BringManToCompletenessAndToCloseRelationshipWithGod",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.09),
+				InsideDirected:   Float64(0.08),
+				Strictness:       Float64(0.05),
+				Ascetic:          Float64(0.01),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if !r.Type.IsMonotheism() && !r.Type.IsDeityDualism() {
+					return false
+				}
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "BringHolinessDownToTheWorld",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.1),
+				OutsideDirected:  Float64(0.1),
+				Fanaticism:       Float64(0.07),
+				Strictness:       Float64(0.05),
+				Ascetic:          Float64(0.03),
+				Organized:        Float64(0.02),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "StopReincarnation",
+			_religionMetadata: &updateReligionMetadata{
+				AfterlifeOriented: Float64(0.1),
+				Fanaticism:        Float64(0.02),
+				Strictness:        Float64(0.08),
+				Ascetic:           Float64(0.07),
+			},
+			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
+				for _, goal := range selectedGoals {
+					if goal.Name == "NeverStopReincarnation" {
+						return false
+					}
+				}
+
+				if CalculateProbabilityFromReligionMetadata(0.6, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "NeverStopReincarnation",
+			_religionMetadata: &updateReligionMetadata{
+				AfterlifeOriented: Float64(0.1),
+				Fanaticism:        Float64(0.03),
+				Strictness:        Float64(0.08),
+				Ascetic:           Float64(0.07),
+			},
+			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
+				for _, goal := range selectedGoals {
+					if goal.Name == "StopReincarnation" {
+						return false
+					}
+				}
+
+				if CalculateProbabilityFromReligionMetadata(0.4, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "ProduceChildren",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.1),
+				OutsideDirected:  Float64(0.1),
+				Primitive:        Float64(0.02),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "InvestigateMyself",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.1),
+				InsideDirected:   Float64(0.1),
+				Hedonism:         Float64(0.05),
+				Primitive:        Float64(0.03),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "GetMaxPleasure",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.1),
+				InsideDirected:   Float64(0.05),
+				Hedonism:         Float64(0.1),
+				Primitive:        Float64(0.1),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "SpreadReligion",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.1),
+				OutsideDirected:  Float64(0.1),
+				Fanaticism:       Float64(0.9),
+				Organized:        Float64(0.6),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "LovePeople",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.1),
+				OutsideDirected:  Float64(0.1),
+				Primitive:        Float64(0.1),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "BecomePerfectAndSaints",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.1),
+				InsideDirected:   Float64(0.1),
+				Strictness:       Float64(0.1),
+				Ascetic:          Float64(0.1),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "FightAgainstEvil",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.6),
+				Fanaticism:       Float64(0.1),
+				Primitive:        Float64(0.01),
+			},
+			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
+				for _, goal := range selectedGoals {
+					if goal.Name == "FightForEvil" {
+						return false
+					}
+				}
+
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "FightForEvil",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.07),
+				Fanaticism:       Float64(0.1),
+				Chthonic:         Float64(0.1),
+				Primitive:        Float64(0.01),
+			},
+			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
+				for _, goal := range selectedGoals {
+					if goal.Name == "FightAgainstEvil" {
+						return false
+					}
+				}
+
+				if CalculateProbabilityFromReligionMetadata(0.5, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
+				}
+
+				return false
+			},
+		},
+		{
+			Name: "StopArmageddon",
+			_religionMetadata: &updateReligionMetadata{
+				OutsideDirected: Float64(0.02),
+				Fanaticism:      Float64(0.1),
+				Chthonic:        Float64(0.01),
+				Primitive:       Float64(0.01),
+			},
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
+					return true
 				}
 
 				return false
@@ -69,23 +341,3 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 		},
 	}
 }
-
-/*
-	HighGoal:
-		TransformingIntoLikenessOfGod (only for monotheism)
-		AttainHeavenAndResidesThereWithGod (only for monotheism)
-		BringManToCompletenessAndToCloseRelationshipWithGod (only for monotheism)
-		BringHolinessDownToTheWorld
-		StopReincarnation (must have reincarnation)
-		NeverStopReincarnation (must have reincarnation)
-		ProduceChildren
-		InvestigateMyself
-		GetMaxPleasure
-		SpreadReligion
-		LovePeople
-		BecomePerfectAndSaints
-		FightWithEvil
-		FightForEvil
-
-
-*/

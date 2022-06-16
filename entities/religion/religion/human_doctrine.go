@@ -35,6 +35,9 @@ func (hd *HumanDoctrine) generateHumanNature() *HumanNature {
 }
 
 func (hn *HumanNature) Print() {
+	if true {
+		return
+	}
 	fmt.Printf("Human is %s and level of it is %s\n", hn.Goodness.Goodness, hn.Goodness.Level)
 	humanNatureTraits := make([]string, 0)
 	if hn.HasSoul {
