@@ -1,6 +1,7 @@
 package religion
 
 import (
+	"fmt"
 	"math"
 
 	pm "persons_generator/probability-machine"
@@ -156,7 +157,11 @@ func UpdateReligionMetadata(rm religionMetadata, u updateReligionMetadata) *reli
 	return &rm
 }
 
-func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u updateReligionMetadata) bool {
+type CalcProbOpts struct {
+	Log bool
+}
+
+func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u updateReligionMetadata, opts CalcProbOpts) bool {
 	calcFunc := func(base, inc float64) float64 {
 		if base == 0 && inc == 0 {
 			return 0
@@ -166,7 +171,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u u
 		}
 		result := (0.1 / math.Abs(base-inc))
 		if result >= 2 {
-			return 0.05 * result
+			return 0.05 * result * baseCoef
 		}
 
 		return 0.1 * result * baseCoef
@@ -226,6 +231,9 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u u
 		treatsCount++
 	}
 	primaryProbability = primaryProbability / float64(treatsCount)
+	if opts.Log {
+		fmt.Printf("<<<<<\nPrimProb: %f\n>>>>>>>>", primaryProbability)
+	}
 
 	return pm.GetRandomBool(primaryProbability)
 }

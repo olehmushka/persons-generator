@@ -64,7 +64,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				if !r.Type.IsMonotheism() {
 					return false
 				}
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -84,7 +84,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				if r.Type.IsAtheism() {
 					return false
 				}
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -104,7 +104,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				if !r.Type.IsMonotheism() && !r.Type.IsDeityDualism() {
 					return false
 				}
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -123,7 +123,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Organized:        Float64(0.02),
 			},
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -146,7 +146,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 					}
 				}
 
-				if CalculateProbabilityFromReligionMetadata(0.6, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(0.6, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -169,7 +169,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 					}
 				}
 
-				if CalculateProbabilityFromReligionMetadata(0.4, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(0.4, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -185,7 +185,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Primitive:        Float64(0.02),
 			},
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -202,7 +202,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Primitive:        Float64(0.03),
 			},
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -219,7 +219,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Primitive:        Float64(0.1),
 			},
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -236,7 +236,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Organized:        Float64(0.6),
 			},
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -252,7 +252,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Primitive:        Float64(0.1),
 			},
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -269,7 +269,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Ascetic:          Float64(0.1),
 			},
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -291,7 +291,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 					}
 				}
 
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -314,7 +314,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 					}
 				}
 
-				if CalculateProbabilityFromReligionMetadata(0.5, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(0.5, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -331,7 +331,7 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Primitive:       Float64(0.01),
 			},
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata) {
+				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}

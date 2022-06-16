@@ -10,7 +10,7 @@ const (
 	Minor  Level = "Minor"
 )
 
-func geLevelByProbability(major, middle, minor float64) Level {
+func getLevelByProbability(major, middle, minor float64) Level {
 	m := map[string]float64{
 		string(Major):  pm.PrepareProbability(major),
 		string(Middle): pm.PrepareProbability(middle),
