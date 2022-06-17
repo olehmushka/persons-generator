@@ -31,5 +31,6 @@ func (d *Doctrine) Print() {
 	d.Deity.Print()
 	d.Human.Print()
 	d.Social.Print()
-	fmt.Printf("Source of moral law is %s\n", d.SourceOfMoralLaw)
+	d.SourceOfMoralLaw.Print()
+	d.Afterlife.Print()
 }

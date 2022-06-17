@@ -2,17 +2,20 @@ package religion
 
 import (
 	"fmt"
+
+	pm "persons_generator/probability-machine"
 )
 
 type SocialDoctrine struct {
 	religion *Religion
+	doctrine *Doctrine
 
 	Traits []*socialTrait
 }
 
 func (d *Doctrine) generateSocialDoctrine() *SocialDoctrine {
-	sd := &SocialDoctrine{religion: d.religion}
-	sd.Traits = sd.generateTraits()
+	sd := &SocialDoctrine{religion: d.religion, doctrine: d}
+	sd.Traits = sd.generateTraits(1, 5)
 
 	return sd
 }
@@ -24,17 +27,35 @@ func (sd *SocialDoctrine) Print() {
 	}
 }
 
-func (sd *SocialDoctrine) generateTraits() []*socialTrait {
+func (sd *SocialDoctrine) generateTraits(min, max int) []*socialTrait {
+	if min < 0 {
+		panic("[SocialDoctrine.generateTraits] min can not be less than 0")
+	}
 	allTraits := sd.getAllSocialTraits()
+	if max > len(allTraits) {
+		panic("[SocialDoctrine.generateTraits] max can not be greater than allTraits length")
+	}
+
 	traits := make([]*socialTrait, 0, len(allTraits))
-	for i, trait := range allTraits {
-		if trait.Calc(sd.religion, trait, traits) {
-			traits = append(traits, &socialTrait{
-				_religionMetadata: trait._religionMetadata,
-				Index:             i,
-				Name:              trait.Name,
-				Calc:              trait.Calc,
-			})
+	for count := 0; count < 20; count++ {
+		for i, trait := range allTraits {
+			if trait.Calc(sd.religion, trait, traits) {
+				traits = append(traits, &socialTrait{
+					_religionMetadata: trait._religionMetadata,
+					Index:             i,
+					Name:              trait.Name,
+					Calc:              trait.Calc,
+				})
+			}
+			if len(traits) == max {
+				break
+			}
+		}
+		if len(traits) == max {
+			break
+		}
+		if len(traits) >= min {
+			break
 		}
 	}
 
@@ -144,7 +165,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 				Primitive:        Float64(0.01),
 			},
 			Calc: func(r *Religion, self *socialTrait, _ []*socialTrait) bool {
-				if CalculateProbabilityFromReligionMetadata(0.9, r, *self._religionMetadata, CalcProbOpts{}) {
+				if CalculateProbabilityFromReligionMetadata(pm.RandFloat64InRange(0.05, 0.1), r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -159,7 +180,8 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 				OutsideDirected:  Float64(0.06),
 			},
 			Calc: func(r *Religion, self *socialTrait, _ []*socialTrait) bool {
-				if CalculateProbabilityFromReligionMetadata(0.9, r, *self._religionMetadata, CalcProbOpts{}) {
+				baseCoef := pm.RandFloat64InRange(0.06, 0.1)
+				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}
@@ -176,7 +198,16 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 				Primitive:        Float64(0.1),
 			},
 			Calc: func(r *Religion, self *socialTrait, _ []*socialTrait) bool {
-				if CalculateProbabilityFromReligionMetadata(0.9, r, *self._religionMetadata, CalcProbOpts{}) {
+				baseCoef := pm.RandFloat64InRange(0.05, 0.1)
+				for _, goal := range sd.doctrine.HighGoal.Goals {
+					switch goal.Name {
+					case "LovePeople":
+						baseCoef -= pm.RandFloat64InRange(0.01, 0.05)
+					case "FightForEvil":
+						baseCoef += pm.RandFloat64InRange(0.1, 0.3)
+					}
+				}
+				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
 					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
 					return true
 				}

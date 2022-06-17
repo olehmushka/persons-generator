@@ -8,7 +8,7 @@ import (
 )
 
 func GetRandomBool(trueProb float64) bool {
-	n := randFloat64(0, 1)
+	n := RandFloat64(1)
 	return n < trueProb
 }
 
@@ -17,7 +17,11 @@ func randInt(min int, max int) int {
 	return int(int64(min) + n.Int64())
 }
 
-func randFloat64(min, max float64) float64 {
+func RandFloat64InRange(min, max float64) float64 {
 	s := expRand.NewSource(uint64(randInt(0, 100)))
 	return min + expRand.New(s).Float64()*(max-min)
+}
+
+func RandFloat64(max float64) float64 {
+	return RandFloat64InRange(0, max)
 }

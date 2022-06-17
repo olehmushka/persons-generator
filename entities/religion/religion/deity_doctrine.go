@@ -40,7 +40,7 @@ func (dn *DeityNature) Print() {
 func (dd *DeityDoctrine) generateDeityNature() *DeityNature {
 	dn := &DeityNature{religion: dd.religion, deityDoctrine: dd}
 	dn.Goodness = dn.generateGoodness()
-	dn.Traits = dn.generateTraits()
+	dn.Traits = dn.generateTraits(1, 5)
 
 	return dn
 }
@@ -88,21 +88,38 @@ func (dd *DeityNature) getGoodnessLevelByReligionMetadata() Level {
 	return getLevelByProbability(major, middle, minor)
 }
 
-func (dd *DeityNature) generateTraits() []*deityNatureTrait {
+func (dd *DeityNature) generateTraits(min, max int) []*deityNatureTrait {
+	if min < 0 {
+		panic("[DeityNature.generateTraits] min can not be less than 0")
+	}
 	if dd.religion.Type.IsAtheism() {
 		return []*deityNatureTrait{}
 	}
-
 	allTraits := dd.getAllDeityNatureTraits()
+	if max > len(allTraits) {
+		panic("[DeityNature.generateTraits] max can not be greater than allTraits length")
+	}
+
 	traits := make([]*deityNatureTrait, 0, len(allTraits))
-	for i, trait := range allTraits {
-		if trait.Calc(dd.religion, trait, traits) {
-			traits = append(traits, &deityNatureTrait{
-				_religionMetadata: trait._religionMetadata,
-				Index:             i,
-				Name:              trait.Name,
-				Calc:              trait.Calc,
-			})
+	for count := 0; count < 20; count++ {
+		for i, trait := range allTraits {
+			if trait.Calc(dd.religion, trait, traits) {
+				traits = append(traits, &deityNatureTrait{
+					_religionMetadata: trait._religionMetadata,
+					Index:             i,
+					Name:              trait.Name,
+					Calc:              trait.Calc,
+				})
+				if len(traits) == max {
+					break
+				}
+			}
+		}
+		if len(traits) == max {
+			break
+		}
+		if len(traits) >= min {
+			break
 		}
 	}
 
@@ -209,6 +226,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 		{
 			Name: "DoesCommunicateWithHumans",
 			_religionMetadata: &updateReligionMetadata{
+				Centralized:      Float64(0.05),
 				RealLifeOriented: Float64(0.1),
 				OutsideDirected:  Float64(0.2),
 				Fanaticism:       Float64(0.05),
@@ -225,6 +243,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 		{
 			Name: "IsGnosticDeity", // God(s) created spiritual world but Demiurge(s) created physical world. Body is sinful
 			_religionMetadata: &updateReligionMetadata{
+				Decentralized:     Float64(0.03),
 				AfterlifeOriented: Float64(0.03),
 				Chthonic:          Float64(0.01),
 				Elitaric:          Float64(0.02),

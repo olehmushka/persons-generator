@@ -8,6 +8,9 @@ import (
 )
 
 type religionMetadata struct {
+	Centralized   float64
+	Decentralized float64
+
 	RealLifeOriented  float64
 	AfterlifeOriented float64
 
@@ -30,71 +33,84 @@ func (r *Religion) generateMetadata() *religionMetadata {
 	rm := &religionMetadata{}
 	switch {
 	case r.Type.IsMonotheism():
-		rm.RealLifeOriented += 0.037
-		rm.AfterlifeOriented += 0.05
-		rm.InsideDirected += 0.02
-		rm.OutsideDirected += 0.04
-		rm.Fanaticism += 0.05
-		rm.Strictness += 0.04
+		rm.Centralized += pm.RandFloat64InRange(0.05, 0.15)
+		rm.Decentralized += pm.RandFloat64InRange(0.01, 0.05)
+		rm.RealLifeOriented += pm.RandFloat64InRange(0.02, 0.065)
+		rm.AfterlifeOriented += pm.RandFloat64InRange(0.04, 0.1)
+		rm.InsideDirected += pm.RandFloat64InRange(0.02, 0.08)
+		rm.OutsideDirected += pm.RandFloat64InRange(0.02, 0.095)
+		rm.Fanaticism += pm.RandFloat64InRange(0.03, 0.1)
+		rm.Strictness += pm.RandFloat64InRange(0.02, 0.1)
 	case r.Type.IsPolytheism():
-		rm.RealLifeOriented += 0.035
-		rm.AfterlifeOriented += 0.02
-		rm.InsideDirected += 0.015
-		rm.OutsideDirected += 0.03
-		rm.Fanaticism += 0.05
-		rm.Strictness += 0.03
+		rm.Centralized += pm.RandFloat64InRange(0.01, 0.1)
+		rm.Decentralized += pm.RandFloat64InRange(0.05, 0.12)
+		rm.RealLifeOriented += pm.RandFloat64InRange(0.019, 0.05)
+		rm.AfterlifeOriented += pm.RandFloat64InRange(0.02, 0.06)
+		rm.InsideDirected += pm.RandFloat64InRange(0.015, 0.07)
+		rm.OutsideDirected += pm.RandFloat64InRange(0.015, 0.085)
+		rm.Fanaticism += pm.RandFloat64InRange(0.03, 0.1)
+		rm.Strictness += pm.RandFloat64InRange(0.02, 0.08)
 	case r.Type.IsDeityDualism():
-		rm.RealLifeOriented += 0.036
-		rm.AfterlifeOriented += 0.025
-		rm.InsideDirected += 0.017
-		rm.OutsideDirected += 0.035
-		rm.Fanaticism += 0.049
-		rm.Strictness += 0.035
+		rm.Centralized += pm.RandFloat64InRange(0.02, 0.11)
+		rm.Decentralized += pm.RandFloat64InRange(0.02, 0.08)
+		rm.RealLifeOriented += pm.RandFloat64InRange(0.0195, 0.06)
+		rm.AfterlifeOriented += pm.RandFloat64InRange(0.035, 0.065)
+		rm.InsideDirected += pm.RandFloat64InRange(0.017, 0.075)
+		rm.OutsideDirected += pm.RandFloat64InRange(0.017, 0.087)
+		rm.Fanaticism += pm.RandFloat64InRange(0.029, 0.095)
+		rm.Strictness += pm.RandFloat64InRange(0.02, 0.092)
 	case r.Type.IsDeism():
-		rm.RealLifeOriented += 0.045
-		rm.AfterlifeOriented += 0.005
-		rm.InsideDirected += 0.03
-		rm.OutsideDirected += 0.025
-		rm.Fanaticism += 0.01
-		rm.Strictness += 0.036
+		rm.Centralized += pm.RandFloat64InRange(0.01, 0.04)
+		rm.Decentralized += pm.RandFloat64InRange(0.04, 0.13)
+		rm.RealLifeOriented += pm.RandFloat64InRange(0.03, 0.08)
+		rm.AfterlifeOriented += pm.RandFloat64InRange(0.005, 0.03)
+		rm.InsideDirected += pm.RandFloat64InRange(0.03, 0.075)
+		rm.OutsideDirected += pm.RandFloat64InRange(0.02, 0.08)
+		rm.Fanaticism += pm.RandFloat64InRange(0.005, 0.03)
+		rm.Strictness += pm.RandFloat64InRange(0.02, 0.06)
 	case r.Type.IsAtheism():
-		rm.RealLifeOriented += 0.1
+		rm.Centralized += pm.RandFloat64InRange(0.02, 0.1)
+		rm.Decentralized += pm.RandFloat64InRange(0.02, 0.1)
+		rm.RealLifeOriented += pm.RandFloat64InRange(0.1, 0.2)
 		rm.AfterlifeOriented += 0
-		rm.InsideDirected += 0.01
-		rm.OutsideDirected += 0.045
-		rm.Fanaticism += 0.04
-		rm.Strictness += 0.02
+		rm.InsideDirected += pm.RandFloat64InRange(0.01, 0.05)
+		rm.OutsideDirected += pm.RandFloat64InRange(0.04, 0.097)
+		rm.Fanaticism += pm.RandFloat64InRange(0.025, 0.07)
+		rm.Strictness += pm.RandFloat64InRange(0.01, 0.06)
 	}
 
 	genderCoef := r.GenderDominance.GetCoef()
 	switch {
 	case r.GenderDominance.IsMaleDominate():
-		rm.RealLifeOriented += 0.02 * genderCoef
-		rm.AfterlifeOriented += 0.01 * genderCoef
-		rm.InsideDirected += 0.01 * genderCoef
-		rm.OutsideDirected += 0.02 * genderCoef
-		rm.Fanaticism += 0.03 * genderCoef
-		rm.Strictness += 0.02 * genderCoef
+		rm.RealLifeOriented += genderCoef * pm.RandFloat64InRange(0.01, 0.03)
+		rm.AfterlifeOriented += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
+		rm.InsideDirected += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
+		rm.OutsideDirected += genderCoef * pm.RandFloat64InRange(0.01, 0.03)
+		rm.Fanaticism += genderCoef * pm.RandFloat64InRange(0.02, 0.04)
+		rm.Strictness += genderCoef * pm.RandFloat64InRange(0.01, 0.03)
 	case r.GenderDominance.IsEquality():
-		rm.RealLifeOriented += 0.015 * genderCoef
-		rm.AfterlifeOriented += 0.015 * genderCoef
-		rm.InsideDirected += 0.015 * genderCoef
-		rm.OutsideDirected += 0.015 * genderCoef
-		rm.Fanaticism += 0.01 * genderCoef
-		rm.Strictness += 0.015 * genderCoef
+		rm.RealLifeOriented += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
+		rm.AfterlifeOriented += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
+		rm.InsideDirected += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
+		rm.OutsideDirected += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
+		rm.Fanaticism += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
+		rm.Strictness += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
 	case r.GenderDominance.IsFemaleDominate():
-		rm.RealLifeOriented += 0.01 * genderCoef
-		rm.AfterlifeOriented += 0.02 * genderCoef
-		rm.InsideDirected += 0.015 * genderCoef
-		rm.OutsideDirected += 0.01 * genderCoef
-		rm.Fanaticism += 0.035 * genderCoef
-		rm.Strictness += 0.015 * genderCoef
+		rm.RealLifeOriented += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
+		rm.AfterlifeOriented += genderCoef * pm.RandFloat64InRange(0.01, 0.03)
+		rm.InsideDirected += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
+		rm.OutsideDirected += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
+		rm.Fanaticism += genderCoef * pm.RandFloat64InRange(0.03, 0.04)
+		rm.Strictness += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
 	}
 
 	return rm
 }
 
 type updateReligionMetadata struct {
+	Centralized   *float64
+	Decentralized *float64
+
 	RealLifeOriented  *float64
 	AfterlifeOriented *float64
 
@@ -114,6 +130,13 @@ type updateReligionMetadata struct {
 }
 
 func UpdateReligionMetadata(rm religionMetadata, u updateReligionMetadata) *religionMetadata {
+	if u.Centralized != nil {
+		rm.Centralized = CalculateReligionMetadataScoreIncrease(rm.Centralized, *u.Centralized)
+	}
+	if u.Decentralized != nil {
+		rm.Decentralized = CalculateReligionMetadataScoreIncrease(rm.Decentralized, *u.Decentralized)
+	}
+
 	if u.RealLifeOriented != nil {
 		rm.RealLifeOriented = CalculateReligionMetadataScoreIncrease(rm.RealLifeOriented, *u.RealLifeOriented)
 	}
@@ -171,10 +194,10 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u u
 		}
 		result := (0.1 / math.Abs(base-inc))
 		if result >= 2 {
-			return 0.05 * result * baseCoef
+			return pm.RandFloat64InRange(0.03, 0.07) * result * baseCoef
 		}
 
-		return 0.1 * result * baseCoef
+		return pm.RandFloat64InRange(0.005, 0.015) * result * baseCoef
 	}
 
 	var primaryProbability float64

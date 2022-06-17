@@ -32,7 +32,7 @@ type HumanNature struct {
 func (hd *HumanDoctrine) generateHumanNature() *HumanNature {
 	hn := &HumanNature{religion: hd.religion, humanDoctrine: hd}
 	hn.Goodness = hn.generateGoodness()
-	hn.Traits = hn.generateTraits()
+	hn.Traits = hn.generateTraits(1, 2)
 
 	return hn
 }
@@ -80,17 +80,35 @@ func (hn *HumanNature) getGoodnessLevelByReligionMetadata() Level {
 	return getLevelByProbability(major, middle, minor)
 }
 
-func (hn *HumanNature) generateTraits() []*humanNatureTrait {
+func (hn *HumanNature) generateTraits(min, max int) []*humanNatureTrait {
+	if min < 0 {
+		panic("[HumanNature.generateTraits] min can not be less than 0")
+	}
 	allTraits := hn.getAllHumanNatureTraits()
+	if max > len(allTraits) {
+		panic("[HumanNature.generateTraits] max can not be greater than allTraits length")
+	}
+
 	traits := make([]*humanNatureTrait, 0, len(allTraits))
-	for i, trait := range allTraits {
-		if trait.Calc(hn.religion, trait, traits) {
-			traits = append(traits, &humanNatureTrait{
-				_religionMetadata: trait._religionMetadata,
-				Index:             i,
-				Name:              trait.Name,
-				Calc:              trait.Calc,
-			})
+	for count := 0; count < 20; count++ {
+		for i, trait := range allTraits {
+			if trait.Calc(hn.religion, trait, traits) {
+				traits = append(traits, &humanNatureTrait{
+					_religionMetadata: trait._religionMetadata,
+					Index:             i,
+					Name:              trait.Name,
+					Calc:              trait.Calc,
+				})
+			}
+			if len(traits) == max {
+				break
+			}
+		}
+		if len(traits) == max {
+			break
+		}
+		if len(traits) >= min {
+			break
 		}
 	}
 

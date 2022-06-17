@@ -12,7 +12,7 @@ type HighGoal struct {
 
 func (d *Doctrine) generateHighGoal() *HighGoal {
 	hg := &HighGoal{religion: d.religion}
-	hg.Goals = hg.generateGoals()
+	hg.Goals = hg.generateGoals(1, 3)
 
 	return hg
 }
@@ -32,17 +32,35 @@ type highGoal struct {
 	Calc  func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool
 }
 
-func (hg *HighGoal) generateGoals() []*highGoal {
+func (hg *HighGoal) generateGoals(min, max int) []*highGoal {
+	if min < 0 {
+		panic("[HighGoal.generateGoals] min can not be less than 0")
+	}
 	allGoals := hg.getAllGoals()
+	if max > len(allGoals) {
+		panic("[HighGoal.generateGoals] max can not be greater than allGoals length")
+	}
+
 	goals := make([]*highGoal, 0, len(allGoals))
-	for i, goal := range allGoals {
-		if goal.Calc(hg.religion, goal, goals) {
-			goals = append(goals, &highGoal{
-				_religionMetadata: goal._religionMetadata,
-				Index:             i,
-				Name:              goal.Name,
-				Calc:              goal.Calc,
-			})
+	for count := 0; count < 20; count++ {
+		for i, goal := range allGoals {
+			if goal.Calc(hg.religion, goal, goals) {
+				goals = append(goals, &highGoal{
+					_religionMetadata: goal._religionMetadata,
+					Index:             i,
+					Name:              goal.Name,
+					Calc:              goal.Calc,
+				})
+			}
+			if len(goals) == max {
+				break
+			}
+		}
+		if len(goals) == max {
+			break
+		}
+		if len(goals) >= min {
+			break
 		}
 	}
 

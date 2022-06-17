@@ -9,6 +9,8 @@ type Religion struct {
 	Type            *Type
 	GenderDominance *GenderDominance
 	Doctrine        *Doctrine
+	Attributes      *Attributes
+	Theology        *Theology
 }
 
 func NewReligion() *Religion {
@@ -17,6 +19,8 @@ func NewReligion() *Religion {
 	r.GenderDominance = NewGenderDominance(r)
 	r.metadata = r.generateMetadata()
 	r.Doctrine = NewDoctrine(r)
+	r.Attributes = NewAttributes(r)
+	r.Theology = NewTheology(r)
 
 	return r
 }
@@ -39,5 +43,7 @@ func (r *Religion) Print() {
 	r.Type.Print()
 	r.GenderDominance.Print()
 	r.Doctrine.Print()
+	r.Attributes.Print()
+	r.Theology.Print()
 	fmt.Printf("=====================\n\n")
 }

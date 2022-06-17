@@ -112,3 +112,19 @@ func (t *Type) GenerateSubtypeName() SubtypeName {
 	}
 	return SubtypeName(pm.GetRandomFromSeveral(m))
 }
+
+func (t *Type) IsClassicPolytheism() bool {
+	return t.Subtype == ClassicPolytheismSubtype
+}
+
+func (t *Type) IsHenothismPolytheism() bool {
+	return t.Subtype == HenothismPolytheismSubtype
+}
+
+func (t *Type) IsMonolatryPolytheism() bool {
+	return t.Subtype == MonolatryPolytheismSubtype
+}
+
+func (t *Type) IsOmnismPolytheism() bool {
+	return t.Subtype == OmnismPolytheismSubtype
+}
