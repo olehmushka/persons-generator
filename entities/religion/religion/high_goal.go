@@ -24,6 +24,18 @@ func (hg *HighGoal) Print() {
 	}
 }
 
+func (hg *HighGoal) IsContainReincarnation() bool {
+	for _, goal := range hg.Goals {
+		switch goal.Name {
+		case "StopReincarnation":
+			return true
+		case "NeverStopReincarnation":
+			return true
+		}
+	}
+	return false
+}
+
 type highGoal struct {
 	_religionMetadata *updateReligionMetadata
 

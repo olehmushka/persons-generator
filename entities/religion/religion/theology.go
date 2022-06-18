@@ -6,9 +6,12 @@ type Theology struct {
 	religion *Religion
 
 	// traits []trait
-	Rules   *Rules
-	Taboos  *Taboos
-	Rituals *Rituals
+	Rules             *Rules
+	Taboos            *Taboos
+	Rituals           *Rituals
+	Holydays          *Holydays
+	Conversion        *Conversion
+	MarriageTradition *MarriageTradition
 }
 
 func NewTheology(r *Religion) *Theology {
@@ -16,6 +19,9 @@ func NewTheology(r *Religion) *Theology {
 	t.Rules = t.generateRules()
 	t.Taboos = t.generateTaboos()
 	t.Rituals = t.generateRituals()
+	t.Holydays = t.generateHolydays()
+	t.Conversion = t.generateConversion()
+	t.MarriageTradition = t.generateMarriageTradition()
 
 	return t
 }
@@ -25,4 +31,7 @@ func (t *Theology) Print() {
 	t.Rules.Print()
 	t.Taboos.Print()
 	t.Rituals.Print()
+	t.Holydays.Print()
+	t.Conversion.Print()
+	t.MarriageTradition.Print()
 }

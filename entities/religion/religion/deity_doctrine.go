@@ -224,7 +224,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 			},
 		},
 		{
-			Name: "DoesCommunicateWithHumans",
+			Name: "CommunicateWithHumans",
 			_religionMetadata: &updateReligionMetadata{
 				Centralized:      Float64(0.05),
 				RealLifeOriented: Float64(0.1),

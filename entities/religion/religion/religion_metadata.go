@@ -2,7 +2,6 @@ package religion
 
 import (
 	"fmt"
-	"math"
 
 	pm "persons_generator/probability-machine"
 )
@@ -189,16 +188,50 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u u
 		if base == 0 && inc == 0 {
 			return 0
 		}
-		if base == inc {
-			return 1
-		}
-		result := (0.1 / math.Abs(base-inc))
-		if result >= 2 {
-			return pm.RandFloat64InRange(0.03, 0.07) * result * baseCoef
+		if base == 0 {
+			return pm.RandFloat64InRange(0, 0.25) * baseCoef
 		}
 
-		return pm.RandFloat64InRange(0.005, 0.015) * result * baseCoef
+		var (
+			probability   float64
+			signCoef      = 0.5 // for inc > base
+			percentOfDiff = inc / base
+		)
+		if base > inc {
+			signCoef = 1
+		}
+
+		switch {
+		case percentOfDiff > 1:
+			probability = pm.RandFloat64InRange(1, 2)
+		case percentOfDiff > 0.75 && percentOfDiff <= 1:
+			probability = pm.RandFloat64InRange(0.5, 1)
+		case percentOfDiff > 0.5 && percentOfDiff <= 0.75:
+			probability = pm.RandFloat64InRange(0.25, 0.75)
+		case percentOfDiff > 0.25 && percentOfDiff <= 0.5:
+			probability = pm.RandFloat64InRange(0.1, 0.5)
+		case percentOfDiff >= 0 && percentOfDiff <= 0.25:
+			probability = pm.RandFloat64InRange(0, 0.25)
+		}
+
+		return signCoef * baseCoef * probability
 	}
+	/*
+		calcFunc := func(base, inc float64) float64 {
+			if base == 0 && inc == 0 {
+				return 0
+			}
+			if base == inc {
+				return 1
+			}
+			result := (0.1 / math.Abs(base-inc))
+			if result >= 2 {
+				return pm.RandFloat64InRange(0.03, 0.07) * result * baseCoef
+			}
+
+			return pm.RandFloat64InRange(0.005, 0.015) * result * baseCoef
+		}
+	*/
 
 	var primaryProbability float64
 	var treatsCount int
@@ -262,7 +295,9 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u u
 }
 
 func CalculateReligionMetadataScoreIncrease(src, inc float64) float64 {
-	return src + inc*0.1
+	incCoef := pm.RandFloat64InRange(0.05, 0.15)
+
+	return src + inc*incCoef
 }
 
 func Float64(input float64) *float64 {
