@@ -216,22 +216,6 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u u
 
 		return signCoef * baseCoef * probability
 	}
-	/*
-		calcFunc := func(base, inc float64) float64 {
-			if base == 0 && inc == 0 {
-				return 0
-			}
-			if base == inc {
-				return 1
-			}
-			result := (0.1 / math.Abs(base-inc))
-			if result >= 2 {
-				return pm.RandFloat64InRange(0.03, 0.07) * result * baseCoef
-			}
-
-			return pm.RandFloat64InRange(0.005, 0.015) * result * baseCoef
-		}
-	*/
 
 	var primaryProbability float64
 	var treatsCount int

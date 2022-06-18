@@ -22,10 +22,11 @@ func NewType(r *Religion) *Type {
 }
 
 func (t *Type) Print() {
-	fmt.Printf("Type=%s\n", t.Type)
+	var subType string
 	if t.Subtype != "" {
-		fmt.Printf("Subtype=%s\n", t.Subtype)
+		subType = fmt.Sprintf("(%s)", t.Subtype)
 	}
+	fmt.Printf("Type=%s%s\n", t.Type, subType)
 }
 
 func (t *Type) IsMonotheism() bool {

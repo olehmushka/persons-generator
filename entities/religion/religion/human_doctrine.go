@@ -112,6 +112,10 @@ func (hn *HumanNature) generateTraits(min, max int) []*humanNatureTrait {
 		}
 	}
 
+	for _, trait := range traits {
+		hn.religion.UpdateMetadata(UpdateReligionMetadata(*hn.religion.metadata, *trait._religionMetadata))
+	}
+
 	return traits
 }
 
@@ -132,12 +136,7 @@ func (hn *HumanNature) getAllHumanNatureTraits() []*humanNatureTrait {
 				Strictness:        Float64(0.01),
 			},
 			Calc: func(r *Religion, self *humanNatureTrait, _ []*humanNatureTrait) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
-
-				return false
+				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -155,12 +154,8 @@ func (hn *HumanNature) getAllHumanNatureTraits() []*humanNatureTrait {
 						baseCoef += 0.2
 					}
 				}
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
 
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}

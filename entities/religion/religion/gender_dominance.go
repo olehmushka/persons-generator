@@ -22,8 +22,7 @@ func NewGenderDominance(r *Religion) *GenderDominance {
 }
 
 func (gd *GenderDominance) Print() {
-	fmt.Printf("Dominated gender=%s\n", gd.Dominance)
-	fmt.Printf("Dominated gender influence=%s\n", gd.Influence)
+	fmt.Printf("Dominated gender=%s(%s)\n", gd.Dominance, gd.Influence)
 }
 
 func (gd *GenderDominance) IsMaleDominate() bool {

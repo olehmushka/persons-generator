@@ -123,6 +123,10 @@ func (dd *DeityNature) generateTraits(min, max int) []*deityNatureTrait {
 		}
 	}
 
+	for _, trait := range traits {
+		dd.religion.UpdateMetadata(UpdateReligionMetadata(*dd.religion.metadata, *trait._religionMetadata))
+	}
+
 	return traits
 }
 
@@ -146,12 +150,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Organized:        Float64(0.01),
 			},
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
-
-				return false
+				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -162,12 +161,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Organized:        Float64(0.02),
 			},
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
-
-				return false
+				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -181,12 +175,8 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				if r.Type.IsMonotheism() {
 					baseCoef = 1.1
 				}
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
 
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -199,12 +189,8 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				if r.Type.IsMonotheism() || r.Type.IsDeism() || r.Type.IsDeityDualism() {
 					baseCoef = 1.1
 				}
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
 
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -215,12 +201,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Fanaticism:       Float64(0.05),
 			},
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
-
-				return false
+				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -232,12 +213,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Fanaticism:       Float64(0.05),
 			},
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				if CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
-
-				return false
+				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -256,12 +232,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				if dd.Goodness.Goodness == Evil {
 					baseCoef += 0.1
 				}
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
-
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}

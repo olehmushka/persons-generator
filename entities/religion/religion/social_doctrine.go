@@ -59,6 +59,10 @@ func (sd *SocialDoctrine) generateTraits(min, max int) []*socialTrait {
 		}
 	}
 
+	for _, trait := range traits {
+		sd.religion.UpdateMetadata(UpdateReligionMetadata(*sd.religion.metadata, *trait._religionMetadata))
+	}
+
 	return traits
 }
 
@@ -83,12 +87,8 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 			},
 			Calc: func(r *Religion, self *socialTrait, _ []*socialTrait) bool {
 				baseCoef := pm.RandFloat64InRange(0.8, 1.2)
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
 
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -106,12 +106,8 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 						baseCoef += pm.RandFloat64InRange(0.03, 0.1)
 					}
 				}
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
 
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -124,12 +120,8 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 			},
 			Calc: func(r *Religion, self *socialTrait, _ []*socialTrait) bool {
 				baseCoef := pm.RandFloat64InRange(0.8, 1.2)
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
 
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -147,12 +139,8 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 						baseCoef += pm.RandFloat64InRange(0.075, 0.1)
 					}
 				}
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
 
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -168,12 +156,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 					baseCoef += pm.RandFloat64InRange(0.01, 0.11)
 				}
 
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
-
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -182,8 +165,8 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 				RealLifeOriented: Float64(0.05),
 				OutsideDirected:  Float64(0.05),
 				Hedonism:         Float64(0.1),
-				Chthonic:         Float64(0.01),
-				Primitive:        Float64(0.01),
+				Chthonic:         Float64(0.015),
+				Primitive:        Float64(0.015),
 			},
 			Calc: func(r *Religion, self *socialTrait, _ []*socialTrait) bool {
 				baseCoef := pm.RandFloat64InRange(0.7, 1)
@@ -193,12 +176,8 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 						baseCoef += pm.RandFloat64InRange(0.05, 0.1)
 					}
 				}
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
 
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{Log: true})
 			},
 		},
 		{
@@ -215,12 +194,8 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 						baseCoef -= pm.RandFloat64InRange(0.01, 0.1)
 					}
 				}
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{Log: true}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
 
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -247,12 +222,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 					}
 				}
 
-				if CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{}) {
-					r.UpdateMetadata(UpdateReligionMetadata(*r.metadata, *self._religionMetadata))
-					return true
-				}
-
-				return false
+				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}
