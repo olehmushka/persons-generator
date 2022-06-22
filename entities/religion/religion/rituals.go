@@ -35,6 +35,7 @@ prayer spells
 Orgy, Adorcism, Exorcism
 SmokeCircle, GladiatorDuel
 Blinding, RitualCannibalism
+demonic deal
 */
 
 type Ritual struct {

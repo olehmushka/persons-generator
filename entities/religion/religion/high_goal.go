@@ -24,7 +24,7 @@ func (hg *HighGoal) Print() {
 	}
 }
 
-func (hg *HighGoal) IsContainReincarnation() bool {
+func (hg *HighGoal) ContainsReincarnation() bool {
 	for _, goal := range hg.Goals {
 		switch goal.Name {
 		case "StopReincarnation":
@@ -302,4 +302,72 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 			},
 		},
 	}
+}
+
+func (hg *HighGoal) GetNaturalisticCriterias() float64 {
+	if len(hg.Goals) == 0 {
+		return 0
+	}
+
+	var criterias float64
+	for _, goal := range hg.Goals {
+		switch goal.Name {
+		case "ProduceChildren":
+			criterias += 0.5
+		}
+	}
+
+	return criterias
+}
+
+func (hg *HighGoal) GetPacifisticCriterias() float64 {
+	if len(hg.Goals) == 0 {
+		return 0
+	}
+
+	var criterias float64
+	for _, goal := range hg.Goals {
+		switch goal.Name {
+		case "LovePeople":
+			criterias += 1
+		}
+	}
+
+	return criterias
+}
+
+func (hg *HighGoal) GetAggressiveCriterias() float64 {
+	if len(hg.Goals) == 0 {
+		return 0
+	}
+
+	var criterias float64
+	for _, goal := range hg.Goals {
+		switch goal.Name {
+		case "FightAgainstEvil":
+			criterias += 0.5
+		case "FightForEvil":
+			criterias += 0.5
+		}
+	}
+
+	return criterias
+}
+
+func (hg *HighGoal) GetSexualActiveCriterias() float64 {
+	if len(hg.Goals) == 0 {
+		return 0
+	}
+
+	var criterias float64
+	for _, goal := range hg.Goals {
+		switch goal.Name {
+		case "ProduceChildren":
+			fallthrough
+		case "GetMaxPleasure":
+			criterias += 0.5
+		}
+	}
+
+	return criterias
 }

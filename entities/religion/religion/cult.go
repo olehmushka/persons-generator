@@ -244,5 +244,21 @@ func (t *Theology) getAllCults() []*Cult {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
+		{
+			Name:              "Trickster",
+			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.8, 1.2),
+			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+			},
+		},
+		{
+			Name:              "SpiritsOfDeath",
+			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.8, 1.2),
+			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+			},
+		},
 	}
 }

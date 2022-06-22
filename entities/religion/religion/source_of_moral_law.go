@@ -72,3 +72,19 @@ func getSourceOfMoralLawByProbability(deity, none, human, nature float64) Source
 	}
 	return SourceOfMoralLaw(pm.GetRandomFromSeveral(m))
 }
+
+func (s SourceOfMoralLaw) IsDeity() bool {
+	return s == DeitySourceOfMoralLaw
+}
+
+func (s SourceOfMoralLaw) IsNone() bool {
+	return s == NoneSourceOfMoralLaw
+}
+
+func (s SourceOfMoralLaw) IsHuman() bool {
+	return s == HumanSourceOfMoralLaw
+}
+
+func (s SourceOfMoralLaw) IsNature() bool {
+	return s == NatureSourceOfMoralLaw
+}

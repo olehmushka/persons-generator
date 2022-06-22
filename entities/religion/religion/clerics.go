@@ -33,6 +33,10 @@ func (as *Attributes) generateClerics() *Clerics {
 }
 
 func (cs *Clerics) Print() {
+	if !cs.HasClerics {
+		fmt.Printf("No clerics (religion_name=%s):\n", cs.religion.Name)
+		return
+	}
 	fmt.Printf("Clerics (religion_name=%s):\n", cs.religion.Name)
 	cs.Appointment.Print()
 	cs.Limitations.Print()
@@ -464,4 +468,20 @@ func (cs *Clerics) getAllClericsFunctions() []*clericsFunction {
 			},
 		},
 	}
+}
+
+func (cs *Clerics) GetAggressiveCriterias() float64 {
+	if len(cs.Traits) == 0 {
+		return 0
+	}
+
+	var criterias float64
+	for _, trait := range cs.Traits {
+		switch trait.Name {
+		case "WarriorMonks":
+			criterias += 1
+		}
+	}
+
+	return criterias
 }
