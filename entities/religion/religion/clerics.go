@@ -19,6 +19,11 @@ type Clerics struct {
 
 func (as *Attributes) generateClerics() *Clerics {
 	cs := &Clerics{religion: as.religion, attrs: as}
+	if !cs.generateHasClerics() {
+		return cs
+	}
+
+	cs.HasClerics = true
 	cs.Appointment = cs.generateAppointment()
 	cs.Limitations = cs.generateLimitations()
 	cs.Traits = cs.generateTraits(1, 3)
@@ -39,6 +44,15 @@ func (cs *Clerics) Print() {
 	for _, function := range cs.Functions {
 		fmt.Printf(" - %s\n", function.Name)
 	}
+}
+
+func (cs *Clerics) generateHasClerics() bool {
+	primaryProbability := pm.RandFloat64InRange(0.7, 0.9)
+	if cs.religion.metadata.Organized > 0 {
+		primaryProbability += pm.RandFloat64InRange(0.05, 0.15)
+	}
+
+	return pm.GetRandomBool(pm.PrepareProbability(primaryProbability))
 }
 
 type ClericsAppointment struct {
@@ -79,6 +93,7 @@ func (cls *ClericsLimitations) Print() {
 
 type clericsTrait struct {
 	_religionMetadata *updateReligionMetadata
+	baseCoef          float64
 	Index             int
 	Name              string
 	Calc              func(r *Religion, self *clericsTrait, selectedTraits []*clericsTrait) bool
@@ -99,6 +114,7 @@ func (cs *Clerics) generateTraits(min, max int) []*clericsTrait {
 			if trait.Calc(cs.religion, trait, traits) {
 				traits = append(traits, &clericsTrait{
 					_religionMetadata: trait._religionMetadata,
+					baseCoef:          trait.baseCoef,
 					Index:             i,
 					Name:              trait.Name,
 					Calc:              trait.Calc,
@@ -128,55 +144,65 @@ func (cs *Clerics) getAllClericsTraits() []*clericsTrait {
 		{
 			Name:              "NakedPriests",
 			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
 			Calc: func(r *Religion, self *clericsTrait, _ []*clericsTrait) bool {
-				baseCoef := pm.RandFloat64InRange(0.5, 0.9)
-
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HeadOfFaith",
 			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
 			Calc: func(r *Religion, self *clericsTrait, _ []*clericsTrait) bool {
-				baseCoef := pm.RandFloat64InRange(0.5, 0.9)
-
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name:              "SecretCirclesOfInitiation",
+			Name:              "InternalCirclesOfInitiation",
 			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
 			Calc: func(r *Religion, self *clericsTrait, _ []*clericsTrait) bool {
-				baseCoef := pm.RandFloat64InRange(0.5, 0.9)
-
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "MendicantPreachers",
 			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
 			Calc: func(r *Religion, self *clericsTrait, _ []*clericsTrait) bool {
-				baseCoef := pm.RandFloat64InRange(0.5, 0.9)
-
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "Monasticism",
 			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
 			Calc: func(r *Religion, self *clericsTrait, _ []*clericsTrait) bool {
-				baseCoef := pm.RandFloat64InRange(0.5, 0.9)
-
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "VowOfPoverty",
 			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
 			Calc: func(r *Religion, self *clericsTrait, _ []*clericsTrait) bool {
-				baseCoef := pm.RandFloat64InRange(0.5, 0.9)
-
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+			},
+		},
+		{
+			Name:              "Patronship",
+			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			Calc: func(r *Religion, self *clericsTrait, _ []*clericsTrait) bool {
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+			},
+		},
+		{
+			Name:              "WarriorMonks",
+			_religionMetadata: &updateReligionMetadata{},
+			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			Calc: func(r *Religion, self *clericsTrait, _ []*clericsTrait) bool {
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}
@@ -259,3 +285,7 @@ func (cs *Clerics) getAllClericsFunctions() []*clericsFunction {
 		},
 	}
 }
+
+/*
+oracles, diviners, volhvs
+*/

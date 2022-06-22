@@ -155,3 +155,5 @@ func getAfterlifeOptionByProbability(good, depends, bad float64) AfterlifeOption
 	}
 	return AfterlifeOption(pm.GetRandomFromSeveral(m))
 }
+
+// heavenly palace, psychopomp

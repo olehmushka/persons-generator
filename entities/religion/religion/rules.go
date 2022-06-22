@@ -15,3 +15,13 @@ func (t *Theology) generateRules() *Rules {
 func (rs *Rules) Print() {
 	fmt.Printf("Rules (religion_name=%s):\n", rs.religion.Name)
 }
+
+/*
+tax to support the poor, tithe
+		DressCode           bool
+		BeHumble           bool
+		LearnKeyScriptures           bool
+		LiveUnderGround            bool
+		PrayWithFrequency bool
+		TaxNonbelievers            bool
+*/

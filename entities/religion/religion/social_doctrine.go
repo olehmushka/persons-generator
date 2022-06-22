@@ -225,5 +225,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
+		// agoge, berserkers, honorable death, deed of expiation
+		// warrior's path
 	}
 }

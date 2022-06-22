@@ -121,6 +121,7 @@ func (hn *HumanNature) generateTraits(min, max int) []*humanNatureTrait {
 
 type humanNatureTrait struct {
 	_religionMetadata *updateReligionMetadata
+	baseCoef          float64
 	Index             int
 	Name              string
 	Calc              func(r *Religion, self *humanNatureTrait, selectedTraits []*humanNatureTrait) bool
@@ -135,8 +136,9 @@ func (hn *HumanNature) getAllHumanNatureTraits() []*humanNatureTrait {
 				InsideDirected:    Float64(0.09),
 				Strictness:        Float64(0.01),
 			},
+			baseCoef: 1,
 			Calc: func(r *Religion, self *humanNatureTrait, _ []*humanNatureTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -147,15 +149,29 @@ func (hn *HumanNature) getAllHumanNatureTraits() []*humanNatureTrait {
 				Strictness:       Float64(0.08),
 				Ascetic:          Float64(0.08),
 			},
+			baseCoef: 1,
 			Calc: func(r *Religion, self *humanNatureTrait, selectedTraits []*humanNatureTrait) bool {
-				var baseCoef float64 = 1
+				var addCoef float64
 				for _, goal := range hn.humanDoctrine.doctrine.HighGoal.Goals {
 					if goal.Name == "BecomePerfectAndSaints" {
-						baseCoef += 0.2
+						addCoef += 0.2
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
+			},
+		},
+		{
+			Name: "Kalokagathos",
+			_religionMetadata: &updateReligionMetadata{
+				RealLifeOriented: Float64(0.05),
+				InsideDirected:   Float64(0.06),
+				Strictness:       Float64(0.01),
+				Elitaric:         Float64(0.01),
+			},
+			baseCoef: 1,
+			Calc: func(r *Religion, self *humanNatureTrait, selectedTraits []*humanNatureTrait) bool {
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}

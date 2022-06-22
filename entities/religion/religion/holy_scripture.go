@@ -16,3 +16,8 @@ func (as *Attributes) generateHolyScripture() *HolyScripture {
 func (hs *HolyScripture) Print() {
 	fmt.Printf("HolyScripture (religion_name=%s):\n", hs.religion.Name)
 }
+
+/*
+commandments, devotional code, divine law
+magic books, runes, marching hymns, theogony
+*/
