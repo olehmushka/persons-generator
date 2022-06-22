@@ -18,3 +18,16 @@ func getLevelByProbability(major, middle, minor float64) Level {
 	}
 	return Level(pm.GetRandomFromSeveral(m))
 }
+
+func (l Level) GetLevelCoef() float64 {
+	switch l {
+	case Major:
+		return 1.25
+	case Middle:
+		return 1
+	case Minor:
+		return 0.75
+	}
+
+	return 1
+}

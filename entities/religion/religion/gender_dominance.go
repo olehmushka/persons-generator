@@ -39,9 +39,9 @@ func (gd *GenderDominance) IsFemaleDominate() bool {
 
 func (gd *GenderDominance) GetCoef() float64 {
 	const (
-		strongGenderInfluence   = 2
+		strongGenderInfluence   = 1.25
 		moderateGenderInfluence = 1
-		weakGenderInfluence     = 0.5
+		weakGenderInfluence     = 0.75
 	)
 
 	switch gd.Influence {
