@@ -25,11 +25,11 @@ func NewTheology(r *Religion) *Theology {
 	minCults, maxCults := t.getCultsRange()
 	t.Cults = t.generateCults(minCults, maxCults)
 	t.Rules = t.generateRules()
-	t.Taboos = t.generateTaboos()
-	t.Rituals = t.generateRituals()
-	t.Holydays = t.generateHolydays()
-	t.Conversion = t.generateConversion()
-	t.MarriageTradition = t.generateMarriageTradition()
+	// t.Taboos = t.generateTaboos()
+	// t.Rituals = t.generateRituals()
+	// t.Holydays = t.generateHolydays()
+	// t.Conversion = t.generateConversion()
+	// t.MarriageTradition = t.generateMarriageTradition()
 
 	return t
 }
@@ -45,11 +45,11 @@ func (t *Theology) Print() {
 		fmt.Printf(" - %s\n", cult.Name)
 	}
 	t.Rules.Print()
-	t.Taboos.Print()
-	t.Rituals.Print()
-	t.Holydays.Print()
-	t.Conversion.Print()
-	t.MarriageTradition.Print()
+	// t.Taboos.Print()
+	// t.Rituals.Print()
+	// t.Holydays.Print()
+	// t.Conversion.Print()
+	// t.MarriageTradition.Print()
 }
 
 func (t *Theology) generateTraits(min, max int) []*theologyTrait {
@@ -86,6 +86,9 @@ func (t *Theology) generateTraits(min, max int) []*theologyTrait {
 
 	for _, trait := range traits {
 		t.religion.UpdateMetadata(UpdateReligionMetadata(*t.religion.metadata, *trait._religionMetadata))
+		if trait.Name == "Reincarnation" {
+			t.religion.Doctrine.Afterlife.updateAfterlife(false)
+		}
 	}
 
 	return traits

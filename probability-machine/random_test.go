@@ -47,3 +47,12 @@ func TestGetRandomBool(t *testing.T) {
 		})
 	}
 }
+
+func TestRandFloat64InRange(t *testing.T) {
+	var (
+		min = 0.1
+		max = 0.4
+	)
+
+	t.Log(RandFloat64InRange(min, max))
+}

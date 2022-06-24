@@ -280,7 +280,7 @@ func getRMProbability(coef float64, isMatchSame, isMatchContrary bool) float64 {
 }
 
 func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *religionMetadata, opts CalcProbOpts) bool {
-	baseCoef = pm.PrepareProbability(baseCoef)
+	baseCoef = pm.PrepareCoef(baseCoef)
 	var (
 		primaryProbability float64
 		randCoef           = pm.RandFloat64InRange(0.9, 1.1)
@@ -361,7 +361,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 
-	probability := pm.PrepareProbability(baseCoef * primaryProbability)
+	probability := baseCoef * primaryProbability
 	if ideasCount > 0 {
 		probability = probability / float64(ideasCount)
 	}
@@ -370,5 +370,179 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		fmt.Printf("\n>>>>>>>>>>\nLabel: %s\nprobability: %f\n<<<<<<<<<<<<\n", opts.Label, probability)
 	}
 
-	return pm.GetRandomBool(probability)
+	return pm.GetRandomBool(pm.PrepareProbability(probability))
+}
+
+func getRMAcceptanceProbability(coef float64, isMatchSame, isMatchContrary bool) (float64, float64, float64) {
+	var (
+		sameCoef     = pm.RandFloat64InRange(0.4, 0.8)
+		contraryCoef = pm.RandFloat64InRange(0.3, 0.7)
+		newCoef      = pm.RandFloat64InRange(0.5, 1)
+
+		newProbability = coef * sameCoef * newCoef
+	)
+	if isMatchSame && isMatchContrary {
+		return coef * sameCoef, coef * pm.PrepareProbability(sameCoef-contraryCoef), coef * contraryCoef
+	}
+	if isMatchSame && !isMatchContrary {
+		return coef * sameCoef, newProbability, 0
+	}
+	if !isMatchSame && isMatchContrary {
+		return 0, newProbability, coef * contraryCoef
+	}
+	if !isMatchSame && !isMatchContrary {
+		return newProbability, newProbability, newProbability
+	}
+
+	return 0, 0, 0
+}
+
+func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, criminalBaseCoef float64, r *Religion, u *religionMetadata, opts CalcProbOpts) Acceptance {
+	acceptedBaseCoef = pm.PrepareCoef(acceptedBaseCoef)
+	stunnedBaseCoef = pm.PrepareCoef(stunnedBaseCoef)
+	criminalBaseCoef = pm.PrepareCoef(criminalBaseCoef)
+	var (
+		accepted, shunned, criminal float64
+		randCoef                    = pm.RandFloat64InRange(0.9, 1.1)
+		ideasCount                  int
+	)
+
+	if u.Naturalistic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsNaturalistic(), false)
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.SexualActive > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsSexualActive(), false)
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Chthonic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsChthonic(), false)
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Plutocratic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsPlutocratic(), r.metadata.IsAltruistic())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Altruistic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsAltruistic(), r.metadata.IsPlutocratic())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Lawful > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsLawful(), false)
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Educational > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsEducational(), false)
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+
+	if u.Aggressive > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsAggressive(), r.metadata.IsPacifistic())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Pacifistic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsPacifistic(), r.metadata.IsAggressive())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+
+	if u.Hedonistic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsHedonistic(), r.metadata.IsAscetic())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Ascetic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsAscetic(), r.metadata.IsHedonistic())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+
+	if u.Authoritaristic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsAuthoritaristic(), r.metadata.IsLiberal())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Ascetic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsLiberal(), r.metadata.IsAuthoritaristic())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+
+	if u.Individualistic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsIndividualistic(), r.metadata.IsCollectivistic())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Ascetic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsCollectivistic(), r.metadata.IsIndividualistic())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+
+	if u.Simple > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsSimple(), r.metadata.IsComplicated())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+	if u.Ascetic > 0 {
+		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsComplicated(), r.metadata.IsSimple())
+		accepted += acc
+		shunned += shun
+		criminal += crim
+		ideasCount++
+	}
+
+	accepted = pm.PrepareProbability(acceptedBaseCoef * accepted)
+	shunned = pm.PrepareProbability(stunnedBaseCoef * shunned)
+	criminal = pm.PrepareProbability(criminalBaseCoef * criminal)
+
+	accepted = accepted / float64(ideasCount)
+	shunned = shunned / float64(ideasCount)
+	criminal = criminal / float64(ideasCount)
+
+	if opts.Log {
+		fmt.Printf("\n>>>>>>>>>>\nLabel: %s\naccepted: %f, shunned: %f, criminal: %f\n<<<<<<<<<<<<\n", opts.Label, accepted, shunned, criminal)
+	}
+
+	return geAcceptanceByProbability(accepted, shunned, criminal)
 }

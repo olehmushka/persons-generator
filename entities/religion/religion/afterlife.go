@@ -35,15 +35,27 @@ func (d *Doctrine) generateAfterlife() *Afterlife {
 	al := &Afterlife{religion: d.religion, doctrine: d}
 	al.IsExists = al.generateIsExistsAfterlife()
 	if al.IsExists {
-		al.Participants = al.generateAfterlifeParticipants()
-		al.Traits = al.generateTraits(0, len(al.getAllAfterlifeTraits()))
+		al.generateAfterlifeContent()
 	}
 
 	return al
 }
 
+func (al *Afterlife) generateAfterlifeContent() {
+	al.Participants = al.generateAfterlifeParticipants()
+	al.Traits = al.generateTraits(0, len(al.getAllAfterlifeTraits()))
+}
+
+func (al *Afterlife) clearAfterlifeContent() {
+	al.Participants = nil
+	al.Traits = nil
+}
+
 func (al *Afterlife) generateIsExistsAfterlife() bool {
 	if al.religion.Type.IsAtheism() {
+		return false
+	}
+	if al.religion.HasReincarnation() {
 		return false
 	}
 
@@ -168,13 +180,17 @@ func (al *Afterlife) generateForAtheistsAfterlife(alp *AfterlifeParticipants) Af
 	return getAfterlifeOptionByProbability(good, depends, bad)
 }
 
-func getAfterlifeOptionByProbability(good, depends, bad float64) AfterlifeOption {
-	m := map[string]float64{
-		string(GoodAfterlife):    pm.PrepareProbability(good),
-		string(DependsAfterlife): pm.PrepareProbability(depends),
-		string(BadAfterlife):     pm.PrepareProbability(bad),
+func (al *Afterlife) updateAfterlife(isExists bool) {
+	if !al.IsExists && isExists {
+		al.generateAfterlifeContent()
+		al.IsExists = isExists
+		return
 	}
-	return AfterlifeOption(pm.GetRandomFromSeveral(m))
+	if al.IsExists && !isExists {
+		al.clearAfterlifeContent()
+		al.IsExists = isExists
+		return
+	}
 }
 
 type AfterlifeOption string
@@ -184,6 +200,15 @@ const (
 	DependsAfterlife AfterlifeOption = "Depends"
 	BadAfterlife     AfterlifeOption = "Bad"
 )
+
+func getAfterlifeOptionByProbability(good, depends, bad float64) AfterlifeOption {
+	m := map[string]float64{
+		string(GoodAfterlife):    pm.PrepareProbability(good),
+		string(DependsAfterlife): pm.PrepareProbability(depends),
+		string(BadAfterlife):     pm.PrepareProbability(bad),
+	}
+	return AfterlifeOption(pm.GetRandomFromSeveral(m))
+}
 
 func (o AfterlifeOption) GetScore() int {
 	switch o {

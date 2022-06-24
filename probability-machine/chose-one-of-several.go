@@ -7,25 +7,25 @@ func GetRandomFromSeveral[T string](values map[T]float64) T {
 		fmt.Printf("[GetRandomFromSeveral] Values count is zero!!!\n\n\n")
 	}
 
-	var valuesWithZeroCount int
+	var (
+		valuesWithZeroCount int
+		valuesWith1Count    int
+	)
 	for _, prob := range values {
 		if prob == 0 {
 			valuesWithZeroCount++
+		}
+		if prob == 1 {
+			valuesWith1Count++
 		}
 	}
 	if valuesWithZeroCount == len(values) {
 		fmt.Printf("[GetRandomFromSeveral] All values are zero!!!\n\n\n")
 	}
-
-	var valuesWith100Count int
-	for _, prob := range values {
-		if prob == 1 {
-			valuesWith100Count++
-		}
-	}
-	if valuesWith100Count > 1 {
+	if valuesWith1Count > 1 {
 		fmt.Printf("[GetRandomFromSeveral] Several values are 1!!!\n\n\n")
 	}
+
 	preparedValues := cloneStringProbabilityMap(values)
 	for value, prob := range preparedValues {
 		preparedValues[value] = PrepareProbability(prob - 0.01)
