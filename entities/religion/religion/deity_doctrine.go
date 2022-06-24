@@ -1,6 +1,10 @@
 package religion
 
-import "fmt"
+import (
+	"fmt"
+
+	pm "persons_generator/probability-machine"
+)
 
 type DeityDoctrine struct {
 	religion *Religion
@@ -17,7 +21,6 @@ func (d *Doctrine) generateDeityDoctrine() *DeityDoctrine {
 }
 
 func (dd *DeityDoctrine) Print() {
-	fmt.Printf("Deity Doctrine (religion=%s)\n", dd.religion.Name)
 	dd.Nature.Print()
 }
 
@@ -40,7 +43,9 @@ func (dn *DeityNature) Print() {
 func (dd *DeityDoctrine) generateDeityNature() *DeityNature {
 	dn := &DeityNature{religion: dd.religion, deityDoctrine: dd}
 	dn.Goodness = dn.generateGoodness()
-	dn.Traits = dn.generateTraits(1, 5)
+	if !dn.religion.Type.IsAtheism() {
+		dn.Traits = dn.generateTraits(1, 5)
+	}
 
 	return dn
 }
@@ -61,30 +66,45 @@ func (dd *DeityNature) generateGoodness() GoodnessNature {
 
 func (dn *DeityNature) getGoodnessByReligionMetadata() Goodness {
 	var (
-		rmCoef  = 0.1
-		good    = 0.2 + rmCoef*dn.religion.metadata.Hedonism
-		neutral = 0.15 + rmCoef*dn.religion.metadata.Hedonism
-		evil    = 0.1 + rmCoef*dn.religion.metadata.Chthonic
+		rmCoef  = pm.RandFloat64InRange(0.05, 0.15)
+		good    = pm.RandFloat64InRange(0.15, 0.25)
+		neutral = pm.RandFloat64InRange(0.1, 0.2)
+		evil    = pm.RandFloat64InRange(0.05, 0.15)
 	)
+	if dn.religion.metadata.IsHedonistic() || dn.religion.metadata.IsAltruistic() {
+		good += pm.RandFloat64InRange(0.05, 0.1) * rmCoef
+		neutral += pm.RandFloat64InRange(0.05, 0.1) * rmCoef
+	}
+	if dn.religion.metadata.IsChthonic() {
+		evil += pm.RandFloat64InRange(0.1, 0.25) * rmCoef
+	}
+
 	for _, goal := range dn.deityDoctrine.doctrine.HighGoal.Goals {
 		switch goal.Name {
 		case "FightAgainstEvil":
-			good += 0.2
+			good += pm.RandFloat64InRange(0.15, 0.25)
 		case "FightForEvil":
-			evil += 0.2
+			evil += pm.RandFloat64InRange(0.15, 0.25)
 		}
 	}
 
 	return getGoodnessByProbability(good, neutral, evil)
 }
 
-func (dd *DeityNature) getGoodnessLevelByReligionMetadata() Level {
+func (dn *DeityNature) getGoodnessLevelByReligionMetadata() Level {
 	var (
-		rmCoef = 0.1
-		major  = 0.15 + rmCoef*dd.religion.metadata.Fanaticism
-		middle = 0.15
-		minor  = 0.15
+		rmCoef = pm.RandFloat64InRange(0.05, 0.15)
+		major  = pm.RandFloat64InRange(0.1, 0.2)
+		middle = pm.RandFloat64InRange(0.1, 0.2)
+		minor  = pm.RandFloat64InRange(0.1, 0.2)
 	)
+	if dn.religion.metadata.IsAuthoritaristic() {
+		major += pm.RandFloat64InRange(0.1, 0.25) * rmCoef
+	}
+	if dn.religion.metadata.IsLiberal() {
+		minor += pm.RandFloat64InRange(0.1, 0.25) * rmCoef
+	}
+
 	return getLevelByProbability(major, middle, minor)
 }
 
@@ -102,11 +122,11 @@ func (dd *DeityNature) generateTraits(min, max int) []*deityNatureTrait {
 
 	traits := make([]*deityNatureTrait, 0, len(allTraits))
 	for count := 0; count < 20; count++ {
-		for i, trait := range allTraits {
+		for _, trait := range allTraits {
 			if trait.Calc(dd.religion, trait, traits) {
 				traits = append(traits, &deityNatureTrait{
 					_religionMetadata: trait._religionMetadata,
-					Index:             i,
+					baseCoef:          trait.baseCoef,
 					Name:              trait.Name,
 					Calc:              trait.Calc,
 				})
@@ -131,8 +151,8 @@ func (dd *DeityNature) generateTraits(min, max int) []*deityNatureTrait {
 }
 
 type deityNatureTrait struct {
-	_religionMetadata *updateReligionMetadata
-	Index             int
+	_religionMetadata *religionMetadata
+	baseCoef          float64
 	Name              string
 	Calc              func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool
 }
@@ -141,98 +161,124 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 	return []*deityNatureTrait{
 		{
 			Name: "IsJust",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.02),
-				OutsideDirected:  Float64(0.06),
-				Strictness:       Float64(0.1),
-				Ascetic:          Float64(0.01),
-				Elitaric:         Float64(0.01),
-				Organized:        Float64(0.01),
+			_religionMetadata: &religionMetadata{
+				Lawful: 1,
+				Simple: 0.25,
 			},
+			baseCoef: dd.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				if r.Type.IsAtheism() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "IsWorldCreator",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.09),
-				OutsideDirected:  Float64(0.09),
-				Organized:        Float64(0.02),
+			_religionMetadata: &religionMetadata{
+				Naturalistic: 0.1,
+				Lawful:       0.25,
+				Simple:       0.25,
 			},
+			baseCoef: dd.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				if r.Type.IsAtheism() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "IsImmortal",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.05),
-				OutsideDirected:  Float64(0.05),
+			_religionMetadata: &religionMetadata{
+				Naturalistic: 0.1,
+				Lawful:       0.25,
 			},
+			baseCoef: dd.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				baseCoef := 0.9
-				if r.Type.IsMonotheism() {
-					baseCoef = 1.1
+				if r.Type.IsAtheism() {
+					return false
 				}
 
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				var addCoef float64
+				if r.Type.IsMonotheism() {
+					addCoef += pm.RandFloat64InRange(0.15, 0.25)
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "IsTranscendental",
-			_religionMetadata: &updateReligionMetadata{
-				Elitaric: Float64(0.07),
+			_religionMetadata: &religionMetadata{
+				Complicated: 1,
 			},
+			baseCoef: dd.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				var baseCoef float64 = 1
-				if r.Type.IsMonotheism() || r.Type.IsDeism() || r.Type.IsDeityDualism() {
-					baseCoef = 1.1
+				if r.Type.IsAtheism() {
+					return false
 				}
 
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				var addCoef float64
+				if r.Type.IsMonotheism() || r.Type.IsDeism() || r.Type.IsDeityDualism() {
+					addCoef += pm.RandFloat64InRange(0.05, 0.15)
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "TakePartInHumanLife",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				OutsideDirected:  Float64(0.2),
-				Fanaticism:       Float64(0.05),
+			_religionMetadata: &religionMetadata{
+				Naturalistic:    0.25,
+				Authoritaristic: 1,
 			},
+			baseCoef: dd.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				if r.Type.IsAtheism() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "CommunicateWithHumans",
-			_religionMetadata: &updateReligionMetadata{
-				Centralized:      Float64(0.05),
-				RealLifeOriented: Float64(0.1),
-				OutsideDirected:  Float64(0.2),
-				Fanaticism:       Float64(0.05),
+			_religionMetadata: &religionMetadata{
+				Naturalistic:    0.25,
+				Authoritaristic: 1,
 			},
+			baseCoef: dd.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				if r.Type.IsAtheism() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "IsGnosticDeity", // God(s) created spiritual world but Demiurge(s) created physical world. Body is sinful
-			_religionMetadata: &updateReligionMetadata{
-				Decentralized:     Float64(0.03),
-				AfterlifeOriented: Float64(0.03),
-				Chthonic:          Float64(0.01),
-				Elitaric:          Float64(0.02),
+			_religionMetadata: &religionMetadata{
+				Chthonic:    0.25,
+				Complicated: 1,
 			},
+			baseCoef: dd.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
-				var baseCoef float64 = 1
+				if r.Type.IsAtheism() {
+					return false
+				}
+
+				var addCoef float64
 				if r.Type.IsDeityDualism() {
-					baseCoef += 0.1
+					addCoef += pm.RandFloat64InRange(0.05, 0.15)
 				}
 				if dd.Goodness.Goodness == Evil {
-					baseCoef += 0.1
+					addCoef += pm.RandFloat64InRange(0.05, 0.15)
 				}
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}

@@ -97,27 +97,13 @@ func (gd *GenderDominance) generateInfluence() Influence {
 		moderate = 0.15
 		weak     = 0.1
 	)
-	switch {
-	case gd.religion.Type.IsMonotheism():
-		strong += 0.09
-		moderate += 0.05
-		weak += 0.005
-	case gd.religion.Type.IsPolytheism():
-		strong += 0.05
-		moderate += 0.09
-		weak += 0.03
-	case gd.religion.Type.IsDeityDualism():
+	if gd.religion.metadata.IsAuthoritaristic() {
 		strong += 0.1
-		moderate += 0.05
-		weak += 0.005
-	case gd.religion.Type.IsDeism():
-		strong += 0.05
-		moderate += 0.05
-		weak += 0.08
-	case gd.religion.Type.IsAtheism():
-		strong += 0.01
-		moderate += 0.05
+		weak -= 0.05
+	}
+	if gd.religion.metadata.IsLiberal() {
 		weak += 0.1
+		strong -= 0.05
 	}
 
 	if gd.IsEquality() {

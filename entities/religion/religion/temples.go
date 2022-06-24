@@ -45,12 +45,9 @@ func (ts *Temples) Print() {
 }
 
 func (ts *Temples) generateHasTemples() bool {
-	primaryProbability := pm.RandFloat64InRange(0.3, 0.5)
-	if ts.religion.metadata.Organized > 0 {
-		primaryProbability += pm.RandFloat64InRange(0.05, 0.15)
-	}
+	primaryProbability := pm.RandFloat64InRange(0.35, 0.55)
 	if ts.attrs.Clerics.HasClerics {
-		primaryProbability += pm.RandFloat64InRange(0.1, 0.2)
+		primaryProbability += pm.RandFloat64InRange(0.15, 0.25)
 	}
 
 	return pm.GetRandomBool(pm.PrepareProbability(primaryProbability))
@@ -58,15 +55,15 @@ func (ts *Temples) generateHasTemples() bool {
 
 func (ts *Temples) generateSacredPlaces() bool {
 	primaryProbability := pm.RandFloat64InRange(0.5, 0.7)
-	if ts.religion.metadata.Organized > 0 {
-		primaryProbability += pm.RandFloat64InRange(0.05, 0.1)
+	if ts.religion.IsNaturalistic() {
+		primaryProbability += pm.RandFloat64InRange(0.05, 0.15)
 	}
 
 	return pm.GetRandomBool(pm.PrepareProbability(primaryProbability))
 }
 
 type templeTrait struct {
-	_religionMetadata *updateReligionMetadata
+	_religionMetadata *religionMetadata
 	baseCoef          float64
 	Name              string
 	Calc              func(r *Religion, self *templeTrait, selectedTraits []*templeTrait) bool
@@ -111,196 +108,195 @@ func (ts *Temples) generateTraits(min, max int) []*templeTrait {
 	return traits
 }
 
-func (hs *Temples) getAllTemplesTraits() []*templeTrait {
+func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 	return []*templeTrait{
 		{
 			Name: "CultProperty",
-			_religionMetadata: &updateReligionMetadata{
-				Centralized:      Float64(0.09),
-				RealLifeOriented: Float64(0.05),
-				Organized:        Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Plutocratic: 0.75,
+				Lawful:      0.25,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
 				var addCoef float64
-				for _, trait := range hs.attrs.HolyScripture.Traits {
+				for _, trait := range ts.attrs.HolyScripture.Traits {
 					if trait.Name == "DivineLaw" {
-						addCoef += pm.RandFloat64InRange(0.01, 0.07)
+						addCoef += pm.RandFloat64InRange(0.04, 0.1)
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "InviolacyOfTemples",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				Organized:        Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Plutocratic: 1,
+				Lawful:      0.25,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
-				if !hs.HasTemples {
+				if !ts.HasTemples {
 					return false
 				}
+
 				var addCoef float64
-				for _, trait := range hs.attrs.HolyScripture.Traits {
+				for _, trait := range ts.attrs.HolyScripture.Traits {
 					if trait.Name == "DivineLaw" {
-						addCoef += pm.RandFloat64InRange(0.03, 0.09)
+						addCoef += pm.RandFloat64InRange(0.04, 0.1)
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "HasSeminaries",
-			_religionMetadata: &updateReligionMetadata{
-				Centralized: Float64(0.09),
-				Strictness:  Float64(0.01),
-				Organized:   Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Educational:    1,
+				Collectivistic: 0.25,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
 				var addCoef float64
-				if hs.attrs.HolyScripture.HasHolyScripture {
-					addCoef += 0.1
+				if ts.attrs.HolyScripture.HasHolyScripture {
+					addCoef += pm.RandFloat64InRange(0.05, 0.15)
 				}
-				if hs.attrs.Clerics.HasClerics {
-					for _, trait := range hs.attrs.Clerics.Traits {
+				if ts.attrs.Clerics.HasClerics {
+					for _, trait := range ts.attrs.Clerics.Traits {
 						if trait.Name == "Patronship" {
-							addCoef += pm.RandFloat64InRange(0.01, 0.05)
+							addCoef += pm.RandFloat64InRange(0.04, 0.1)
 						}
 					}
-					for _, function := range hs.attrs.Clerics.Functions {
+					for _, function := range ts.attrs.Clerics.Functions {
 						if function.Name == "Teach" {
 							addCoef += pm.RandFloat64InRange(0.05, 0.15)
 						}
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "HasLibraries",
-			_religionMetadata: &updateReligionMetadata{
-				Centralized: Float64(0.01),
-				Organized:   Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Educational: 1,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
 				var addCoef float64
-				if hs.attrs.HolyScripture.HasHolyScripture {
-					addCoef += 0.105
+				if ts.attrs.HolyScripture.HasHolyScripture {
+					addCoef += pm.RandFloat64InRange(0.05, 0.15)
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "HasSchoolsOfPhilosophers",
-			_religionMetadata: &updateReligionMetadata{
-				Centralized: Float64(0.01),
-				Elitaric:    Float64(0.03),
-				Organized:   Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Educational: 1,
+				Complicated: 0.5,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
 				var addCoef float64
-				if hs.attrs.HolyScripture.HasHolyScripture {
-					addCoef += 0.105
+				if ts.attrs.HolyScripture.HasHolyScripture {
+					addCoef += pm.RandFloat64InRange(0.05, 0.15)
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "HasGymnasiumSchools",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.06),
-				Strictness:       Float64(0.01),
-				Organized:        Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Educational:     0.75,
+				Authoritaristic: 0.25,
+				Collectivistic:  0.75,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
 				var addCoef float64
-				if hs.attrs.Clerics.HasClerics {
-					for _, trait := range hs.attrs.Clerics.Traits {
+				if ts.attrs.Clerics.HasClerics {
+					for _, trait := range ts.attrs.Clerics.Traits {
 						if trait.Name == "Patronship" {
 							addCoef += pm.RandFloat64InRange(0.02, 0.06)
 						}
 					}
-					for _, function := range hs.attrs.Clerics.Functions {
+					for _, function := range ts.attrs.Clerics.Functions {
 						if function.Name == "Teach" {
 							addCoef += pm.RandFloat64InRange(0.02, 0.1)
 						}
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "HasShelters",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				Fanaticism:       Float64(0.1),
-				Organized:        Float64(0.05),
+			_religionMetadata: &religionMetadata{
+				Altruistic:     1,
+				Collectivistic: 0.75,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
 				var addCoef float64
-				if hs.attrs.Clerics.HasClerics {
-					for _, trait := range hs.attrs.Clerics.Traits {
+				if ts.attrs.Clerics.HasClerics {
+					for _, trait := range ts.attrs.Clerics.Traits {
 						if trait.Name == "Patronship" {
 							addCoef += pm.RandFloat64InRange(0.065, 0.105)
 						}
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "TempleHealers",
-			_religionMetadata: &updateReligionMetadata{
-				Decentralized:    Float64(0.035),
-				RealLifeOriented: Float64(0.065),
-				Fanaticism:       Float64(0.05),
-				Primitive:        Float64(0.075),
+			_religionMetadata: &religionMetadata{
+				Altruistic: 1,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
-				if !hs.HasTemples {
+				if !ts.HasTemples {
 					return false
 				}
 				var addCoef float64
-				if hs.attrs.Clerics.HasClerics {
-					for _, function := range hs.attrs.Clerics.Functions {
-						if function.Name == "Heal" {
+				if ts.attrs.Clerics.HasClerics {
+					for _, function := range ts.attrs.Clerics.Functions {
+						switch function.Name {
+						case "Heal":
 							addCoef += pm.RandFloat64InRange(0.1, 0.2)
+						case "Oracle":
+							addCoef += pm.RandFloat64InRange(0.01, 0.065)
+						case "Diviner":
+							addCoef += pm.RandFloat64InRange(0.025, 0.1)
+						case "Druid":
+							addCoef += pm.RandFloat64InRange(0.015, 0.9)
 						}
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "SacredStones",
-			_religionMetadata: &updateReligionMetadata{
-				Decentralized: Float64(0.04),
-				Chthonic:      Float64(0.035),
-				Primitive:     Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Naturalistic: 1,
+				Simple:       0.5,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
-				if !hs.HasSacredPlaces {
+				if !ts.HasSacredPlaces {
 					return false
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}

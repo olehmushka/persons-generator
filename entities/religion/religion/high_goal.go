@@ -37,11 +37,11 @@ func (hg *HighGoal) ContainsReincarnation() bool {
 }
 
 type highGoal struct {
-	_religionMetadata *updateReligionMetadata
+	_religionMetadata *religionMetadata
+	baseCoef          float64
 
-	Index int
-	Name  string
-	Calc  func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool
+	Name string
+	Calc func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool
 }
 
 func (hg *HighGoal) generateGoals(min, max int) []*highGoal {
@@ -55,11 +55,11 @@ func (hg *HighGoal) generateGoals(min, max int) []*highGoal {
 
 	goals := make([]*highGoal, 0, len(allGoals))
 	for count := 0; count < 20; count++ {
-		for i, goal := range allGoals {
+		for _, goal := range allGoals {
 			if goal.Calc(hg.religion, goal, goals) {
 				goals = append(goals, &highGoal{
 					_religionMetadata: goal._religionMetadata,
-					Index:             i,
+					baseCoef:          goal.baseCoef,
 					Name:              goal.Name,
 					Calc:              goal.Calc,
 				})
@@ -87,75 +87,67 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 	return []*highGoal{
 		{
 			Name: "TransformingIntoLikenessOfGod",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.05),
-				InsideDirected:   Float64(0.09),
-				Strictness:       Float64(0.05),
-				Ascetic:          Float64(0.01),
-				Elitaric:         Float64(0.01),
+			_religionMetadata: &religionMetadata{
+				Individualistic: 1,
+				Ascetic:         0.5,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
 				if !r.Type.IsMonotheism() {
 					return false
 				}
 
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "AttainHeavenAndResidesThereWithGod",
-			_religionMetadata: &updateReligionMetadata{
-				AfterlifeOriented: Float64(0.1),
-				InsideDirected:    Float64(0.05),
-				Fanaticism:        Float64(0.05),
-				Strictness:        Float64(0.09),
+			_religionMetadata: &religionMetadata{
+				Naturalistic: 0.1,
+				Ascetic:      0.1,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
 
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "BringManToCompletenessAndToCloseRelationshipWithGod",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.09),
-				InsideDirected:   Float64(0.08),
-				Strictness:       Float64(0.05),
-				Ascetic:          Float64(0.01),
+			_religionMetadata: &religionMetadata{
+				Naturalistic:    0.1,
+				Individualistic: 1,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
 				if !r.Type.IsMonotheism() && !r.Type.IsDeityDualism() {
 					return false
 				}
 
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "BringHolinessDownToTheWorld",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				OutsideDirected:  Float64(0.1),
-				Fanaticism:       Float64(0.07),
-				Strictness:       Float64(0.05),
-				Ascetic:          Float64(0.03),
-				Organized:        Float64(0.02),
+			_religionMetadata: &religionMetadata{
+				Altruistic:     0.5,
+				Collectivistic: 0.5,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "StopReincarnation",
-			_religionMetadata: &updateReligionMetadata{
-				AfterlifeOriented: Float64(0.1),
-				Fanaticism:        Float64(0.02),
-				Strictness:        Float64(0.08),
-				Ascetic:           Float64(0.07),
+			_religionMetadata: &religionMetadata{
+				Ascetic:         0.5,
+				Individualistic: 1,
 			},
+			baseCoef: hg.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
 				for _, goal := range selectedGoals {
 					if goal.Name == "NeverStopReincarnation" {
@@ -163,17 +155,16 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(0.6, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "NeverStopReincarnation",
-			_religionMetadata: &updateReligionMetadata{
-				AfterlifeOriented: Float64(0.1),
-				Fanaticism:        Float64(0.03),
-				Strictness:        Float64(0.08),
-				Ascetic:           Float64(0.07),
+			_religionMetadata: &religionMetadata{
+				Ascetic:         0.5,
+				Individualistic: 1,
 			},
+			baseCoef: hg.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
 				for _, goal := range selectedGoals {
 					if goal.Name == "StopReincarnation" {
@@ -181,86 +172,88 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(0.4, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "ProduceChildren",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				OutsideDirected:  Float64(0.1),
-				Primitive:        Float64(0.02),
+			_religionMetadata: &religionMetadata{
+				Naturalistic:   1,
+				SexualActive:   0.75,
+				Collectivistic: 0.1,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "InvestigateMyself",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				InsideDirected:   Float64(0.1),
-				Hedonism:         Float64(0.05),
-				Primitive:        Float64(0.03),
+			_religionMetadata: &religionMetadata{
+				Individualistic: 1,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "GetMaxPleasure",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				InsideDirected:   Float64(0.05),
-				Hedonism:         Float64(0.1),
-				Primitive:        Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				SexualActive: 0.25,
+				Liberal:      0.25,
+				Hedonistic:   1,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				if r.metadata.IsAscetic() && !r.metadata.IsHedonistic() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "SpreadReligion",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				OutsideDirected:  Float64(0.1),
-				Fanaticism:       Float64(0.9),
-				Organized:        Float64(0.6),
+			_religionMetadata: &religionMetadata{
+				Aggressive:     0.25,
+				Collectivistic: 1,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "LovePeople",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				OutsideDirected:  Float64(0.1),
-				Primitive:        Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				SexualActive: 0.1,
+				Altruistic:   1,
+				Pacifistic:   0.25,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "BecomePerfectAndSaints",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.1),
-				InsideDirected:   Float64(0.1),
-				Strictness:       Float64(0.1),
-				Ascetic:          Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Ascetic:         1,
+				Individualistic: 1,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "FightAgainstEvil",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.6),
-				Fanaticism:       Float64(0.1),
-				Primitive:        Float64(0.01),
+			_religionMetadata: &religionMetadata{
+				Lawful:     0.1,
+				Aggressive: 0.75,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
 				for _, goal := range selectedGoals {
 					if goal.Name == "FightForEvil" {
@@ -268,17 +261,16 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "FightForEvil",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.07),
-				Fanaticism:       Float64(0.1),
-				Chthonic:         Float64(0.1),
-				Primitive:        Float64(0.01),
+			_religionMetadata: &religionMetadata{
+				Chthonic:   1,
+				Aggressive: 0.75,
 			},
+			baseCoef: hg.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
 				for _, goal := range selectedGoals {
 					if goal.Name == "FightAgainstEvil" {
@@ -286,19 +278,27 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(0.5, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "StopArmageddon",
-			_religionMetadata: &updateReligionMetadata{
-				OutsideDirected: Float64(0.02),
-				Fanaticism:      Float64(0.1),
-				Chthonic:        Float64(0.01),
-				Primitive:       Float64(0.01),
+			_religionMetadata: &religionMetadata{
+				Altruistic: 0.5,
 			},
+			baseCoef: hg.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
-				return CalculateProbabilityFromReligionMetadata(1, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+			},
+		},
+		{
+			Name: "StartArmageddon",
+			_religionMetadata: &religionMetadata{
+				Chthonic: 1,
+			},
+			baseCoef: hg.religion.M.LowBaseCoef,
+			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}

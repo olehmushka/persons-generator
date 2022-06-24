@@ -1,9 +1,7 @@
 package religion
 
-import pm "persons_generator/probability-machine"
-
 type Cult struct {
-	_religionMetadata *updateReligionMetadata
+	_religionMetadata *religionMetadata
 	baseCoef          float64
 
 	Name string
@@ -53,211 +51,210 @@ func (t *Theology) getAllCults() []*Cult {
 	return []*Cult{
 		{
 			Name:              "GodOfKingCult",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "GodOfProsperityAndWealth",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "CultOfJustice",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "GodOfWar",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "PatronSaintOfMerchants",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "GodOfDeath",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "GodOfWisdom",
-			_religionMetadata: &updateReligionMetadata{},
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "GodOfSea",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "GodOfLove",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "SunWorship",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "MoonWorship",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "GodOfWine",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "GodOfThunder",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "MotherGoddess",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HolyAnimals",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HolyPlants",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HolyFungus",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HolyParasite",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HolyInsects",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				baseCoef := pm.RandFloat64InRange(0.5, 0.9)
-
-				return CalculateProbabilityFromReligionMetadata(baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HolyStones",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HolyRiver",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HolyLake",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "HolyMountain",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "AncestorWorship",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.5, 0.9),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "Trickster",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.8, 1.2),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name:              "SpiritsOfDeath",
-			_religionMetadata: &updateReligionMetadata{},
-			baseCoef:          pm.RandFloat64InRange(0.8, 1.2),
+			_religionMetadata: &religionMetadata{},
+			baseCoef:          t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}

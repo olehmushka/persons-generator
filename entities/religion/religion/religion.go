@@ -1,8 +1,13 @@
 package religion
 
-import "fmt"
+import (
+	"fmt"
+
+	pm "persons_generator/probability-machine"
+)
 
 type Religion struct {
+	M        Metadata
 	metadata *religionMetadata
 
 	Name            string
@@ -14,7 +19,13 @@ type Religion struct {
 }
 
 func NewReligion() *Religion {
-	r := &Religion{}
+	r := &Religion{
+		M: Metadata{
+			LowBaseCoef:  pm.RandFloat64InRange(0.45, 0.75),
+			BaseCoef:     pm.RandFloat64InRange(0.95, 1.05),
+			HighBaseCoef: pm.RandFloat64InRange(1, 1.25),
+		},
+	}
 	r.Type = NewType(r)
 	r.GenderDominance = NewGenderDominance(r)
 	r.metadata = r.generateMetadata()
@@ -45,6 +56,8 @@ func (r *Religion) Print() {
 	r.Doctrine.Print()
 	r.Attributes.Print()
 	r.Theology.Print()
+
+	fmt.Printf("\n\nMetadata:\n%+v\n", r.metadata)
 	fmt.Printf("=====================\n\n")
 }
 

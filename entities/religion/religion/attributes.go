@@ -17,7 +17,7 @@ type Attributes struct {
 
 func NewAttributes(r *Religion) *Attributes {
 	attrs := &Attributes{religion: r}
-	attrs.Traits = attrs.generateTraits(0, len(attrs.Traits))
+	attrs.Traits = attrs.generateTraits(1, len(attrs.Traits))
 	attrs.Clerics = attrs.generateClerics()
 	attrs.HolyScripture = attrs.generateHolyScripture()
 	attrs.Temples = attrs.generateTemples()
@@ -76,7 +76,7 @@ func (as *Attributes) generateTraits(min, max int) []*attributeTrait {
 }
 
 type attributeTrait struct {
-	_religionMetadata *updateReligionMetadata
+	_religionMetadata *religionMetadata
 	baseCoef          float64
 	Name              string
 	Calc              func(r *Religion, self *attributeTrait, selectedTraits []*attributeTrait) bool
@@ -86,95 +86,105 @@ func (as *Attributes) getAllAttributeTraits() []*attributeTrait {
 	return []*attributeTrait{
 		{
 			Name: "Amulets",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.02),
-				InsideDirected:   Float64(0.02),
-				OutsideDirected:  Float64(0.02),
-				Primitive:        Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Naturalistic: 0.75,
+				Chthonic:     0.1,
+				Simple:       0.25,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *attributeTrait, _ []*attributeTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "ReligionMusic",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented:  Float64(0.01),
-				AfterlifeOriented: Float64(0.01),
-				OutsideDirected:   Float64(0.05),
-				Primitive:         Float64(0.05),
+			_religionMetadata: &religionMetadata{
+				Naturalistic: 0.75,
+				Simple:       0.25,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *attributeTrait, _ []*attributeTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				if r.Type.IsAtheism() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "ReligionTheatre",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented:  Float64(0.01),
-				AfterlifeOriented: Float64(0.01),
-				OutsideDirected:   Float64(0.05),
-				Primitive:         Float64(0.05),
+			_religionMetadata: &religionMetadata{
+				Naturalistic:   0.75,
+				Collectivistic: 0.75,
+				Simple:         0.25,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *attributeTrait, _ []*attributeTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				if r.Type.IsAtheism() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "ReligionPoetry",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented:  Float64(0.01),
-				AfterlifeOriented: Float64(0.01),
-				OutsideDirected:   Float64(0.05),
-				Primitive:         Float64(0.04),
+			_religionMetadata: &religionMetadata{
+				Naturalistic: 0.75,
+				Simple:       0.25,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *attributeTrait, _ []*attributeTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				if r.Type.IsAtheism() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "ReligionTapestry",
-			_religionMetadata: &updateReligionMetadata{
-				OutsideDirected: Float64(0.05),
+			_religionMetadata: &religionMetadata{
+				Naturalistic: 0.75,
+				Simple:       0.25,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *attributeTrait, _ []*attributeTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				if r.Type.IsAtheism() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "Calligraphy",
-			_religionMetadata: &updateReligionMetadata{
-				OutsideDirected: Float64(0.02),
+			_religionMetadata: &religionMetadata{
+				Individualistic: 0.5,
 			},
-			baseCoef: pm.RandFloat64InRange(0.9, 1.1),
+			baseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *attributeTrait, _ []*attributeTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "Idols",
-			_religionMetadata: &updateReligionMetadata{
-				OutsideDirected: Float64(0.02),
-				Primitive:       Float64(0.1),
+			_religionMetadata: &religionMetadata{
+				Chthonic: 0.5,
 			},
-			baseCoef: pm.RandFloat64InRange(0.95, 1.05),
+			baseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *attributeTrait, _ []*attributeTrait) bool {
 				var addCoef float64
 				switch {
 				case r.Type.IsMonotheism():
-					addCoef -= 0.05
+					addCoef -= pm.RandFloat64InRange(0.01, 0.1)
 				case r.Type.IsPolytheism():
-					addCoef += 0.1
+					addCoef += pm.RandFloat64InRange(1, 2)
 				case r.Type.IsAtheism():
 					return false
 				}
 
-				return CalculateProbabilityFromReligionMetadata(pm.PrepareProbability(self.baseCoef+addCoef), r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}

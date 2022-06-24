@@ -15,45 +15,49 @@ const (
 	NatureSourceOfMoralLaw SourceOfMoralLaw = "Nature"
 )
 
+func (s SourceOfMoralLaw) IsDeity() bool {
+	return s == DeitySourceOfMoralLaw
+}
+
+func (s SourceOfMoralLaw) IsNone() bool {
+	return s == NoneSourceOfMoralLaw
+}
+
+func (s SourceOfMoralLaw) IsHuman() bool {
+	return s == HumanSourceOfMoralLaw
+}
+
+func (s SourceOfMoralLaw) IsNature() bool {
+	return s == NatureSourceOfMoralLaw
+}
+
 func (d *Doctrine) generateSourceOfMoralLaw() SourceOfMoralLaw {
+	if d.religion.Type.IsAtheism() {
+		return NoneSourceOfMoralLaw
+	}
+
 	var (
-		deity  = pm.RandFloat64InRange(0.03, 0.15)
-		none   = pm.RandFloat64InRange(0.01, 0.05)
-		human  = pm.RandFloat64InRange(0.02, 0.09)
-		nature = pm.RandFloat64InRange(0.025, 0.095)
-		rmCoef = pm.RandFloat64InRange(0.01, 0.02)
+		deity  = pm.RandFloat64InRange(0.1, 0.2)
+		none   = pm.RandFloat64InRange(0.01, 0.1)
+		human  = pm.RandFloat64InRange(0.05, 0.15)
+		nature = pm.RandFloat64InRange(0.05, 0.15)
+		rmCoef = d.religion.M.LowBaseCoef
 	)
-	human += rmCoef * d.religion.metadata.Hedonism
+	if d.religion.metadata.IsHedonistic() {
+		human += rmCoef * pm.RandFloat64InRange(0.05, 0.15)
+	}
 
 	if d.Deity.Nature.Goodness.Goodness == Good {
-		var goodnessCoef float64
-		switch d.Deity.Nature.Goodness.Level {
-		case Major:
-			goodnessCoef = 1.1
-		case Middle:
-			goodnessCoef = 1
-		case Minor:
-			goodnessCoef = 0.4
-		}
-		deity += 0.1 * goodnessCoef
+		deity += pm.RandFloat64InRange(0.05, 0.15) * d.Deity.Nature.Goodness.Level.GetLevelCoef()
 	}
 	for _, trait := range d.Deity.Nature.Traits {
 		if trait.Name == "IsJust" {
-			deity += 0.5
+			deity += pm.RandFloat64InRange(0.01, 0.1)
 		}
 	}
 
 	if d.Human.Nature.Goodness.Goodness == Good {
-		var goodnessCoef float64
-		switch d.Human.Nature.Goodness.Level {
-		case Major:
-			goodnessCoef = 1.1
-		case Middle:
-			goodnessCoef = 1
-		case Minor:
-			goodnessCoef = 0.4
-		}
-		human += 0.1 * goodnessCoef
+		human += pm.RandFloat64InRange(0.05, 0.15) * d.Human.Nature.Goodness.Level.GetLevelCoef()
 	}
 
 	return getSourceOfMoralLawByProbability(deity, none, human, nature)
@@ -71,20 +75,4 @@ func getSourceOfMoralLawByProbability(deity, none, human, nature float64) Source
 		string(NatureSourceOfMoralLaw): pm.PrepareProbability(nature),
 	}
 	return SourceOfMoralLaw(pm.GetRandomFromSeveral(m))
-}
-
-func (s SourceOfMoralLaw) IsDeity() bool {
-	return s == DeitySourceOfMoralLaw
-}
-
-func (s SourceOfMoralLaw) IsNone() bool {
-	return s == NoneSourceOfMoralLaw
-}
-
-func (s SourceOfMoralLaw) IsHuman() bool {
-	return s == HumanSourceOfMoralLaw
-}
-
-func (s SourceOfMoralLaw) IsNature() bool {
-	return s == NatureSourceOfMoralLaw
 }

@@ -1,6 +1,10 @@
 package religion
 
-import "fmt"
+import (
+	"fmt"
+
+	pm "persons_generator/probability-machine"
+)
 
 type HumanDoctrine struct {
 	religion *Religion
@@ -17,7 +21,6 @@ func (d *Doctrine) generateHumanDoctrine() *HumanDoctrine {
 }
 
 func (hd *HumanDoctrine) Print() {
-	fmt.Printf("Human Doctrine (religion=%s)\n", hd.religion.Name)
 	hd.Nature.Print()
 }
 
@@ -54,17 +57,22 @@ func (hn *HumanNature) generateGoodness() GoodnessNature {
 
 func (hn *HumanNature) getGoodnessByReligionMetadata() Goodness {
 	var (
-		rmCoef  = 0.1
-		good    = 0.1 + rmCoef*hn.religion.metadata.Hedonism
-		neutral = 0.1 + rmCoef*hn.religion.metadata.Hedonism
-		evil    = 0.1 + rmCoef*hn.religion.metadata.Chthonic
+		rmCoef  = pm.RandFloat64InRange(0.05, 0.15)
+		good    = pm.RandFloat64InRange(0.1, 0.2)
+		neutral = pm.RandFloat64InRange(0.1, 0.2)
+		evil    = pm.RandFloat64InRange(0.1, 0.2)
 	)
+	if hn.religion.metadata.IsHedonistic() || hn.religion.metadata.IsAltruistic() {
+		good += pm.RandFloat64InRange(0.05, 0.1) * rmCoef
+		neutral += pm.RandFloat64InRange(0.05, 0.1) * rmCoef
+	}
+	if hn.religion.metadata.IsChthonic() {
+		evil += pm.RandFloat64InRange(0.1, 0.25) * rmCoef
+	}
+
 	for _, goal := range hn.humanDoctrine.doctrine.HighGoal.Goals {
-		switch goal.Name {
-		case "ProduceChildren":
-			good += 0.05
-		case "InvestigateMyself":
-			good += 0.05
+		if goal.Name == "InvestigateMyself" {
+			good += pm.RandFloat64InRange(0.01, 0.1)
 		}
 	}
 
@@ -73,10 +81,15 @@ func (hn *HumanNature) getGoodnessByReligionMetadata() Goodness {
 
 func (hn *HumanNature) getGoodnessLevelByReligionMetadata() Level {
 	var (
-		major  = 0.1
-		middle = 0.1
-		minor  = 0.1
+		rmCoef = pm.RandFloat64InRange(0.05, 0.15)
+		major  = pm.RandFloat64InRange(0.1, 0.2)
+		middle = pm.RandFloat64InRange(0.1, 0.2)
+		minor  = pm.RandFloat64InRange(0.1, 0.2)
 	)
+	if hn.religion.metadata.IsLiberal() {
+		minor += pm.RandFloat64InRange(0.1, 0.25) * rmCoef
+	}
+
 	return getLevelByProbability(major, middle, minor)
 }
 
@@ -91,11 +104,10 @@ func (hn *HumanNature) generateTraits(min, max int) []*humanNatureTrait {
 
 	traits := make([]*humanNatureTrait, 0, len(allTraits))
 	for count := 0; count < 20; count++ {
-		for i, trait := range allTraits {
+		for _, trait := range allTraits {
 			if trait.Calc(hn.religion, trait, traits) {
 				traits = append(traits, &humanNatureTrait{
 					_religionMetadata: trait._religionMetadata,
-					Index:             i,
 					Name:              trait.Name,
 					Calc:              trait.Calc,
 				})
@@ -120,9 +132,8 @@ func (hn *HumanNature) generateTraits(min, max int) []*humanNatureTrait {
 }
 
 type humanNatureTrait struct {
-	_religionMetadata *updateReligionMetadata
+	_religionMetadata *religionMetadata
 	baseCoef          float64
-	Index             int
 	Name              string
 	Calc              func(r *Religion, self *humanNatureTrait, selectedTraits []*humanNatureTrait) bool
 }
@@ -131,47 +142,31 @@ func (hn *HumanNature) getAllHumanNatureTraits() []*humanNatureTrait {
 	return []*humanNatureTrait{
 		{
 			Name: "HasSoul",
-			_religionMetadata: &updateReligionMetadata{
-				AfterlifeOriented: Float64(0.09),
-				InsideDirected:    Float64(0.09),
-				Strictness:        Float64(0.01),
+			_religionMetadata: &religionMetadata{
+				Naturalistic:    0.5,
+				Individualistic: 0.75,
 			},
-			baseCoef: 1,
+			baseCoef: hn.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *humanNatureTrait, _ []*humanNatureTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: "CanBeSaint",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.05),
-				InsideDirected:   Float64(0.06),
-				Strictness:       Float64(0.08),
-				Ascetic:          Float64(0.08),
+			_religionMetadata: &religionMetadata{
+				Ascetic:         0.5,
+				Individualistic: 1,
 			},
-			baseCoef: 1,
+			baseCoef: hn.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *humanNatureTrait, selectedTraits []*humanNatureTrait) bool {
 				var addCoef float64
 				for _, goal := range hn.humanDoctrine.doctrine.HighGoal.Goals {
 					if goal.Name == "BecomePerfectAndSaints" {
-						addCoef += 0.2
+						addCoef += pm.RandFloat64InRange(0.15, 0.25)
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, *self._religionMetadata, CalcProbOpts{})
-			},
-		},
-		{
-			Name: "Kalokagathos",
-			_religionMetadata: &updateReligionMetadata{
-				RealLifeOriented: Float64(0.05),
-				InsideDirected:   Float64(0.06),
-				Strictness:       Float64(0.01),
-				Elitaric:         Float64(0.01),
-			},
-			baseCoef: 1,
-			Calc: func(r *Religion, self *humanNatureTrait, selectedTraits []*humanNatureTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, *self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}

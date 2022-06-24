@@ -50,7 +50,7 @@ func (al *Afterlife) generateIsExistsAfterlife() bool {
 	case al.religion.Type.IsDeism():
 		probability += pm.RandFloat64InRange(0.05, 1)
 	}
-	probability += al.religion.metadata.AfterlifeOriented
+
 	for _, trait := range al.doctrine.Human.Nature.Traits {
 		if trait.Name == "HasSoul" {
 			probability += pm.RandFloat64InRange(0.25, 0.75)

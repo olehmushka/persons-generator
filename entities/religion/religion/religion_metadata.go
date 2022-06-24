@@ -6,174 +6,250 @@ import (
 	pm "persons_generator/probability-machine"
 )
 
+type Metadata struct {
+	BaseCoef     float64
+	LowBaseCoef  float64
+	HighBaseCoef float64
+}
+
 type religionMetadata struct {
-	Centralized   float64
-	Decentralized float64
+	Naturalistic float64
+	SexualActive float64
+	Chthonic     float64
+	Plutocratic  float64
+	Altruistic   float64
+	Lawful       float64
+	Educational  float64
 
-	RealLifeOriented  float64
-	AfterlifeOriented float64
+	Aggressive float64
+	Pacifistic float64
 
-	InsideDirected  float64
-	OutsideDirected float64
+	Hedonistic float64
+	Ascetic    float64
 
-	Fanaticism float64
-	Strictness float64
+	Authoritaristic float64
+	Liberal         float64
 
-	// Specials traits
-	Hedonism  float64
-	Ascetic   float64
-	Chthonic  float64
-	Elitaric  float64
-	Primitive float64
-	Organized float64
+	Individualistic float64
+	Collectivistic  float64
+
+	Simple      float64
+	Complicated float64
+}
+
+func (rm *religionMetadata) IsNaturalistic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Naturalistic > 2
+}
+
+func (rm *religionMetadata) IsSexualActive() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.SexualActive > 2
+}
+
+func (rm *religionMetadata) IsChthonic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Chthonic > 2
+}
+
+func (rm *religionMetadata) IsPlutocratic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Plutocratic > 2
+}
+
+func (rm *religionMetadata) IsAltruistic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Altruistic > 2
+}
+
+func (rm *religionMetadata) IsLawful() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Lawful > 2
+}
+
+func (rm *religionMetadata) IsEducational() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Educational > 2
+}
+
+func (rm *religionMetadata) IsAggressive() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Aggressive > 2
+}
+
+func (rm *religionMetadata) IsPacifistic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Pacifistic > 2
+}
+
+func (rm *religionMetadata) IsHedonistic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Hedonistic > 2
+}
+
+func (rm *religionMetadata) IsAscetic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Ascetic > 2
+}
+
+func (rm *religionMetadata) IsAuthoritaristic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Authoritaristic > 2
+}
+
+func (rm *religionMetadata) IsLiberal() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Liberal > 2
+}
+
+func (rm *religionMetadata) IsIndividualistic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Individualistic > 2
+}
+
+func (rm *religionMetadata) IsCollectivistic() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Collectivistic > 2
+}
+
+func (rm *religionMetadata) IsSimple() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Simple > 2
+}
+
+func (rm *religionMetadata) IsComplicated() bool {
+	if rm == nil {
+		return false
+	}
+
+	return rm.Complicated > 2
 }
 
 func (r *Religion) generateMetadata() *religionMetadata {
 	rm := &religionMetadata{}
 	switch {
 	case r.Type.IsMonotheism():
-		rm.Centralized += pm.RandFloat64InRange(0.05, 0.15)
-		rm.Decentralized += pm.RandFloat64InRange(0.01, 0.05)
-		rm.RealLifeOriented += pm.RandFloat64InRange(0.02, 0.065)
-		rm.AfterlifeOriented += pm.RandFloat64InRange(0.04, 0.1)
-		rm.InsideDirected += pm.RandFloat64InRange(0.02, 0.08)
-		rm.OutsideDirected += pm.RandFloat64InRange(0.02, 0.095)
-		rm.Fanaticism += pm.RandFloat64InRange(0.03, 0.1)
-		rm.Strictness += pm.RandFloat64InRange(0.02, 0.1)
+		rm.Lawful += pm.RandFloat64InRange(0.01, 0.1)
+		rm.Authoritaristic += pm.RandFloat64InRange(0.01, 0.05)
 	case r.Type.IsPolytheism():
-		rm.Centralized += pm.RandFloat64InRange(0.01, 0.1)
-		rm.Decentralized += pm.RandFloat64InRange(0.05, 0.12)
-		rm.RealLifeOriented += pm.RandFloat64InRange(0.019, 0.05)
-		rm.AfterlifeOriented += pm.RandFloat64InRange(0.02, 0.06)
-		rm.InsideDirected += pm.RandFloat64InRange(0.015, 0.07)
-		rm.OutsideDirected += pm.RandFloat64InRange(0.015, 0.085)
-		rm.Fanaticism += pm.RandFloat64InRange(0.03, 0.1)
-		rm.Strictness += pm.RandFloat64InRange(0.02, 0.08)
+		rm.Naturalistic += pm.RandFloat64InRange(0.01, 0.25)
+		rm.Liberal += pm.RandFloat64InRange(0.01, 0.05)
+		rm.Collectivistic += pm.RandFloat64InRange(0.01, 0.05)
 	case r.Type.IsDeityDualism():
-		rm.Centralized += pm.RandFloat64InRange(0.02, 0.11)
-		rm.Decentralized += pm.RandFloat64InRange(0.02, 0.08)
-		rm.RealLifeOriented += pm.RandFloat64InRange(0.0195, 0.06)
-		rm.AfterlifeOriented += pm.RandFloat64InRange(0.035, 0.065)
-		rm.InsideDirected += pm.RandFloat64InRange(0.017, 0.075)
-		rm.OutsideDirected += pm.RandFloat64InRange(0.017, 0.087)
-		rm.Fanaticism += pm.RandFloat64InRange(0.029, 0.095)
-		rm.Strictness += pm.RandFloat64InRange(0.02, 0.092)
 	case r.Type.IsDeism():
-		rm.Centralized += pm.RandFloat64InRange(0.01, 0.04)
-		rm.Decentralized += pm.RandFloat64InRange(0.04, 0.13)
-		rm.RealLifeOriented += pm.RandFloat64InRange(0.03, 0.08)
-		rm.AfterlifeOriented += pm.RandFloat64InRange(0.005, 0.03)
-		rm.InsideDirected += pm.RandFloat64InRange(0.03, 0.075)
-		rm.OutsideDirected += pm.RandFloat64InRange(0.02, 0.08)
-		rm.Fanaticism += pm.RandFloat64InRange(0.005, 0.03)
-		rm.Strictness += pm.RandFloat64InRange(0.02, 0.06)
+		rm.Naturalistic += pm.RandFloat64InRange(0.01, 0.25)
+		rm.Liberal += pm.RandFloat64InRange(0.01, 0.075)
 	case r.Type.IsAtheism():
-		rm.Centralized += pm.RandFloat64InRange(0.02, 0.1)
-		rm.Decentralized += pm.RandFloat64InRange(0.02, 0.1)
-		rm.RealLifeOriented += pm.RandFloat64InRange(0.1, 0.2)
-		rm.AfterlifeOriented += 0
-		rm.InsideDirected += pm.RandFloat64InRange(0.01, 0.05)
-		rm.OutsideDirected += pm.RandFloat64InRange(0.04, 0.097)
-		rm.Fanaticism += pm.RandFloat64InRange(0.025, 0.07)
-		rm.Strictness += pm.RandFloat64InRange(0.01, 0.06)
-	}
-
-	genderCoef := r.GenderDominance.GetCoef()
-	switch {
-	case r.GenderDominance.IsMaleDominate():
-		rm.RealLifeOriented += genderCoef * pm.RandFloat64InRange(0.01, 0.03)
-		rm.AfterlifeOriented += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
-		rm.InsideDirected += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
-		rm.OutsideDirected += genderCoef * pm.RandFloat64InRange(0.01, 0.03)
-		rm.Fanaticism += genderCoef * pm.RandFloat64InRange(0.02, 0.04)
-		rm.Strictness += genderCoef * pm.RandFloat64InRange(0.01, 0.03)
-	case r.GenderDominance.IsEquality():
-		rm.RealLifeOriented += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
-		rm.AfterlifeOriented += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
-		rm.InsideDirected += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
-		rm.OutsideDirected += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
-		rm.Fanaticism += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
-		rm.Strictness += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
-	case r.GenderDominance.IsFemaleDominate():
-		rm.RealLifeOriented += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
-		rm.AfterlifeOriented += genderCoef * pm.RandFloat64InRange(0.01, 0.03)
-		rm.InsideDirected += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
-		rm.OutsideDirected += genderCoef * pm.RandFloat64InRange(0.005, 0.015)
-		rm.Fanaticism += genderCoef * pm.RandFloat64InRange(0.03, 0.04)
-		rm.Strictness += genderCoef * pm.RandFloat64InRange(0.01, 0.02)
+		rm.Liberal += pm.RandFloat64InRange(0.01, 0.1)
 	}
 
 	return rm
 }
 
-type updateReligionMetadata struct {
-	Centralized   *float64
-	Decentralized *float64
-
-	RealLifeOriented  *float64
-	AfterlifeOriented *float64
-
-	InsideDirected  *float64
-	OutsideDirected *float64
-
-	Fanaticism *float64
-	Strictness *float64
-
-	// Specials traits
-	Hedonism  *float64
-	Ascetic   *float64
-	Chthonic  *float64
-	Elitaric  *float64
-	Primitive *float64
-	Organized *float64
-}
-
-func UpdateReligionMetadata(rm religionMetadata, u updateReligionMetadata) *religionMetadata {
-	if u.Centralized != nil {
-		rm.Centralized = CalculateReligionMetadataScoreIncrease(rm.Centralized, *u.Centralized)
+func UpdateReligionMetadata(rm, u religionMetadata) *religionMetadata {
+	if u.Naturalistic > 0 {
+		rm.Naturalistic += u.Naturalistic
 	}
-	if u.Decentralized != nil {
-		rm.Decentralized = CalculateReligionMetadataScoreIncrease(rm.Decentralized, *u.Decentralized)
+	if u.SexualActive > 0 {
+		rm.SexualActive += u.SexualActive
+	}
+	if u.Chthonic > 0 {
+		rm.Chthonic += u.Chthonic
+	}
+	if u.Plutocratic > 0 {
+		rm.Plutocratic += u.Plutocratic
+	}
+	if u.Altruistic > 0 {
+		rm.Altruistic += u.Altruistic
+	}
+	if u.Lawful > 0 {
+		rm.Lawful += u.Lawful
+	}
+	if u.Educational > 0 {
+		rm.Educational += u.Educational
 	}
 
-	if u.RealLifeOriented != nil {
-		rm.RealLifeOriented = CalculateReligionMetadataScoreIncrease(rm.RealLifeOriented, *u.RealLifeOriented)
+	if u.Aggressive > 0 {
+		rm.Aggressive += u.Aggressive
 	}
-	if u.AfterlifeOriented != nil {
-		rm.AfterlifeOriented = CalculateReligionMetadataScoreIncrease(rm.AfterlifeOriented, *u.AfterlifeOriented)
-	}
-
-	if u.InsideDirected != nil {
-		rm.InsideDirected = CalculateReligionMetadataScoreIncrease(rm.InsideDirected, *u.InsideDirected)
-	}
-	if u.OutsideDirected != nil {
-		rm.OutsideDirected = CalculateReligionMetadataScoreIncrease(rm.OutsideDirected, *u.OutsideDirected)
+	if u.Pacifistic > 0 {
+		rm.Pacifistic += u.Pacifistic
 	}
 
-	if u.Fanaticism != nil {
-		rm.Fanaticism = CalculateReligionMetadataScoreIncrease(rm.Fanaticism, *u.Fanaticism)
+	if u.Hedonistic > 0 {
+		rm.Hedonistic += u.Hedonistic
 	}
-	if u.Strictness != nil {
-		rm.Strictness = CalculateReligionMetadataScoreIncrease(rm.Strictness, *u.Strictness)
+	if u.Ascetic > 0 {
+		rm.Ascetic += u.Ascetic
 	}
 
-	if u.Hedonism != nil {
-		rm.Hedonism = CalculateReligionMetadataScoreIncrease(rm.Hedonism, *u.Hedonism)
+	if u.Authoritaristic > 0 {
+		rm.Authoritaristic += u.Authoritaristic
 	}
-	if u.Ascetic != nil {
-		rm.Ascetic = CalculateReligionMetadataScoreIncrease(rm.Ascetic, *u.Ascetic)
+	if u.Liberal > 0 {
+		rm.Liberal += u.Liberal
 	}
-	if u.Chthonic != nil {
-		rm.Chthonic = CalculateReligionMetadataScoreIncrease(rm.Chthonic, *u.Chthonic)
+
+	if u.Individualistic > 0 {
+		rm.Individualistic += u.Individualistic
 	}
-	if u.Elitaric != nil {
-		rm.Elitaric = CalculateReligionMetadataScoreIncrease(rm.Elitaric, *u.Elitaric)
+	if u.Collectivistic > 0 {
+		rm.Collectivistic += u.Collectivistic
 	}
-	if u.Primitive != nil {
-		rm.Primitive = CalculateReligionMetadataScoreIncrease(rm.Primitive, *u.Primitive)
+
+	if u.Simple > 0 {
+		rm.Simple += u.Simple
 	}
-	if u.Organized != nil {
-		rm.Organized = CalculateReligionMetadataScoreIncrease(rm.Organized, *u.Organized)
+	if u.Complicated > 0 {
+		rm.Complicated += u.Complicated
 	}
 
 	return &rm
@@ -183,107 +259,115 @@ type CalcProbOpts struct {
 	Log bool
 }
 
-func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u updateReligionMetadata, opts CalcProbOpts) bool {
-	calcFunc := func(base, inc float64) float64 {
-		if base == 0 && inc == 0 {
-			return 0
-		}
-		if base == 0 {
-			return pm.RandFloat64InRange(0, 0.25) * baseCoef
-		}
-
-		var (
-			probability   float64
-			signCoef      = 0.5 // for inc > base
-			percentOfDiff = inc / base
-		)
-		if base > inc {
-			signCoef = 1
-		}
-
-		switch {
-		case percentOfDiff > 1:
-			probability = pm.RandFloat64InRange(1, 2)
-		case percentOfDiff > 0.75 && percentOfDiff <= 1:
-			probability = pm.RandFloat64InRange(0.5, 1)
-		case percentOfDiff > 0.5 && percentOfDiff <= 0.75:
-			probability = pm.RandFloat64InRange(0.25, 0.75)
-		case percentOfDiff > 0.25 && percentOfDiff <= 0.5:
-			probability = pm.RandFloat64InRange(0.1, 0.5)
-		case percentOfDiff >= 0 && percentOfDiff <= 0.25:
-			probability = pm.RandFloat64InRange(0, 0.25)
-		}
-
-		return signCoef * baseCoef * probability
+func getRMProbability(coef float64, isMatchSame, isMatchContrary bool) float64 {
+	var (
+		sameCoef     = pm.RandFloat64InRange(0.4, 0.8)
+		contraryCoef = pm.RandFloat64InRange(0.3, 0.7)
+		newCoef      = pm.RandFloat64InRange(0.5, 1)
+	)
+	if isMatchSame && isMatchContrary {
+		return coef * pm.PrepareProbability(sameCoef-contraryCoef)
+	}
+	if isMatchSame && !isMatchContrary {
+		return coef * sameCoef
+	}
+	if !isMatchSame && !isMatchContrary {
+		return coef * sameCoef * newCoef
 	}
 
-	var primaryProbability float64
-	var treatsCount int
-	if u.RealLifeOriented != nil {
-		primaryProbability += calcFunc(r.metadata.RealLifeOriented, *u.RealLifeOriented)
-		treatsCount++
+	return 0
+}
+
+func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *religionMetadata, opts CalcProbOpts) bool {
+	baseCoef = pm.PrepareProbability(baseCoef)
+	var (
+		primaryProbability float64
+		randCoef           = pm.RandFloat64InRange(0.9, 1.1)
+		ideasCount         int
+	)
+
+	if u.Naturalistic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsNaturalistic(), false)
+		ideasCount++
 	}
-	if u.AfterlifeOriented != nil {
-		primaryProbability += calcFunc(r.metadata.AfterlifeOriented, *u.AfterlifeOriented)
-		treatsCount++
+	if u.SexualActive > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsSexualActive(), false)
+		ideasCount++
+	}
+	if u.Chthonic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsChthonic(), false)
+		ideasCount++
+	}
+	if u.Plutocratic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsPlutocratic(), r.metadata.IsAltruistic())
+		ideasCount++
+	}
+	if u.Altruistic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsAltruistic(), r.metadata.IsPlutocratic())
+		ideasCount++
+	}
+	if u.Lawful > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsLawful(), false)
+		ideasCount++
+	}
+	if u.Educational > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsEducational(), false)
+		ideasCount++
 	}
 
-	if u.InsideDirected != nil {
-		primaryProbability += calcFunc(r.metadata.InsideDirected, *u.InsideDirected)
-		treatsCount++
+	if u.Aggressive > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsAggressive(), r.metadata.IsPacifistic())
+		ideasCount++
 	}
-	if u.OutsideDirected != nil {
-		primaryProbability += calcFunc(r.metadata.OutsideDirected, *u.OutsideDirected)
-		treatsCount++
-	}
-
-	if u.Fanaticism != nil {
-		primaryProbability += calcFunc(r.metadata.Fanaticism, *u.Fanaticism)
-		treatsCount++
-	}
-	if u.Strictness != nil {
-		primaryProbability += calcFunc(r.metadata.Strictness, *u.Strictness)
-		treatsCount++
+	if u.Pacifistic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsPacifistic(), r.metadata.IsAggressive())
+		ideasCount++
 	}
 
-	if u.Hedonism != nil {
-		primaryProbability += calcFunc(r.metadata.Hedonism, *u.Hedonism)
-		treatsCount++
+	if u.Hedonistic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsHedonistic(), r.metadata.IsAscetic())
+		ideasCount++
 	}
-	if u.Ascetic != nil {
-		primaryProbability += calcFunc(r.metadata.Ascetic, *u.Ascetic)
-		treatsCount++
+	if u.Ascetic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsAscetic(), r.metadata.IsHedonistic())
+		ideasCount++
 	}
-	if u.Chthonic != nil {
-		primaryProbability += calcFunc(r.metadata.Chthonic, *u.Chthonic)
-		treatsCount++
+
+	if u.Authoritaristic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsAuthoritaristic(), r.metadata.IsLiberal())
+		ideasCount++
 	}
-	if u.Elitaric != nil {
-		primaryProbability += calcFunc(r.metadata.Elitaric, *u.Elitaric)
-		treatsCount++
+	if u.Ascetic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsLiberal(), r.metadata.IsAuthoritaristic())
+		ideasCount++
 	}
-	if u.Primitive != nil {
-		primaryProbability += calcFunc(r.metadata.Primitive, *u.Primitive)
-		treatsCount++
+
+	if u.Individualistic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsIndividualistic(), r.metadata.IsCollectivistic())
+		ideasCount++
 	}
-	if u.Organized != nil {
-		primaryProbability += calcFunc(r.metadata.Organized, *u.Organized)
-		treatsCount++
+	if u.Ascetic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsCollectivistic(), r.metadata.IsIndividualistic())
+		ideasCount++
 	}
-	primaryProbability = primaryProbability / float64(treatsCount)
+
+	if u.Simple > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsSimple(), r.metadata.IsComplicated())
+		ideasCount++
+	}
+	if u.Ascetic > 0 {
+		primaryProbability += getRMProbability(randCoef, r.metadata.IsComplicated(), r.metadata.IsSimple())
+		ideasCount++
+	}
+
+	probability := pm.PrepareProbability(baseCoef * primaryProbability)
+	if ideasCount > 0 {
+		probability = probability / float64(ideasCount)
+	}
+
 	if opts.Log {
-		fmt.Printf("<<<<<\nPrimProb: %f\n>>>>>>>>", primaryProbability)
+		fmt.Printf(">>>>>>>>>>\nprobability: %f\n<<<<<<<<<<<<", probability)
 	}
 
-	return pm.GetRandomBool(primaryProbability)
-}
-
-func CalculateReligionMetadataScoreIncrease(src, inc float64) float64 {
-	incCoef := pm.RandFloat64InRange(0.05, 0.15)
-
-	return src + inc*incCoef
-}
-
-func Float64(input float64) *float64 {
-	return &input
+	return pm.GetRandomBool(probability)
 }
