@@ -55,7 +55,7 @@ func (ts *Temples) generateHasTemples() bool {
 
 func (ts *Temples) generateSacredPlaces() bool {
 	primaryProbability := pm.RandFloat64InRange(0.5, 0.7)
-	if ts.religion.IsNaturalistic() {
+	if ts.religion.metadata.IsNaturalistic() {
 		primaryProbability += pm.RandFloat64InRange(0.05, 0.15)
 	}
 

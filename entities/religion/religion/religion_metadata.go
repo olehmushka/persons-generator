@@ -42,7 +42,7 @@ func (rm *religionMetadata) IsNaturalistic() bool {
 		return false
 	}
 
-	return rm.Naturalistic > 2
+	return rm.Naturalistic > 2.5
 }
 
 func (rm *religionMetadata) IsSexualActive() bool {
@@ -50,7 +50,7 @@ func (rm *religionMetadata) IsSexualActive() bool {
 		return false
 	}
 
-	return rm.SexualActive > 2
+	return rm.SexualActive >= 2
 }
 
 func (rm *religionMetadata) IsChthonic() bool {
@@ -58,7 +58,7 @@ func (rm *religionMetadata) IsChthonic() bool {
 		return false
 	}
 
-	return rm.Chthonic > 2
+	return rm.Chthonic >= 2
 }
 
 func (rm *religionMetadata) IsPlutocratic() bool {
@@ -66,7 +66,7 @@ func (rm *religionMetadata) IsPlutocratic() bool {
 		return false
 	}
 
-	return rm.Plutocratic > 2
+	return rm.Plutocratic >= 2
 }
 
 func (rm *religionMetadata) IsAltruistic() bool {
@@ -74,7 +74,7 @@ func (rm *religionMetadata) IsAltruistic() bool {
 		return false
 	}
 
-	return rm.Altruistic > 2
+	return rm.Altruistic >= 2
 }
 
 func (rm *religionMetadata) IsLawful() bool {
@@ -82,7 +82,7 @@ func (rm *religionMetadata) IsLawful() bool {
 		return false
 	}
 
-	return rm.Lawful > 2
+	return rm.Lawful >= 2
 }
 
 func (rm *religionMetadata) IsEducational() bool {
@@ -90,7 +90,7 @@ func (rm *religionMetadata) IsEducational() bool {
 		return false
 	}
 
-	return rm.Educational > 2
+	return rm.Educational >= 2
 }
 
 func (rm *religionMetadata) IsAggressive() bool {
@@ -98,7 +98,7 @@ func (rm *religionMetadata) IsAggressive() bool {
 		return false
 	}
 
-	return rm.Aggressive > 2
+	return rm.Aggressive >= 2
 }
 
 func (rm *religionMetadata) IsPacifistic() bool {
@@ -106,7 +106,7 @@ func (rm *religionMetadata) IsPacifistic() bool {
 		return false
 	}
 
-	return rm.Pacifistic > 2
+	return rm.Pacifistic >= 2
 }
 
 func (rm *religionMetadata) IsHedonistic() bool {
@@ -114,7 +114,7 @@ func (rm *religionMetadata) IsHedonistic() bool {
 		return false
 	}
 
-	return rm.Hedonistic > 2
+	return rm.Hedonistic >= 2
 }
 
 func (rm *religionMetadata) IsAscetic() bool {
@@ -122,7 +122,7 @@ func (rm *religionMetadata) IsAscetic() bool {
 		return false
 	}
 
-	return rm.Ascetic > 2
+	return rm.Ascetic >= 2
 }
 
 func (rm *religionMetadata) IsAuthoritaristic() bool {
@@ -130,7 +130,7 @@ func (rm *religionMetadata) IsAuthoritaristic() bool {
 		return false
 	}
 
-	return rm.Authoritaristic > 2
+	return rm.Authoritaristic >= 2
 }
 
 func (rm *religionMetadata) IsLiberal() bool {
@@ -138,7 +138,7 @@ func (rm *religionMetadata) IsLiberal() bool {
 		return false
 	}
 
-	return rm.Liberal > 2
+	return rm.Liberal >= 2
 }
 
 func (rm *religionMetadata) IsIndividualistic() bool {
@@ -146,7 +146,7 @@ func (rm *religionMetadata) IsIndividualistic() bool {
 		return false
 	}
 
-	return rm.Individualistic > 2
+	return rm.Individualistic >= 2
 }
 
 func (rm *religionMetadata) IsCollectivistic() bool {
@@ -154,7 +154,7 @@ func (rm *religionMetadata) IsCollectivistic() bool {
 		return false
 	}
 
-	return rm.Collectivistic > 2
+	return rm.Collectivistic >= 2
 }
 
 func (rm *religionMetadata) IsSimple() bool {
@@ -162,7 +162,7 @@ func (rm *religionMetadata) IsSimple() bool {
 		return false
 	}
 
-	return rm.Simple > 2
+	return rm.Simple >= 2
 }
 
 func (rm *religionMetadata) IsComplicated() bool {
@@ -170,7 +170,7 @@ func (rm *religionMetadata) IsComplicated() bool {
 		return false
 	}
 
-	return rm.Complicated > 2
+	return rm.Complicated >= 2
 }
 
 func (r *Religion) generateMetadata() *religionMetadata {
@@ -256,7 +256,8 @@ func UpdateReligionMetadata(rm, u religionMetadata) *religionMetadata {
 }
 
 type CalcProbOpts struct {
-	Log bool
+	Log   bool
+	Label string
 }
 
 func getRMProbability(coef float64, isMatchSame, isMatchContrary bool) float64 {
@@ -366,7 +367,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	}
 
 	if opts.Log {
-		fmt.Printf(">>>>>>>>>>\nprobability: %f\n<<<<<<<<<<<<", probability)
+		fmt.Printf("\n>>>>>>>>>>\nLabel: %s\nprobability: %f\n<<<<<<<<<<<<\n", opts.Label, probability)
 	}
 
 	return pm.GetRandomBool(probability)

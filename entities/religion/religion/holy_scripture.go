@@ -26,7 +26,7 @@ func (as *Attributes) generateHolyScripture() *HolyScripture {
 
 func (hs *HolyScripture) generateHasHolyScripture() bool {
 	primaryProbability := pm.RandFloat64InRange(0.5, 0.7)
-	if hs.religion.IsLawful() {
+	if hs.religion.metadata.IsLawful() {
 		primaryProbability += pm.RandFloat64InRange(0.05, 0.1)
 	}
 

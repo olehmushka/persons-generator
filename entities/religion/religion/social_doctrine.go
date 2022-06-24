@@ -161,9 +161,9 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 				Hedonistic:   0.75,
 				Liberal:      0.5,
 			},
-			baseCoef: sd.religion.M.BaseCoef - pm.RandFloat64InRange(0, 0.15),
+			baseCoef: sd.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *socialTrait, _ []*socialTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{Log: true})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{Log: true, Label: "SocialDoctrine.Traits.Polyamory"})
 			},
 		},
 		{
@@ -304,80 +304,4 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*socialTrait {
 			},
 		},
 	}
-}
-
-func (sd *SocialDoctrine) GetNaturalisticCriterias() float64 {
-	if len(sd.Traits) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, trait := range sd.Traits {
-		switch trait.Name {
-		case "SanctityOfNature":
-			criterias += 1
-		case "SacredChildbirth":
-			criterias += 0.5
-		}
-	}
-
-	return criterias
-}
-
-func (sd *SocialDoctrine) GetPacifisticCriterias() float64 {
-	if len(sd.Traits) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, trait := range sd.Traits {
-		switch trait.Name {
-		case "LiveIsSacred":
-			criterias += 1
-		case "SacredChildbirth":
-			criterias += 0.5
-		}
-	}
-
-	return criterias
-}
-
-func (sd *SocialDoctrine) GetAggressiveCriterias() float64 {
-	if len(sd.Traits) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, trait := range sd.Traits {
-		switch trait.Name {
-		case "Raider":
-			fallthrough
-		case "Agoge":
-			fallthrough
-		case "Berserkers":
-			fallthrough
-		case "HonorableDeath":
-			fallthrough
-		case "WarriorsPath":
-			criterias += 1
-		}
-	}
-
-	return criterias
-}
-
-func (sd *SocialDoctrine) GetSexualActiveCriterias() float64 {
-	if len(sd.Traits) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, trait := range sd.Traits {
-		switch trait.Name {
-		case "Polyamory":
-			criterias += 1
-		}
-	}
-
-	return criterias
 }

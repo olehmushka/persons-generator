@@ -22,7 +22,8 @@ type Theology struct {
 func NewTheology(r *Religion) *Theology {
 	t := &Theology{religion: r}
 	t.Traits = t.generateTraits(1, 5)
-	t.Cults = t.generateCults(1, pm.RandIntInRange(2, len(t.getAllCults())))
+	minCults, maxCults := t.getCultsRange()
+	t.Cults = t.generateCults(minCults, maxCults)
 	t.Rules = t.generateRules()
 	t.Taboos = t.generateTaboos()
 	t.Rituals = t.generateRituals()
@@ -377,51 +378,74 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
-		}, // TODO continue
+		},
 		{
-			Name:              "DefendersOfFaith",
-			_religionMetadata: &religionMetadata{},
-			baseCoef:          t.religion.M.BaseCoef,
+			Name: "DefendersOfFaith",
+			_religionMetadata: &religionMetadata{
+				Lawful:     0.25,
+				Aggressive: 0.75,
+			},
+			baseCoef: t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name:              "NonViolentResistance",
-			_religionMetadata: &religionMetadata{},
-			baseCoef:          t.religion.M.BaseCoef,
+			Name: "NonViolentResistance",
+			_religionMetadata: &religionMetadata{
+				Pacifistic: 1,
+			},
+			baseCoef: t.religion.M.BaseCoef,
+			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+				if r.metadata.IsAggressive() {
+					return pm.GetRandomBool(pm.RandFloat64InRange(0, 0.05))
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+			},
+		},
+		{
+			Name: "NoMoreKilling",
+			_religionMetadata: &religionMetadata{
+				Altruistic: 1,
+				Pacifistic: 1,
+			},
+			baseCoef: t.religion.M.BaseCoef,
+			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+				if r.metadata.IsAggressive() {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+			},
+		},
+		{
+			Name: "AnimalMessengers",
+			_religionMetadata: &religionMetadata{
+				Naturalistic: 1,
+			},
+			baseCoef: t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name:              "NoMoreKilling",
-			_religionMetadata: &religionMetadata{},
-			baseCoef:          t.religion.M.BaseCoef,
+			Name: "SanctuaryOfMind",
+			_religionMetadata: &religionMetadata{
+				Individualistic: 1,
+				Complicated:     0.25,
+			},
+			baseCoef: t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name:              "AnimalMessengers",
-			_religionMetadata: &religionMetadata{},
-			baseCoef:          t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+			Name: "Phantoms",
+			_religionMetadata: &religionMetadata{
+				Chthonic: 1,
 			},
-		},
-		{
-			Name:              "SanctuaryOfMind",
-			_religionMetadata: &religionMetadata{},
-			baseCoef:          t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
-			},
-		},
-		{
-			Name:              "Phantoms",
-			_religionMetadata: &religionMetadata{},
-			baseCoef:          t.religion.M.BaseCoef,
+			baseCoef: t.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
@@ -441,58 +465,4 @@ func (t *Theology) HasReincarnation() bool {
 	}
 
 	return false
-}
-
-func (t *Theology) GetNaturalisticCriterias() float64 {
-	if len(t.Traits) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, trait := range t.Traits {
-		switch trait.Name {
-		case "TreeConnection":
-			fallthrough
-		case "AnimalConnection":
-			criterias += 1
-		case "Astrology":
-			criterias += 0.5
-		case "AnimalMessengers":
-			criterias += 0.5
-		}
-	}
-
-	return criterias
-}
-
-func (t *Theology) GetAggressiveCriterias() float64 {
-	if len(t.Traits) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, trait := range t.Traits {
-		switch trait.Name {
-		case "HolyArmy":
-			criterias += 1
-		}
-	}
-
-	return criterias
-}
-
-func (t *Theology) GetPlutocracyCriterias() float64 {
-	if len(t.Traits) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, trait := range t.Traits {
-		switch trait.Name {
-		case "Indulgences":
-			criterias += 1
-		}
-	}
-
-	return criterias
 }

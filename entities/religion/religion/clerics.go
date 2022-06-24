@@ -54,7 +54,7 @@ func (cs *Clerics) Print() {
 
 func (cs *Clerics) generateHasClerics() bool {
 	primaryProbability := pm.RandFloat64InRange(0.6, 0.85)
-	if cs.religion.IsLawful() {
+	if cs.religion.metadata.IsLawful() {
 		primaryProbability += pm.RandFloat64InRange(0.05, 0.15)
 	}
 
@@ -72,7 +72,7 @@ func (cs *Clerics) generateAppointment() *ClericsAppointment {
 	return &ClericsAppointment{
 		religion:    cs.religion,
 		IsCivil:     CalculateProbabilityFromReligionMetadata(cs.religion.M.BaseCoef, cs.religion, &religionMetadata{Liberal: 1}, CalcProbOpts{}),
-		IsRevocable: CalculateProbabilityFromReligionMetadata(cs.religion.M.BaseCoef, cs.religion, &religionMetadata{Authoritaristic: 1}, CalcProbOpts{}),
+		IsRevocable: CalculateProbabilityFromReligionMetadata(cs.religion.M.BaseCoef, cs.religion, &religionMetadata{Authoritaristic: 1}, CalcProbOpts{Log: true, Label: "Clerics.ClericsAppointment.IsRevocable"}),
 	}
 }
 
@@ -86,7 +86,7 @@ func (cas *ClericsAppointment) Print() {
 	}
 	IsRevocableStr := "is not"
 	if cas.IsRevocable {
-		isCivilStr = "is"
+		IsRevocableStr = "is"
 	}
 	fmt.Printf("Cleric position %s civil and it %s revocable\n", isCivilStr, IsRevocableStr)
 }

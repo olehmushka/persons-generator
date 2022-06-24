@@ -287,7 +287,13 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Altruistic: 0.5,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
+				for _, goal := range selectedGoals {
+					if goal.Name == "StartArmageddon" {
+						return false
+					}
+				}
+
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -297,77 +303,15 @@ func (hg *HighGoal) getAllGoals() []*highGoal {
 				Chthonic: 1,
 			},
 			baseCoef: hg.religion.M.LowBaseCoef,
-			Calc: func(r *Religion, self *highGoal, _ []*highGoal) bool {
+			Calc: func(r *Religion, self *highGoal, selectedGoals []*highGoal) bool {
+				for _, goal := range selectedGoals {
+					if goal.Name == "StopArmageddon" {
+						return false
+					}
+				}
+
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 	}
-}
-
-func (hg *HighGoal) GetNaturalisticCriterias() float64 {
-	if len(hg.Goals) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, goal := range hg.Goals {
-		switch goal.Name {
-		case "ProduceChildren":
-			criterias += 0.5
-		}
-	}
-
-	return criterias
-}
-
-func (hg *HighGoal) GetPacifisticCriterias() float64 {
-	if len(hg.Goals) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, goal := range hg.Goals {
-		switch goal.Name {
-		case "LovePeople":
-			criterias += 1
-		}
-	}
-
-	return criterias
-}
-
-func (hg *HighGoal) GetAggressiveCriterias() float64 {
-	if len(hg.Goals) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, goal := range hg.Goals {
-		switch goal.Name {
-		case "FightAgainstEvil":
-			criterias += 0.5
-		case "FightForEvil":
-			criterias += 0.5
-		}
-	}
-
-	return criterias
-}
-
-func (hg *HighGoal) GetSexualActiveCriterias() float64 {
-	if len(hg.Goals) == 0 {
-		return 0
-	}
-
-	var criterias float64
-	for _, goal := range hg.Goals {
-		switch goal.Name {
-		case "ProduceChildren":
-			fallthrough
-		case "GetMaxPleasure":
-			criterias += 0.5
-		}
-	}
-
-	return criterias
 }

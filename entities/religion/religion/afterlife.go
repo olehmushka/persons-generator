@@ -12,6 +12,7 @@ type Afterlife struct {
 
 	IsExists     bool
 	Participants *AfterlifeParticipants
+	Traits       []*afterlifeTrait
 }
 
 func (al *Afterlife) Print() {
@@ -22,6 +23,12 @@ func (al *Afterlife) Print() {
 	}
 	fmt.Printf("Afterlife exists (religion=%s)\n", al.religion.Name)
 	al.Participants.Print()
+	if len(al.Traits) != 0 {
+		fmt.Printf("Afterlife Traits (religion_name=%s):\n", al.religion.Name)
+		for _, trait := range al.Traits {
+			fmt.Printf(" - %s\n", trait.Name)
+		}
+	}
 }
 
 func (d *Doctrine) generateAfterlife() *Afterlife {
@@ -29,6 +36,7 @@ func (d *Doctrine) generateAfterlife() *Afterlife {
 	al.IsExists = al.generateIsExistsAfterlife()
 	if al.IsExists {
 		al.Participants = al.generateAfterlifeParticipants()
+		al.Traits = al.generateTraits(0, len(al.getAllAfterlifeTraits()))
 	}
 
 	return al
@@ -87,14 +95,6 @@ func (alp *AfterlifeParticipants) Print() {
 	fmt.Printf("Afterlife for atheists is %s\n", alp.ForAtheists)
 }
 
-type AfterlifeOption string
-
-const (
-	GoodAfterlife    AfterlifeOption = "Good"
-	DependsAfterlife AfterlifeOption = "Depends"
-	BadAfterlife     AfterlifeOption = "Bad"
-)
-
 func (al *Afterlife) generateForTopBelieversAfterlife(alp *AfterlifeParticipants) AfterlifeOption {
 	var (
 		good    = pm.RandFloat64InRange(0.5, 1)
@@ -111,6 +111,13 @@ func (al *Afterlife) generateForBelieversAfterlife(alp *AfterlifeParticipants) A
 		depends = pm.RandFloat64InRange(0.3, 0.75)
 		bad     = pm.RandFloat64InRange(0, 0.45)
 	)
+	switch {
+	case alp.ForTopBelievers.GetScore() < GoodAfterlife.GetScore():
+		good = 0
+	case alp.ForTopBelievers.GetScore() < DependsAfterlife.GetScore():
+		good = 0
+		depends = 0
+	}
 
 	return getAfterlifeOptionByProbability(good, depends, bad)
 }
@@ -129,6 +136,13 @@ func (al *Afterlife) generateForUntrueBelieversAfterlife(alp *AfterlifeParticipa
 			good += pm.RandFloat64InRange(0.05, 0.2)
 		}
 	}
+	switch {
+	case alp.ForBelievers.GetScore() < GoodAfterlife.GetScore():
+		good = 0
+	case alp.ForBelievers.GetScore() < DependsAfterlife.GetScore():
+		good = 0
+		depends = 0
+	}
 
 	return getAfterlifeOptionByProbability(good, depends, bad)
 }
@@ -143,6 +157,13 @@ func (al *Afterlife) generateForAtheistsAfterlife(alp *AfterlifeParticipants) Af
 		good += pm.RandFloat64InRange(0.01, 0.1)
 		depends += pm.RandFloat64InRange(0.01, 0.1)
 	}
+	switch {
+	case alp.ForBelievers.GetScore() < GoodAfterlife.GetScore():
+		good = 0
+	case alp.ForBelievers.GetScore() < DependsAfterlife.GetScore():
+		good = 0
+		depends = 0
+	}
 
 	return getAfterlifeOptionByProbability(good, depends, bad)
 }
@@ -156,4 +177,104 @@ func getAfterlifeOptionByProbability(good, depends, bad float64) AfterlifeOption
 	return AfterlifeOption(pm.GetRandomFromSeveral(m))
 }
 
-// heavenly palace, psychopomp
+type AfterlifeOption string
+
+const (
+	GoodAfterlife    AfterlifeOption = "Good"
+	DependsAfterlife AfterlifeOption = "Depends"
+	BadAfterlife     AfterlifeOption = "Bad"
+)
+
+func (o AfterlifeOption) GetScore() int {
+	switch o {
+	case GoodAfterlife:
+		return 1
+	case DependsAfterlife:
+		return 0
+	case BadAfterlife:
+		return -1
+	default:
+		return 0
+	}
+}
+
+type afterlifeTrait struct {
+	_religionMetadata *religionMetadata
+	baseCoef          float64
+	Name              string
+	Calc              func(r *Religion, self *afterlifeTrait, selectedTraits []*afterlifeTrait) bool
+}
+
+func (al *Afterlife) generateTraits(min, max int) []*afterlifeTrait {
+	if min < 0 {
+		panic("[Afterlife.generateTraits] min can not be less than 0")
+	}
+	allTraits := al.getAllAfterlifeTraits()
+	if max > len(allTraits) {
+		panic("[Afterlife.generateTraits] max can not be greater than allTraits length")
+	}
+
+	traits := make([]*afterlifeTrait, 0, len(allTraits))
+	for count := 0; count < 20; count++ {
+		for _, trait := range allTraits {
+			if trait.Calc(al.religion, trait, traits) {
+				traits = append(traits, &afterlifeTrait{
+					_religionMetadata: trait._religionMetadata,
+					baseCoef:          trait.baseCoef,
+					Name:              trait.Name,
+					Calc:              trait.Calc,
+				})
+			}
+			if len(traits) == max {
+				break
+			}
+		}
+		if len(traits) == max {
+			break
+		}
+		if len(traits) >= min {
+			break
+		}
+	}
+
+	for _, trait := range traits {
+		al.religion.UpdateMetadata(UpdateReligionMetadata(*al.religion.metadata, *trait._religionMetadata))
+	}
+
+	return traits
+}
+
+func (al *Afterlife) getAllAfterlifeTraits() []*afterlifeTrait {
+	return []*afterlifeTrait{
+		{
+			Name: "HeavenlyPalace",
+			_religionMetadata: &religionMetadata{
+				Simple: 0.5,
+			},
+			baseCoef: al.religion.M.BaseCoef,
+			Calc: func(r *Religion, self *afterlifeTrait, _ []*afterlifeTrait) bool {
+				var addCoef float64
+				if r.Type.IsPolytheism() {
+					addCoef += pm.RandFloat64InRange(0.01, 0.1)
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+			},
+		},
+		{
+			Name: "Psychopomp",
+			_religionMetadata: &religionMetadata{
+				Chthonic: 0.5,
+			},
+			baseCoef: al.religion.M.BaseCoef,
+			Calc: func(r *Religion, self *afterlifeTrait, _ []*afterlifeTrait) bool {
+				var addCoef float64
+				if r.Type.IsPolytheism() {
+					addCoef += pm.RandFloat64InRange(0.01, 0.1)
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+			},
+		},
+	}
+}
