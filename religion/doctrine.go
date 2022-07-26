@@ -5,7 +5,7 @@ import (
 
 	"persons_generator/entities"
 	rel "persons_generator/entities/religion"
-	pm "persons_generator/probability-machine"
+	pm "persons_generator/probability_machine"
 )
 
 func generateDoctrine(r *entities.Religion) {

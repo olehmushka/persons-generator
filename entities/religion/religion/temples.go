@@ -3,7 +3,7 @@ package religion
 import (
 	"fmt"
 
-	pm "persons_generator/probability-machine"
+	pm "persons_generator/probability_machine"
 )
 
 type Temples struct {
@@ -12,7 +12,7 @@ type Temples struct {
 
 	HasTemples      bool
 	HasSacredPlaces bool
-	Traits          []*templeTrait
+	Traits          []*trait
 }
 
 func (as *Attributes) generateTemples() *Temples {
@@ -20,7 +20,11 @@ func (as *Attributes) generateTemples() *Temples {
 	ts.HasTemples = ts.generateHasTemples()
 	ts.HasSacredPlaces = ts.generateSacredPlaces()
 	if ts.HasTemples || ts.HasSacredPlaces {
-		ts.Traits = ts.generateTraits(1, len(ts.Traits)-2)
+		ts.Traits = generateTraits(ts.religion, ts.getAllTemplesTraits(), generateTraitsOpts{
+			Label: "Temples.generateTraits",
+			Min:   1,
+			Max:   len(ts.getAllTemplesTraits()) - 2,
+		})
 	}
 
 	return ts
@@ -62,54 +66,8 @@ func (ts *Temples) generateSacredPlaces() bool {
 	return pm.GetRandomBool(pm.PrepareProbability(primaryProbability))
 }
 
-type templeTrait struct {
-	_religionMetadata *religionMetadata
-	baseCoef          float64
-	Name              string
-	Calc              func(r *Religion, self *templeTrait, selectedTraits []*templeTrait) bool
-}
-
-func (ts *Temples) generateTraits(min, max int) []*templeTrait {
-	if min < 0 {
-		panic("[Temples.generateTraits] min can not be less than 0")
-	}
-	allTraits := ts.getAllTemplesTraits()
-	if max > len(allTraits) {
-		panic("[Temples.generateTraits] max can not be greater than allTraits length")
-	}
-
-	traits := make([]*templeTrait, 0, len(allTraits))
-	for count := 0; count < 20; count++ {
-		for _, trait := range allTraits {
-			if trait.Calc(ts.religion, trait, traits) {
-				traits = append(traits, &templeTrait{
-					_religionMetadata: trait._religionMetadata,
-					baseCoef:          trait.baseCoef,
-					Name:              trait.Name,
-					Calc:              trait.Calc,
-				})
-			}
-			if len(traits) == max {
-				break
-			}
-		}
-		if len(traits) == max {
-			break
-		}
-		if len(traits) >= min {
-			break
-		}
-	}
-
-	for _, trait := range traits {
-		ts.religion.UpdateMetadata(UpdateReligionMetadata(*ts.religion.metadata, *trait._religionMetadata))
-	}
-
-	return traits
-}
-
-func (ts *Temples) getAllTemplesTraits() []*templeTrait {
-	return []*templeTrait{
+func (ts *Temples) getAllTemplesTraits() []*trait {
+	return []*trait{
 		{
 			Name: "CultProperty",
 			_religionMetadata: &religionMetadata{
@@ -117,7 +75,7 @@ func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 				Lawful:      0.25,
 			},
 			baseCoef: ts.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				for _, trait := range ts.attrs.HolyScripture.Traits {
 					if trait.Name == "DivineLaw" {
@@ -135,7 +93,7 @@ func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 				Lawful:      0.25,
 			},
 			baseCoef: ts.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if !ts.HasTemples {
 					return false
 				}
@@ -157,7 +115,7 @@ func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 				Collectivistic: 0.25,
 			},
 			baseCoef: ts.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if ts.attrs.HolyScripture.HasHolyScripture {
 					addCoef += pm.RandFloat64InRange(0.05, 0.15)
@@ -184,7 +142,7 @@ func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 				Educational: 1,
 			},
 			baseCoef: ts.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if ts.attrs.HolyScripture.HasHolyScripture {
 					addCoef += pm.RandFloat64InRange(0.05, 0.15)
@@ -200,7 +158,7 @@ func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 				Complicated: 0.5,
 			},
 			baseCoef: ts.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if ts.attrs.HolyScripture.HasHolyScripture {
 					addCoef += pm.RandFloat64InRange(0.05, 0.15)
@@ -217,7 +175,7 @@ func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 				Collectivistic:  0.75,
 			},
 			baseCoef: ts.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if ts.attrs.Clerics.HasClerics {
 					for _, trait := range ts.attrs.Clerics.Traits {
@@ -242,7 +200,7 @@ func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 				Collectivistic: 0.75,
 			},
 			baseCoef: ts.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if ts.attrs.Clerics.HasClerics {
 					for _, trait := range ts.attrs.Clerics.Traits {
@@ -261,7 +219,7 @@ func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 				Altruistic: 1,
 			},
 			baseCoef: ts.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if !ts.HasTemples {
 					return false
 				}
@@ -291,8 +249,41 @@ func (ts *Temples) getAllTemplesTraits() []*templeTrait {
 				Simple:       0.5,
 			},
 			baseCoef: ts.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *templeTrait, _ []*templeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if !ts.HasSacredPlaces {
+					return false
+				}
+
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+			},
+		},
+		{
+			Name: "TempleProstitution",
+			_religionMetadata: &religionMetadata{
+				SexualActive: 1,
+				Plutocratic:  0.75,
+			},
+			baseCoef: ts.religion.M.BaseCoef,
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+				var addCoef float64
+				if r.Theology != nil && r.Theology.Taboos != nil && len(r.Theology.Taboos.Taboos) > 0 {
+					for _, taboo := range r.Theology.Taboos.Taboos {
+						if taboo == nil {
+							continue
+						}
+						if taboo.Name == "Prostitution" {
+							switch taboo.Acceptance {
+							case Accepted:
+								addCoef += pm.RandFloat64InRange(0.1, 0.2)
+							case Shunned:
+								addCoef += -pm.RandFloat64InRange(0.01, 0.1)
+							case Criminal:
+								return false
+							}
+						}
+					}
+				}
+				if addCoef <= 0 {
 					return false
 				}
 

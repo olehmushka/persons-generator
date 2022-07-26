@@ -3,7 +3,7 @@ package religion
 import (
 	"fmt"
 
-	pm "persons_generator/probability-machine"
+	pm "persons_generator/probability_machine"
 )
 
 type DeityDoctrine struct {
@@ -29,14 +29,16 @@ type DeityNature struct {
 	deityDoctrine *DeityDoctrine
 
 	Goodness GoodnessNature
-	Traits   []*deityNatureTrait
+	Traits   []*trait
 }
 
 func (dn *DeityNature) Print() {
 	fmt.Printf("Deity(s) is/are %s and level of it is %s\n", dn.Goodness.Goodness, dn.Goodness.Level)
-	fmt.Printf("Deity Traits (religion_name=%s):\n", dn.religion.Name)
-	for _, trait := range dn.Traits {
-		fmt.Printf(" - %s\n", trait.Name)
+	if len(dn.Traits) > 0 {
+		fmt.Printf("Deity Traits (religion_name=%s):\n", dn.religion.Name)
+		for _, trait := range dn.Traits {
+			fmt.Printf(" - %s\n", trait.Name)
+		}
 	}
 }
 
@@ -44,7 +46,11 @@ func (dd *DeityDoctrine) generateDeityNature() *DeityNature {
 	dn := &DeityNature{religion: dd.religion, deityDoctrine: dd}
 	dn.Goodness = dn.generateGoodness()
 	if !dn.religion.Type.IsAtheism() {
-		dn.Traits = dn.generateTraits(1, 5)
+		dn.Traits = generateTraits(dd.religion, dn.getAllDeityNatureTraits(), generateTraitsOpts{
+			Label: "DeityNature.generateTraits",
+			Min:   1,
+			Max:   5,
+		})
 	}
 
 	return dn
@@ -108,57 +114,8 @@ func (dn *DeityNature) getGoodnessLevelByReligionMetadata() Level {
 	return getLevelByProbability(major, middle, minor)
 }
 
-func (dd *DeityNature) generateTraits(min, max int) []*deityNatureTrait {
-	if min < 0 {
-		panic("[DeityNature.generateTraits] min can not be less than 0")
-	}
-	if dd.religion.Type.IsAtheism() {
-		return []*deityNatureTrait{}
-	}
-	allTraits := dd.getAllDeityNatureTraits()
-	if max > len(allTraits) {
-		panic("[DeityNature.generateTraits] max can not be greater than allTraits length")
-	}
-
-	traits := make([]*deityNatureTrait, 0, len(allTraits))
-	for count := 0; count < 20; count++ {
-		for _, trait := range allTraits {
-			if trait.Calc(dd.religion, trait, traits) {
-				traits = append(traits, &deityNatureTrait{
-					_religionMetadata: trait._religionMetadata,
-					baseCoef:          trait.baseCoef,
-					Name:              trait.Name,
-					Calc:              trait.Calc,
-				})
-				if len(traits) == max {
-					break
-				}
-			}
-		}
-		if len(traits) == max {
-			break
-		}
-		if len(traits) >= min {
-			break
-		}
-	}
-
-	for _, trait := range traits {
-		dd.religion.UpdateMetadata(UpdateReligionMetadata(*dd.religion.metadata, *trait._religionMetadata))
-	}
-
-	return traits
-}
-
-type deityNatureTrait struct {
-	_religionMetadata *religionMetadata
-	baseCoef          float64
-	Name              string
-	Calc              func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool
-}
-
-func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
-	return []*deityNatureTrait{
+func (dd *DeityNature) getAllDeityNatureTraits() []*trait {
+	return []*trait{
 		{
 			Name: "IsJust",
 			_religionMetadata: &religionMetadata{
@@ -166,7 +123,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Simple: 0.25,
 			},
 			baseCoef: dd.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
@@ -182,7 +139,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Simple:       0.25,
 			},
 			baseCoef: dd.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
@@ -197,7 +154,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Lawful:       0.25,
 			},
 			baseCoef: dd.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
@@ -216,7 +173,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Complicated: 1,
 			},
 			baseCoef: dd.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
@@ -236,7 +193,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Authoritaristic: 1,
 			},
 			baseCoef: dd.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
@@ -251,7 +208,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Authoritaristic: 1,
 			},
 			baseCoef: dd.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
@@ -266,7 +223,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*deityNatureTrait {
 				Complicated: 1,
 			},
 			baseCoef: dd.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *deityNatureTrait, selectedTraits []*deityNatureTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}

@@ -1,20 +1,19 @@
 package religion
 
-import pm "persons_generator/probability-machine"
+import pm "persons_generator/probability_machine"
 
 type Goodness string
 
 const (
-	Good    Goodness = "Good"
-	Neutral Goodness = "Neutral"
-	Evil    Goodness = "Evil"
+	Good    Goodness = "good"
+	Neutral Goodness = "neutral"
+	Evil    Goodness = "evil"
 )
 
 func getGoodnessByProbability(good, neutral, evil float64) Goodness {
-	m := map[string]float64{
+	return Goodness(pm.GetRandomFromSeveral(map[string]float64{
 		string(Good):    pm.PrepareProbability(good),
 		string(Neutral): pm.PrepareProbability(neutral),
 		string(Evil):    pm.PrepareProbability(evil),
-	}
-	return Goodness(pm.GetRandomFromSeveral(m))
+	}))
 }

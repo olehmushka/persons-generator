@@ -1,6 +1,6 @@
 package religion
 
-import pm "persons_generator/probability-machine"
+import pm "persons_generator/probability_machine"
 
 func (t *Theology) getCultsRange() (int, int) {
 	var min, max int
@@ -22,55 +22,16 @@ func (t *Theology) getCultsRange() (int, int) {
 	return min, max
 }
 
-type Cult struct {
-	_religionMetadata *religionMetadata
-	baseCoef          float64
-
-	Name string
-	Calc func(r *Religion, self *Cult, selectedCults []*Cult) bool
+func (t *Theology) generateCults(min, max int) []*trait {
+	return generateTraits(t.religion, t.getAllCults(), generateTraitsOpts{
+		Label: "Theology.generateCults",
+		Min:   min,
+		Max:   max,
+	})
 }
 
-func (t *Theology) generateCults(min, max int) []*Cult {
-	if min < 0 {
-		panic("[Theology.generateCults] min can not be less than 0")
-	}
-	allCults := t.getAllCults()
-	if max > len(allCults) {
-		panic("[Theology.generateCults] max can not be greater than allCults length")
-	}
-
-	cults := make([]*Cult, 0, len(allCults))
-	for count := 0; count < 20; count++ {
-		for _, cult := range allCults {
-			if cult.Calc(t.religion, cult, cults) {
-				cults = append(cults, &Cult{
-					_religionMetadata: cult._religionMetadata,
-					baseCoef:          cult.baseCoef,
-					Name:              cult.Name,
-					Calc:              cult.Calc,
-				})
-			}
-			if len(cults) == max {
-				break
-			}
-		}
-		if len(cults) == max {
-			break
-		}
-		if len(cults) >= min {
-			break
-		}
-	}
-
-	for _, cult := range cults {
-		t.religion.UpdateMetadata(UpdateReligionMetadata(*t.religion.metadata, *cult._religionMetadata))
-	}
-
-	return cults
-}
-
-func (t *Theology) getAllCults() []*Cult {
-	return []*Cult{
+func (t *Theology) getAllCults() []*trait {
+	return []*trait{
 		{
 			Name: "GodOfKingCult",
 			_religionMetadata: &religionMetadata{
@@ -78,7 +39,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Authoritaristic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -93,7 +54,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Hedonistic:  0.75,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -107,7 +68,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Lawful: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -122,7 +83,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Aggressive: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -139,7 +100,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Plutocratic: 0.5,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -149,7 +110,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Chthonic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -164,7 +125,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Educational: 0.75,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -179,7 +140,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Simple:       0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -190,12 +151,12 @@ func (t *Theology) getAllCults() []*Cult {
 		{
 			Name: "GodOfLove",
 			_religionMetadata: &religionMetadata{
-				SexualActive: 1,
+				SexualActive: 0.75,
 				Pacifistic:   0.25,
 				Hedonistic:   0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -210,7 +171,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Simple:       0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -221,7 +182,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Chthonic:     0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -231,7 +192,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Hedonistic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -245,7 +206,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Naturalistic: 0.75,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -259,7 +220,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Naturalistic: 0.75,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -274,7 +235,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Simple:       0.5,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -285,7 +246,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Simple:       0.5,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -296,7 +257,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Chthonic:     0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef - pm.RandFloat64InRange(0.01, 0.1),
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -306,7 +267,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Chthonic: 1,
 			},
 			baseCoef: t.religion.M.LowBaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{Log: true, Label: "Cults.HolyParasite"})
 			},
 		},
@@ -317,7 +278,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Chthonic:     1,
 			},
 			baseCoef: t.religion.M.BaseCoef - pm.RandFloat64InRange(0.01, 0.1),
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -328,7 +289,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Simple:       1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -339,7 +300,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Simple:       1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -350,7 +311,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Simple:       1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -361,7 +322,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Simple:       1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -373,7 +334,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Simple:          0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -384,7 +345,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Chthonic:     0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsMonotheism() {
 					return false
 				}
@@ -402,7 +363,7 @@ func (t *Theology) getAllCults() []*Cult {
 				Chthonic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *Cult, _ []*Cult) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},

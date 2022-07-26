@@ -1,6 +1,6 @@
 package religion
 
-import pm "persons_generator/probability-machine"
+import pm "persons_generator/probability_machine"
 
 type GenderAcceptance string
 
@@ -11,10 +11,9 @@ const (
 )
 
 func getGenderAcceptanceByProbability(onlyMen, menAndWomen, onlyWomen float64) GenderAcceptance {
-	m := map[string]float64{
+	return GenderAcceptance(pm.GetRandomFromSeveral(map[string]float64{
 		string(OnlyMen):     pm.PrepareProbability(onlyMen),
 		string(MenAndWomen): pm.PrepareProbability(menAndWomen),
 		string(OnlyWomen):   pm.PrepareProbability(onlyWomen),
-	}
-	return GenderAcceptance(pm.GetRandomFromSeveral(m))
+	}))
 }

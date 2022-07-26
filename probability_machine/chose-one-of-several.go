@@ -1,4 +1,4 @@
-package probabilitymachine
+package probability_machine
 
 import "fmt"
 

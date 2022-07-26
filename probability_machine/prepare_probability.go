@@ -1,4 +1,4 @@
-package probabilitymachine
+package probability_machine
 
 func PrepareProbability(pp float64) float64 {
 	if pp < 0 {

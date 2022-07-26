@@ -2,7 +2,7 @@ package religion
 
 import (
 	"persons_generator/entities/religion"
-	pm "persons_generator/probability-machine"
+	pm "persons_generator/probability_machine"
 )
 
 func geAcceptanceByProbability(accepted, shunned, criminal float64) religion.Acceptance {

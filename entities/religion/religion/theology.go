@@ -3,14 +3,14 @@ package religion
 import (
 	"fmt"
 
-	pm "persons_generator/probability-machine"
+	pm "persons_generator/probability_machine"
 )
 
 type Theology struct {
 	religion *Religion
 
-	Traits            []*theologyTrait
-	Cults             []*Cult
+	Traits            []*trait
+	Cults             []*trait
 	Rules             *Rules
 	Taboos            *Taboos
 	Rituals           *Rituals
@@ -21,15 +21,19 @@ type Theology struct {
 
 func NewTheology(r *Religion) *Theology {
 	t := &Theology{religion: r}
-	t.Traits = t.generateTraits(1, 5)
+	t.Traits = generateTraits(r, t.getAllTheologyTraits(), generateTraitsOpts{
+		Label: "Theology.generateTraits",
+		Min:   1,
+		Max:   5,
+	})
 	minCults, maxCults := t.getCultsRange()
 	t.Cults = t.generateCults(minCults, maxCults)
 	t.Rules = t.generateRules()
-	// t.Taboos = t.generateTaboos()
-	// t.Rituals = t.generateRituals()
-	// t.Holydays = t.generateHolydays()
-	// t.Conversion = t.generateConversion()
-	// t.MarriageTradition = t.generateMarriageTradition()
+	t.Taboos = t.generateTaboos()
+	t.Rituals = t.generateRituals()
+	t.Holydays = t.generateHolydays()
+	t.Conversion = t.generateConversion()
+	t.MarriageTradition = t.generateMarriageTradition()
 
 	return t
 }
@@ -45,64 +49,15 @@ func (t *Theology) Print() {
 		fmt.Printf(" - %s\n", cult.Name)
 	}
 	t.Rules.Print()
-	// t.Taboos.Print()
-	// t.Rituals.Print()
-	// t.Holydays.Print()
-	// t.Conversion.Print()
-	// t.MarriageTradition.Print()
+	t.Taboos.Print()
+	t.Rituals.Print()
+	t.Holydays.Print()
+	t.Conversion.Print()
+	t.MarriageTradition.Print()
 }
 
-func (t *Theology) generateTraits(min, max int) []*theologyTrait {
-	if min < 0 {
-		panic("[Theology.generateTraits] min can not be less than 0")
-	}
-	allTraits := t.getAllTheologyTraits()
-	if max > len(allTraits) {
-		panic("[Theology.generateTraits] max can not be greater than allTraits length")
-	}
-
-	traits := make([]*theologyTrait, 0, len(allTraits))
-	for count := 0; count < 20; count++ {
-		for _, trait := range allTraits {
-			if trait.Calc(t.religion, trait, traits) {
-				traits = append(traits, &theologyTrait{
-					_religionMetadata: trait._religionMetadata,
-					baseCoef:          trait.baseCoef,
-					Name:              trait.Name,
-					Calc:              trait.Calc,
-				})
-			}
-			if len(traits) == max {
-				break
-			}
-		}
-		if len(traits) == max {
-			break
-		}
-		if len(traits) >= min {
-			break
-		}
-	}
-
-	for _, trait := range traits {
-		t.religion.UpdateMetadata(UpdateReligionMetadata(*t.religion.metadata, *trait._religionMetadata))
-		if trait.Name == "Reincarnation" {
-			t.religion.Doctrine.Afterlife.updateAfterlife(false)
-		}
-	}
-
-	return traits
-}
-
-type theologyTrait struct {
-	_religionMetadata *religionMetadata
-	baseCoef          float64
-	Name              string
-	Calc              func(r *Religion, self *theologyTrait, selectedTraits []*theologyTrait) bool
-}
-
-func (t *Theology) getAllTheologyTraits() []*theologyTrait {
-	return []*theologyTrait{
+func (t *Theology) getAllTheologyTraits() []*trait {
+	return []*trait{
 		{
 			Name: "Messiah",
 			_religionMetadata: &religionMetadata{
@@ -110,7 +65,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Authoritaristic: 0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				switch {
 				case r.Type.IsMonotheism():
@@ -142,7 +97,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Authoritaristic: 0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, selectedTraits []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
@@ -156,7 +111,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Lawful: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if r.metadata.IsLawful() {
 					return true
@@ -172,7 +127,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Complicated:     0.75,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.HasReincarnation() {
 					return true
 				}
@@ -188,7 +143,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Individualistic: 0.75,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -199,7 +154,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Chthonic:     0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if r.metadata.IsNaturalistic() {
 					return true
@@ -215,7 +170,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Chthonic:     0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if r.metadata.IsNaturalistic() {
 					return true
@@ -231,7 +186,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Ascetic:  0.5,
 			},
 			baseCoef: t.religion.M.BaseCoef - pm.RandFloat64InRange(0.1, 0.2),
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -243,7 +198,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Complicated:  1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -254,7 +209,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Ascetic: 0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
@@ -269,7 +224,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Collectivistic: 0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, selectedTraits []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				var addCoef float64
 				for _, trait := range selectedTraits {
 					switch trait.Name {
@@ -288,7 +243,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Plutocratic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.Type.IsAtheism() {
 					return false
 				}
@@ -303,7 +258,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Individualistic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				for _, goal := range r.Doctrine.HighGoal.Goals {
 					switch goal.Name {
@@ -320,11 +275,12 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 		{
 			Name: "Celibacy",
 			_religionMetadata: &religionMetadata{
-				Ascetic:         1,
-				Individualistic: 0.5,
+				SexualStrictness: 1,
+				Ascetic:          1,
+				Individualistic:  0.5,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if r.Attributes.Clerics.HasClerics {
 					if r.Attributes.Clerics.Limitations.Marriage.IsDisallowed() {
@@ -341,7 +297,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Ascetic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, selectedTraits []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
 				var addCoef float64
 				for _, trait := range selectedTraits {
 					switch trait.Name {
@@ -361,7 +317,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Altruistic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -373,7 +329,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Collectivistic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if r.metadata.IsAggressive() {
 					addCoef += pm.RandFloat64InRange(0.05, 0.125)
@@ -389,7 +345,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Aggressive: 0.75,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -399,7 +355,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Pacifistic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.metadata.IsAggressive() {
 					return pm.GetRandomBool(pm.RandFloat64InRange(0, 0.05))
 				}
@@ -414,7 +370,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Pacifistic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				if r.metadata.IsAggressive() {
 					return false
 				}
@@ -428,7 +384,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Naturalistic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -439,7 +395,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Complicated:     0.25,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -449,7 +405,7 @@ func (t *Theology) getAllTheologyTraits() []*theologyTrait {
 				Chthonic: 1,
 			},
 			baseCoef: t.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *theologyTrait, _ []*theologyTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -462,6 +418,9 @@ func (t *Theology) HasReincarnation() bool {
 	}
 
 	for _, trait := range t.Traits {
+		if trait == nil {
+			continue
+		}
 		if trait.Name == "Reincarnation" {
 			return true
 		}

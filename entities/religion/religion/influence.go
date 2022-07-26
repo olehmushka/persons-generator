@@ -1,21 +1,19 @@
 package religion
 
-import pm "persons_generator/probability-machine"
+import pm "persons_generator/probability_machine"
 
 type Influence string
 
 const (
-	StrongInfluence   Influence = "Strong"
-	ModerateInfluence Influence = "Moderate"
-	WeakInfluence     Influence = "Weak"
+	StrongInfluence   Influence = "strong"
+	ModerateInfluence Influence = "moderate"
+	WeakInfluence     Influence = "weak"
 )
 
 func geInfluenceByProbability(strong, moderate, weak float64) Influence {
-	m := map[string]float64{
+	return Influence(pm.GetRandomFromSeveral(map[string]float64{
 		string(StrongInfluence):   pm.PrepareProbability(strong),
 		string(ModerateInfluence): pm.PrepareProbability(moderate),
 		string(WeakInfluence):     pm.PrepareProbability(weak),
-	}
-
-	return Influence(pm.GetRandomFromSeveral(m))
+	}))
 }

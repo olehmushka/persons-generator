@@ -3,7 +3,9 @@ package religion
 import (
 	"fmt"
 
-	pm "persons_generator/probability-machine"
+	nb "persons_generator/entities/name_base"
+	ng "persons_generator/name_generator"
+	pm "persons_generator/probability_machine"
 )
 
 type Religion struct {
@@ -19,12 +21,22 @@ type Religion struct {
 }
 
 func NewReligion() *Religion {
+	nameBase := nb.GetRandomNmeBase()
 	r := &Religion{
 		M: Metadata{
 			LowBaseCoef:  pm.RandFloat64InRange(0.45, 0.75),
 			BaseCoef:     pm.RandFloat64InRange(0.95, 1.05),
 			HighBaseCoef: pm.RandFloat64InRange(1, 1.25),
+
+			MaxMetadataValue: pm.RandFloat64InRange(8, 10),
 		},
+		Name: ng.GetBase(
+			nameBase.Index,
+			nb.NameBasesToStrSlices(nb.AllNameBases),
+			nameBase.Min,
+			nameBase.Max,
+			nameBase.Dupl,
+		),
 	}
 	r.Type = NewType(r)
 	r.GenderDominance = NewGenderDominance(r)

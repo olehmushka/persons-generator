@@ -1,6 +1,6 @@
 package religion
 
-import pm "persons_generator/probability-machine"
+import pm "persons_generator/probability_machine"
 
 type Tolerance string
 
@@ -13,12 +13,11 @@ const (
 )
 
 func getToleranceByProbability(fullTolerance, highTolerance, moderateTolerance, lowTolerance, noTolerance float64) Tolerance {
-	m := map[string]float64{
+	return Tolerance(pm.GetRandomFromSeveral(map[string]float64{
 		string(FullTolerance):     pm.PrepareProbability(fullTolerance),
 		string(HighTolerance):     pm.PrepareProbability(highTolerance),
 		string(ModerateTolerance): pm.PrepareProbability(moderateTolerance),
 		string(LowTolerance):      pm.PrepareProbability(lowTolerance),
 		string(NoTolerance):       pm.PrepareProbability(noTolerance),
-	}
-	return Tolerance(pm.GetRandomFromSeveral(m))
+	}))
 }

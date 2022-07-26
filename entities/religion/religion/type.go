@@ -3,7 +3,7 @@ package religion
 import (
 	"fmt"
 
-	pm "persons_generator/probability-machine"
+	pm "persons_generator/probability_machine"
 )
 
 type Type struct {
@@ -68,14 +68,13 @@ func (t *Type) GenerateTypeName() TypeName {
 		atheism      = 0.05
 	)
 
-	m := map[string]float64{
+	return TypeName(pm.GetRandomFromSeveral(map[string]float64{
 		string(MonotheismType):   pm.PrepareProbability(monotheism),
 		string(PolytheismType):   pm.PrepareProbability(polytheism),
 		string(DeityDualismType): pm.PrepareProbability(deityDualism),
 		string(DeismType):        pm.PrepareProbability(deism),
 		string(AtheismType):      pm.PrepareProbability(atheism),
-	}
-	return TypeName(pm.GetRandomFromSeveral(m))
+	}))
 }
 
 type SubtypeName string

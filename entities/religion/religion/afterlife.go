@@ -3,7 +3,7 @@ package religion
 import (
 	"fmt"
 
-	pm "persons_generator/probability-machine"
+	pm "persons_generator/probability_machine"
 )
 
 type Afterlife struct {
@@ -12,11 +12,10 @@ type Afterlife struct {
 
 	IsExists     bool
 	Participants *AfterlifeParticipants
-	Traits       []*afterlifeTrait
+	Traits       []*trait
 }
 
 func (al *Afterlife) Print() {
-	fmt.Printf("Afterlife Doctrine (religion=%s)\n", al.religion.Name)
 	if !al.IsExists {
 		fmt.Printf("Afterlife does not exists (religion=%s)\n", al.religion.Name)
 		return
@@ -24,7 +23,6 @@ func (al *Afterlife) Print() {
 	fmt.Printf("Afterlife exists (religion=%s)\n", al.religion.Name)
 	al.Participants.Print()
 	if len(al.Traits) != 0 {
-		fmt.Printf("Afterlife Traits (religion_name=%s):\n", al.religion.Name)
 		for _, trait := range al.Traits {
 			fmt.Printf(" - %s\n", trait.Name)
 		}
@@ -202,12 +200,11 @@ const (
 )
 
 func getAfterlifeOptionByProbability(good, depends, bad float64) AfterlifeOption {
-	m := map[string]float64{
+	return AfterlifeOption(pm.GetRandomFromSeveral(map[string]float64{
 		string(GoodAfterlife):    pm.PrepareProbability(good),
 		string(DependsAfterlife): pm.PrepareProbability(depends),
 		string(BadAfterlife):     pm.PrepareProbability(bad),
-	}
-	return AfterlifeOption(pm.GetRandomFromSeveral(m))
+	}))
 }
 
 func (o AfterlifeOption) GetScore() int {
@@ -223,61 +220,23 @@ func (o AfterlifeOption) GetScore() int {
 	}
 }
 
-type afterlifeTrait struct {
-	_religionMetadata *religionMetadata
-	baseCoef          float64
-	Name              string
-	Calc              func(r *Religion, self *afterlifeTrait, selectedTraits []*afterlifeTrait) bool
+func (al *Afterlife) generateTraits(min, max int) []*trait {
+	return generateTraits(al.religion, al.getAllAfterlifeTraits(), generateTraitsOpts{
+		Label: "Afterlife.generateTraits",
+		Min:   min,
+		Max:   max,
+	})
 }
 
-func (al *Afterlife) generateTraits(min, max int) []*afterlifeTrait {
-	if min < 0 {
-		panic("[Afterlife.generateTraits] min can not be less than 0")
-	}
-	allTraits := al.getAllAfterlifeTraits()
-	if max > len(allTraits) {
-		panic("[Afterlife.generateTraits] max can not be greater than allTraits length")
-	}
-
-	traits := make([]*afterlifeTrait, 0, len(allTraits))
-	for count := 0; count < 20; count++ {
-		for _, trait := range allTraits {
-			if trait.Calc(al.religion, trait, traits) {
-				traits = append(traits, &afterlifeTrait{
-					_religionMetadata: trait._religionMetadata,
-					baseCoef:          trait.baseCoef,
-					Name:              trait.Name,
-					Calc:              trait.Calc,
-				})
-			}
-			if len(traits) == max {
-				break
-			}
-		}
-		if len(traits) == max {
-			break
-		}
-		if len(traits) >= min {
-			break
-		}
-	}
-
-	for _, trait := range traits {
-		al.religion.UpdateMetadata(UpdateReligionMetadata(*al.religion.metadata, *trait._religionMetadata))
-	}
-
-	return traits
-}
-
-func (al *Afterlife) getAllAfterlifeTraits() []*afterlifeTrait {
-	return []*afterlifeTrait{
+func (al *Afterlife) getAllAfterlifeTraits() []*trait {
+	return []*trait{
 		{
 			Name: "HeavenlyPalace",
 			_religionMetadata: &religionMetadata{
 				Simple: 0.5,
 			},
 			baseCoef: al.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *afterlifeTrait, _ []*afterlifeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if r.Type.IsPolytheism() {
 					addCoef += pm.RandFloat64InRange(0.01, 0.1)
@@ -292,7 +251,7 @@ func (al *Afterlife) getAllAfterlifeTraits() []*afterlifeTrait {
 				Chthonic: 0.5,
 			},
 			baseCoef: al.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *afterlifeTrait, _ []*afterlifeTrait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) bool {
 				var addCoef float64
 				if r.Type.IsPolytheism() {
 					addCoef += pm.RandFloat64InRange(0.01, 0.1)

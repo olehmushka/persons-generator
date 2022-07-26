@@ -1,6 +1,6 @@
 package religion
 
-import pm "persons_generator/probability-machine"
+import pm "persons_generator/probability_machine"
 
 type Permission string
 
@@ -11,12 +11,11 @@ const (
 )
 
 func getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed float64) Permission {
-	m := map[string]float64{
+	return Permission(pm.GetRandomFromSeveral(map[string]float64{
 		string(AlwaysAllowed):  pm.PrepareProbability(alwaysAllowed),
 		string(MustBeApproved): pm.PrepareProbability(mustBeApproved),
 		string(Disallowed):     pm.PrepareProbability(disallowed),
-	}
-	return Permission(pm.GetRandomFromSeveral(m))
+	}))
 }
 
 func (p Permission) IsAlwaysAllowed() bool {

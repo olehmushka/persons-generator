@@ -3,7 +3,7 @@ package religion
 import (
 	"fmt"
 
-	pm "persons_generator/probability-machine"
+	pm "persons_generator/probability_machine"
 )
 
 type SourceOfMoralLaw string
@@ -43,6 +43,9 @@ func (d *Doctrine) generateSourceOfMoralLaw() SourceOfMoralLaw {
 		nature = pm.RandFloat64InRange(0.05, 0.15)
 		rmCoef = d.religion.M.LowBaseCoef
 	)
+	if d.religion.Type.IsMonotheism() {
+		deity += pm.RandFloat64InRange(0.05, 0.1)
+	}
 	if d.religion.metadata.IsHedonistic() {
 		human += rmCoef * pm.RandFloat64InRange(0.05, 0.15)
 	}
@@ -68,11 +71,10 @@ func (soml SourceOfMoralLaw) Print() {
 }
 
 func getSourceOfMoralLawByProbability(deity, none, human, nature float64) SourceOfMoralLaw {
-	m := map[string]float64{
+	return SourceOfMoralLaw(pm.GetRandomFromSeveral(map[string]float64{
 		string(DeitySourceOfMoralLaw):  pm.PrepareProbability(deity),
 		string(NoneSourceOfMoralLaw):   pm.PrepareProbability(none),
 		string(HumanSourceOfMoralLaw):  pm.PrepareProbability(human),
 		string(NatureSourceOfMoralLaw): pm.PrepareProbability(nature),
-	}
-	return SourceOfMoralLaw(pm.GetRandomFromSeveral(m))
+	}))
 }

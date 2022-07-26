@@ -3,7 +3,7 @@ package religion
 import (
 	"fmt"
 
-	pm "persons_generator/probability-machine"
+	pm "persons_generator/probability_machine"
 )
 
 type GenderDominance struct {
@@ -82,13 +82,11 @@ func (gd *GenderDominance) generateDominance() Dominance {
 		female += 0.03
 	}
 
-	m := map[string]float64{
+	return Dominance(pm.GetRandomFromSeveral(map[string]float64{
 		string(MaleDominance):     pm.PrepareProbability(male),
 		string(EqualityDominance): pm.PrepareProbability(equality),
 		string(FemaleDominance):   pm.PrepareProbability(female),
-	}
-
-	return Dominance(pm.GetRandomFromSeveral(m))
+	}))
 }
 
 func (gd *GenderDominance) generateInfluence() Influence {

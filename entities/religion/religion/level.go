@@ -1,22 +1,21 @@
 package religion
 
-import pm "persons_generator/probability-machine"
+import pm "persons_generator/probability_machine"
 
 type Level string
 
 const (
-	Major  Level = "Major"
-	Middle Level = "Middle"
-	Minor  Level = "Minor"
+	Major  Level = "major"
+	Middle Level = "middle"
+	Minor  Level = "minor"
 )
 
 func getLevelByProbability(major, middle, minor float64) Level {
-	m := map[string]float64{
+	return Level(pm.GetRandomFromSeveral(map[string]float64{
 		string(Major):  pm.PrepareProbability(major),
 		string(Middle): pm.PrepareProbability(middle),
 		string(Minor):  pm.PrepareProbability(minor),
-	}
-	return Level(pm.GetRandomFromSeveral(m))
+	}))
 }
 
 func (l Level) GetLevelCoef() float64 {
