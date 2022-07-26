@@ -1,41 +1,44 @@
 package culture
 
-import pm "persons_generator/probability_machine"
+import (
+	bc "persons_generator/entities/base_culture"
+	pm "persons_generator/probability_machine"
+)
 
 type Name struct {
-	Culture       CultureInterface
+	Culture       bc.Culture
 	Name          string
 	Sex           Sex
 	Probability   float64
 	IsInheritable bool
 }
 
-func GetRandomFirstName(sex Sex, c CultureInterface) *Name {
+func GetRandomFirstName(sex Sex, c bc.Culture) *Name {
 	names := GetAvailableFirstNamesByCulture(sex, c)
 	n := pm.GetRandomFromSeveral(PrepareNameToChoose(names))
 
 	return FindNameByName(n, names)
 }
 
-func GetRandomLastName(c CultureInterface) *Name {
+func GetRandomLastName(c bc.Culture) *Name {
 	names := GetAvailableLastNamesByCulture(c)
 	n := pm.GetRandomFromSeveral(PrepareNameToChoose(names))
 
 	return FindNameByName(n, names)
 }
 
-func GetAvailableFirstNamesByCulture(sex Sex, c CultureInterface) []*Name {
+func GetAvailableFirstNamesByCulture(sex Sex, c bc.Culture) []*Name {
 	return []*Name{}
 }
 
-func GetAvailableLastNamesByCulture(c CultureInterface) []*Name {
+func GetAvailableLastNamesByCulture(c bc.Culture) []*Name {
 	return []*Name{}
 }
 
 func FindAvailableNames(c *Culture, allNames []*Name) []*Name {
 	names := make([]*Name, 0, len(allNames))
 	for _, n := range allNames {
-		if IsEqualCulture(n.Culture, c) {
+		if bc.IsEqualCulture(n.Culture, c) {
 			names = append(names, n)
 		}
 	}

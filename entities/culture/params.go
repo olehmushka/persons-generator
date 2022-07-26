@@ -1,10 +1,7 @@
 package culture
 
-import "persons_generator/entities/religion/religion"
-
 type Params struct {
-	Religion *religion.Religion
-
+	PreferredCultures        []string
 	MinInheritedBaseCultures int
 	MaxInheritedBaseCultures int
 }

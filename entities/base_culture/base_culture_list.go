@@ -1,4 +1,4 @@
-package culture
+package base_culture
 
 import pc "persons_generator/entities/proto_culture"
 

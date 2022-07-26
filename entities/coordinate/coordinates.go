@@ -1,12 +1,13 @@
 package coordinate
 
-import (
-	"math"
+import "math"
 
-	"persons_generator/entities"
-)
+type Coordinate struct {
+	X int
+	Y int
+}
 
-func CalcDistance(p1, p2 *entities.Coordinate) int {
+func CalcDistance(p1, p2 *Coordinate) int {
 	var (
 		xCalc    = p2.X - p1.X
 		yCalc    = p2.Y - p1.Y

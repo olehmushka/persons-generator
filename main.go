@@ -15,7 +15,9 @@ func init() {
 func main() {
 	cfg := config.New()
 	orchestrator.New(&orchestrator.Config{
-		WorldSize:      cfg.WorldSize,
-		ReligionNumber: cfg.ReligionNumber,
+		WorldSize: cfg.WorldSize,
+		Religion: orchestrator.ReligionConfig{
+			Amount: cfg.ReligionNumber,
+		},
 	}).ShowReligions()
 }

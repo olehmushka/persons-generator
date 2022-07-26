@@ -3,6 +3,9 @@ package name_generator
 import (
 	"fmt"
 	"strings"
+
+	pm "persons_generator/probability_machine"
+	"persons_generator/tools"
 )
 
 func GetBase(base int, nameBases [][]string, min, max int, dupl string) string {
@@ -15,7 +18,7 @@ func GetBase(base int, nameBases [][]string, min, max int, dupl string) string {
 		v = val
 	}
 	var (
-		cur = RandomValOfSlice(v)
+		cur = tools.RandomValueOfSlice(pm.RandFloat64, v)
 		w   = ""
 	)
 
@@ -46,7 +49,7 @@ func GetBase(base int, nameBases [][]string, min, max int, dupl string) string {
 		}
 
 		w += cur
-		cur = RandomValOfSlice(v)
+		cur = tools.RandomValueOfSlice(pm.RandFloat64, v)
 	}
 
 	// parse word to get a final name
@@ -101,7 +104,7 @@ func GetBase(base int, nameBases [][]string, min, max int, dupl string) string {
 
 	if len(name) < 2 {
 		fmt.Printf("name is too short! Random name will be selected")
-		name = RandomValOfSlice(nameBases[base])
+		name = tools.RandomValueOfSlice(pm.RandFloat64, nameBases[base])
 	}
 
 	return name

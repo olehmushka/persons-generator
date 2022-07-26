@@ -1,34 +1,30 @@
 package coordinate
 
-import (
-	"testing"
-
-	"persons_generator/entities"
-)
+import "testing"
 
 func TestCalcDistance(t *testing.T) {
 	tCases := []struct {
 		name             string
-		p1, p2           *entities.Coordinate
+		p1, p2           *Coordinate
 		expectedDistance int
 	}{
 		{
-			p1: &entities.Coordinate{
+			p1: &Coordinate{
 				X: 0,
 				Y: 0,
 			},
-			p2: &entities.Coordinate{
+			p2: &Coordinate{
 				X: 10,
 				Y: 0,
 			},
 			expectedDistance: 10,
 		},
 		{
-			p1: &entities.Coordinate{
+			p1: &Coordinate{
 				X: 10,
 				Y: 20,
 			},
-			p2: &entities.Coordinate{
+			p2: &Coordinate{
 				X: 110,
 				Y: 40,
 			},

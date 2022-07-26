@@ -1,6 +1,8 @@
-package culture
+package base_culture
 
 import (
+	"strings"
+
 	pc "persons_generator/entities/proto_culture"
 	pm "persons_generator/probability_machine"
 )
@@ -84,7 +86,7 @@ func PrepareBaseCultureToChoose(bcs []*BaseCulture, prob float64) map[string]flo
 	return m
 }
 
-func IsEqualCulture(pc1, pc2 *BaseCulture) bool {
+func IsEqualCulture(pc1, pc2 Culture) bool {
 	if pc1 == nil && pc2 == nil {
 		return true
 	}
@@ -95,5 +97,26 @@ func IsEqualCulture(pc1, pc2 *BaseCulture) bool {
 		return false
 	}
 
-	return pc1.Name == pc2.Name
+	return pc1.GetCultureName() == pc2.GetCultureName()
+}
+
+func GetBaseCultureByPref(pref string) *BaseCulture {
+	for _, c := range AllBaseCultures {
+		if strings.Contains(strings.ToLower(c.Name), strings.ToLower(pref)) {
+			return c
+		}
+	}
+
+	return nil
+}
+
+func GetBaseCulturesByPref(prefs []string) []*BaseCulture {
+	pcs := make([]*BaseCulture, 0, len(prefs))
+	for _, pref := range prefs {
+		if pc := GetBaseCultureByPref(pref); pc != nil {
+			pcs = append(pcs, pc)
+		}
+	}
+
+	return Unique(pcs)
 }

@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"persons_generator/entities/culture"
-	"persons_generator/entities/religion/religion"
+	"persons_generator/entities/religion"
 )
 
 // NewHumans(params *NewHumansParams) []*Human
