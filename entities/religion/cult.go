@@ -268,7 +268,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 			baseCoef: t.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{Log: true, Label: "Cults.HolyParasite"})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{

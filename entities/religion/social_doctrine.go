@@ -125,7 +125,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 			baseCoef: sd.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) bool {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{Log: true, Label: "SocialDoctrine.Traits.Polyamory"})
+				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{

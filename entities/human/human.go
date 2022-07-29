@@ -1,7 +1,7 @@
 package human
 
 import (
-	"strings"
+	// "strings"
 
 	"persons_generator/entities/culture"
 	"persons_generator/entities/religion"
@@ -34,15 +34,16 @@ func (h *Human) GetFullName() string {
 	if h == nil || h.Name == nil {
 		return ""
 	}
-	ns := make([]string, 0, 2)
-	if h.Name.FirstName != nil {
-		ns = append(ns, h.Name.FirstName.Name)
-	}
-	if h.Name.LastName != nil {
-		ns = append(ns, h.Name.LastName.Name)
-	}
+	// ns := make([]string, 0, 2)
+	// if h.Name.FirstName != nil {
+	// 	ns = append(ns, h.Name.FirstName.Name)
+	// }
+	// if h.Name.LastName != nil {
+	// 	ns = append(ns, h.Name.LastName.Name)
+	// }
 
-	return strings.Join(ns, " ")
+	// return strings.Join(ns, " ")
+	return ""
 }
 
 func PrimaryGeneration(m Metadata) []*Human {

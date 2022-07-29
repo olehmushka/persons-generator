@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	g "persons_generator/entities/gender"
 	pm "persons_generator/probability_machine"
 )
 
@@ -80,7 +81,7 @@ func (cs *Clerics) generateAppointment() *ClericsAppointment {
 	return &ClericsAppointment{
 		religion:    cs.religion,
 		IsCivil:     CalculateProbabilityFromReligionMetadata(cs.religion.M.BaseCoef, cs.religion, &religionMetadata{Liberal: 1}, CalcProbOpts{}),
-		IsRevocable: CalculateProbabilityFromReligionMetadata(cs.religion.M.BaseCoef, cs.religion, &religionMetadata{Authoritaristic: 1}, CalcProbOpts{Log: true, Label: "Clerics.ClericsAppointment.IsRevocable"}),
+		IsRevocable: CalculateProbabilityFromReligionMetadata(cs.religion.M.BaseCoef, cs.religion, &religionMetadata{Authoritaristic: 1}, CalcProbOpts{}),
 	}
 }
 
@@ -102,28 +103,16 @@ func (cas *ClericsAppointment) Print() {
 type ClericsLimitations struct {
 	religion *Religion
 
-	AcceptableGender GenderAcceptance
+	AcceptableGender g.Acceptance
 	Marriage         Permission
 }
 
 func (cs *Clerics) generateLimitations() *ClericsLimitations {
-	cls := &ClericsLimitations{religion: cs.religion}
+	cls := &ClericsLimitations{
+		religion: cs.religion,
 
-	var (
-		baseCoef    = cs.religion.M.BaseCoef
-		men         = pm.RandFloat64InRange(0.05, 0.15)
-		menAndWomen = pm.RandFloat64InRange(0.05, 0.15)
-		women       = pm.RandFloat64InRange(0.05, 0.15)
-	)
-	switch {
-	case cs.religion.GenderDominance.IsMaleDominate():
-		men += baseCoef * pm.RandFloat64InRange(0.15, 25) * cs.religion.GenderDominance.GetCoef()
-	case cs.religion.GenderDominance.IsEquality():
-		menAndWomen += baseCoef * pm.RandFloat64InRange(0.15, 25) * cs.religion.GenderDominance.GetCoef()
-	case cs.religion.GenderDominance.IsFemaleDominate():
-		women += baseCoef * pm.RandFloat64InRange(0.15, 25) * cs.religion.GenderDominance.GetCoef()
+		AcceptableGender: g.GetClericalCustom(cs.religion.M.BaseCoef, cs.religion.GenderDominance),
 	}
-	cls.AcceptableGender = getGenderAcceptanceByProbability(baseCoef*men, baseCoef*menAndWomen, baseCoef*women)
 
 	var (
 		alwaysAllowed  = pm.RandFloat64InRange(0.25, 0.75)

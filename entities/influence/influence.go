@@ -1,4 +1,4 @@
-package religion
+package influence
 
 import pm "persons_generator/probability_machine"
 
@@ -10,7 +10,7 @@ const (
 	WeakInfluence     Influence = "weak"
 )
 
-func geInfluenceByProbability(strong, moderate, weak float64) Influence {
+func GetInfluenceByProbability(strong, moderate, weak float64) Influence {
 	return Influence(pm.GetRandomFromSeveral(map[string]float64{
 		string(StrongInfluence):   pm.PrepareProbability(strong),
 		string(ModerateInfluence): pm.PrepareProbability(moderate),

@@ -5,17 +5,17 @@ import (
 )
 
 type ComplexName struct {
-	FirstName *culture.Name
-	LastName  *culture.Name
+	// FirstName *culture.Name
+	// LastName  *culture.Name
 }
 
 func GetRandomComplexName(sex culture.Sex, c *culture.Culture) *ComplexName {
 	cn := &ComplexName{
-		FirstName: culture.GetRandomFirstName(sex, c),
+		// FirstName: culture.GetRandomFirstName(sex, c),
 	}
-	if c.HasLastName() {
-		cn.LastName = culture.GetRandomLastName(c)
-	}
+	// if c.HasLastName() {
+	// 	cn.LastName = culture.GetRandomLastName(c)
+	// }
 
 	return cn
 }

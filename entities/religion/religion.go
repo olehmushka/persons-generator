@@ -3,8 +3,7 @@ package religion
 import (
 	"fmt"
 
-	nb "persons_generator/entities/name_base"
-	ng "persons_generator/name_generator"
+	g "persons_generator/entities/gender"
 	pm "persons_generator/probability_machine"
 )
 
@@ -14,14 +13,13 @@ type Religion struct {
 
 	Name            string
 	Type            *Type
-	GenderDominance *GenderDominance
+	GenderDominance *g.Dominance
 	Doctrine        *Doctrine
 	Attributes      *Attributes
 	Theology        *Theology
 }
 
-func NewReligion() *Religion {
-	nameBase := nb.GetRandomNmeBase()
+func NewReligion(name string) *Religion {
 	r := &Religion{
 		M: Metadata{
 			LowBaseCoef:  pm.RandFloat64InRange(0.45, 0.75),
@@ -30,16 +28,10 @@ func NewReligion() *Religion {
 
 			MaxMetadataValue: pm.RandFloat64InRange(8, 10),
 		},
-		Name: ng.GetBase(
-			nameBase.Index,
-			nb.NameBasesToStrSlices(nb.AllNameBases),
-			nameBase.Min,
-			nameBase.Max,
-			nameBase.Dupl,
-		),
+		Name: name,
 	}
 	r.Type = NewType(r)
-	r.GenderDominance = NewGenderDominance(r)
+	r.GenderDominance = g.NewDominance()
 	r.metadata = r.generateMetadata()
 	r.Doctrine = NewDoctrine(r)
 	r.Attributes = NewAttributes(r)
@@ -48,10 +40,10 @@ func NewReligion() *Religion {
 	return r
 }
 
-func NewReligions(n int) []*Religion {
-	religions := make([]*Religion, n)
+func NewReligions(names []string) []*Religion {
+	religions := make([]*Religion, len(names))
 	for i := range religions {
-		religions[i] = NewReligion()
+		religions[i] = NewReligion(names[i])
 	}
 
 	return religions

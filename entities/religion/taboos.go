@@ -67,10 +67,7 @@ func (ts *Taboos) getAllTaboos() []*Taboo {
 			shunnedBaseCoef:  ts.religion.M.LowBaseCoef,
 			criminalBaseCoef: ts.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) Acceptance {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{
-					Log:   true,
-					Label: "Taboos.RaisingAnimals",
-				})
+				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -84,10 +81,7 @@ func (ts *Taboos) getAllTaboos() []*Taboo {
 			shunnedBaseCoef:  ts.religion.M.LowBaseCoef,
 			criminalBaseCoef: ts.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) Acceptance {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{
-					Log:   true,
-					Label: "Taboos.RaisingPlants",
-				})
+				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
@@ -101,10 +95,7 @@ func (ts *Taboos) getAllTaboos() []*Taboo {
 			shunnedBaseCoef:  ts.religion.M.BaseCoef,
 			criminalBaseCoef: ts.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) Acceptance {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{
-					Log:   true,
-					Label: "Taboos.RaisingFungus",
-				})
+				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
