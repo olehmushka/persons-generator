@@ -19,6 +19,13 @@ func NewDominance() *Dominance {
 	}
 }
 
+func NewDominanceWithParams(d GenderDominance, i influence.Influence) *Dominance {
+	return &Dominance{
+		Dominance: d,
+		Influence: i,
+	}
+}
+
 func (gd *Dominance) Print() {
 	fmt.Printf("Dominated gender=%s(%s)\n", gd.Dominance, gd.Influence)
 }

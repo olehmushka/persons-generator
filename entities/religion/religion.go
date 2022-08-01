@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/entities/culture"
 	g "persons_generator/entities/gender"
 	pm "persons_generator/probability_machine"
 )
@@ -19,7 +20,7 @@ type Religion struct {
 	Theology        *Theology
 }
 
-func NewReligion(name string) *Religion {
+func NewReligion(c *culture.Culture) *Religion {
 	r := &Religion{
 		M: Metadata{
 			LowBaseCoef:  pm.RandFloat64InRange(0.45, 0.75),
@@ -28,10 +29,10 @@ func NewReligion(name string) *Religion {
 
 			MaxMetadataValue: pm.RandFloat64InRange(8, 10),
 		},
-		Name: name,
+		Name: c.Language.GetReligionName(),
 	}
 	r.Type = NewType(r)
-	r.GenderDominance = g.NewDominance()
+	r.GenderDominance = c.GenderDominance
 	r.metadata = r.generateMetadata()
 	r.Doctrine = NewDoctrine(r)
 	r.Attributes = NewAttributes(r)
@@ -40,10 +41,10 @@ func NewReligion(name string) *Religion {
 	return r
 }
 
-func NewReligions(names []string) []*Religion {
-	religions := make([]*Religion, len(names))
+func NewReligions(cultures []*culture.Culture) []*Religion {
+	religions := make([]*Religion, len(cultures))
 	for i := range religions {
-		religions[i] = NewReligion(names[i])
+		religions[i] = NewReligion(cultures[i])
 	}
 
 	return religions

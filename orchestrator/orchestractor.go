@@ -15,7 +15,7 @@ type Orchestrator struct {
 func New(cfg *Config) *Orchestrator {
 	w := world.New(cfg.WorldSize).Fill()
 	c := culture.NewCultures(cfg.Culture.Amount, cfg.Culture.Preferred)
-	r := religion.NewReligions(culture.GetReligionNames(cfg.Religion.Amount, c))
+	r := religion.NewReligions(culture.GetReligionCultures(cfg.Religion.Amount, c))
 
 	return &Orchestrator{
 		w:         w,

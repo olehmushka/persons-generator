@@ -5,25 +5,25 @@ import (
 	"persons_generator/tools"
 )
 
-func GetReligionNames(amount int, cultures []*Culture) []string {
+func GetReligionCultures(amount int, cultures []*Culture) []*Culture {
 	if len(cultures) == 0 {
-		return []string{}
+		return []*Culture{}
 	}
-	out := make([]string, amount)
+	out := make([]*Culture, amount)
 	if amount >= len(cultures) {
 		for i := range out {
 			if len(cultures) > i {
-				out[i] = cultures[i].Language.GetReligionName()
+				out[i] = cultures[i]
 				continue
 			}
-			out[i] = tools.RandomValueOfSlice(pm.RandFloat64, cultures).Language.GetReligionName()
+			out[i] = tools.RandomValueOfSlice(pm.RandFloat64, cultures)
 		}
 		return out
 	}
 
 	shuffledCultures := tools.Shuffle(cultures)
 	for i := range out {
-		out[i] = shuffledCultures[i].Language.GetReligionName()
+		out[i] = shuffledCultures[i]
 	}
 
 	return out

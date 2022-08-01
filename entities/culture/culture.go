@@ -12,23 +12,25 @@ import (
 // "persons_generator/tools"
 
 type Culture struct {
-	Name string
+	Proto []*Culture
+	Name  string
 
+	Root            *Root
+	Language        *language.Language
+	Ethos           *Ethos
+	Traditions      []*Tradition
 	GenderDominance *g.Dominance
 	MartialCustom   g.Acceptance
-	Language        *language.Language
-	Root            *Root
-	Ethos           *Ethos
-	Proto           []*Culture
 	// Proto                 *pc.ProtoCulture
 	// InheritedBaseCultures []*bc.BaseCulture
 }
 
 func New(preferred []string) *Culture {
 	c := &Culture{}
+	c.Proto = GetProtoCultures(preferred)
 	c.GenderDominance = g.NewDominance()
 	c.MartialCustom = g.GetMartialCustom(1, c.GenderDominance)
-	c.Language = language.New([]string{})
+	c.Language = language.New(GetLanguageNamesFromProto(c.Proto))
 	c.Name = c.Language.GetCultureName()
 
 	return c
@@ -58,6 +60,25 @@ func chunkPreferred(amount int, preferred []string) [][]string {
 	}
 
 	return tools.Chunk(amount, preferred)
+}
+
+func GetProtoCultures(preferred []string) []*Culture {
+	return nil
+}
+
+func GetLanguageNamesFromProto(proto []*Culture) []string {
+	names := make([]string, 0, len(proto))
+	for _, p := range proto {
+		if p == nil {
+			continue
+		}
+		if p.Language == nil {
+			continue
+		}
+		names = append(names, p.Language.Name)
+	}
+
+	return tools.Unique(names)
 }
 
 // func NewMany(amount int, preferred []string) []*Culture {

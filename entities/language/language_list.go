@@ -5,10 +5,20 @@ import "persons_generator/tools"
 var AllLanguages = tools.Merge(
 	AllIndoEuropeanLanguages,
 	AllBasqueLanguages,
-	AllJaponicLanguages,
-	AllKoreanicLanguages,
+	AllEastAsianLanguages,
 	AllKartvelianLanguages,
 	AllSinoTibetanLanguages,
+	AllAustroasiaticLanguages,
+	AllUralicLanguages,
+	AllTurkicLanguages,
+	AllMongolicLanguages,
+	AllDravidianLanguages,
+	AllUtoAztecanLanguages,
+	AllEskimoAleutLanguages,
+	AllAustonesianLanguages,
+	AllAfricanLanguages,
+	AllQuechuaLanguages,
+	AllAfroAsiaticLanguages,
 	AllFantasyLanguages,
 )
 
@@ -520,40 +530,46 @@ var (
 		IsLiving:  true,
 		WordBase:  IranianWordBase,
 	}
+	Scythian = &Language{
+		Name:      "scythian",
+		Subfamily: IranianSubfamily,
+		IsLiving:  false,
+		WordBase:  IranianWordBase,
+	}
 	// Nuriastani
 	KamkataVari = &Language{
 		Name:      "kamkata_vari",
 		Subfamily: NuriastaniSubfamily,
-		WordBase:  KarnatakaWordBase, // @TODO change it into KamkataVari when available
+		WordBase:  KannadaWordBase, // @TODO change it into KamkataVari when available
 	}
 	VasiVari = &Language{
 		Name:      "vasi_vari",
 		Subfamily: NuriastaniSubfamily,
-		WordBase:  KarnatakaWordBase, // @TODO change it into VasiVari when available
+		WordBase:  KannadaWordBase, // @TODO change it into VasiVari when available
 		IsLiving:  true,
 	}
 	Askunu = &Language{
 		Name:      "askunu",
 		Subfamily: NuriastaniSubfamily,
-		WordBase:  KarnatakaWordBase, // @TODO change it into Askunu when available
+		WordBase:  KannadaWordBase, // @TODO change it into Askunu when available
 		IsLiving:  true,
 	}
 	Waigali = &Language{
 		Name:      "waigali",
 		Subfamily: NuriastaniSubfamily,
-		WordBase:  KarnatakaWordBase, // @TODO change it into Waigali when available
+		WordBase:  KannadaWordBase, // @TODO change it into Waigali when available
 		IsLiving:  true,
 	}
 	Tregami = &Language{
 		Name:      "tregami",
 		Subfamily: NuriastaniSubfamily,
-		WordBase:  KarnatakaWordBase, // @TODO change it into Tregami when available
+		WordBase:  KannadaWordBase, // @TODO change it into Tregami when available
 		IsLiving:  true,
 	}
 	Zemiaki = &Language{
 		Name:      "zemiaki",
 		Subfamily: NuriastaniSubfamily,
-		WordBase:  KarnatakaWordBase, // @TODO change it into Zemiaki when available
+		WordBase:  KannadaWordBase, // @TODO change it into Zemiaki when available
 		IsLiving:  true,
 	}
 	// Italic
@@ -852,6 +868,13 @@ var (
 		WordBase:  EtruscanWordBase,
 		IsLiving:  false,
 	}
+	// Tocharian
+	Tocharian = &Language{
+		Name:      "tocharian",
+		Subfamily: TocharianSubfamily,
+		WordBase:  ChineseWordBase,
+		IsLiving:  false,
+	}
 )
 
 var AllIndoEuropeanLanguages = []*Language{
@@ -937,6 +960,7 @@ var AllIndoEuropeanLanguages = []*Language{
 	Kurdish,
 	Luri,
 	Balochi,
+	Scythian,
 	KamkataVari,
 	VasiVari,
 	Askunu,
@@ -992,6 +1016,7 @@ var AllIndoEuropeanLanguages = []*Language{
 	PreSamnite,
 	Rhaetic,
 	Etruscan,
+	Tocharian,
 }
 
 // Basque
@@ -1005,7 +1030,7 @@ var (
 )
 var AllBasqueLanguages = []*Language{Basque}
 
-// Japonic
+// EastAsian
 var (
 	Japanese = &Language{
 		Name:      "japanese",
@@ -1013,11 +1038,6 @@ var (
 		IsLiving:  true,
 		WordBase:  JapaneseWordBase,
 	}
-)
-var AllJaponicLanguages = []*Language{Japanese}
-
-// Koreanic
-var (
 	Korean = &Language{
 		Name:      "korean",
 		Subfamily: KoreanicSubfamily,
@@ -1025,7 +1045,8 @@ var (
 		WordBase:  KoreanWordBase,
 	}
 )
-var AllKoreanicLanguages = []*Language{Korean}
+
+var AllEastAsianLanguages = []*Language{Japanese, Korean}
 
 // Kartvelian
 var (
@@ -1156,7 +1177,7 @@ var (
 		WordBase:  ChineseWordBase,
 		IsLiving:  true,
 	}
-	Burmish = &Language{
+	Burmese = &Language{
 		Name:      "burmish",
 		Subfamily: BurmishSubfamily,
 		WordBase:  ChineseWordBase,
@@ -1324,6 +1345,18 @@ var (
 		WordBase:  ChineseWordBase,
 		IsLiving:  true,
 	}
+	Tangut = &Language{
+		Name:      "tangut",
+		Subfamily: QiangicSubfamily,
+		WordBase:  ChineseWordBase,
+		IsLiving:  true,
+	}
+	Tibetic = &Language{
+		Name:      "tibetic",
+		Subfamily: BodishSubfamily,
+		IsLiving:  true,
+		WordBase:  NigerianWordBase,
+	}
 )
 
 var AllSinoTibetanLanguages = []*Language{
@@ -1342,7 +1375,7 @@ var AllSinoTibetanLanguages = []*Language{
 	Mauphu,
 	Motang,
 	Mongphu,
-	Burmish,
+	Burmese,
 	Jinuo,
 	Sangkong,
 	Bisu,
@@ -1368,6 +1401,1701 @@ var AllSinoTibetanLanguages = []*Language{
 	Sanie,
 	Sadu,
 	Meuma,
+	Lisu,
+	Lolopo,
+	Tangut,
+	Tibetic,
+}
+
+// AustroasiaticFamily
+var (
+	Vietnamese = &Language{
+		Name:      "vietnamese",
+		Subfamily: VietMuongSubfamily,
+		IsLiving:  true,
+		WordBase:  VietnameseWordBase,
+	}
+	Kri = &Language{
+		Name:      "kri",
+		Subfamily: VieticSubfamily,
+		IsLiving:  true,
+		WordBase:  VietnameseWordBase,
+	}
+	Khmer = &Language{
+		Name:      "khmer",
+		Subfamily: KhmericSubfamily,
+		IsLiving:  true,
+		WordBase:  VietnameseWordBase,
+	}
+)
+
+var AllAustroasiaticLanguages = []*Language{
+	Vietnamese,
+	Kri,
+	Khmer,
+}
+
+// Uralic
+var (
+	Mari = &Language{
+		Name:      "mari",
+		Subfamily: FinnoPermicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Komi = &Language{
+		Name:      "komi",
+		Subfamily: PermicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Permyak = &Language{
+		Name:      "permyak",
+		Subfamily: PermicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Udmurt = &Language{
+		Name:      "udmurt",
+		Subfamily: PermicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Meshchera = &Language{
+		Name:      "meshchera",
+		Subfamily: PermicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Estonian = &Language{
+		Name:      "estonian",
+		Subfamily: BaltoFinnicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Livonian = &Language{
+		Name:      "livonian",
+		Subfamily: BaltoFinnicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Votic = &Language{
+		Name:      "votic",
+		Subfamily: BaltoFinnicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Finnish = &Language{
+		Name:      "finnish",
+		Subfamily: BaltoFinnicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Ingrian = &Language{
+		Name:      "ingrian",
+		Subfamily: BaltoFinnicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Karelian = &Language{
+		Name:      "karelian",
+		Subfamily: BaltoFinnicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Ludic = &Language{
+		Name:      "ludic",
+		Subfamily: BaltoFinnicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Veps = &Language{
+		Name:      "veps",
+		Subfamily: BaltoFinnicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Sami = &Language{
+		Name:      "sami",
+		Subfamily: SamiSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Erzya = &Language{
+		Name:      "erzya",
+		Subfamily: MordvinSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Moksha = &Language{
+		Name:      "moksha",
+		Subfamily: MordvinSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
+	Hungarian = &Language{
+		Name:      "hungarian",
+		Subfamily: UgricSubfamily,
+		IsLiving:  true,
+		WordBase:  HungarianWordBase,
+	}
+	Khanty = &Language{
+		Name:      "khanty",
+		Subfamily: UgricSubfamily,
+		IsLiving:  true,
+		WordBase:  HungarianWordBase,
+	}
+	Mansi = &Language{
+		Name:      "mansi",
+		Subfamily: UgricSubfamily,
+		IsLiving:  true,
+		WordBase:  HungarianWordBase,
+	}
+)
+
+var AllUralicLanguages = []*Language{
+	Mari,
+	Komi,
+	Permyak,
+	Udmurt,
+	Meshchera,
+	Estonian,
+	Livonian,
+	Votic,
+	Finnish,
+	Ingrian,
+	Karelian,
+	Ludic,
+	Veps,
+	Sami,
+	Erzya,
+	Moksha,
+	Hungarian,
+	Khanty,
+	Mansi,
+}
+
+// Turkic
+var (
+	Gagauz = &Language{
+		Name:      "gagauz",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Turkish = &Language{
+		Name:      "turkish",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Azerbaijani = &Language{
+		Name:      "azerbaijani",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Turkmen = &Language{
+		Name:      "turkmen",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Qashqai = &Language{
+		Name:      "qashqai",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Chaharmahali = &Language{
+		Name:      "chaharmahali",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Khorasani = &Language{
+		Name:      "khorasani",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Salar = &Language{
+		Name:      "salar",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Bashkir = &Language{
+		Name:      "bashkir",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Tatar = &Language{
+		Name:      "tatar",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	CrimeanTatar = &Language{
+		Name:      "crimean_tatar",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	KarachayBalkar = &Language{
+		Name:      "karachay_balkar",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Kumyk = &Language{
+		Name:      "kumyk",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Karaim = &Language{
+		Name:      "karaim",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Krymchak = &Language{
+		Name:      "krymchak",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Urum = &Language{
+		Name:      "urum",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Kazakh = &Language{
+		Name:      "kazakh",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Karakalpak = &Language{
+		Name:      "karakalpak",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Nogai = &Language{
+		Name:      "nogai",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	SiberianTatar = &Language{
+		Name:      "siberian_tatar",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Baraba = &Language{
+		Name:      "baraba",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	SouthernAltai = &Language{
+		Name:      "southern_altai",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Teleut = &Language{
+		Name:      "teleut",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Kyrgyz = &Language{
+		Name:      "kyrgyz",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Uzbek = &Language{
+		Name:      "uzbek",
+		Subfamily: KarlukSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Uyghur = &Language{
+		Name:      "uyghur",
+		Subfamily: KarlukSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Aynu = &Language{
+		Name:      "aynu",
+		Subfamily: KarlukSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Ili = &Language{
+		Name:      "ili",
+		Subfamily: KarlukSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Khalaj = &Language{
+		Name:      "khalaj",
+		Subfamily: ShazTurkicSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Chuvash = &Language{
+		Name:      "chuvash",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  true,
+		WordBase:  TurkishWordBase,
+	}
+	Bulgar = &Language{
+		Name:      "bulgar",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  false,
+		WordBase:  TurkishWordBase,
+	}
+	Sabir = &Language{
+		Name:      "sabir",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  false,
+		WordBase:  TurkishWordBase,
+	}
+	Khazar = &Language{
+		Name:      "khazar",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  false,
+		WordBase:  TurkishWordBase,
+	}
+	Hunnic = &Language{
+		Name:      "hunnic",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  false,
+		WordBase:  TurkishWordBase,
+	}
+	Tuoba = &Language{
+		Name:      "tuoba",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  false,
+		WordBase:  TurkishWordBase,
+	}
+	Avar = &Language{
+		Name:      "avar",
+		Subfamily: OghuzSubfamily,
+		IsLiving:  false,
+		WordBase:  TurkishWordBase,
+	}
+)
+
+var AllTurkicLanguages = []*Language{
+	Gagauz,
+	Turkish,
+	Azerbaijani,
+	Turkmen,
+	Qashqai,
+	Chaharmahali,
+	Khorasani,
+	Salar,
+	Bashkir,
+	Tatar,
+	CrimeanTatar,
+	KarachayBalkar,
+	Kumyk,
+	Karaim,
+	Krymchak,
+	Urum,
+	Kazakh,
+	Karakalpak,
+	Nogai,
+	SiberianTatar,
+	Baraba,
+	SouthernAltai,
+	Teleut,
+	Kyrgyz,
+	Uzbek,
+	Uyghur,
+	Aynu,
+	Ili,
+	Khalaj,
+	Chuvash,
+	Bulgar,
+	Sabir,
+	Khazar,
+	Hunnic,
+	Tuoba,
+	Avar,
+}
+
+// Mongolic
+var (
+	Dagur = &Language{
+		Name:      "dagur",
+		Subfamily: DagurSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Moghol = &Language{
+		Name:      "moghol",
+		Subfamily: MogholSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Khamnigan = &Language{
+		Name:      "khamnigan",
+		Subfamily: CentralMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Buryat = &Language{
+		Name:      "buryat",
+		Subfamily: CentralMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Mongolian = &Language{
+		Name:      "mongolian",
+		Subfamily: CentralMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Khalkha = &Language{
+		Name:      "khalkha",
+		Subfamily: CentralMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Chakhar = &Language{
+		Name:      "chakhar",
+		Subfamily: CentralMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Khorchin = &Language{
+		Name:      "khorchin",
+		Subfamily: CentralMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Ordos = &Language{
+		Name:      "ordos",
+		Subfamily: CentralMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Oirat = &Language{
+		Name:      "oirat",
+		Subfamily: CentralMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Monguor = &Language{
+		Name:      "Monguor",
+		Subfamily: SouthernMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Bonan = &Language{
+		Name:      "Bonan",
+		Subfamily: SouthernMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Santa = &Language{
+		Name:      "Santa",
+		Subfamily: SouthernMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Kangjia = &Language{
+		Name:      "Kangjia",
+		Subfamily: SouthernMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+)
+
+var AllMongolicLanguages = []*Language{
+	Dagur,
+	Moghol,
+	Khamnigan,
+	Buryat,
+	Mongolian,
+	Khalkha,
+	Chakhar,
+	Khorchin,
+	Ordos,
+	Oirat,
+	Monguor,
+	Bonan,
+	Santa,
+	Kangjia,
+}
+
+// Dravidian
+var (
+	Tamil = &Language{
+		Name:      "tamil",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Malayalam = &Language{
+		Name:      "malayalam",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Irula = &Language{
+		Name:      "irula",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Kodava = &Language{
+		Name:      "kodava",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Kurumba = &Language{
+		Name:      "kurumba",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Toda = &Language{
+		Name:      "toda",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Kota = &Language{
+		Name:      "kota",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Kannada = &Language{
+		Name:      "kannada",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Badaga = &Language{
+		Name:      "badaga",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Telugu = &Language{
+		Name:      "telugu",
+		Subfamily: SouthCentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Chenchu = &Language{
+		Name:      "chenchu",
+		Subfamily: SouthCentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Konda = &Language{
+		Name:      "konda",
+		Subfamily: SouthCentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	MukhaDora = &Language{
+		Name:      "mukha_dora",
+		Subfamily: SouthDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Manda = &Language{
+		Name:      "manda",
+		Subfamily: SouthCentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Pengo = &Language{
+		Name:      "pengo",
+		Subfamily: SouthCentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Kuvi = &Language{
+		Name:      "kuvi",
+		Subfamily: SouthCentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Kui = &Language{
+		Name:      "kui",
+		Subfamily: SouthCentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Gondi = &Language{
+		Name:      "gondi",
+		Subfamily: SouthCentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Kolami = &Language{
+		Name:      "kolami",
+		Subfamily: CentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Naiki = &Language{
+		Name:      "naiki",
+		Subfamily: CentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Gadaba = &Language{
+		Name:      "gadaba",
+		Subfamily: CentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Ollari = &Language{
+		Name:      "ollari",
+		Subfamily: CentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Kondekor = &Language{
+		Name:      "kondekor",
+		Subfamily: CentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Duruwa = &Language{
+		Name:      "duruwa",
+		Subfamily: CentralDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Oraon = &Language{
+		Name:      "oraon",
+		Subfamily: NorthernDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Kisan = &Language{
+		Name:      "kisan",
+		Subfamily: NorthernDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	KumarbhagPaharia = &Language{
+		Name:      "kumarbhag_paharia",
+		Subfamily: NorthernDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	SauriaPaharia = &Language{
+		Name:      "sauria_paharia",
+		Subfamily: NorthernDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+	Brahui = &Language{
+		Name:      "brahui",
+		Subfamily: NorthernDravidianSubfamily,
+		IsLiving:  true,
+		WordBase:  KannadaWordBase,
+	}
+)
+
+var AllDravidianLanguages = []*Language{
+	Tamil,
+	Malayalam,
+	Irula,
+	Kodava,
+	Kurumba,
+	Toda,
+	Kota,
+	Kannada,
+	Badaga,
+	Telugu,
+	Chenchu,
+	Konda,
+	MukhaDora,
+	Manda,
+	Pengo,
+	Kuvi,
+	Kui,
+	Gondi,
+	Kolami,
+	Naiki,
+	Gadaba,
+	Ollari,
+	Kondekor,
+	Duruwa,
+	Oraon,
+	Kisan,
+	KumarbhagPaharia,
+	SauriaPaharia,
+	Brahui,
+}
+
+// African
+var (
+	Kru = &Language{
+		Name:      "kru",
+		Subfamily: KruSubfamily,
+		IsLiving:  true,
+		WordBase:  NigerianWordBase,
+	}
+	Kwa = &Language{
+		Name:      "kwa",
+		Subfamily: VoltaCongoSubfamily,
+		IsLiving:  true,
+		WordBase:  NigerianWordBase,
+	}
+	Gur = &Language{
+		Name:      "gur",
+		Subfamily: VoltaCongoSubfamily,
+		IsLiving:  true,
+		WordBase:  NigerianWordBase,
+	}
+	Soninke = &Language{
+		Name:      "soninke",
+		Subfamily: MandeSubfamily,
+		IsLiving:  true,
+		WordBase:  NigerianWordBase,
+	}
+	Manding = &Language{
+		Name:      "manding",
+		Subfamily: MandeSubfamily,
+		IsLiving:  true,
+		WordBase:  NigerianWordBase,
+	}
+	Senegambian = &Language{
+		Name:      "senegambian",
+		Subfamily: AtlanticCongoSubfamily,
+		IsLiving:  true,
+		WordBase:  NigerianWordBase,
+	}
+	Swahili = &Language{
+		Name:      "swahili",
+		Subfamily: AtlanticCongoSubfamily,
+		IsLiving:  true,
+		WordBase:  SwahiliWordBase,
+	}
+	Tebu = &Language{
+		Name:      "tebu",
+		Subfamily: SaharanSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+)
+
+var AllAfricanLanguages = []*Language{
+	Kru,
+	Kwa,
+	Gur,
+	Soninke,
+	Manding,
+	Senegambian,
+	Swahili,
+	Tebu,
+}
+
+// UtoAztecan
+var (
+	Oodham = &Language{
+		Name:      "oodham",
+		Subfamily: TepimanSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	PimaBajo = &Language{
+		Name:      "pima_bajo",
+		Subfamily: TepimanSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	Tepehuan = &Language{
+		Name:      "tepehuan",
+		Subfamily: TepimanSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	Southern = &Language{
+		Name:      "southern",
+		Subfamily: TepimanSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	Tepecano = &Language{
+		Name:      "tepecano",
+		Subfamily: TepimanSubfamily,
+		IsLiving:  false,
+		WordBase:  NahuatlWordBase,
+	}
+	Tarahumara = &Language{
+		Name:      "tarahumara",
+		Subfamily: TarahumaranSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	UpriverGuarijio = &Language{
+		Name:      "upriver_guarijio",
+		Subfamily: TarahumaranSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	DownriverGuarijio = &Language{
+		Name:      "downriver_guarijio",
+		Subfamily: TarahumaranSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	Tubar = &Language{
+		Name:      "tubar",
+		Subfamily: TarahumaranSubfamily,
+		IsLiving:  false,
+		WordBase:  NahuatlWordBase,
+	}
+	Yaqui = &Language{
+		Name:      "yaqui",
+		Subfamily: CahitaSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	Mayo = &Language{
+		Name:      "mayo",
+		Subfamily: CahitaSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	Opata = &Language{
+		Name:      "opata",
+		Subfamily: OpatanSubfamily,
+		IsLiving:  false,
+		WordBase:  NahuatlWordBase,
+	}
+	Eudeve = &Language{
+		Name:      "eudeve",
+		Subfamily: OpatanSubfamily,
+		IsLiving:  false,
+		WordBase:  NahuatlWordBase,
+	}
+	Cora = &Language{
+		Name:      "Cora",
+		Subfamily: CoracholSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	Huichol = &Language{
+		Name:      "Huichol",
+		Subfamily: CoracholSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	Pochutec = &Language{
+		Name:      "pochutec",
+		Subfamily: AztecanSubfamily,
+		IsLiving:  false,
+		WordBase:  NahuatlWordBase,
+	}
+	Pipil = &Language{
+		Name:      "pipil",
+		Subfamily: AztecanSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+	Nahuatl = &Language{
+		Name:      "nahuatl",
+		Subfamily: AztecanSubfamily,
+		IsLiving:  true,
+		WordBase:  NahuatlWordBase,
+	}
+)
+
+var AllUtoAztecanLanguages = []*Language{
+	Oodham,
+	PimaBajo,
+	Tepehuan,
+	Southern,
+	Tepecano,
+	Tarahumara,
+	UpriverGuarijio,
+	DownriverGuarijio,
+	Tubar,
+	Yaqui,
+	Mayo,
+	Opata,
+	Eudeve,
+	Cora,
+	Huichol,
+	Pochutec,
+	Pipil,
+	Nahuatl,
+}
+
+// EskimoAleut
+var Inuit = &Language{
+	Name:      "inuit",
+	Subfamily: EskimoSubfamily,
+	IsLiving:  true,
+	WordBase:  InuitWordBase,
+}
+
+var AllEskimoAleutLanguages = []*Language{Inuit}
+
+// Austonesian
+var (
+	Hawaiian = &Language{
+		Name:      "hawaiian",
+		Subfamily: MarquesicSubfamily,
+		IsLiving:  true,
+		WordBase:  HawaiianWordBase,
+	}
+)
+
+var AllAustonesianLanguages = []*Language{Hawaiian}
+
+// Quechua
+var (
+	Ancash = &Language{
+		Name:      "Ancash",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	AltoPativilcaAltoMaranonAltoHuallaga = &Language{
+		Name:      "alto_pativilca_alto_maranon_alto_huallaga",
+		Subfamily: QuechuaISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Yaru = &Language{
+		Name:      "yaru",
+		Subfamily: QuechuaISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Wanka = &Language{
+		Name:      "wanka",
+		Subfamily: QuechuaISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	YauyosChincha = &Language{
+		Name:      "yauyos_chincha",
+		Subfamily: QuechuaISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Pacaraos = &Language{
+		Name:      "pacaraos",
+		Subfamily: QuechuaISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Lambayeque = &Language{
+		Name:      "lambayeque",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Cajamarca = &Language{
+		Name:      "cajamarca",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Lincha = &Language{
+		Name:      "lincha",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Laraos = &Language{
+		Name:      "laraos",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Ayacucho = &Language{
+		Name:      "ayacucho",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Cusco = &Language{
+		Name:      "cusco",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	Puno = &Language{
+		Name:      "puno",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	NorthernBolivian = &Language{
+		Name:      "northern_bolivian",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	SouthernBolivia = &Language{
+		Name:      "southern_bolivia",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+	SantiagoDelEstero = &Language{
+		Name:      "santiago_del_estero",
+		Subfamily: QuechuaIISubfamily,
+		IsLiving:  true,
+		WordBase:  QuechuaWordBase,
+	}
+)
+
+var AllQuechuaLanguages = []*Language{
+	Ancash,
+	AltoPativilcaAltoMaranonAltoHuallaga,
+	Yaru,
+	Wanka,
+	YauyosChincha,
+	Pacaraos,
+	Lambayeque,
+	Cajamarca,
+	Lincha,
+	Laraos,
+	Ayacucho,
+	Cusco,
+	Puno,
+	NorthernBolivian,
+	SouthernBolivia,
+	SantiagoDelEstero,
+}
+
+// AfroAsiaticFamily
+var (
+	// Berber
+	Kabyle = &Language{
+		Name:      "kabyle",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Tamazight = &Language{
+		Name:      "tamazight",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Shilha = &Language{
+		Name:      "shilha",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	SenhajaDeSrair = &Language{
+		Name:      "senhaja_de_srair",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Ghomara = &Language{
+		Name:      "ghomara",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Riffian = &Language{
+		Name:      "riffian",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	AytSeghrouchen = &Language{
+		Name:      "ayt_seghrouchen",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	AytWarayn = &Language{
+		Name:      "ayt_warayn",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Shenwa = &Language{
+		Name:      "shenwa",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Shawiya = &Language{
+		Name:      "shawiya",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Zenaga = &Language{
+		Name:      "zenaga",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Siwi = &Language{
+		Name:      "siwi",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Nafusi = &Language{
+		Name:      "nafusi",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Sokna = &Language{
+		Name:      "sokna",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Ghadames = &Language{
+		Name:      "ghadames",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Awjila = &Language{
+		Name:      "awjila",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Tuareg = &Language{
+		Name:      "tuareg",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	// Cushitic
+	Beja = &Language{
+		Name:      "beja",
+		Subfamily: CushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Awngi = &Language{
+		Name:      "awngi",
+		Subfamily: AgawSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Bilen = &Language{
+		Name:      "bilen",
+		Subfamily: AgawSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Qimant = &Language{
+		Name:      "qimant",
+		Subfamily: AgawSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Xamtanga = &Language{
+		Name:      "xamtanga",
+		Subfamily: AgawSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Gawwada = &Language{
+		Name:      "gawwada",
+		Subfamily: DullaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Tsamai = &Language{
+		Name:      "tsamai",
+		Subfamily: DullaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Dihina = &Language{
+		Name:      "dihina",
+		Subfamily: DullaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Dobase = &Language{
+		Name:      "dobase",
+		Subfamily: DullaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Burji = &Language{
+		Name:      "burji",
+		Subfamily: HighlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Sidamo = &Language{
+		Name:      "sidamo",
+		Subfamily: HighlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Gedeo = &Language{
+		Name:      "gedeo",
+		Subfamily: HighlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	HadiyyaLibido = &Language{
+		Name:      "hadiyya_libido",
+		Subfamily: HighlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	KambaataAlaba = &Language{
+		Name:      "kambaata_alaba",
+		Subfamily: HighlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	SahoAfar = &Language{
+		Name:      "saho_afar",
+		Subfamily: LowlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	OmoTana = &Language{
+		Name:      "omo_tana",
+		Subfamily: LowlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Oromoid = &Language{
+		Name:      "oromoid",
+		Subfamily: LowlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Dullay = &Language{
+		Name:      "dullay",
+		Subfamily: LowlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Yaaku = &Language{
+		Name:      "yaaku",
+		Subfamily: LowlandEastCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Gorowa = &Language{
+		Name:      "gorowa",
+		Subfamily: SouthCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Iraqw = &Language{
+		Name:      "iraqw",
+		Subfamily: SouthCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Alagwa = &Language{
+		Name:      "alagwa",
+		Subfamily: SouthCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Burunge = &Language{
+		Name:      "burunge",
+		Subfamily: SouthCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Aasax = &Language{
+		Name:      "aasax",
+		Subfamily: SouthCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Kwadza = &Language{
+		Name:      "kwadza",
+		Subfamily: SouthCushiticSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Egyptian = &Language{
+		Name:      "egyptian",
+		Subfamily: EgyptianSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	// semitic
+	Akkadian = &Language{
+		Name:      "akkadian",
+		Subfamily: EastSemiticSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Eblaite = &Language{
+		Name:      "eblaite",
+		Subfamily: EastSemiticSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Kishite = &Language{
+		Name:      "kishite",
+		Subfamily: EastSemiticSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Ashkenazi = &Language{
+		Name:      "ashkenazi",
+		Subfamily: HebrewSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Sephardi = &Language{
+		Name:      "sephardi",
+		Subfamily: HebrewSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Hebrew = &Language{
+		Name:      "hebrew",
+		Subfamily: HebrewSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Samaritan = &Language{
+		Name:      "samaritan",
+		Subfamily: HebrewSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Ammonite = &Language{
+		Name:      "ammonite",
+		Subfamily: CanaaniteSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Edomite = &Language{
+		Name:      "edomite",
+		Subfamily: CanaaniteSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Moabite = &Language{
+		Name:      "moabite",
+		Subfamily: CanaaniteSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Phoenician = &Language{
+		Name:      "phoenician",
+		Subfamily: CanaaniteSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Samalian = &Language{
+		Name:      "samalian",
+		Subfamily: CanaaniteSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Aramaic = &Language{
+		Name:      "aramaic",
+		Subfamily: AramaicSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Nabataean = &Language{
+		Name:      "nabataean",
+		Subfamily: AramaicSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Amorite = &Language{
+		Name:      "amorite",
+		Subfamily: AramaicSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Himyaritic = &Language{
+		Name:      "himyaritic",
+		Subfamily: AramaicSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Sutean = &Language{
+		Name:      "sutean",
+		Subfamily: AramaicSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Syriac = &Language{
+		Name:      "syriac",
+		Subfamily: AramaicSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Arabic = &Language{
+		Name:      "arabic",
+		Subfamily: ArabicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Geez = &Language{
+		Name:      "geez",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Tigrinya = &Language{
+		Name:      "tigrinya",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Amharic = &Language{
+		Name:      "amharic",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Argobba = &Language{
+		Name:      "argobba",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Harari = &Language{
+		Name:      "harari",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Gafat = &Language{
+		Name:      "gafat",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Soddo = &Language{
+		Name:      "soddo",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Mesmes = &Language{
+		Name:      "mesmes",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Muher = &Language{
+		Name:      "muher",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	WestGurage = &Language{
+		Name:      "west_gurage",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Mesqan = &Language{
+		Name:      "mesqan",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	SebatBet = &Language{
+		Name:      "sebat_bet",
+		Subfamily: EthiopicSubfamily,
+		IsLiving:  true,
+		WordBase:  ArabicWordBase,
+	}
+	Baṭḥari = &Language{
+		Name:      "bathari",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Harsusi = &Language{
+		Name:      "harsusi",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Hobyot = &Language{
+		Name:      "hobyot",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Mehri = &Language{
+		Name:      "mehri",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Shehri = &Language{
+		Name:      "shehri",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Soqotri = &Language{
+		Name:      "soqotri",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Faifi = &Language{
+		Name:      "faifi",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Hadramautic = &Language{
+		Name:      "hadramautic",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Minaean = &Language{
+		Name:      "minaean",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Qatabanian = &Language{
+		Name:      "qatabanian",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Razihi = &Language{
+		Name:      "razihi",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Sabaean = &Language{
+		Name:      "sabaean",
+		IsLiving:  true,
+		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+)
+
+var AllAfroAsiaticLanguages = []*Language{
+	Kabyle,
+	Tamazight,
+	Shilha,
+	SenhajaDeSrair,
+	Ghomara,
+	Riffian,
+	AytSeghrouchen,
+	AytWarayn,
+	Shenwa,
+	Shawiya,
+	Zenaga,
+	Siwi,
+	Nafusi,
+	Sokna,
+	Ghadames,
+	Awjila,
+	Tuareg,
+	Beja,
+	Awngi,
+	Bilen,
+	Qimant,
+	Xamtanga,
+	Gawwada,
+	Tsamai,
+	Dihina,
+	Dobase,
+	Burji,
+	Sidamo,
+	Gedeo,
+	HadiyyaLibido,
+	KambaataAlaba,
+	SahoAfar,
+	OmoTana,
+	Oromoid,
+	Dullay,
+	Yaaku,
+	Gorowa,
+	Iraqw,
+	Alagwa,
+	Burunge,
+	Aasax,
+	Kwadza,
+	Egyptian,
+	Akkadian,
+	Eblaite,
+	Kishite,
+	Ashkenazi,
+	Sephardi,
+	Hebrew,
+	Samaritan,
+	Ammonite,
+	Edomite,
+	Moabite,
+	Phoenician,
+	Samalian,
+	Aramaic,
+	Nabataean,
+	Amorite,
+	Himyaritic,
+	Sutean,
+	Syriac,
+	Arabic,
+	Geez,
+	Tigrinya,
+	Amharic,
+	Argobba,
+	Harari,
+	Gafat,
+	Soddo,
+	Mesmes,
+	Muher,
+	WestGurage,
+	Mesqan,
+	SebatBet,
+	Baṭḥari,
+	Harsusi,
+	Hobyot,
+	Mehri,
+	Shehri,
+	Soqotri,
+	Faifi,
+	Hadramautic,
+	Minaean,
+	Qatabanian,
+	Razihi,
+	Sabaean,
 }
 
 // Fantasy Languages
