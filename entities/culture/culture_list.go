@@ -1108,11 +1108,164 @@ var AllIndoAryanCultures = []*Culture{
 
 // Iranian
 
-var AllIranianCultures = []*Culture{}
+var (
+	AfghanCulture = &Culture{
+		Name:            "iranian_afghan",
+		Root:            PersianRoot,
+		Language:        language.Pashto,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{EsteemedHospitalityTradition, FutuwaaTradition, LoyalSubjectsTradition, MountainHomesTradition},
+	}
+	BalochCulture = &Culture{
+		Name:            "iranian_baloch",
+		Root:            PersianRoot,
+		Language:        language.Balochi,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{DesertTravelersTradition, FutuwaaTradition, EsteemedHospitalityTradition, IsolationistTradition},
+	}
+	DaylamiteCulture = &Culture{
+		Name:            "iranian_daylamite",
+		Root:            PersianRoot,
+		Language:        language.Farsi,
+		Ethos:           Bellicose,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{FutuwaaTradition, MountaineersTradition, StalwartDefendersTradition, SwordsForHireTradition},
+	}
+	KhwarezmianCulture = &Culture{
+		Name:            "iranian_khwarezmian",
+		Root:            PersianRoot,
+		Language:        language.Scythian,
+		Ethos:           Stoic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{CaravaneersTradition, DrylandDwellersTradition, FutuwaaTradition, IsolationistTradition},
+	}
+	KurdishCulture = &Culture{
+		Name:            "iranian_kurdish",
+		Root:            PersianRoot,
+		Language:        language.Kurdish,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{EyeForAnEyeTradition, FutuwaaTradition, MountainHomesTradition, SwordsForHireTradition},
+	}
+	PersianCulture = &Culture{
+		Name:            "iranian_persian",
+		Root:            PersianRoot,
+		Language:        language.Farsi,
+		Ethos:           Courtly,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions: []*Tradition{
+			DrylandDwellersTradition,
+			FutuwaaTradition,
+			GardenArchitectsTradition,
+			PhilosopherCultureTradition,
+			RefinedPoetryTradition,
+		},
+	}
+	SakaCulture = &Culture{
+		Name:            "iranian_saka",
+		Root:            PersianRoot,
+		Language:        language.Scythian,
+		Ethos:           Bellicose,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{CaravaneersTradition, DrylandDwellersTradition, ExpertArtisansTradition, HorseLordsTradition},
+	}
+	SogdianCulture = &Culture{
+		Name:            "iranian_sogdian",
+		Root:            PersianRoot,
+		Language:        language.Scythian,
+		Ethos:           Egalitarian,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{CaravaneersTradition, FutuwaaTradition, ParochialismTradition, ReligionBlendingTradition},
+	}
+	TajikCulture = &Culture{
+		Name:            "iranian_tajik",
+		Root:            PersianRoot,
+		Language:        language.Pashto,
+		Ethos:           Spiritual,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{CaravaneersTradition, DrylandDwellersTradition, FutuwaaTradition, PhilosopherCultureTradition},
+	}
+)
+
+var AllIranianCultures = []*Culture{AfghanCulture, BalochCulture, DaylamiteCulture, KhwarezmianCulture, KurdishCulture, PersianCulture, SakaCulture, SogdianCulture, TajikCulture}
 
 // Israelite
 
-var AllIsraeliteCultures = []*Culture{}
+var (
+	AshkenaziCulture = &Culture{
+		Name:            "istaelite_ashkenazi",
+		Root:            SemiticRoot,
+		Language:        language.Ashkenazi,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions: []*Tradition{
+			DiasporicTradition,
+			PhilosopherCultureTradition,
+			BoundByFaithTradition,
+			DefensiveTacticsTradition,
+			ForebearingTradition,
+		},
+	}
+	KochinimCulture = &Culture{
+		Name:            "istaelite_kochinim",
+		Proto:           []*Culture{SephardiCulture, TamilCulture},
+		Root:            SemiticRoot,
+		Language:        language.Hebrew,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions: []*Tradition{
+			DiasporicTradition,
+			PhilosopherCultureTradition,
+			FerventTempleBuildersTradition,
+			XenophilicTradition,
+		},
+	}
+	RadhaniteCulture = &Culture{
+		Name:            "istaelite_radhanite",
+		Root:            SemiticRoot,
+		Language:        language.Hebrew,
+		Ethos:           Egalitarian,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions: []*Tradition{
+			DiasporicTradition,
+			PhilosopherCultureTradition,
+			DefensiveTacticsTradition,
+			MaritimeMercantilismTradition,
+			XenophilicTradition,
+		},
+	}
+	SephardiCulture = &Culture{
+		Name:            "istaelite_sephardi",
+		Root:            SemiticRoot,
+		Language:        language.Sephardi,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions: []*Tradition{
+			DiasporicTradition,
+			PhilosopherCultureTradition,
+			CaravaneersTradition,
+			DefensiveTacticsTradition,
+			MaritimeMercantilismTradition,
+		},
+	}
+)
+
+var AllIsraeliteCultures = []*Culture{AshkenaziCulture, KochinimCulture, RadhaniteCulture, SephardiCulture}
 
 // Latin
 
