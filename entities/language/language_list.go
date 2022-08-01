@@ -358,6 +358,12 @@ var (
 		IsLiving:  false,
 		WordBase:  GermanWordBase, // @TODO can be changed after adding lombardian to word bases
 	}
+	Frankish = &Language{
+		Name:      "frankish",
+		Subfamily: WeserRhineGermanicSubfamily,
+		IsLiving:  false,
+		WordBase:  GermanWordBase, // @TODO can be changed after adding frankish to word bases
+	}
 	Anglic = &Language{
 		Name:      "anglic",
 		Subfamily: NorthSeaGermanicSubfamily,
@@ -962,6 +968,7 @@ var AllIndoEuropeanLanguages = []*Language{
 	Alamannian,
 	Bavarian,
 	Lombardian,
+	Frankish,
 	Anglic,
 	Saxon,
 	Greek,
@@ -2240,6 +2247,48 @@ var (
 		IsLiving:  true,
 		WordBase:  BerberWordBase,
 	}
+	Nobiin = &Language{
+		Name:      "nobiin",
+		Subfamily: NubianSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Kenzi = &Language{
+		Name:      "kenzi",
+		Subfamily: NubianSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Midob = &Language{
+		Name:      "midob",
+		Subfamily: NubianSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Birgid = &Language{
+		Name:      "birgid",
+		Subfamily: NubianSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	HillNubian = &Language{
+		Name:      "hill_nubian",
+		Subfamily: NubianSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Daju = &Language{
+		Name:      "daju",
+		Subfamily: DajuSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Somali = &Language{
+		Name:      "somali",
+		Subfamily: SomalicSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
 )
 
 var AllAfricanLanguages = []*Language{
@@ -2252,6 +2301,13 @@ var AllAfricanLanguages = []*Language{
 	Swahili,
 	Tebu,
 	Hausa,
+	Nobiin,
+	Kenzi,
+	Midob,
+	Birgid,
+	HillNubian,
+	Daju,
+	Somali,
 }
 
 // UtoAztecan
@@ -3047,6 +3103,31 @@ var (
 		Name:      "sabaean",
 		IsLiving:  true,
 		Subfamily: SouthArabianSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	// Omotic
+	SouthOmotic = &Language{
+		Name:      "south_omotic",
+		IsLiving:  true,
+		Subfamily: OmoticSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Mao = &Language{
+		Name:      "mao",
+		IsLiving:  true,
+		Subfamily: OmoticSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Dizoid = &Language{
+		Name:      "dizoid",
+		IsLiving:  true,
+		Subfamily: OmoticSubfamily,
+		WordBase:  ArabicWordBase,
+	}
+	Gonga = &Language{
+		Name:      "gonga",
+		IsLiving:  true,
+		Subfamily: OmoticSubfamily,
 		WordBase:  ArabicWordBase,
 	}
 )

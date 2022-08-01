@@ -250,6 +250,12 @@ var (
 		ExtendedSubfamily: GermanicSubfamily,
 		IsLiving:          true,
 	}
+	WeserRhineGermanicSubfamily = &Subfamily{
+		Name:              "weser_rhine_germanic_lang_subfamily",
+		Family:            IndoEuropeanFamily,
+		ExtendedSubfamily: GermanicSubfamily,
+		IsLiving:          true,
+	}
 	// IndoIranian
 	IndoAryanSubfamily = &Subfamily{
 		Name:              "indo_aryan_lang_subfamily",
@@ -375,6 +381,7 @@ var AllIndoEuropeanSubfamilies = []*Subfamily{
 	EastGermanicSubfamily,
 	ElbeGermanicSubfamily,
 	NorthSeaGermanicSubfamily,
+	WeserRhineGermanicSubfamily,
 	// IndoIranian
 	IndoAryanSubfamily,
 	IranianSubfamily,
@@ -391,10 +398,6 @@ var AllIndoEuropeanSubfamilies = []*Subfamily{
 	ItaloDalmatianSubfamily,
 	EasternRomanceSubfamily,
 }
-
-/* *********************** */
-
-/////////////////////////////
 
 // Basque
 var (
@@ -1014,6 +1017,12 @@ var (
 		ExtendedSubfamily: ChadicSubfamily,
 		IsLiving:          true,
 	}
+	SomalicSubfamily = &Subfamily{
+		Name:              "somalic_lang_subfamily",
+		Family:            AfroAsiaticFamily,
+		ExtendedSubfamily: LowlandEastCushiticSubfamily,
+		IsLiving:          true,
+	}
 )
 
 var AllAfroAsiaticSubfamilies = []*Subfamily{
@@ -1037,6 +1046,8 @@ var AllAfroAsiaticSubfamilies = []*Subfamily{
 	EthiopicSubfamily,
 	SouthArabianSubfamily,
 	HebrewSubfamily,
+	WestChadicSubfamily,
+	SomalicSubfamily,
 }
 
 // NiloSaharanFamily
@@ -1106,6 +1117,19 @@ var (
 		Family:   NiloSaharanFamily,
 		IsLiving: false,
 	}
+
+	NubianSubfamily = &Subfamily{
+		Name:              "nubian_lang_subfamily",
+		Family:            NiloSaharanFamily,
+		ExtendedSubfamily: EasternSudanicSubfamily,
+		IsLiving:          true,
+	}
+	DajuSubfamily = &Subfamily{
+		Name:              "daju_lang_subfamily",
+		Family:            NiloSaharanFamily,
+		ExtendedSubfamily: EasternSudanicSubfamily,
+		IsLiving:          true,
+	}
 )
 
 var AllNiloSaharanSubfamilies = []*Subfamily{
@@ -1122,6 +1146,9 @@ var AllNiloSaharanSubfamilies = []*Subfamily{
 	CentralSudanicSubfamily,
 	EasternSudanicSubfamily,
 	MimiDSubfamily,
+
+	NubianSubfamily,
+	DajuSubfamily,
 }
 
 // OtoMangueanFamily
