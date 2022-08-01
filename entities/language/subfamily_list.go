@@ -238,6 +238,18 @@ var (
 		ExtendedSubfamily: GermanicSubfamily,
 		IsLiving:          false,
 	}
+	ElbeGermanicSubfamily = &Subfamily{
+		Name:              "elbe_germanic_lang_subfamily",
+		Family:            IndoEuropeanFamily,
+		ExtendedSubfamily: GermanicSubfamily,
+		IsLiving:          true,
+	}
+	NorthSeaGermanicSubfamily = &Subfamily{
+		Name:              "north_sea_germanic_lang_subfamily",
+		Family:            IndoEuropeanFamily,
+		ExtendedSubfamily: GermanicSubfamily,
+		IsLiving:          true,
+	}
 	// IndoIranian
 	IndoAryanSubfamily = &Subfamily{
 		Name:              "indo_aryan_lang_subfamily",
@@ -361,6 +373,8 @@ var AllIndoEuropeanSubfamilies = []*Subfamily{
 	NorthGermanicSubfamily,
 	WestGermanicSubfamily,
 	EastGermanicSubfamily,
+	ElbeGermanicSubfamily,
+	NorthSeaGermanicSubfamily,
 	// IndoIranian
 	IndoAryanSubfamily,
 	IranianSubfamily,
@@ -992,6 +1006,12 @@ var (
 		Name:              "hebrew_lang_subfamily",
 		Family:            AfroAsiaticFamily,
 		ExtendedSubfamily: CanaaniteSubfamily,
+		IsLiving:          true,
+	}
+	WestChadicSubfamily = &Subfamily{
+		Name:              "west_chadic_lang_subfamily",
+		Family:            AfroAsiaticFamily,
+		ExtendedSubfamily: ChadicSubfamily,
 		IsLiving:          true,
 	}
 )

@@ -3,6 +3,7 @@ package culture
 var (
 	NordicEuropeRoot      = &Root{Name: "nordic_europe_root"}
 	EuropeContinentalRoot = &Root{Name: "europe_continental_root"}
+	CaucasianRoot         = &Root{Name: "caucasian_root"}
 	MediterraneanRoot     = &Root{Name: "mediterranean_root"}
 	SemiticRoot           = &Root{Name: "semitic_root"}
 	EgyptianRoot          = &Root{Name: "egyptian_root"}

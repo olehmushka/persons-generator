@@ -266,23 +266,257 @@ var AllBerberCultures = []*Culture{BaranisCulture, ButrCulture, GuancheCulture, 
 
 // Brythonic
 
-var AllBrythonicCultures = []*Culture{}
+var (
+	BretonCulture = &Culture{
+		Name:            "brythonic_breton",
+		Root:            EuropeContinentalRoot,
+		Language:        language.Breton,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{ChansonDeGesteTradition, DexterousFishermenTradition, StorytellersTradition, SwordsForHireTradition},
+	}
+	CornishCulture = &Culture{
+		Name:            "brythonic_cornish",
+		Root:            EuropeContinentalRoot,
+		Language:        language.Cornish,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{AncientMinersTradition, DexterousFishermenTradition, StorytellersTradition},
+	}
+	CumbrianCulture = &Culture{
+		Name:            "brythonic_cumbrian",
+		Root:            EuropeContinentalRoot,
+		Language:        language.Cumbric,
+		Ethos:           Stoic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{ConcubinesTradition, HighlandWarriorsTradition, RefinedPoetryTradition, StalwartDefendersTradition},
+	}
+	PictishCulture = &Culture{
+		Name:            "brythonic_pictish",
+		Root:            EuropeContinentalRoot,
+		Language:        language.Pictish,
+		Ethos:           Bellicose,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{ConcubinesTradition, HighlandWarriorsTradition, HillDwellersTradition, RefinedPoetryTradition},
+	}
+	WelshCulture = &Culture{
+		Name:            "brythonic_welsh",
+		Root:            EuropeContinentalRoot,
+		Language:        language.Welsh,
+		Ethos:           Stoic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{ConcubinesTradition, HighlandWarriorsTradition, LongbowCompetitionsTradition, RefinedPoetryTradition},
+	}
+)
+
+var AllBrythonicCultures = []*Culture{BretonCulture, CornishCulture, CumbrianCulture, PictishCulture, WelshCulture}
 
 // Burman
 
-var AllBurmanCultures = []*Culture{}
+var (
+	BurmeseCulture = &Culture{
+		Name:            "burman_burmese",
+		Root:            IndianRoot,
+		Language:        language.Burmese,
+		Ethos:           Spiritual,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{FerventTempleBuildersTradition, FrequentFestivitiesTradition, ReligionBlendingTradition, RoyalArmyTradition},
+	}
+	MonCulture = &Culture{
+		Name:            "burman_mon",
+		Root:            IndianRoot,
+		Language:        language.Burmese,
+		Ethos:           Spiritual,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{MysticalAncestorsTradition, ReligiousPatronageTradition, CultureBlendingTradition},
+	}
+)
+
+var AllBurmanCultures = []*Culture{BurmeseCulture, MonCulture}
 
 // Byzantine
 
-var AllByzantineCultures = []*Culture{}
+var (
+	AlanCulture = &Culture{
+		Name:            "byzantine_alan",
+		Root:            TurkicRoot,
+		Language:        language.Scythian,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{HorseLordsTradition, MaritalCeremoniesTradition, MountaineersTradition, SteppeToleranceTradition},
+	}
+	ArmenianCulture = &Culture{
+		Name:            "byzantine_armenian",
+		Root:            CaucasianRoot,
+		Language:        language.Armenian,
+		Ethos:           Stoic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{FerventTempleBuildersTradition, HighlandWarriorsTradition, HillDwellersTradition, StrongBelieversTradition},
+	}
+	GeorgianCulture = &Culture{
+		Name:            "byzantine_georgian",
+		Root:            CaucasianRoot,
+		Language:        language.Georgian,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{CastleKeepersTradition, CaucasianWolvesTradition, HereditaryHierarchyTradition, MetalworkersTradition},
+	}
+	GreekCulture = &Culture{
+		Name:            "byzantine_greek",
+		Root:            MediterraneanRoot,
+		Language:        language.Greek,
+		Ethos:           Bureaucratic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{FormationFightingExpertsTradition, LegalisticTradition},
+	}
+	SyriacCulture = &Culture{
+		Name:            "byzantine_syriac",
+		Root:            SemiticRoot,
+		Language:        language.Aramaic,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.StrongInfluence),
+		Traditions:      []*Tradition{CaravaneersTradition, LoyalSubjectsTradition, PhilosopherCultureTradition, StrongBelieversTradition},
+	}
+)
+
+var AllByzantineCultures = []*Culture{AlanCulture, ArmenianCulture, GeorgianCulture, GreekCulture, SyriacCulture}
 
 // CentralAfrican
 
-var AllCentralAfricanCultures = []*Culture{}
+var (
+	HausaCulture = &Culture{
+		Name:            "central_african_hausa",
+		Root:            AfricanRoot,
+		Language:        language.Hausa,
+		Ethos:           Egalitarian,
+		MartialCustom:   g.MenAndWomen,
+		GenderDominance: g.NewDominanceWithParams(g.EqualityDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{CaravaneersTradition, FamilyBusinessTradition, ParochialismTradition},
+	}
+	KanuriCulture = &Culture{
+		Name:            "central_african_kanuri",
+		Root:            AfricanRoot,
+		Language:        language.Tebu,
+		Ethos:           Bellicose,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{HitAndRunTacticiansTradition, QuarrelsomeTradition},
+	}
+	NupeCulture = &Culture{
+		Name:            "central_african_nupe",
+		Root:            AfricanRoot,
+		Language:        language.Kwa,
+		Ethos:           Bellicose,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{MusicalTheoristsTradition, ParochialismTradition},
+	}
+	SaoCulture = &Culture{
+		Name:            "central_african_sao",
+		Root:            AfricanRoot,
+		Language:        language.Hausa,
+		Ethos:           Stoic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{AgrarianTradition, CityKeepersTradition, DrylandDwellersTradition, ParochialismTradition},
+	}
+)
+
+var AllCentralAfricanCultures = []*Culture{HausaCulture, KanuriCulture, NupeCulture, SaoCulture}
 
 // CentralGermanic
 
-var AllCentralGermanicCultures = []*Culture{}
+var (
+	BavarianCulture = &Culture{
+		Name:            "germanic_bavarian",
+		Root:            EuropeContinentalRoot,
+		Language:        language.German,
+		Ethos:           Spiritual,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{HereditaryHierarchyTradition, StandAndFightTradition, StrongBelieversTradition},
+	}
+	DutchCulture = &Culture{
+		Name:            "germanic_dutch",
+		Proto:           []*Culture{FrisianCulture /* @TODO add frankish */},
+		Root:            EuropeContinentalRoot,
+		Language:        language.Dutch,
+		Ethos:           Bureaucratic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{AgrarianTradition, MaritimeMercantilismTradition, ParochialismTradition, PoldersTradition},
+	}
+	FranconianCulture = &Culture{
+		Name:            "germanic_franconian",
+		Proto:           []*Culture{ /* @TODO add frankish */ },
+		Root:            EuropeContinentalRoot,
+		Language:        language.German,
+		Ethos:           Courtly,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{AstuteDiplomatsTradition, CastleKeepersTradition, HereditaryHierarchyTradition},
+	}
+	FrisianCulture = &Culture{
+		Name:            "germanic_frisian",
+		Root:            EuropeContinentalRoot,
+		Language:        language.Frisian,
+		Ethos:           Stoic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{BattlefieldLootersTradition, DexterousFishermenTradition, StrongBelieversTradition},
+	}
+	GermanCulture = &Culture{
+		Name:            "germanic_german",
+		Root:            EuropeContinentalRoot,
+		Language:        language.German,
+		Ethos:           Stoic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{AstuteDiplomatsTradition, HereditaryHierarchyTradition, StandAndFightTradition},
+	}
+	LangobardCulture = &Culture{
+		Name:            "germanic_langobard",
+		Root:            EuropeContinentalRoot,
+		Language:        language.Lombardian,
+		Ethos:           Stoic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{IsolationistTradition, MartialAdmirationTradition, StandAndFightTradition, MalleableInvadersTradition},
+	}
+	SaxonCulture = &Culture{
+		Name:            "germanic_saxon",
+		Proto:           []*Culture{ /* @TODO add old_saxon */ },
+		Root:            EuropeContinentalRoot,
+		Language:        language.Saxon,
+		Ethos:           Stoic,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{ReligiousPatronageTradition, RulingCasteTradition, StandAndFightTradition},
+	}
+	SwabianCulture = &Culture{
+		Name:            "germanic_swabian",
+		Root:            EuropeContinentalRoot,
+		Language:        language.German,
+		Ethos:           Communal,
+		MartialCustom:   g.OnlyMen,
+		GenderDominance: g.NewDominanceWithParams(g.MaleDominance, influence.ModerateInfluence),
+		Traditions:      []*Tradition{IndustriousTradition, MountainHomesTradition, ParochialismTradition},
+	}
+)
+
+var AllCentralGermanicCultures = []*Culture{BavarianCulture, DutchCulture, FranconianCulture, FrisianCulture, GermanCulture, LangobardCulture, SaxonCulture, SwabianCulture}
 
 // Chinese
 

@@ -340,6 +340,36 @@ var (
 		IsLiving:  false,
 		WordBase:  GermanWordBase, // @TODO can be changed after adding burgundian to word bases
 	}
+	Alamannian = &Language{
+		Name:      "alamannian",
+		Subfamily: ElbeGermanicSubfamily,
+		IsLiving:  false,
+		WordBase:  GermanWordBase, // @TODO can be changed after adding alamannian to word bases
+	}
+	Bavarian = &Language{
+		Name:      "bavarian",
+		Subfamily: ElbeGermanicSubfamily,
+		IsLiving:  false,
+		WordBase:  GermanWordBase, // @TODO can be changed after adding bavarian to word bases
+	}
+	Lombardian = &Language{
+		Name:      "lombardian",
+		Subfamily: ElbeGermanicSubfamily,
+		IsLiving:  false,
+		WordBase:  GermanWordBase, // @TODO can be changed after adding lombardian to word bases
+	}
+	Anglic = &Language{
+		Name:      "anglic",
+		Subfamily: NorthSeaGermanicSubfamily,
+		IsLiving:  false,
+		WordBase:  GermanWordBase, // @TODO can be changed after adding anglic to word bases
+	}
+	Saxon = &Language{
+		Name:      "saxon",
+		Subfamily: NorthSeaGermanicSubfamily,
+		IsLiving:  false,
+		WordBase:  GermanWordBase, // @TODO can be changed after adding saxon to word bases
+	}
 	// Greek
 	Greek = &Language{
 		Name:      "greek",
@@ -929,6 +959,11 @@ var AllIndoEuropeanLanguages = []*Language{
 	Gothic,
 	Vandalic,
 	Burgundian,
+	Alamannian,
+	Bavarian,
+	Lombardian,
+	Anglic,
+	Saxon,
 	Greek,
 	Illyrian,
 	Pashai,
@@ -2199,6 +2234,12 @@ var (
 		IsLiving:  true,
 		WordBase:  BerberWordBase,
 	}
+	Hausa = &Language{
+		Name:      "hausa",
+		Subfamily: WestChadicSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
 )
 
 var AllAfricanLanguages = []*Language{
@@ -2210,6 +2251,7 @@ var AllAfricanLanguages = []*Language{
 	Senegambian,
 	Swahili,
 	Tebu,
+	Hausa,
 }
 
 // UtoAztecan
