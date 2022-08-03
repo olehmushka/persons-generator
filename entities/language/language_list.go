@@ -917,6 +917,7 @@ var (
 var AllIndoEuropeanLanguages = []*Language{
 	Albanian,
 	Armenian,
+	Ruthenian,
 	Belarusian,
 	Ukrainian,
 	Russian,

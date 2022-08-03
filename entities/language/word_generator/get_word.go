@@ -9,15 +9,30 @@ import (
 )
 
 func GetWord(base string, nameBases map[string][]string, min, max int, dupl string) string {
-	data, ok := Chains[base]
-	if !ok {
-		UpdateChains(base, nameBases)
+	if base == "" {
+		panic("Please define a base")
 	}
 
-	var v []string
-	if val, ok := data[""]; ok {
-		v = val
+	var data Chain
+	for i := 0; i < 10; i++ {
+		var ok bool
+		if data, ok = Chains[base]; !ok {
+			UpdateChains(base, nameBases)
+			continue
+		}
+		break
 	}
+
+	if len(data) == 0 {
+		panic(fmt.Sprintf("name_base %s is incorrect! [1]", base))
+	}
+
+	val, ok := data[""]
+	if !ok {
+		panic(fmt.Sprintf("name_base %s is incorrect! [2]", base))
+	}
+
+	v := val
 	var (
 		cur = tools.RandomValueOfSlice(pm.RandFloat64, v)
 		w   = ""
@@ -73,6 +88,7 @@ func GetWord(base string, nameBases map[string][]string, min, max int, dupl stri
 		}
 		if len(name) == 0 {
 			name += strings.ToUpper(string(c))
+			continue
 		}
 		// remove space after hyphen
 		if tools.GetLastStrChar(name) == "-" && string(c) == " " {
@@ -104,9 +120,10 @@ func GetWord(base string, nameBases map[string][]string, min, max int, dupl stri
 	}
 
 	if len(name) < 2 {
-		fmt.Printf("name is too short! Random name will be selected")
+		fmt.Printf("name is too short! Random name will be selected\n")
 		name = tools.RandomValueOfSlice(pm.RandFloat64, nameBases[base])
 	}
+	fmt.Printf("NN: %s\n", name)
 
 	return name
 }

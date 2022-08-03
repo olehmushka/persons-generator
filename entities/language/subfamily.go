@@ -1,12 +1,26 @@
 package language
 
-import "persons_generator/tools"
+import (
+	"fmt"
+
+	"persons_generator/tools"
+)
 
 type Subfamily struct {
 	Name              string
 	Family            Family
 	ExtendedSubfamily *Subfamily
 	IsLiving          bool
+}
+
+func (sf *Subfamily) Print() {
+	if sf == nil {
+		return
+	}
+	fmt.Printf("subfamily: %s (family: %s, is_living: %t)\n", sf.Name, sf.Family, sf.IsLiving)
+	if sf.ExtendedSubfamily != nil {
+		sf.ExtendedSubfamily.Print()
+	}
 }
 
 func GetSubfamiliesByName(name string) []*Subfamily {

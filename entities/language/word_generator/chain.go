@@ -11,6 +11,10 @@ import (
 type Chain map[string][]string
 
 func AppendByBase(chains map[string]Chain, base string, el Chain) map[string]Chain {
+	if len(chains) == 0 {
+		chains = make(map[string]Chain)
+	}
+
 	chain, ok := chains[base]
 	if !ok {
 		chains[base] = el
@@ -41,7 +45,7 @@ func CalculateChain(nameBases []string) Chain {
 				v    = 0                                 // 0 if no vowels in syllable
 			)
 
-			for c := i + 1; tools.GetCharByIndex(name, c, "") != "" && len(syllable) > 5; c++ {
+			for c := i + 1; tools.GetCharByIndex(name, c, "") != "" && len(syllable) < 5; c++ {
 				var (
 					that = tools.GetCharByIndex(name, c, "")
 					next = tools.GetCharByIndex(name, c+1, "") // next char
@@ -105,6 +109,9 @@ func CalculateChain(nameBases []string) Chain {
 
 func UpdateChain(base string, nameBases map[string][]string, chains map[string]Chain) map[string]Chain {
 	if chain, ok := nameBases[base]; ok {
+		if len(chain) == 0 {
+			panic(fmt.Sprintf("word base is empty (base=%s)", base))
+		}
 		chains = AppendByBase(chains, base, CalculateChain(chain))
 		return chains
 	}

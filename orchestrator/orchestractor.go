@@ -27,6 +27,12 @@ func New(cfg *Config) *Orchestrator {
 func (o *Orchestrator) Orchestrate() {
 }
 
+func (o *Orchestrator) ShowCultures() {
+	for _, c := range o.cultures {
+		c.Print()
+	}
+}
+
 func (o *Orchestrator) ShowReligions() {
 	for _, r := range o.religions {
 		r.Print()

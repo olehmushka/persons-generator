@@ -1,15 +1,13 @@
 package culture
 
 import (
+	"fmt"
+
 	g "persons_generator/entities/gender"
 	"persons_generator/entities/language"
+	pm "persons_generator/probability_machine"
 	"persons_generator/tools"
 )
-
-// bc "persons_generator/entities/base_culture"
-// pc "persons_generator/entities/proto_culture"
-// pm "persons_generator/probability_machine"
-// "persons_generator/tools"
 
 type Culture struct {
 	Proto []*Culture
@@ -21,17 +19,17 @@ type Culture struct {
 	Traditions      []*Tradition
 	GenderDominance *g.Dominance
 	MartialCustom   g.Acceptance
-	// Proto                 *pc.ProtoCulture
-	// InheritedBaseCultures []*bc.BaseCulture
 }
 
 func New(preferred []string) *Culture {
 	c := &Culture{}
-	c.Proto = GetProtoCultures(preferred)
-	c.GenderDominance = g.NewDominance()
-	c.MartialCustom = g.GetMartialCustom(1, c.GenderDominance)
-	c.Language = language.New(GetLanguageNamesFromProto(c.Proto))
+	c.Proto = getProtoCultures(preferred)
+	c.GenderDominance = getGenderDominance(c.Proto)
+	c.MartialCustom = getMartialCustom(c.Proto)
+	c.Language = language.New(getLanguageNamesFromProto(c.Proto))
 	c.Name = c.Language.GetCultureName()
+	c.Ethos = getEthos(c.Proto)
+	c.Traditions = getTraditions(c.Proto)
 
 	return c
 }
@@ -46,9 +44,44 @@ func NewCultures(amount int, preferred []string) []*Culture {
 	return cultures
 }
 
+func (c *Culture) Print() {
+	if c == nil {
+		return
+	}
+
+	fmt.Printf("Culture (name=%s)\n", c.Name)
+	c.Root.Print()
+	if len(c.Proto) > 0 {
+		fmt.Printf("Proto cultures (culture_name=%s)\n", c.Name)
+		for _, p := range c.Proto {
+			if p == nil {
+				continue
+			}
+			fmt.Printf(" - %s\n", p.Name)
+		}
+	}
+	c.Language.Print()
+	c.Ethos.Print()
+	c.PrintTraditions()
+	c.GenderDominance.Print()
+	c.PrintMartialCustom()
+}
+
 func chunkPreferred(amount int, preferred []string) [][]string {
+	if amount == 0 {
+		return [][]string{}
+	}
+
+	if len(preferred) == 0 {
+		out := make([][]string, amount)
+		for i := range out {
+			out[i] = []string{}
+		}
+		return out
+	}
+
 	out := make([][]string, amount)
-	if amount <= len(preferred) {
+	if amount >= len(preferred) {
 		for i := range out {
 			if len(preferred) > i {
 				out[i] = []string{preferred[i]}
@@ -62,11 +95,16 @@ func chunkPreferred(amount int, preferred []string) [][]string {
 	return tools.Chunk(amount, preferred)
 }
 
-func GetProtoCultures(preferred []string) []*Culture {
-	return nil
+func getProtoCultures(preferred []string) []*Culture {
+	expectedAmount := pm.RandIntInRange(1, 2)
+	if found := GetProtoCulturesByPreferred(preferred); len(found) > 0 {
+		return tools.RandomValuesOfSlice(pm.RandFloat64, found, expectedAmount)
+	}
+
+	return tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, expectedAmount)
 }
 
-func GetLanguageNamesFromProto(proto []*Culture) []string {
+func getLanguageNamesFromProto(proto []*Culture) []string {
 	names := make([]string, 0, len(proto))
 	for _, p := range proto {
 		if p == nil {
@@ -81,73 +119,27 @@ func GetLanguageNamesFromProto(proto []*Culture) []string {
 	return tools.Unique(names)
 }
 
-// func NewMany(amount int, preferred []string) []*Culture {
-// 	out := make([]*Culture, amount)
-// 	chunks := tools.Chunk(amount, preferred)
-// 	for i := range out {
-// 		p := Params{
-// 			MinInheritedBaseCultures: 1,
-// 			MaxInheritedBaseCultures: 3,
-// 		}
-// 		if len(chunks) > i {
-// 			p.PreferredCultures = chunks[i]
-// 		}
-// 		out[i] = New(p)
-// 	}
+func GetProtoCulturesByPreferred(preferred []string) []*Culture {
+	if len(preferred) == 0 {
+		return []*Culture{}
+	}
 
-// 	return out
-// }
+	out := make([]*Culture, 0, len(preferred))
+	for _, pref := range preferred {
+		if found := GetProtoCultureByPreferred(pref); found != nil {
+			out = append(out, found)
+		}
+	}
 
-// func New(params Params) *Culture {
-// 	if len(params.PreferredCultures) == 0 {
-// 		proto := pc.GetRandomProtoCulture()
-// 		return &Culture{
-// 			Proto:                 proto,
-// 			InheritedBaseCultures: bc.GetRandomBaseCultures(bc.GetBaseCulturesByProto(proto), params.MinInheritedBaseCultures, params.MaxInheritedBaseCultures),
-// 		}
-// 	}
+	return out
+}
 
-// 	if protoCultures := pc.GetProtoCulturesByPref(params.PreferredCultures); len(protoCultures) > 0 {
-// 		proto := tools.RandomValueOfSlice(pm.RandFloat64, protoCultures)
-// 		return &Culture{
-// 			Proto:                 proto,
-// 			InheritedBaseCultures: bc.GetRandomBaseCultures(bc.GetBaseCulturesByProto(proto), params.MinInheritedBaseCultures, params.MaxInheritedBaseCultures),
-// 		}
-// 	}
+func GetProtoCultureByPreferred(pref string) *Culture {
+	for _, c := range AllCultures {
+		if tools.ContainString(c.Name, pref) {
+			return c
+		}
+	}
 
-// 	if baseCultures := bc.GetBaseCulturesByPref(params.PreferredCultures); len(baseCultures) > 0 {
-// 		baseCulture := tools.RandomValueOfSlice(pm.RandFloat64, baseCultures)
-// 		return &Culture{
-// 			Proto:                 baseCulture.Proto,
-// 			InheritedBaseCultures: []*bc.BaseCulture{baseCulture},
-// 		}
-// 	}
-
-// 	proto := pc.GetRandomProtoCulture()
-
-// 	return &Culture{
-// 		Proto:                 proto,
-// 		InheritedBaseCultures: bc.GetRandomBaseCultures(bc.GetBaseCulturesByProto(proto), params.MinInheritedBaseCultures, params.MaxInheritedBaseCultures),
-// 	}
-// }
-
-// func (c *Culture) GetCultureName() string {
-// 	if c == nil {
-// 		return ""
-// 	}
-
-// 	return c.Name
-// }
-
-// func (c *Culture) HasLastName() bool {
-// 	if c == nil {
-// 		return false
-// 	}
-// 	for _, cl := range bc.CulturesWithoutLastName {
-// 		if bc.IsEqualCulture(cl, c) {
-// 			return false
-// 		}
-// 	}
-
-// 	return true
-// }
+	return nil
+}

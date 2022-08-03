@@ -62,11 +62,13 @@ func (gd *Dominance) GetCoef() float64 {
 }
 
 func generateDominance() GenderDominance {
-	return GenderDominance(pm.GetRandomFromSeveral(map[string]float64{
-		string(MaleDominance):     pm.RandFloat64InRange(0.25, 0.35),
-		string(EqualityDominance): pm.RandFloat64InRange(0.2, 0.3),
-		string(FemaleDominance):   pm.RandFloat64InRange(0.15, 0.25),
-	}))
+	var (
+		maleDominance     = pm.RandFloat64InRange(0.25, 0.35)
+		equalityDominance = pm.RandFloat64InRange(0.2, 0.3)
+		femaleDominance   = pm.RandFloat64InRange(0.15, 0.25)
+	)
+
+	return GetGenderDominanceByProbability(maleDominance, equalityDominance, femaleDominance)
 }
 
 func generateInfluence() influence.Influence {
@@ -86,3 +88,11 @@ const (
 	EqualityDominance GenderDominance = "equality"
 	FemaleDominance   GenderDominance = "female"
 )
+
+func GetGenderDominanceByProbability(male, equality, female float64) GenderDominance {
+	return GenderDominance(pm.GetRandomFromSeveral(map[string]float64{
+		string(MaleDominance):     male,
+		string(EqualityDominance): equality,
+		string(FemaleDominance):   female,
+	}))
+}

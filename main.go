@@ -14,10 +14,16 @@ func init() {
 
 func main() {
 	cfg := config.New()
-	orchestrator.New(&orchestrator.Config{
+	o := orchestrator.New(&orchestrator.Config{
 		WorldSize: cfg.WorldSize,
+		Culture: orchestrator.CultureConfig{
+			Preferred: []string{"ruthenian"},
+			Amount:    1,
+		},
 		Religion: orchestrator.ReligionConfig{
 			Amount: cfg.ReligionNumber,
 		},
-	}).ShowReligions()
+	})
+	// o.ShowReligions()
+	o.ShowCultures()
 }

@@ -25,6 +25,7 @@ func New(preferred []string) *Language {
 			langs = append(langs, lang)
 		}
 	}
+
 	switch len(langs) {
 	case 0:
 		return tools.RandomValueOfSlice(pm.RandFloat64, AllLanguages)
@@ -42,8 +43,25 @@ func (l *Language) GetWord() string {
 	return wg.GetWord(l.WordBase.Name, ExtractWords(AllWordBases), l.WordBase.Min, l.WordBase.Max, l.WordBase.Dupl)
 }
 
+func (l *Language) Print() {
+	if l == nil {
+		return
+	}
+	fmt.Printf("language: %s (is_living: %t)\n", l.Name, l.IsLiving)
+	l.Subfamily.Print()
+}
+
 func GetLanguageByName(name string) *Language {
-	return tools.Search(AllLanguages, func(el *Language) string { return el.Name }, name)
+	for _, lang := range AllLanguages {
+		if lang == nil {
+			continue
+		}
+		if tools.ContainString(lang.Name, name) {
+			return lang
+		}
+	}
+
+	return nil
 }
 
 func (l *Language) GetCultureName() string {
