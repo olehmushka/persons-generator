@@ -12,6 +12,7 @@ var AllLanguages = tools.Merge(
 	AllUralicLanguages,
 	AllTurkicLanguages,
 	AllMongolicLanguages,
+	AllTungusicLanguages,
 	AllDravidianLanguages,
 	AllUtoAztecanLanguages,
 	AllEskimoAleutLanguages,
@@ -352,7 +353,7 @@ var (
 		IsLiving:  false,
 		WordBase:  GermanWordBase, // @TODO can be changed after adding bavarian to word bases
 	}
-	Lombardian = &Language{
+	Langobardian = &Language{
 		Name:      "lombardian",
 		Subfamily: ElbeGermanicSubfamily,
 		IsLiving:  false,
@@ -967,7 +968,7 @@ var AllIndoEuropeanLanguages = []*Language{
 	Burgundian,
 	Alamannian,
 	Bavarian,
-	Lombardian,
+	Langobardian,
 	Frankish,
 	Anglic,
 	Saxon,
@@ -1485,6 +1486,12 @@ var (
 		IsLiving:  true,
 		WordBase:  FinnicWordBase,
 	}
+	Merya = &Language{
+		Name:      "merya",
+		Subfamily: FinnoPermicSubfamily,
+		IsLiving:  true,
+		WordBase:  FinnicWordBase,
+	}
 	Komi = &Language{
 		Name:      "komi",
 		Subfamily: PermicSubfamily,
@@ -1597,6 +1604,7 @@ var (
 
 var AllUralicLanguages = []*Language{
 	Mari,
+	Merya,
 	Komi,
 	Permyak,
 	Udmurt,
@@ -1835,6 +1843,12 @@ var (
 		IsLiving:  false,
 		WordBase:  TurkishWordBase,
 	}
+	Cuman = &Language{
+		Name:      "cuman",
+		Subfamily: KipchakSubfamily,
+		IsLiving:  false,
+		WordBase:  TurkishWordBase,
+	}
 )
 
 var AllTurkicLanguages = []*Language{
@@ -1874,6 +1888,7 @@ var AllTurkicLanguages = []*Language{
 	Hunnic,
 	Tuoba,
 	Avar,
+	Cuman,
 }
 
 // Mongolic
@@ -1939,26 +1954,32 @@ var (
 		WordBase:  MongolianWordBase,
 	}
 	Monguor = &Language{
-		Name:      "Monguor",
+		Name:      "monguor",
 		Subfamily: SouthernMongolicSubfamily,
 		IsLiving:  true,
 		WordBase:  MongolianWordBase,
 	}
 	Bonan = &Language{
-		Name:      "Bonan",
+		Name:      "bonan",
 		Subfamily: SouthernMongolicSubfamily,
 		IsLiving:  true,
 		WordBase:  MongolianWordBase,
 	}
 	Santa = &Language{
-		Name:      "Santa",
+		Name:      "santa",
 		Subfamily: SouthernMongolicSubfamily,
 		IsLiving:  true,
 		WordBase:  MongolianWordBase,
 	}
 	Kangjia = &Language{
-		Name:      "Kangjia",
+		Name:      "kangjia",
 		Subfamily: SouthernMongolicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Khitan = &Language{
+		Name:      "khitan",
+		Subfamily: KhitanSubfamily,
 		IsLiving:  true,
 		WordBase:  MongolianWordBase,
 	}
@@ -1979,7 +2000,27 @@ var AllMongolicLanguages = []*Language{
 	Bonan,
 	Santa,
 	Kangjia,
+	Khitan,
 }
+
+// Tungusic
+
+var (
+	Manchu = &Language{
+		Name:      "manchu",
+		Subfamily: JurchenicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+	Xibe = &Language{
+		Name:      "xibe",
+		Subfamily: JurchenicSubfamily,
+		IsLiving:  true,
+		WordBase:  MongolianWordBase,
+	}
+)
+
+var AllTungusicLanguages = []*Language{Manchu, Xibe}
 
 // Dravidian
 var (
@@ -2289,6 +2330,73 @@ var (
 		IsLiving:  true,
 		WordBase:  BerberWordBase,
 	}
+	// Songhay
+	Korandje = &Language{
+		Name:      "korandje",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	KoyraChiini = &Language{
+		Name:      "koyra_chiini",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Tadaksahak = &Language{
+		Name:      "tadaksahak",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Tasawaq = &Language{
+		Name:      "tasawaq",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Tagdal = &Language{
+		Name:      "tagdal",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	TondiSongwayKiini = &Language{
+		Name:      "tondi_songway_kiini",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	HumburiSenni = &Language{
+		Name:      "humburi_senni",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	KoyraboroSenni = &Language{
+		Name:      "koyraboro_senni",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Zarma = &Language{
+		Name:      "zarma",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	SonghoyboroCiine = &Language{
+		Name:      "songhoyboro_ciine",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
+	Dendi = &Language{
+		Name:      "dendi",
+		Subfamily: SonghaySubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
 )
 
 var AllAfricanLanguages = []*Language{
@@ -2308,6 +2416,17 @@ var AllAfricanLanguages = []*Language{
 	HillNubian,
 	Daju,
 	Somali,
+	Korandje,
+	KoyraChiini,
+	Tadaksahak,
+	Tasawaq,
+	Tagdal,
+	TondiSongwayKiini,
+	HumburiSenni,
+	KoyraboroSenni,
+	Zarma,
+	SonghoyboroCiine,
+	Dendi,
 }
 
 // UtoAztecan

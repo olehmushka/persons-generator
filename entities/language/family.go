@@ -14,6 +14,7 @@ const (
 	UralicFamily        Family = "uralic_lang_family"
 	TurkicFamily        Family = "turkic_lang_family"
 	MongolicFamily      Family = "mongolic_lang_family"
+	TungusicFamily      Family = "tungusic_lang_family"
 	AfroAsiaticFamily   Family = "afro_asiatic_lang_family"
 	NiloSaharanFamily   Family = "nilo_saharan_lang_family"
 	OtoMangueanFamily   Family = "oto_manguean_lang_family"
@@ -45,6 +46,7 @@ var AllFamilies = []Family{
 	UralicFamily,
 	TurkicFamily,
 	MongolicFamily,
+	TungusicFamily,
 	AfroAsiaticFamily,
 	NiloSaharanFamily,
 	OtoMangueanFamily,

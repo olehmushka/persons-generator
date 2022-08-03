@@ -8,6 +8,7 @@ var AllSubfamilies = tools.Merge(
 	AllUralicSubfamilies,
 	AllTurkicSubfamilies,
 	AllMongolicSubfamilies,
+	AllTungusicSubfamilies,
 	AllNigerCongoSubfamilies,
 	AllAustronesianSubfamilies,
 	AllSinoTibetanSubfamilies,
@@ -570,9 +571,44 @@ var (
 		Family:   MongolicFamily,
 		IsLiving: true,
 	}
+	KhitanSubfamily = &Subfamily{
+		Name:     "khitan_lang_subfamily",
+		Family:   MongolicFamily,
+		IsLiving: true,
+	}
 )
 
-var AllMongolicSubfamilies = []*Subfamily{DagurSubfamily, CentralMongolicSubfamily, SouthernMongolicSubfamily, MogholSubfamily}
+var AllMongolicSubfamilies = []*Subfamily{DagurSubfamily, CentralMongolicSubfamily, SouthernMongolicSubfamily, MogholSubfamily, KhitanSubfamily}
+
+// Tungusic
+
+var (
+	JurchenicNanaicSubfamily = &Subfamily{
+		Name:     "jurchenic_nanaic_lang_subfamily",
+		Family:   TungusicFamily,
+		IsLiving: true,
+	}
+	UdegheicSubfamily = &Subfamily{
+		Name:     "udegheic_lang_subfamily",
+		Family:   TungusicFamily,
+		IsLiving: true,
+	}
+
+	JurchenicSubfamily = &Subfamily{
+		Name:              "jurchenic_lang_subfamily",
+		Family:            TungusicFamily,
+		ExtendedSubfamily: JurchenicNanaicSubfamily,
+		IsLiving:          true,
+	}
+	NanaicSubfamily = &Subfamily{
+		Name:              "nanaic_lang_subfamily",
+		Family:            TungusicFamily,
+		ExtendedSubfamily: JurchenicNanaicSubfamily,
+		IsLiving:          true,
+	}
+)
+
+var AllTungusicSubfamilies = []*Subfamily{JurchenicNanaicSubfamily, UdegheicSubfamily, JurchenicSubfamily, NanaicSubfamily}
 
 // NigerCongoFamily
 var (
