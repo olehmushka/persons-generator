@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/entities/culture"
 	pm "persons_generator/probability_machine"
 )
 
@@ -19,7 +20,7 @@ type Theology struct {
 	MarriageTradition *MarriageTradition
 }
 
-func NewTheology(r *Religion) *Theology {
+func NewTheology(r *Religion, c *culture.Culture) *Theology {
 	t := &Theology{religion: r}
 	t.Traits = generateTraits(r, t.getAllTheologyTraits(), generateTraitsOpts{
 		Label: "Theology.generateTraits",
@@ -33,7 +34,7 @@ func NewTheology(r *Religion) *Theology {
 	t.Rituals = t.generateRituals()
 	t.Holydays = t.generateHolydays()
 	t.Conversion = t.generateConversion()
-	t.MarriageTradition = t.generateMarriageTradition()
+	t.MarriageTradition = t.generateMarriageTradition(c)
 
 	return t
 }

@@ -14,13 +14,17 @@ type Orchestrator struct {
 
 func New(cfg *Config) *Orchestrator {
 	w := world.New(cfg.WorldSize).Fill()
-	c := culture.NewCultures(cfg.Culture.Amount, cfg.Culture.Preferred)
-	r := religion.NewReligions(culture.GetReligionCultures(cfg.Religion.Amount, c))
+	cultures := culture.NewCultures(cfg.Culture.Amount, cfg.Culture.Preferred)
+	w = w.CulturesPropagate(cultures)
+	locationsWithReligion := w.GetLocationsForReligionGenerate(cfg.Religion.Amount)
+	locationsWithReligion = world.FillLocationsWithReligions(locationsWithReligion)
+	religions := world.ExtractReligionFromLocations(locationsWithReligion)
+	w = w.ReligionsPropagate(locationsWithReligion)
 
 	return &Orchestrator{
 		w:         w,
-		cultures:  c,
-		religions: r,
+		cultures:  cultures,
+		religions: religions,
 	}
 }
 

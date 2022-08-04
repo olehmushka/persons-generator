@@ -86,6 +86,68 @@ func IsLanguagesEqual(l1, l2 *Language) bool {
 	return l1.Name == l2.Name
 }
 
+func GetLanguageSubfamilyChains(accum []string, sf *Subfamily) []string {
+	if sf == nil {
+		return accum
+	}
+	if sf.ExtendedSubfamily == nil {
+		return accum
+	}
+
+	return GetLanguageSubfamilyChains(
+		append(accum, sf.Name),
+		sf.ExtendedSubfamily,
+	)
+}
+
+func GetFullLanguageChains(lang *Language) []string {
+	if lang == nil {
+		return []string{}
+	}
+	out := []string{lang.Name}
+	out = GetLanguageSubfamilyChains(out, lang.Subfamily)
+
+	return append(out, string(lang.Subfamily.Family))
+}
+
+func GetLanguageKinship(l1, l2 *Language) int {
+	var (
+		l1Chains = GetFullLanguageChains(l1)
+		l2Chains = GetFullLanguageChains(l2)
+	)
+	if len(l1Chains) == 0 || len(l2Chains) == 0 {
+		return -1
+	}
+	if l1Chains[0] == l2Chains[0] {
+		return 0
+	}
+	if l1Chains[len(l1Chains)-1] != l2Chains[len(l2Chains)-1] {
+		return -1
+	}
+
+	maxIter := len(l1Chains)
+	if maxIter < len(l2Chains) {
+		maxIter = len(l2Chains)
+	}
+	for i := 0; i < maxIter; i++ {
+		var (
+			l1El = l1Chains[len(l1Chains)-1]
+			l2El = l2Chains[len(l2Chains)-1]
+		)
+		if len(l1Chains) > i {
+			l1El = l1Chains[i]
+		}
+		if len(l2Chains) > i {
+			l2El = l2Chains[i]
+		}
+		if l1El == l2El {
+			return i
+		}
+	}
+
+	return -1
+}
+
 func GetLanguagesBySubfamilyName(name string) []*Language {
 	if name == "" {
 		return []*Language{}

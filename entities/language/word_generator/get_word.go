@@ -123,7 +123,6 @@ func GetWord(base string, nameBases map[string][]string, min, max int, dupl stri
 		fmt.Printf("name is too short! Random name will be selected\n")
 		name = tools.RandomValueOfSlice(pm.RandFloat64, nameBases[base])
 	}
-	fmt.Printf("NN: %s\n", name)
 
 	return name
 }

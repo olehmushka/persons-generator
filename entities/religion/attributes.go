@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/entities/culture"
 	pm "persons_generator/probability_machine"
 )
 
@@ -15,7 +16,7 @@ type Attributes struct {
 	Temples       *Temples
 }
 
-func NewAttributes(r *Religion) *Attributes {
+func NewAttributes(r *Religion, c *culture.Culture) *Attributes {
 	attrs := &Attributes{religion: r}
 	attrs.Traits = generateTraits(r, attrs.getAllAttributeTraits(), generateTraitsOpts{
 		Label: "Attributes.generateTraits",
@@ -24,7 +25,7 @@ func NewAttributes(r *Religion) *Attributes {
 	})
 	attrs.Clerics = attrs.generateClerics()
 	attrs.HolyScripture = attrs.generateHolyScripture()
-	attrs.Temples = attrs.generateTemples()
+	attrs.Temples = attrs.generateTemples(c)
 
 	return attrs
 }

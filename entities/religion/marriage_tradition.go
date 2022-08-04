@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/entities/culture"
 	pm "persons_generator/probability_machine"
 )
 
@@ -15,9 +16,9 @@ type MarriageTradition struct {
 	Divorce       Permission
 }
 
-func (t *Theology) generateMarriageTradition() *MarriageTradition {
+func (t *Theology) generateMarriageTradition(c *culture.Culture) *MarriageTradition {
 	mt := &MarriageTradition{religion: t.religion}
-	mt.Kind = mt.generateKind()
+	mt.Kind = mt.generateKind(c)
 	mt.Bastardry = mt.generateBastardry()
 	mt.Consanguinity = mt.generateConsanguinity()
 	mt.Divorce = mt.generateDivorce()
@@ -38,7 +39,11 @@ const (
 	ConsortsAndConcubines MarriageKind = "consorts_and_concubines"
 )
 
-func (mt *MarriageTradition) generateKind() MarriageKind {
+func (mt *MarriageTradition) generateKind(c *culture.Culture) MarriageKind {
+	if mk := getMarriageKindByCulture(c); mk != "" {
+		return mk
+	}
+
 	var (
 		monogamy              = pm.RandFloat64InRange(0.25, 0.35)
 		consortsAndConcubines = pm.RandFloat64InRange(0.15, 0.25)
@@ -72,6 +77,29 @@ func (mt *MarriageTradition) generateKind() MarriageKind {
 		string(ConsortsAndConcubines): pm.PrepareProbability(consortsAndConcubines),
 		string(Polygamy):              pm.PrepareProbability(polygamy),
 	}))
+}
+
+func getMarriageKindByCulture(c *culture.Culture) MarriageKind {
+	if c == nil {
+		return ""
+	}
+
+	for _, t := range c.Traditions {
+		if t == nil {
+			continue
+		}
+
+		switch t.Name {
+		case culture.MonogamousTradition.Name:
+			return Polygamy
+		case culture.ConcubinesTradition.Name:
+			return ConsortsAndConcubines
+		case culture.PolygamousTradition.Name:
+			return Polygamy
+		}
+	}
+
+	return ""
 }
 
 type Bastardry string

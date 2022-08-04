@@ -97,11 +97,15 @@ func chunkPreferred(amount int, preferred []string) [][]string {
 
 func getProtoCultures(preferred []string) []*Culture {
 	expectedAmount := pm.RandIntInRange(1, 2)
+	cultures := make([]*Culture, 0, expectedAmount+1)
 	if found := GetProtoCulturesByPreferred(preferred); len(found) > 0 {
-		return tools.RandomValuesOfSlice(pm.RandFloat64, found, expectedAmount)
+		cultures = tools.RandomValuesOfSlice(pm.RandFloat64, found, expectedAmount)
+	} else {
+		cultures = tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, expectedAmount)
 	}
+	cultures = append(cultures, tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, 1)...)
 
-	return tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, expectedAmount)
+	return UniqueCultures(cultures)
 }
 
 func getLanguageNamesFromProto(proto []*Culture) []string {
@@ -142,4 +146,22 @@ func GetProtoCultureByPreferred(pref string) *Culture {
 	}
 
 	return nil
+}
+
+func UniqueCultures(cultures []*Culture) []*Culture {
+	if len(cultures) <= 1 {
+		return cultures
+	}
+
+	preOut := make(map[string]*Culture)
+	for _, c := range cultures {
+		preOut[c.Name] = c
+	}
+
+	out := make([]*Culture, 0, len(preOut))
+	for _, c := range preOut {
+		out = append(out, c)
+	}
+
+	return out
 }

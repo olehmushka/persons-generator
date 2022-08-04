@@ -2,6 +2,7 @@ package world
 
 import (
 	"persons_generator/entities/coordinate"
+	"persons_generator/entities/culture"
 	"persons_generator/entities/human"
 	"persons_generator/entities/location"
 )
@@ -30,5 +31,17 @@ func (w *World) Fill() *World {
 		}
 	}
 
+	return w
+}
+
+func (w *World) CulturesPropagate(cultures []*culture.Culture) *World {
+	return w
+}
+
+func (w *World) GetLocationsForReligionGenerate(amount int) []*location.Location {
+	return []*location.Location{}
+}
+
+func (w *World) ReligionsPropagate(locations []*location.Location) *World {
 	return w
 }

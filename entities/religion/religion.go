@@ -35,8 +35,8 @@ func NewReligion(c *culture.Culture) *Religion {
 	r.GenderDominance = c.GenderDominance
 	r.metadata = r.generateMetadata()
 	r.Doctrine = NewDoctrine(r)
-	r.Attributes = NewAttributes(r)
-	r.Theology = NewTheology(r)
+	r.Attributes = NewAttributes(r, c)
+	r.Theology = NewTheology(r, c)
 
 	return r
 }

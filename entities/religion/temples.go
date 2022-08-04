@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/entities/culture"
 	pm "persons_generator/probability_machine"
 )
 
@@ -15,9 +16,9 @@ type Temples struct {
 	Traits          []*trait
 }
 
-func (as *Attributes) generateTemples() *Temples {
+func (as *Attributes) generateTemples(c *culture.Culture) *Temples {
 	ts := &Temples{religion: as.religion, attrs: as}
-	ts.HasTemples = ts.generateHasTemples()
+	ts.HasTemples = ts.generateHasTemples(c)
 	ts.HasSacredPlaces = ts.generateSacredPlaces()
 	if ts.HasTemples || ts.HasSacredPlaces {
 		ts.Traits = generateTraits(ts.religion, ts.getAllTemplesTraits(), generateTraitsOpts{
@@ -48,13 +49,36 @@ func (ts *Temples) Print() {
 	}
 }
 
-func (ts *Temples) generateHasTemples() bool {
+func (ts *Temples) generateHasTemples(c *culture.Culture) bool {
+	if hasTemples := getHasTemplesByCulture(c); hasTemples != nil {
+		return *hasTemples
+	}
+
 	primaryProbability := pm.RandFloat64InRange(0.35, 0.55)
 	if ts.attrs.Clerics.HasClerics {
 		primaryProbability += pm.RandFloat64InRange(0.15, 0.25)
 	}
 
 	return pm.GetRandomBool(pm.PrepareProbability(primaryProbability))
+}
+
+func getHasTemplesByCulture(c *culture.Culture) *bool {
+	if c == nil {
+		return nil
+	}
+	tPtr := true
+
+	for _, t := range c.Traditions {
+		if t == nil {
+			continue
+		}
+
+		if t.Name == culture.FerventTempleBuildersTradition.Name {
+			return &tPtr
+		}
+	}
+
+	return nil
 }
 
 func (ts *Temples) generateSacredPlaces() bool {

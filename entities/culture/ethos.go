@@ -27,11 +27,11 @@ func getEthos(proto []*Culture) *Ethos {
 	ethoses := UniqueEthoses(ExtractEthoses(proto))
 	m := make(map[string]int)
 	for _, c := range proto {
-		if _, ok := m[c.Name]; ok {
-			m[c.Name]++
+		if _, ok := m[c.Ethos.Name]; ok {
+			m[c.Ethos.Name]++
 			continue
 		}
-		m[c.Name] = 1
+		m[c.Ethos.Name] = 1
 	}
 
 	mWithProb := make(map[string]float64, len(m))
