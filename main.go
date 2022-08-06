@@ -16,13 +16,13 @@ func init() {
 func main() {
 	// cfg := config.New()
 	o, err := orchestrator.New(&orchestrator.Config{
-		WorldSize: 8,
+		WorldSize: 5,
 		Culture: orchestrator.CultureConfig{
-			Preferred: []string{"ruthenian", "polish"},
-			Amount:    5,
+			Preferred: []string{},
+			Amount:    4,
 		},
 		Religion: orchestrator.ReligionConfig{
-			Amount: 2,
+			Amount: 10,
 		},
 	})
 	if err != nil {

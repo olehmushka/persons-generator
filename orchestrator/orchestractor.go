@@ -1,6 +1,8 @@
 package orchestrator
 
 import (
+	"fmt"
+
 	"persons_generator/entities/culture"
 	"persons_generator/entities/religion"
 	"persons_generator/entities/world"
@@ -35,15 +37,19 @@ func (o *Orchestrator) Orchestrate() {
 }
 
 func (o *Orchestrator) ShowCultures() {
+	fmt.Println()
 	for _, c := range o.cultures {
 		c.Print()
 	}
 	o.w.PrintLocationCultures()
+	fmt.Println()
 }
 
 func (o *Orchestrator) ShowReligions() {
+	fmt.Println()
 	for _, r := range o.religions {
 		r.Print()
 	}
 	o.w.PrintLocationReligions()
+	fmt.Println()
 }

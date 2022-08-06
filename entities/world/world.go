@@ -116,12 +116,7 @@ func (w *World) ReligionsPropagate(amount int) (*World, error) {
 	if amount < len(w.Cultures) {
 		return w.religionsPropagateForCultureNumberGreater(amount)
 	}
-	// w.Cultures = culture.NewCultures(amount, preferred)
-	/*
-		r_n > c_n -> chunk religions with cultures
-		r_n == c_n -> 50 / 50
-		r_n < c_n -> chunk cultures with religions
-	*/
+
 	return w, nil
 }
 
