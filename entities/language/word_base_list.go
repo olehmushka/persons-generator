@@ -5,6 +5,8 @@ import "persons_generator/tools"
 // Fantasy
 var (
 	SindarinWordBase = &WordBase{
+		FemaleOwnNames: FemaleOwnNamesSindarin,
+		MaleOwnNames:   MaleOwnNamesSindarin,
 		Words: []string{
 			"Adrindest",
 			"Aethel",
@@ -352,6 +354,8 @@ var (
 		M:    0,
 	}
 	DunmerisWordBase = &WordBase{
+		FemaleOwnNames: FemaleOwnNamesDunmeris,
+		MaleOwnNames:   MaleOwnNamesDunmeris,
 		Words: []string{
 			"Abaethaggar",
 			"Abburth",
@@ -561,6 +565,8 @@ var (
 		M:    0.2,
 	}
 	DwemerisWordBase = &WordBase{
+		FemaleOwnNames: FemaleOwnNamesDwemeris,
+		MaleOwnNames:   MaleOwnNamesDwemeris,
 		Words: []string{
 			"Addundad",
 			"Ahagzad",
@@ -754,6 +760,8 @@ var (
 		M:    0,
 	}
 	GoblinsWordBase = &WordBase{
+		FemaleOwnNames: FemaleOwnNamesGoblins,
+		MaleOwnNames:   MaleOwnNamesGoblins,
 		Words: []string{
 			"Crild",
 			"Cielb",
@@ -872,6 +880,8 @@ var (
 		M:    0,
 	}
 	OrcWordBase = &WordBase{
+		FemaleOwnNames: FemaleOwnNamesOrc,
+		MaleOwnNames:   MaleOwnNamesOrc,
 		Words: []string{
 			"ModhOdod",
 			"BodRugniz",
@@ -1181,6 +1191,8 @@ var (
 		M:    0,
 	}
 	GiantWordBase = &WordBase{
+		FemaleOwnNames: FemaleOwnNamesGiant,
+		MaleOwnNames:   MaleOwnNamesGiant,
 		Words: []string{
 			"Kostand",
 			"Throtrek",
@@ -1390,6 +1402,8 @@ var (
 		M:    0,
 	}
 	DraconicWordBase = &WordBase{
+		FemaleOwnNames: FemaleOwnNamesDraconic,
+		MaleOwnNames:   MaleOwnNamesDraconic,
 		Words: []string{
 			"Aaronarra",
 			"Adalon",
@@ -1615,6 +1629,8 @@ var (
 		M:    0,
 	}
 	ArachnidWordBase = &WordBase{
+		FemaleOwnNames: FemaleOwnNamesArachnid,
+		MaleOwnNames:   MaleOwnNamesArachnid,
 		Words: []string{
 			"Aaqok'ser",
 			"Acah",
@@ -1924,6 +1940,8 @@ var (
 		M:    0,
 	}
 	SerpentsWordBase = &WordBase{
+		FemaleOwnNames: FemaleOwnNamesSerpents,
+		MaleOwnNames:   MaleOwnNamesSerpents,
 		Words: []string{
 			"Aj'ha",
 			"Aj'i",
@@ -2149,23 +2167,29 @@ var FantacyWordBases = []*WordBase{
 // IndoEuropeanFamily
 var (
 	AlbanianWordBase = &WordBase{
-		Name:  "albanian_wb",
-		Words: []string{},
-		Min:   0,
-		Max:   0,
-		Dupl:  "",
-		M:     0,
+		FemaleOwnNames: FemaleOwnNamesAlbanian,
+		MaleOwnNames:   MaleOwnNamesAlbanian,
+		Name:           "albanian_wb",
+		Words:          []string{},
+		Min:            0,
+		Max:            0,
+		Dupl:           "",
+		M:              0,
 	}
 	ArmenianWordBase = &WordBase{
-		Name:  "armenian_wb",
-		Words: []string{},
-		Min:   0,
-		Max:   0,
-		Dupl:  "",
-		M:     0,
+		FemaleOwnNames: FemaleOwnNamesArmenian,
+		MaleOwnNames:   MaleOwnNamesArmenian,
+		Name:           "armenian_wb",
+		Words:          []string{},
+		Min:            0,
+		Max:            0,
+		Dupl:           "",
+		M:              0,
 	}
 	RuthenianWordBase = &WordBase{
-		Name: "ruthenian_wb",
+		FemaleOwnNames: FemaleOwnNamesRuthenian,
+		MaleOwnNames:   MaleOwnNamesRuthenian,
+		Name:           "ruthenian_wb",
 		Words: []string{
 			"Belgorod",
 			"Beloberezhye",
@@ -2433,15 +2457,19 @@ var (
 		M:    0,
 	}
 	LithuanianWordBase = &WordBase{
-		Name:  "lithuanian_wb",
-		Words: []string{},
-		Min:   0,
-		Max:   0,
-		Dupl:  "",
-		M:     0,
+		FemaleOwnNames: FemaleOwnNamesLithuanian,
+		MaleOwnNames:   MaleOwnNamesLithuanian,
+		Name:           "lithuanian_wb",
+		Words:          []string{},
+		Min:            0,
+		Max:            0,
+		Dupl:           "",
+		M:              0,
 	}
 	CelticWordBase = &WordBase{
-		Name: "celtic_wb",
+		FemaleOwnNames: FemaleOwnNamesCeltic,
+		MaleOwnNames:   MaleOwnNamesCeltic,
+		Name:           "celtic_wb",
 		Words: []string{
 			"Aberaman",
 			"Aberangell",
@@ -2612,15 +2640,19 @@ var (
 		M:    0,
 	}
 	DacianWordBase = &WordBase{
-		Name:  "dacian_wb",
-		Words: []string{},
-		Min:   0,
-		Max:   0,
-		Dupl:  "",
-		M:     0,
+		FemaleOwnNames: FemaleOwnNamesDacian,
+		MaleOwnNames:   MaleOwnNamesDacian,
+		Name:           "dacian_wb",
+		Words:          []string{},
+		Min:            0,
+		Max:            0,
+		Dupl:           "",
+		M:              0,
 	}
 	NordicWordBase = &WordBase{
-		Name: "nordic_wb",
+		FemaleOwnNames: FemaleOwnNamesNordic,
+		MaleOwnNames:   MaleOwnNamesNordic,
+		Name:           "nordic_wb",
 		Words: []string{
 			"Akureyri",
 			"Aldra",
@@ -2878,7 +2910,9 @@ var (
 		M:    0.1,
 	}
 	EnglishWordBase = &WordBase{
-		Name: "english_wb",
+		FemaleOwnNames: FemaleOwnNamesEnglish,
+		MaleOwnNames:   MaleOwnNamesEnglish,
+		Name:           "english_wb",
 		Words: []string{
 			"Abingdon",
 			"Albrighton",
@@ -3124,7 +3158,9 @@ var (
 		M:    0.1,
 	}
 	GermanWordBase = &WordBase{
-		Name: "german_wb",
+		FemaleOwnNames: FemaleOwnNamesGerman,
+		MaleOwnNames:   MaleOwnNamesGerman,
+		Name:           "german_wb",
 		Words: []string{
 			"Achern",
 			"Aichhalden",
@@ -3398,7 +3434,9 @@ var (
 		M:    0,
 	}
 	GreekWordBase = &WordBase{
-		Name: "greek_wb",
+		FemaleOwnNames: FemaleOwnNamesGreek,
+		MaleOwnNames:   MaleOwnNamesGreek,
+		Name:           "greek_wb",
 		Words: []string{
 			"Abdera",
 			"Abila",
@@ -3769,23 +3807,29 @@ var (
 		M:    0.1,
 	}
 	IllyrianWordBase = &WordBase{
-		Name:  "illyrian_wb",
-		Words: []string{},
-		Min:   0,
-		Max:   0,
-		Dupl:  "",
-		M:     0,
+		FemaleOwnNames: FemaleOwnNamesIllyrian,
+		MaleOwnNames:   MaleOwnNamesIllyrian,
+		Name:           "illyrian_wb",
+		Words:          []string{},
+		Min:            0,
+		Max:            0,
+		Dupl:           "",
+		M:              0,
 	}
 	HindiWordBase = &WordBase{
-		Name:  "hindi_wb",
-		Words: []string{},
-		Min:   0,
-		Max:   0,
-		Dupl:  "",
-		M:     0,
+		FemaleOwnNames: FemaleOwnNamesHindi,
+		MaleOwnNames:   MaleOwnNamesHindi,
+		Name:           "hindi_wb",
+		Words:          []string{},
+		Min:            0,
+		Max:            0,
+		Dupl:           "",
+		M:              0,
 	}
 	IranianWordBase = &WordBase{
-		Name: "iranian_wb",
+		FemaleOwnNames: FemaleOwnNamesIranian,
+		MaleOwnNames:   MaleOwnNamesIranian,
+		Name:           "iranian_wb",
 		Words: []string{
 			"Abali",
 			"Abrisham",
@@ -4016,7 +4060,9 @@ var (
 		M:    0.1,
 	}
 	LatinWordBase = &WordBase{
-		Name: "latin_wb",
+		FemaleOwnNames: FemaleOwnNamesLatin,
+		MaleOwnNames:   MaleOwnNamesLatin,
+		Name:           "latin_wb",
 		Words: []string{
 			"Abila",
 			"Adflexum",
@@ -4212,7 +4258,9 @@ var (
 		M:    0.1,
 	}
 	PortugueseWordBase = &WordBase{
-		Name: "portuguese_wb",
+		FemaleOwnNames: FemaleOwnNamesPortuguese,
+		MaleOwnNames:   MaleOwnNamesPortuguese,
+		Name:           "portuguese_wb",
 		Words: []string{
 			"Abrigada",
 			"Afonsoeiro",
@@ -4555,7 +4603,9 @@ var (
 		M:    0.1,
 	}
 	SpanishWordBase = &WordBase{
-		Name: "spanish_wb",
+		FemaleOwnNames: FemaleOwnNamesSpanish,
+		MaleOwnNames:   MaleOwnNamesSpanish,
+		Name:           "spanish_wb",
 		Words: []string{
 			"Abanades",
 			"Ablanque",
@@ -4929,7 +4979,9 @@ var (
 		M:    0,
 	}
 	FrenchWordBase = &WordBase{
-		Name: "french_wb",
+		FemaleOwnNames: FemaleOwnNamesFrench,
+		MaleOwnNames:   MaleOwnNamesFrench,
+		Name:           "french_wb",
 		Words: []string{
 			"Adon",
 			"Aillant",
@@ -5214,7 +5266,9 @@ var (
 		M:    0.1,
 	}
 	ItalianWordBase = &WordBase{
-		Name: "italian_wb",
+		FemaleOwnNames: FemaleOwnNamesItalian,
+		MaleOwnNames:   MaleOwnNamesItalian,
+		Name:           "italian_wb",
 		Words: []string{
 			"Accumoli",
 			"Acquafondata",
@@ -5544,12 +5598,14 @@ var (
 		M:    0.1,
 	}
 	EtruscanWordBase = &WordBase{
-		Name:  "etruscan_wb",
-		Words: []string{},
-		Min:   0,
-		Max:   0,
-		Dupl:  "",
-		M:     0,
+		FemaleOwnNames: FemaleOwnNamesEtruscan,
+		MaleOwnNames:   MaleOwnNamesEtruscan,
+		Name:           "etruscan_wb",
+		Words:          []string{},
+		Min:            0,
+		Max:            0,
+		Dupl:           "",
+		M:              0,
 	}
 )
 
@@ -5577,7 +5633,9 @@ var IndoEuropeanWordBases = []*WordBase{
 // SinoTibetanFamily
 var (
 	ChineseWordBase = &WordBase{
-		Name: "chinese_wb",
+		FemaleOwnNames: FemaleOwnNamesChinese,
+		MaleOwnNames:   MaleOwnNamesChinese,
+		Name:           "chinese_wb",
 		Words: []string{
 			"Anding",
 			"Anlu",
@@ -5846,7 +5904,9 @@ var (
 		M:    0,
 	}
 	CantoneseWordBase = &WordBase{
-		Name: "cantonese_wb",
+		FemaleOwnNames: FemaleOwnNamesCantonese,
+		MaleOwnNames:   MaleOwnNamesCantonese,
+		Name:           "cantonese_wb",
 		Words: []string{
 			"Chaiwan",
 			"Chekham",
@@ -6109,7 +6169,9 @@ var SinoTibetanWordBases = []*WordBase{
 
 var (
 	JapaneseWordBase = &WordBase{
-		Name: "japanese_wb",
+		FemaleOwnNames: FemaleOwnNamesJapanese,
+		MaleOwnNames:   MaleOwnNamesJapanese,
+		Name:           "japanese_wb",
 		Words: []string{
 			"Abira",
 			"Aga",
@@ -6367,7 +6429,9 @@ var (
 		M:    0,
 	}
 	KoreanWordBase = &WordBase{
-		Name: "korean_wb",
+		FemaleOwnNames: FemaleOwnNamesKorean,
+		MaleOwnNames:   MaleOwnNamesKorean,
+		Name:           "korean_wb",
 		Words: []string{
 			"Aewor",
 			"Andong",
@@ -6729,7 +6793,9 @@ var (
 		M:    0,
 	}
 	VietnameseWordBase = &WordBase{
-		Name: "vietnamese_wb",
+		FemaleOwnNames: FemaleOwnNamesVietnamese,
+		MaleOwnNames:   MaleOwnNamesVietnamese,
+		Name:           "vietnamese_wb",
 		Words: []string{
 			"An Khe",
 			"An Nhon",
@@ -6859,7 +6925,9 @@ var (
 		M:    1,
 	}
 	KannadaWordBase = &WordBase{
-		Name: "karnataka_wb",
+		FemaleOwnNames: FemaleOwnNamesKannada,
+		MaleOwnNames:   MaleOwnNamesKannada,
+		Name:           "karnataka_wb",
 		Words: []string{
 			"Adityapatna",
 			"Adyar",
@@ -7099,14 +7167,18 @@ var (
 var EastAsianWordBases = tools.Merge(
 	SinoTibetanWordBases,
 	[]*WordBase{
-		JapaneseWordBase, KoreanWordBase, VietnameseWordBase,
+		JapaneseWordBase,
+		KoreanWordBase,
+		VietnameseWordBase,
 		KannadaWordBase,
 	},
 )
 
 var (
 	BasqueWordBase = &WordBase{
-		Name: "basque_wb",
+		FemaleOwnNames: FemaleOwnNamesBasque,
+		MaleOwnNames:   MaleOwnNamesBasque,
+		Name:           "basque_wb",
 		Words: []string{
 			"Abadio",
 			"Abaltzisketa",
@@ -7369,19 +7441,23 @@ var (
 		M:    0.1,
 	}
 	GeorgianWordBase = &WordBase{
-		Name:  "georgian_wb",
-		Words: []string{},
-		Min:   0,
-		Max:   0,
-		Dupl:  "",
-		M:     0,
+		FemaleOwnNames: FemaleOwnNamesGeorgian,
+		MaleOwnNames:   MaleOwnNamesGeorgian,
+		Name:           "georgian_wb",
+		Words:          []string{},
+		Min:            0,
+		Max:            0,
+		Dupl:           "",
+		M:              0,
 	}
 )
 var IsolatedWordBases = []*WordBase{BasqueWordBase, GeorgianWordBase}
 
 var (
 	FinnicWordBase = &WordBase{
-		Name: "finnic_wb",
+		FemaleOwnNames: FemaleOwnNamesFinnic,
+		MaleOwnNames:   MaleOwnNamesFinnic,
+		Name:           "finnic_wb",
 		Words: []string{
 			"Aanekoski",
 			"Abjapaluoja",
@@ -7669,7 +7745,9 @@ var (
 		M:    0,
 	}
 	HungarianWordBase = &WordBase{
-		Name: "hungarian_wb",
+		FemaleOwnNames: FemaleOwnNamesHungarian,
+		MaleOwnNames:   MaleOwnNamesHungarian,
+		Name:           "hungarian_wb",
 		Words: []string{
 			"Aba",
 			"Abadszalok",
@@ -7922,7 +8000,9 @@ var UralicWordBases = []*WordBase{FinnicWordBase, HungarianWordBase}
 
 var (
 	NahuatlWordBase = &WordBase{
-		Name: "nahuatl_wb",
+		FemaleOwnNames: FemaleOwnNamesNahuatl,
+		MaleOwnNames:   MaleOwnNamesNahuatl,
+		Name:           "nahuatl_wb",
 		Words: []string{
 			"Acaltepec",
 			"Acaltepecatl",
@@ -8019,7 +8099,9 @@ var (
 		M:    0,
 	}
 	TurkishWordBase = &WordBase{
-		Name: "turkish_wb",
+		FemaleOwnNames: FemaleOwnNamesTurkish,
+		MaleOwnNames:   MaleOwnNamesTurkish,
+		Name:           "turkish_wb",
 		Words: []string{
 			"Adapazari",
 			"Adiyaman",
@@ -8287,7 +8369,9 @@ var (
 		M:    0,
 	}
 	BerberWordBase = &WordBase{
-		Name: "berber_wb",
+		FemaleOwnNames: FemaleOwnNamesBerber,
+		MaleOwnNames:   MaleOwnNamesBerber,
+		Name:           "berber_wb",
 		Words: []string{
 			"Abkhouch",
 			"Adrar",
@@ -8442,7 +8526,9 @@ var (
 		M:    0.2,
 	}
 	ArabicWordBase = &WordBase{
-		Name: "arabic_wb",
+		FemaleOwnNames: FemaleOwnNamesArabic,
+		MaleOwnNames:   MaleOwnNamesArabic,
+		Name:           "arabic_wb",
 		Words: []string{
 			"Abadilah",
 			"Abayt",
@@ -8769,7 +8855,9 @@ var (
 		M:    0.2,
 	}
 	InuitWordBase = &WordBase{
-		Name: "inuit_wb",
+		FemaleOwnNames: FemaleOwnNamesInuit,
+		MaleOwnNames:   MaleOwnNamesInuit,
+		Name:           "inuit_wb",
 		Words: []string{
 			"Aaluik",
 			"Aappilattoq",
@@ -9073,7 +9161,9 @@ var (
 		M:    0,
 	}
 	NigerianWordBase = &WordBase{
-		Name: "nigerian_wb",
+		FemaleOwnNames: FemaleOwnNamesNigerian,
+		MaleOwnNames:   MaleOwnNamesNigerian,
+		Name:           "nigerian_wb",
 		Words: []string{
 			"Abadogo",
 			"Abafon",
@@ -9444,7 +9534,9 @@ var (
 		M:    0.3,
 	}
 	MesopotamianWordBase = &WordBase{
-		Name: "mesopotamian_wb",
+		FemaleOwnNames: FemaleOwnNamesMesopotamian,
+		MaleOwnNames:   MaleOwnNamesMesopotamian,
+		Name:           "mesopotamian_wb",
 		Words: []string{
 			"Adab",
 			"Akkad",
@@ -9544,7 +9636,9 @@ var (
 		M:    0.1,
 	}
 	HawaiianWordBase = &WordBase{
-		Name: "hawaiian_wb",
+		FemaleOwnNames: FemaleOwnNamesHawaiian,
+		MaleOwnNames:   MaleOwnNamesHawaiian,
+		Name:           "hawaiian_wb",
 		Words: []string{
 			"Aapueo",
 			"Ahoa",
@@ -9876,7 +9970,9 @@ var (
 		M:    1,
 	}
 	QuechuaWordBase = &WordBase{
-		Name: "quechua_wb",
+		FemaleOwnNames: FemaleOwnNamesQuechua,
+		MaleOwnNames:   MaleOwnNamesQuechua,
+		Name:           "quechua_wb",
 		Words: []string{
 			"Altomisayoq",
 			"Ancash",
@@ -10049,7 +10145,9 @@ var (
 		M:    0,
 	}
 	SwahiliWordBase = &WordBase{
-		Name: "swahili_wb",
+		FemaleOwnNames: FemaleOwnNamesSwahili,
+		MaleOwnNames:   MaleOwnNamesSwahili,
+		Name:           "swahili_wb",
 		Words: []string{
 			"Abim",
 			"Adjumani",
@@ -10280,7 +10378,9 @@ var (
 		M:    0,
 	}
 	MongolianWordBase = &WordBase{
-		Name: "mongolian_wb",
+		FemaleOwnNames: FemaleOwnNamesMongolian,
+		MaleOwnNames:   MaleOwnNamesMongolian,
+		Name:           "mongolian_wb",
 		Words: []string{
 			"Adaatsag",
 			"Airag",

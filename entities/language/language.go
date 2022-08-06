@@ -3,6 +3,7 @@ package language
 import (
 	"fmt"
 
+	g "persons_generator/entities/gender"
 	wg "persons_generator/entities/language/word_generator"
 	pm "persons_generator/probability_machine"
 	"persons_generator/tools"
@@ -65,6 +66,17 @@ func (l *Language) GetCultureName() string {
 
 func (l *Language) GetReligionName() string {
 	return wg.GetReligionName(l.GetWord())
+}
+
+func (l *Language) GetOwnName(sex g.Sex) string {
+	if sex == g.MaleSex {
+		return tools.RandomValueOfSlice(pm.RandFloat64, l.WordBase.MaleOwnNames)
+	}
+	if sex == g.FemaleSex {
+		return tools.RandomValueOfSlice(pm.RandFloat64, l.WordBase.FemaleOwnNames)
+	}
+
+	return ""
 }
 
 func IsLanguagesEqual(l1, l2 *Language) bool {

@@ -1,12 +1,14 @@
 package language
 
 type WordBase struct {
-	Words []string
-	Name  string
-	Min   int
-	Max   int
-	Dupl  string
-	M     float64
+	FemaleOwnNames []string
+	MaleOwnNames   []string
+	Words          []string
+	Name           string
+	Min            int
+	Max            int
+	Dupl           string
+	M              float64
 }
 
 func ExtractWords(wbs []*WordBase) map[string][]string {
