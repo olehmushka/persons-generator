@@ -22,8 +22,11 @@ type Culture struct {
 }
 
 func New(preferred []string) *Culture {
-	c := &Culture{}
-	c.Proto = getProtoCultures(preferred)
+	return NewWithProto(getProtoCultures(preferred))
+}
+
+func NewWithProto(proto []*Culture) *Culture {
+	c := &Culture{Proto: proto}
 	c.GenderDominance = getGenderDominance(c.Proto)
 	c.MartialCustom = getMartialCustom(c.Proto)
 	c.Language = language.New(getLanguageNamesFromProto(c.Proto))
@@ -161,6 +164,27 @@ func UniqueCultures(cultures []*Culture) []*Culture {
 	out := make([]*Culture, 0, len(preOut))
 	for _, c := range preOut {
 		out = append(out, c)
+	}
+
+	return out
+}
+
+func GetCultureByName(name string, list []*Culture) *Culture {
+	if name == "" || len(list) == 0 {
+		return nil
+	}
+
+	return tools.Search(list, func(c *Culture) string { return c.Name }, name)
+}
+
+func MapCultureNames(cultures []*Culture) []string {
+	if len(cultures) == 0 {
+		return []string{}
+	}
+
+	out := make([]string, len(cultures))
+	for i := range out {
+		out[i] = cultures[i].Name
 	}
 
 	return out

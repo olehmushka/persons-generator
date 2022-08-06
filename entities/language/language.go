@@ -52,16 +52,11 @@ func (l *Language) Print() {
 }
 
 func GetLanguageByName(name string) *Language {
-	for _, lang := range AllLanguages {
-		if lang == nil {
-			continue
-		}
-		if tools.ContainString(lang.Name, name) {
-			return lang
-		}
+	if name == "" {
+		return nil
 	}
 
-	return nil
+	return tools.Search(AllLanguages, func(l *Language) string { return l.Name }, name)
 }
 
 func (l *Language) GetCultureName() string {

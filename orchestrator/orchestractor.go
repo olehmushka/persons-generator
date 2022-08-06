@@ -12,20 +12,23 @@ type Orchestrator struct {
 	religions []*religion.Religion
 }
 
-func New(cfg *Config) *Orchestrator {
+func New(cfg *Config) (*Orchestrator, error) {
 	w := world.New(cfg.WorldSize).Fill()
-	cultures := culture.NewCultures(cfg.Culture.Amount, cfg.Culture.Preferred)
-	w = w.CulturesPropagate(cultures)
-	locationsWithReligion := w.GetLocationsForReligionGenerate(cfg.Religion.Amount)
-	locationsWithReligion = world.FillLocationsWithReligions(locationsWithReligion)
-	religions := world.ExtractReligionFromLocations(locationsWithReligion)
-	w = w.ReligionsPropagate(locationsWithReligion)
+	var err error
+	w, err = w.CulturesPropagate(cfg.Culture.Amount, cfg.Culture.Preferred)
+	if err != nil {
+		return nil, err
+	}
+	w, err = w.ReligionsPropagate(cfg.Religion.Amount)
+	if err != nil {
+		return nil, err
+	}
 
 	return &Orchestrator{
 		w:         w,
-		cultures:  cultures,
-		religions: religions,
-	}
+		cultures:  w.Cultures,
+		religions: w.Religions,
+	}, nil
 }
 
 func (o *Orchestrator) Orchestrate() {
@@ -35,10 +38,12 @@ func (o *Orchestrator) ShowCultures() {
 	for _, c := range o.cultures {
 		c.Print()
 	}
+	o.w.PrintLocationCultures()
 }
 
 func (o *Orchestrator) ShowReligions() {
 	for _, r := range o.religions {
 		r.Print()
 	}
+	o.w.PrintLocationReligions()
 }

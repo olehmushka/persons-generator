@@ -1204,7 +1204,7 @@ var AllIranianCultures = []*Culture{AfghanCulture, BalochCulture, DaylamiteCultu
 
 var (
 	AshkenaziCulture = &Culture{
-		Name:            "istaelite_ashkenazi",
+		Name:            "israelite_ashkenazi",
 		Root:            SemiticRoot,
 		Language:        language.Ashkenazi,
 		Ethos:           Communal,
@@ -1219,7 +1219,7 @@ var (
 		},
 	}
 	KochinimCulture = &Culture{
-		Name:            "istaelite_kochinim",
+		Name:            "israelite_kochinim",
 		Proto:           []*Culture{SephardiCulture, TamilCulture},
 		Root:            SemiticRoot,
 		Language:        language.Hebrew,
@@ -1234,7 +1234,7 @@ var (
 		},
 	}
 	RadhaniteCulture = &Culture{
-		Name:            "istaelite_radhanite",
+		Name:            "israelite_radhanite",
 		Root:            SemiticRoot,
 		Language:        language.Hebrew,
 		Ethos:           Egalitarian,
@@ -1249,7 +1249,7 @@ var (
 		},
 	}
 	SephardiCulture = &Culture{
-		Name:            "istaelite_sephardi",
+		Name:            "israelite_sephardi",
 		Root:            SemiticRoot,
 		Language:        language.Sephardi,
 		Ethos:           Communal,

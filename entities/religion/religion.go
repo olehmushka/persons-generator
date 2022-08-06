@@ -6,6 +6,7 @@ import (
 	"persons_generator/entities/culture"
 	g "persons_generator/entities/gender"
 	pm "persons_generator/probability_machine"
+	"persons_generator/tools"
 )
 
 type Religion struct {
@@ -84,4 +85,25 @@ func (r *Religion) HasReincarnation() bool {
 	}
 
 	return false
+}
+
+func GetReligionByName(name string, list []*Religion) *Religion {
+	if name == "" || len(list) == 0 {
+		return nil
+	}
+
+	return tools.Search(list, func(r *Religion) string { return r.Name }, name)
+}
+
+func MapReligionNames(religions []*Religion) []string {
+	if len(religions) == 0 {
+		return []string{}
+	}
+
+	out := make([]string, len(religions))
+	for i := range out {
+		out[i] = religions[i].Name
+	}
+
+	return out
 }
