@@ -13,6 +13,7 @@ type Culture struct {
 	Proto []*Culture
 	Name  string
 
+	Abstuct         *AbstructCulture
 	Root            *Root
 	Language        *language.Language
 	Ethos           *Ethos

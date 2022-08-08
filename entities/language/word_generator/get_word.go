@@ -14,7 +14,7 @@ func GetWord(base string, nameBases map[string][]string, min, max int, dupl stri
 	}
 
 	var data Chain
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 20; i++ {
 		var ok bool
 		if data, ok = Chains[base]; !ok {
 			UpdateChains(base, nameBases)

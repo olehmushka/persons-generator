@@ -30,7 +30,7 @@ func NewTheology(r *Religion, c *culture.Culture) *Theology {
 	minCults, maxCults := t.getCultsRange()
 	t.Cults = t.generateCults(minCults, maxCults)
 	t.Rules = t.generateRules()
-	t.Taboos = t.generateTaboos()
+	t.Taboos = t.generateTaboos(c)
 	t.Rituals = t.generateRituals()
 	t.Holydays = t.generateHolydays()
 	t.Conversion = t.generateConversion()

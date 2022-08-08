@@ -18,11 +18,11 @@ func main() {
 	o, err := orchestrator.New(&orchestrator.Config{
 		WorldSize: 5,
 		Culture: orchestrator.CultureConfig{
-			Preferred: []string{},
-			Amount:    4,
+			Preferred: []string{"indo_aryan_bengali"},
+			Amount:    1,
 		},
 		Religion: orchestrator.ReligionConfig{
-			Amount: 10,
+			Amount: 1,
 		},
 	})
 	if err != nil {
@@ -31,5 +31,5 @@ func main() {
 		return
 	}
 	o.ShowCultures()
-	o.ShowReligions()
+	// o.ShowReligions()
 }

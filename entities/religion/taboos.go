@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/entities/culture"
 	pm "persons_generator/probability_machine"
 )
 
@@ -13,9 +14,9 @@ type Taboos struct {
 	Taboos []*Taboo
 }
 
-func (t *Theology) generateTaboos() *Taboos {
+func (t *Theology) generateTaboos(c *culture.Culture) *Taboos {
 	ts := &Taboos{religion: t.religion, theology: t}
-	ts.Taboos = ts.generateTaboos()
+	ts.Taboos = ts.generateTaboos(c)
 
 	return ts
 }
@@ -36,8 +37,8 @@ type Taboo struct {
 	Calc       func(r *Religion, self *Taboo, selectedTaboos []*Taboo) Acceptance
 }
 
-func (ts *Taboos) generateTaboos() []*Taboo {
-	allTaboos := ts.getAllTaboos()
+func (ts *Taboos) generateTaboos(c *culture.Culture) []*Taboo {
+	allTaboos := ts.getAllTaboos(c)
 	taboos := make([]*Taboo, len(allTaboos))
 	for i, taboo := range allTaboos {
 		taboos[i] = &Taboo{
@@ -55,7 +56,7 @@ func (ts *Taboos) generateTaboos() []*Taboo {
 	return taboos
 }
 
-func (ts *Taboos) getAllTaboos() []*Taboo {
+func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 	return []*Taboo{
 		{
 			Name: "RaisingAnimals",
@@ -604,6 +605,17 @@ func (ts *Taboos) getAllTaboos() []*Taboo {
 			shunnedBaseCoef:  ts.religion.M.HighBaseCoef,
 			criminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) Acceptance {
+				if c != nil && len(c.Traditions) > 0 {
+					for _, t := range c.Traditions {
+						if t == nil {
+							continue
+						}
+						if t.Name == culture.SorcerousMetallurgyTradition.Name {
+							return Accepted
+						}
+					}
+				}
+
 				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},

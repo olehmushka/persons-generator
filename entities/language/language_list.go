@@ -2809,6 +2809,12 @@ var (
 		IsLiving:  true,
 		WordBase:  BerberWordBase,
 	}
+	Numidian = &Language{
+		Name:      "numidian",
+		Subfamily: BerberSubfamily,
+		IsLiving:  true,
+		WordBase:  BerberWordBase,
+	}
 	// Cushitic
 	Beja = &Language{
 		Name:      "beja",
@@ -3029,6 +3035,12 @@ var (
 	}
 	Phoenician = &Language{
 		Name:      "phoenician",
+		Subfamily: CanaaniteSubfamily,
+		IsLiving:  true,
+		WordBase:  MesopotamianWordBase,
+	}
+	Punic = &Language{
+		Name:      "punic",
 		Subfamily: CanaaniteSubfamily,
 		IsLiving:  true,
 		WordBase:  MesopotamianWordBase,
@@ -3270,6 +3282,7 @@ var AllAfroAsiaticLanguages = []*Language{
 	Ghadames,
 	Awjila,
 	Tuareg,
+	Numidian,
 	Beja,
 	Awngi,
 	Bilen,
@@ -3307,6 +3320,7 @@ var AllAfroAsiaticLanguages = []*Language{
 	Edomite,
 	Moabite,
 	Phoenician,
+	Punic,
 	Samalian,
 	Aramaic,
 	Nabataean,

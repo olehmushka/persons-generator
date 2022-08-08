@@ -858,6 +858,8 @@ var (
 					fallthrough
 				case "pacifists":
 					fallthrough
+				case "immortals":
+					fallthrough
 				case "druzhina":
 					return false
 				}
@@ -1438,6 +1440,8 @@ var (
 					fallthrough
 				case "martial_admiration":
 					fallthrough
+				case "immortals":
+					fallthrough
 				case "futuwaa":
 					return false
 				}
@@ -1497,6 +1501,8 @@ var (
 					fallthrough
 				case "martial_admiration":
 					fallthrough
+				case "immortals":
+					fallthrough
 				case "futuwaa":
 					return false
 				}
@@ -1534,6 +1540,8 @@ var (
 					fallthrough
 				case "martial_admiration":
 					fallthrough
+				case "immortals":
+					fallthrough
 				case "druzhina":
 					return false
 				}
@@ -1564,6 +1572,30 @@ var (
 		Type:              RegionalTraditionType,
 		PreferredEthoses:  []*Ethos{Bellicose, Communal},
 		CompatibilityFunc: func(c *Culture) bool { return true },
+	}
+	// Immortals was an elite heavy infantry unit of 10,000 soldiers in the army of the Achaemenid Empire.
+	// The unit served in a dual capacity through its role as imperial guard alongside
+	// its contribution to the ranks of the Persian Empire's standing army.
+	ImmortalsTradition = &Tradition{
+		Name:             "immortals",
+		Type:             RegionalTraditionType,
+		PreferredEthoses: []*Ethos{Bellicose, Courtly},
+		CompatibilityFunc: func(c *Culture) bool {
+			for _, t := range c.Traditions {
+				switch t.Name {
+				case "chanson_de_geste":
+					fallthrough
+				case "martial_admiration":
+					fallthrough
+				case "druzhina":
+					fallthrough
+				case "futuwaa":
+					return false
+				}
+			}
+
+			return true
+		},
 	}
 	// This culture has embraced the martial art and ritual worship of two-handed broadswords letting them foster strong and able warriors.
 	// The heavy swords allow them to mow down infantry and cavalry alike.
@@ -1798,6 +1830,7 @@ var AllRegionalTraditions = []*Tradition{
 	GarudaWarriorsTradition,
 	HimalayanSettlersTradition,
 	HorseLordsTradition,
+	ImmortalsTradition,
 	KhadgaPujaTradition,
 	KonniRaidsTradition,
 	LordsOfTheElephantTradition,
