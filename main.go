@@ -24,7 +24,7 @@ func main() {
 	o, err := orchestrator.New(&orchestrator.Config{
 		WorldSize: 5,
 		Culture: orchestrator.CultureConfig{
-			Preferred: []string{"indo_aryan_bengali"},
+			Preferred: []string{"lith"},
 			Amount:    1,
 		},
 		Religion: orchestrator.ReligionConfig{
