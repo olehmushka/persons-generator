@@ -51,7 +51,11 @@ func (w *World) CulturesPropagate(amount int, preferred []string) (*World, error
 	if totalLocs < amount {
 		return nil, fmt.Errorf("[World.CulturesPropagate] incorrect cultures number (max culture_number=%d, actual culture_number=%d)", totalLocs, amount)
 	}
-	w.Cultures = culture.NewCultures(amount, preferred)
+	cultures, err := culture.NewCultures(amount, preferred)
+	if err != nil {
+		return nil, err
+	}
+	w.Cultures = cultures
 
 	var (
 		locsPerCulture = totalLocs / amount
@@ -130,10 +134,11 @@ func (w *World) religionsPropagateForCultureNumberLess(amount int) (*World, erro
 
 	for i := range chunkSampleReligions {
 		for range chunkSampleReligions[i] {
-			var (
-				c = w.Cultures[i]
-				r = religion.NewReligion(c)
-			)
+			c := w.Cultures[i]
+			r, err := religion.NewReligion(c)
+			if err != nil {
+				return nil, err
+			}
 			religions = append(religions, r)
 			val, ok := cultureReligionMap[c.Name]
 			if !ok || len(val) == 0 {
@@ -174,7 +179,10 @@ func (w *World) religionsPropagateForCultureNumberEqual(amount int) (*World, err
 	)
 
 	for _, c := range w.Cultures {
-		r := religion.NewReligion(c)
+		r, err := religion.NewReligion(c)
+		if err != nil {
+			return nil, err
+		}
 		religions = append(religions, r)
 		cultureReligionMap[c.Name] = r.Name
 	}
@@ -206,8 +214,14 @@ func (w *World) religionsPropagateForCultureNumberGreater(amount int) (*World, e
 	)
 
 	for _, chunk := range culturesChunks {
-		hybridCulture := culture.NewWithProto(chunk)
-		r := religion.NewReligion(hybridCulture)
+		hybridCulture, err := culture.NewWithProto(chunk)
+		if err != nil {
+			return nil, err
+		}
+		r, err := religion.NewReligion(hybridCulture)
+		if err != nil {
+			return nil, err
+		}
 		religions = append(religions, r)
 		for _, c := range chunk {
 			cultureReligionMap[c.Name] = r.Name

@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	l "persons_generator/entities/language"
 	"persons_generator/orchestrator"
 )
 
@@ -14,6 +15,11 @@ func init() {
 }
 
 func main() {
+	if err := l.SetWordBases(); err != nil {
+		fmt.Printf("[language.SetWordBases] error = %+v\n", err)
+		os.Exit(1)
+		return
+	}
 	// cfg := config.New()
 	o, err := orchestrator.New(&orchestrator.Config{
 		WorldSize: 5,

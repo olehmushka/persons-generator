@@ -21,7 +21,7 @@ type Religion struct {
 	Theology        *Theology
 }
 
-func NewReligion(c *culture.Culture) *Religion {
+func NewReligion(c *culture.Culture) (*Religion, error) {
 	r := &Religion{
 		M: Metadata{
 			LowBaseCoef:  pm.RandFloat64InRange(0.45, 0.75),
@@ -30,8 +30,12 @@ func NewReligion(c *culture.Culture) *Religion {
 
 			MaxMetadataValue: pm.RandFloat64InRange(8, 10),
 		},
-		Name: c.Language.GetReligionName(),
 	}
+	name, err := c.Language.GetReligionName()
+	if err != nil {
+		return nil, err
+	}
+	r.Name = name
 	r.Type = NewType(r)
 	r.GenderDominance = c.GenderDominance
 	r.metadata = r.generateMetadata()
@@ -39,16 +43,20 @@ func NewReligion(c *culture.Culture) *Religion {
 	r.Attributes = NewAttributes(r, c)
 	r.Theology = NewTheology(r, c)
 
-	return r
+	return r, nil
 }
 
-func NewReligions(cultures []*culture.Culture) []*Religion {
+func NewReligions(cultures []*culture.Culture) ([]*Religion, error) {
 	religions := make([]*Religion, len(cultures))
 	for i := range religions {
-		religions[i] = NewReligion(cultures[i])
+		r, err := NewReligion(cultures[i])
+		if err != nil {
+			return nil, err
+		}
+		religions[i] = r
 	}
 
-	return religions
+	return religions, nil
 }
 
 func (r *Religion) UpdateMetadata(rm *religionMetadata) {

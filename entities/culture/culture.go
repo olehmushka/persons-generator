@@ -22,30 +22,38 @@ type Culture struct {
 	MartialCustom   g.Acceptance
 }
 
-func New(preferred []string) *Culture {
+func New(preferred []string) (*Culture, error) {
 	return NewWithProto(getProtoCultures(preferred))
 }
 
-func NewWithProto(proto []*Culture) *Culture {
+func NewWithProto(proto []*Culture) (*Culture, error) {
 	c := &Culture{Proto: proto}
 	c.GenderDominance = getGenderDominance(c.Proto)
 	c.MartialCustom = getMartialCustom(c.Proto)
 	c.Language = language.New(getLanguageNamesFromProto(c.Proto))
-	c.Name = c.Language.GetCultureName()
+	name, err := c.Language.GetCultureName()
+	if err != nil {
+		return nil, err
+	}
+	c.Name = name
 	c.Ethos = getEthos(c.Proto)
 	c.Traditions = getTraditions(c.Proto)
 
-	return c
+	return c, nil
 }
 
-func NewCultures(amount int, preferred []string) []*Culture {
+func NewCultures(amount int, preferred []string) ([]*Culture, error) {
 	cultures := make([]*Culture, amount)
 	chunk := chunkPreferred(amount, preferred)
 	for i := range cultures {
-		cultures[i] = New(chunk[i])
+		c, err := New(chunk[i])
+		if err != nil {
+			return nil, err
+		}
+		cultures[i] = c
 	}
 
-	return cultures
+	return cultures, nil
 }
 
 func (c *Culture) Print() {

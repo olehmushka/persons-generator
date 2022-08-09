@@ -5,19 +5,23 @@ import (
 	"persons_generator/entities/religion"
 )
 
-func FillLocationsWithReligions(locations []*location.Location) []*location.Location {
+func FillLocationsWithReligions(locations []*location.Location) ([]*location.Location, error) {
 	out := make([]*location.Location, len(locations))
 	for i := range out {
+		r, err := religion.NewReligion(locations[i].InitCulture)
+		if err != nil {
+			return nil, err
+		}
 		out[i] = &location.Location{
 			Coordinate: locations[i].Coordinate,
 			Population: locations[i].Population,
 
 			InitCulture:  locations[i].InitCulture,
-			InitReligion: religion.NewReligion(locations[i].InitCulture),
+			InitReligion: r,
 		}
 	}
 
-	return out
+	return out, nil
 }
 
 func ExtractReligionFromLocations(locations []*location.Location) []*religion.Religion {

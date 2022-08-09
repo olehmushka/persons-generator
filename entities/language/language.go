@@ -10,10 +10,11 @@ import (
 )
 
 type Language struct {
-	Name      string
-	Subfamily *Subfamily
-	WordBase  *WordBase
-	IsLiving  bool
+	Name        string
+	Subfamily   *Subfamily
+	WordBaseRef *WordBaseRef
+	WordBase    *WordBase
+	IsLiving    bool
 }
 
 func New(preferred []string) *Language {
@@ -37,11 +38,28 @@ func New(preferred []string) *Language {
 	}
 }
 
-func (l *Language) GetWord() string {
-	if l.WordBase == nil {
+func (l *Language) getWordBase() (*WordBase, error) {
+	if l.WordBase != nil {
+		return l.WordBase, nil
+	}
+	wb, err := l.WordBaseRef.LoadWordBase()
+	if err != nil {
+		return nil, err
+	}
+	l.WordBase = wb
+
+	return wb, nil
+}
+
+func (l *Language) GetWord() (string, error) {
+	wb, err := l.getWordBase()
+	if err != nil {
+		return "", err
+	}
+	if wb == nil {
 		panic(fmt.Sprintf("can not get word base (language=%s)", l.Name))
 	}
-	return wg.GetWord(l.WordBase.Name, ExtractWords(AllWordBases), l.WordBase.Min, l.WordBase.Max, l.WordBase.Dupl)
+	return wg.GetWord(wb.Name, ExtractWords(AllWordBases), wb.Min, wb.Max, wb.Dupl), nil
 }
 
 func (l *Language) Print() {
@@ -60,12 +78,22 @@ func GetLanguageByName(name string) *Language {
 	return tools.Search(AllLanguages, func(l *Language) string { return l.Name }, name)
 }
 
-func (l *Language) GetCultureName() string {
-	return wg.GetCultureName(l.GetWord())
+func (l *Language) GetCultureName() (string, error) {
+	w, err := l.GetWord()
+	if err != nil {
+		return "", err
+	}
+
+	return wg.GetCultureName(w), nil
 }
 
-func (l *Language) GetReligionName() string {
-	return wg.GetReligionName(l.GetWord())
+func (l *Language) GetReligionName() (string, error) {
+	w, err := l.GetWord()
+	if err != nil {
+		return "", err
+	}
+
+	return wg.GetReligionName(w), nil
 }
 
 func (l *Language) GetOwnName(sex g.Sex) string {
