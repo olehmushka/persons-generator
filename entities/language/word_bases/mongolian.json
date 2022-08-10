@@ -1,6 +1,25 @@
 {
-  "female_own_names": [],
-  "male_own_names": [],
+  "female_own_names": [
+    "Altantsetseg",
+    "Batu",
+    "Bayarmaa",
+    "Bolormaa",
+    "Nergui",
+    "Odgerel",
+    "Qacha",
+    "Qadan",
+    "Xanadu"
+  ],
+  "male_own_names": [
+    "Batu",
+    "Batzorig",
+    "Muunokhoi",
+    "Naranbaatar",
+    "Nergui",
+    "Qadan",
+    "Temujin",
+    "Xanadu"
+  ],
   "words": [
     "Adaatsag",
     "Airag",
