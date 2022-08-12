@@ -9,5 +9,5 @@ type Server interface {
 }
 
 type Handlers interface {
-	GenerateWorld(w http.ResponseWriter, r *http.Request)
+	CreateCultures(w http.ResponseWriter, r *http.Request)
 }

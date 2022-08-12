@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"persons_generator/cli"
-	l "persons_generator/entities/language"
+	l "persons_generator/engine/entities/language"
 
 	"github.com/sirupsen/logrus"
 )
