@@ -10,6 +10,9 @@ just-run:
 
 run: install just-run
 
+run_http_server:
+	go run main.go http_server_run
+
 test:
 	go test ./...
 

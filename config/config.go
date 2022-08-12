@@ -1,22 +1,29 @@
 package config
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/configor"
+	"github.com/joho/godotenv"
+	"go.uber.org/fx"
 )
 
 type Config struct {
-	WorldSize      int `env:"WORLD_SIZE"`
-	ReligionNumber int `env:"RELIGION_NUMBER"`
+	HTTPServer HTTPServer
 }
 
-func New() *Config {
+func New() (*Config, error) {
 	var cfg Config
 
-	if err := configor.New(&configor.Config{ErrorOnUnmatchedKeys: true}).Load(&cfg, "config/default.json"); err != nil {
-		fmt.Println(err)
+	if err := godotenv.Load(); err != nil {
+		return nil, err
 	}
 
-	return &cfg
+	if err := configor.New(&configor.Config{ErrorOnUnmatchedKeys: true}).Load(&cfg, "config/default.json"); err != nil {
+		return nil, err
+	}
+
+	return &cfg, nil
 }
+
+var Module = fx.Options(
+	fx.Provide(New),
+)

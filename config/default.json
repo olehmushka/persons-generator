@@ -1,4 +1,5 @@
 {
-  "worldSize": 50,
-  "religionNumber": 1
+  "httpServer": {
+    "address": ":8000"
+  }
 }

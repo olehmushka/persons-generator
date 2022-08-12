@@ -6,8 +6,10 @@ import (
 	"os"
 	"time"
 
-	"persons_generator/entities/human"
+	"persons_generator/cli"
 	l "persons_generator/entities/language"
+
+	"github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -20,28 +22,9 @@ func main() {
 		os.Exit(1)
 		return
 	}
-	// cfg := config.New()
-	// o, err := orchestrator.New(&orchestrator.Config{
-	// 	WorldSize: 5,
-	// 	Culture: orchestrator.CultureConfig{
-	// 		Preferred: []string{"lith"},
-	// 		Amount:    1,
-	// 	},
-	// 	Religion: orchestrator.ReligionConfig{
-	// 		Amount: 1,
-	// 	},
-	// })
-	// if err != nil {
-	// 	fmt.Printf("[Orchestrator.New] error = %+v\n", err)
-	// 	os.Exit(1)
-	// 	return
-	// }
-	// o.ShowCultures()
-	// o.ShowReligions()
 
-	v, err := human.GenerateHuman()
-	if err != nil {
-		fmt.Printf("[Orchestrator.New.GenerateHuman] error = %+v\n", err)
+	if err := cli.Execute(os.Args[1:]); err != nil {
+		logrus.WithField("msg", "cli.Execute error").Error(err)
+		os.Exit(1)
 	}
-	v.Print()
 }
