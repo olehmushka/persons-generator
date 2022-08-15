@@ -9,7 +9,7 @@ import (
 )
 
 func GenerateHuman() (*human.Human, error) {
-	c, err := culture.New([]string{"ruthenian"})
+	c, err := culture.New(&culture.Preference{Names: []string{"ruthenian"}})
 	if err != nil {
 		return nil, err
 	}

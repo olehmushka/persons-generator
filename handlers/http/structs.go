@@ -4,9 +4,15 @@ type PostCreateWorldRequest struct{}
 
 type PostCreateWorldResponse struct{}
 
+type CulturePreferred struct {
+	Names  []string `json:"names"`
+	Amount int      `json:"amount"`
+	Kind   string   `json:"kind"`
+}
+
 type PostCreatCulturesRequest struct {
-	Preferred []string `json:"preferred"`
-	Amount    int      `json:"amount"`
+	Preferred []*CulturePreferred `json:"preferred"`
+	Amount    int                 `json:"amount"`
 }
 
 type PostCreateCulturesResponse struct {

@@ -18,14 +18,14 @@ func (h *handlers) CreateCultures(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cultures, err := h.cultureSrv.CreateCultures(ctx, req.Amount, req.Preferred)
+	cultures, err := h.cultureSrv.CreateCultures(ctx, req.Amount, deserializeCulturePreferences(req.Preferred))
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return
 	}
 
 	respJSON, err := json.Marshal(PostCreateCulturesResponse{
-		Data: deserializeCultures(cultures),
+		Data: serializeCultures(cultures),
 	})
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)

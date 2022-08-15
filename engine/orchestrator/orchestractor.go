@@ -55,6 +55,10 @@ func (o *Orchestrator) ShowReligions() {
 	fmt.Println()
 }
 
-func (o *Orchestrator) CreateCultures(amount int, preferred []string) ([]*culture.Culture, error) {
+func (o *Orchestrator) CreateCultures(amount int, preferred []*culture.Preference) ([]*culture.Culture, error) {
 	return culture.NewCultures(amount, preferred)
+}
+
+func (o *Orchestrator) CreateReligion(c *culture.Culture) (*religion.Religion, error) {
+	return religion.NewReligion(c)
 }

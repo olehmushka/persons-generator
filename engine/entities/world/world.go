@@ -42,7 +42,7 @@ func (w *World) Fill() *World {
 	return w
 }
 
-func (w *World) CulturesPropagate(amount int, preferred []string) (*World, error) {
+func (w *World) CulturesPropagate(amount int, preferred []*culture.Preference) (*World, error) {
 	if amount == 0 {
 		return nil, errors.New("[World.CulturesPropagate] culture amount can not be zero")
 	}

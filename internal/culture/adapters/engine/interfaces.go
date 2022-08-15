@@ -7,5 +7,5 @@ import (
 )
 
 type Adapter interface {
-	CreateCultures(ctx context.Context, amount int, preferred []string) ([]*entities.Culture, error)
+	CreateCultures(ctx context.Context, amount int, preferred []*entities.CulturePreference) ([]*entities.Culture, error)
 }

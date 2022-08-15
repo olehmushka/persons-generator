@@ -23,6 +23,6 @@ var Module = fx.Options(
 	fx.Provide(New),
 )
 
-func (s *culture) CreateCultures(ctx context.Context, amount int, preferred []string) ([]*entities.Culture, error) {
+func (s *culture) CreateCultures(ctx context.Context, amount int, preferred []*entities.CulturePreference) ([]*entities.Culture, error) {
 	return s.engineAdp.CreateCultures(ctx, amount, preferred)
 }

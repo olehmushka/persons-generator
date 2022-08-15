@@ -26,8 +26,8 @@ var Module = fx.Options(
 	fx.Provide(New),
 )
 
-func (a *adapter) CreateCultures(ctx context.Context, amount int, preferred []string) ([]*entities.Culture, error) {
-	c, err := a.engine.CreateCultures(amount, preferred)
+func (a *adapter) CreateCultures(ctx context.Context, amount int, preferred []*entities.CulturePreference) ([]*entities.Culture, error) {
+	c, err := a.engine.CreateCultures(amount, deserializeCulturePreferences(preferred))
 	if err != nil {
 		return nil, err
 	}

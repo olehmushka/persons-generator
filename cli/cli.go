@@ -18,6 +18,10 @@ func Execute(args []string) error {
 		if err := runSystemCommand(); err != nil {
 			return err
 		}
+	case RunGenerateReligionCommand:
+		if err := runGenerateReligionCommand(); err != nil {
+			return err
+		}
 	default:
 		return fmt.Errorf("cli.Execute: not found command = %s", args[0])
 	}

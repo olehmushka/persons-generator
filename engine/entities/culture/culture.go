@@ -1,6 +1,7 @@
 package culture
 
 import (
+	"errors"
 	"fmt"
 
 	"persons_generator/core/tools"
@@ -22,8 +23,70 @@ type Culture struct {
 	MartialCustom   g.Acceptance
 }
 
-func New(preferred []string) (*Culture, error) {
-	return NewWithProto(getProtoCultures(preferred))
+func New(preferred *Preference) (*Culture, error) {
+	proto, err := getProtoCultures(preferred)
+	if err != nil {
+		return nil, err
+	}
+	if len(proto) == 0 {
+		return nil, errors.New("proto cultures can not be zero")
+	}
+
+	return NewWithProto(proto)
+}
+
+func getProtoCultures(preferred *Preference) ([]*Culture, error) {
+	if preferred == nil {
+		return GetRandomProtoCultures(1, 3)
+	}
+
+	switch preferred.Kind {
+	case StrictPrefKind:
+		return getProtoCulturesForStrictKind(preferred)
+	case HybridPrefKind:
+		return getProtoCulturesForHybridKind(preferred)
+	default:
+		return nil, fmt.Errorf("unexpected preference kind (kind_name=%s)", preferred.Kind)
+	}
+}
+
+func getProtoCulturesForStrictKind(preferred *Preference) ([]*Culture, error) {
+	if preferred == nil {
+		return nil, errors.New("preferred can not be nil")
+	}
+	if preferred.Kind == StrictPrefKind && len(preferred.Names) != preferred.Amount {
+		return nil, fmt.Errorf("for strict kind of preference number preferred names (%d) can not be not equal to amount (%d)", len(preferred.Names), preferred.Amount)
+	}
+
+	out, err := GetProtoCulturesByPreferred(preferred.Names)
+	if err != nil {
+		return nil, err
+	}
+
+	return out, nil
+}
+
+func getProtoCulturesForHybridKind(preferred *Preference) ([]*Culture, error) {
+	if preferred == nil {
+		return nil, errors.New("preferred can not be nil")
+	}
+
+	out, err := GetProtoCulturesByPreferred(preferred.Names)
+	if err != nil {
+		return nil, err
+	}
+	if len(out) == preferred.Amount {
+		return out, nil
+	}
+	for i := 0; i < 20; i++ {
+		out = append(out, tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, preferred.Amount-len(out))...)
+		out = UniqueCultures(out)
+		if len(out) == preferred.Amount {
+			break
+		}
+	}
+
+	return out, nil
 }
 
 func NewWithProto(proto []*Culture) (*Culture, error) {
@@ -38,15 +101,22 @@ func NewWithProto(proto []*Culture) (*Culture, error) {
 	c.Name = name
 	c.Ethos = getEthos(c.Proto)
 	c.Traditions = getTraditions(c.Proto)
+	c.Root = getRoot(c.Proto)
 
 	return c, nil
 }
 
-func NewCultures(amount int, preferred []string) ([]*Culture, error) {
+func NewCultures(amount int, preferred []*Preference) ([]*Culture, error) {
 	cultures := make([]*Culture, amount)
-	chunk := chunkPreferred(amount, preferred)
+	if amount < len(preferred) {
+		return nil, fmt.Errorf("amount (%d) can not be less than length of preferred (length=%d)", amount, len(preferred))
+	}
 	for i := range cultures {
-		c, err := New(chunk[i])
+		var p *Preference
+		if len(preferred) > i {
+			p = preferred[i]
+		}
+		c, err := New(p)
 		if err != nil {
 			return nil, err
 		}
@@ -79,47 +149,6 @@ func (c *Culture) Print() {
 	c.PrintMartialCustom()
 }
 
-func chunkPreferred(amount int, preferred []string) [][]string {
-	if amount == 0 {
-		return [][]string{}
-	}
-
-	if len(preferred) == 0 {
-		out := make([][]string, amount)
-		for i := range out {
-			out[i] = []string{}
-		}
-		return out
-	}
-
-	out := make([][]string, amount)
-	if amount >= len(preferred) {
-		for i := range out {
-			if len(preferred) > i {
-				out[i] = []string{preferred[i]}
-				continue
-			}
-			out[i] = []string{}
-		}
-		return out
-	}
-
-	return tools.Chunk(amount, preferred)
-}
-
-func getProtoCultures(preferred []string) []*Culture {
-	expectedAmount := pm.RandIntInRange(1, 2)
-	cultures := make([]*Culture, 0, expectedAmount+1)
-	if found := GetProtoCulturesByPreferred(preferred); len(found) > 0 {
-		cultures = tools.RandomValuesOfSlice(pm.RandFloat64, found, expectedAmount)
-	} else {
-		cultures = tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, expectedAmount)
-	}
-	cultures = append(cultures, tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, 1)...)
-
-	return UniqueCultures(cultures)
-}
-
 func getLanguageNamesFromProto(proto []*Culture) []string {
 	names := make([]string, 0, len(proto))
 	for _, p := range proto {
@@ -135,24 +164,22 @@ func getLanguageNamesFromProto(proto []*Culture) []string {
 	return tools.Unique(names)
 }
 
-func GetProtoCulturesByPreferred(preferred []string) []*Culture {
-	if len(preferred) == 0 {
-		return []*Culture{}
-	}
-
-	out := make([]*Culture, 0, len(preferred))
-	for _, pref := range preferred {
-		if found := GetProtoCultureByPreferred(pref); found != nil {
-			out = append(out, found)
+func GetProtoCulturesByPreferred(names []string) ([]*Culture, error) {
+	out := make([]*Culture, len(names))
+	for i := range out {
+		found := GetProtoCultureByPreferredName(names[i])
+		if found == nil {
+			return nil, fmt.Errorf("can not found proto culture by name (name=%s)", names[i])
 		}
+		out[i] = found
 	}
 
-	return out
+	return out, nil
 }
 
-func GetProtoCultureByPreferred(pref string) *Culture {
+func GetProtoCultureByPreferredName(prefName string) *Culture {
 	for _, c := range AllCultures {
-		if tools.ContainString(c.Name, pref) {
+		if tools.ContainString(c.Name, prefName) {
 			return c
 		}
 	}
@@ -176,6 +203,25 @@ func UniqueCultures(cultures []*Culture) []*Culture {
 	}
 
 	return out
+}
+
+func GetRandomProtoCultures(min, max int) ([]*Culture, error) {
+	if max > len(AllCultures) {
+		return nil, fmt.Errorf("number of all cultures can not be less than max for random generation (%d)", max)
+	}
+	var (
+		amount = pm.RandIntInRange(min, max)
+		out    = make([]*Culture, 0, amount)
+	)
+	for i := 0; i < 20; i++ {
+		out = append(out, tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, amount-len(out))...)
+		out = UniqueCultures(out)
+		if len(out) == amount {
+			break
+		}
+	}
+
+	return out, nil
 }
 
 func GetCultureByName(name string, list []*Culture) *Culture {

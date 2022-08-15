@@ -13,6 +13,9 @@ run: install just-run
 run_http_server:
 	go run main.go http_server_run
 
+run_generate_religion:
+	go run main.go generate_religion
+
 test:
 	go test ./...
 
