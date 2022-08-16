@@ -232,6 +232,14 @@ func GetCultureByName(name string, list []*Culture) *Culture {
 	return tools.Search(list, func(c *Culture) string { return c.Name }, name)
 }
 
+func GetCulturesByName(name string, list []*Culture) []*Culture {
+	if name == "" || len(list) == 0 {
+		return nil
+	}
+
+	return tools.SearchMany(list, func(c *Culture) string { return c.Name }, name)
+}
+
 func MapCultureNames(cultures []*Culture) []string {
 	if len(cultures) == 0 {
 		return []string{}

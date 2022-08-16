@@ -1,6 +1,6 @@
 package entities
 
-type WideCulture struct {
+type CultureGroup struct {
 	Name            string
 	RootCultureName string
 }

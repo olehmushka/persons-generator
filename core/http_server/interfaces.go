@@ -10,4 +10,5 @@ type Server interface {
 
 type Handlers interface {
 	CreateCultures(w http.ResponseWriter, r *http.Request)
+	GetProtoCultures(w http.ResponseWriter, r *http.Request)
 }

@@ -3,7 +3,7 @@ package entities
 type Culture struct {
 	Name            string
 	Proto           []*Culture
-	WideCulture     *WideCulture
+	CultureGroup    *CultureGroup
 	RootCultureName string
 	Language        *Language
 	EthosName       string

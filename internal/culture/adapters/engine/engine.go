@@ -3,6 +3,7 @@ package engine
 import (
 	"context"
 
+	"persons_generator/core/tools"
 	"persons_generator/engine/orchestrator"
 	"persons_generator/internal/culture/entities"
 
@@ -33,4 +34,16 @@ func (a *adapter) CreateCultures(ctx context.Context, amount int, preferred []*e
 	}
 
 	return serializeCultures(c), nil
+}
+
+func (a *adapter) GetProtoCultures(ctx context.Context, q string, limit, offset int) ([]*entities.Culture, int, error) {
+	c, err := a.engine.SearchCultures(q)
+	if err != nil {
+		return nil, 0, err
+	}
+	if len(c) == 0 {
+		return []*entities.Culture{}, 0, nil
+	}
+
+	return serializeCultures(tools.Paginate(c, offset, limit)), len(c), nil
 }

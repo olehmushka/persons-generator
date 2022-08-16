@@ -50,7 +50,8 @@ func (s *server) Register() {
 		MaxAge:           1000,
 	}))
 
-	router.Post("/api/culture", http_server_tools.NewHandlesChain(s.handlers.CreateCultures))
+	router.Post("/api/cultures", http_server_tools.NewHandlesChain(s.handlers.CreateCultures))
+	router.Get("/api/cultures/proto", http_server_tools.NewHandlesChain(s.handlers.GetProtoCultures))
 
 	srv := &http.Server{
 		Addr:              s.address,

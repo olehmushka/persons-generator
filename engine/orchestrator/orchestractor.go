@@ -1,8 +1,6 @@
 package orchestrator
 
 import (
-	"fmt"
-
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/religion"
 	"persons_generator/engine/entities/world"
@@ -35,30 +33,4 @@ func New() (*Orchestrator, error) {
 }
 
 func (o *Orchestrator) Orchestrate() {
-}
-
-func (o *Orchestrator) ShowCultures() {
-	fmt.Println()
-	for _, c := range o.cultures {
-		c.Print()
-	}
-	o.w.PrintLocationCultures()
-	fmt.Println()
-}
-
-func (o *Orchestrator) ShowReligions() {
-	fmt.Println()
-	for _, r := range o.religions {
-		r.Print()
-	}
-	o.w.PrintLocationReligions()
-	fmt.Println()
-}
-
-func (o *Orchestrator) CreateCultures(amount int, preferred []*culture.Preference) ([]*culture.Culture, error) {
-	return culture.NewCultures(amount, preferred)
-}
-
-func (o *Orchestrator) CreateReligion(c *culture.Culture) (*religion.Religion, error) {
-	return religion.NewReligion(c)
 }

@@ -23,7 +23,7 @@ func serializeCulture(in *culture.Culture) *entities.Culture {
 	return &entities.Culture{
 		Name:            in.Name,
 		Proto:           serializeCultures(in.Proto),
-		WideCulture:     serializeWideCulture(in.Abstuct),
+		CultureGroup:    serializeWideCulture(in.Abstuct),
 		RootCultureName: serializeRoot(in.Root),
 		Language:        serializeLanguage(in.Language),
 		EthosName:       in.Ethos.Name,
@@ -33,11 +33,11 @@ func serializeCulture(in *culture.Culture) *entities.Culture {
 	}
 }
 
-func serializeWideCulture(in *culture.AbstructCulture) *entities.WideCulture {
+func serializeWideCulture(in *culture.AbstructCulture) *entities.CultureGroup {
 	if in == nil {
 		return nil
 	}
-	return &entities.WideCulture{
+	return &entities.CultureGroup{
 		Name:            in.Name,
 		RootCultureName: in.Root.Name,
 	}
