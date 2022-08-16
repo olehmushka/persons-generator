@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	HTTPServer HTTPServer
+	HTTPServer  HTTPServer
+	JSONStorage JSONStorage
 }
 
 func New() (*Config, error) {

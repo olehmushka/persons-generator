@@ -1,5 +1,7 @@
 package http
 
+import "github.com/google/uuid"
+
 type CulturePreferred struct {
 	Names  []string `json:"names"`
 	Amount int      `json:"amount"`
@@ -20,7 +22,12 @@ type GetProtoCulturesResponse struct {
 	Total int        `json:"total"`
 }
 
+type GetCultureByIDResponse struct {
+	Data *Culture `json:"data"`
+}
+
 type Culture struct {
+	ID              uuid.UUID     `json:"id"`
 	Name            string        `json:"name"`
 	Proto           []*Culture    `json:"proto"`
 	CultureGroup    *CultureGroup `json:"culture_group"`

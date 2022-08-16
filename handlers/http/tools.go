@@ -3,6 +3,9 @@ package http
 import (
 	"net/http"
 	"strconv"
+
+	"github.com/go-chi/chi"
+	"github.com/google/uuid"
 )
 
 func ExtractIntFromReq(r *http.Request, key string) *int {
@@ -31,4 +34,16 @@ func ExtractOffsetFromReq(r *http.Request) int {
 	}
 
 	return DefaultOffset
+}
+
+func ExtractIDFromPath(r *http.Request, key string) uuid.UUID {
+	val := chi.URLParam(r, key)
+	if val == "" {
+		return uuid.Nil
+	}
+	if id, err := uuid.Parse(val); err == nil {
+		return id
+	}
+
+	return uuid.Nil
 }

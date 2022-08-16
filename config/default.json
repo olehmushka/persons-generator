@@ -1,5 +1,8 @@
 {
   "httpServer": {
     "address": ":8000"
+  },
+  "jsonStorage": {
+    "storageFolder": "tmp"
   }
 }

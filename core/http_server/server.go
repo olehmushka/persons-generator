@@ -51,6 +51,7 @@ func (s *server) Register() {
 	}))
 
 	router.Post("/api/cultures", http_server_tools.NewHandlesChain(s.handlers.CreateCultures))
+	router.Get("/api/cultures/{id}", http_server_tools.NewHandlesChain(s.handlers.GetCultureByID))
 	router.Get("/api/cultures/proto", http_server_tools.NewHandlesChain(s.handlers.GetProtoCultures))
 
 	srv := &http.Server{

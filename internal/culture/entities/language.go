@@ -1,6 +1,6 @@
 package entities
 
 type Language struct {
-	Name      string
-	Subfamily *LanguageSubfamily
+	Name      string             `json:"name"`
+	Subfamily *LanguageSubfamily `json:"subfamily"`
 }
