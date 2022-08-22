@@ -8,7 +8,7 @@ import (
 func FillLocationsWithReligions(locations []*location.Location) ([]*location.Location, error) {
 	out := make([]*location.Location, len(locations))
 	for i := range out {
-		r, err := religion.NewReligion(locations[i].InitCulture)
+		r, err := religion.New(locations[i].InitCulture)
 		if err != nil {
 			return nil, err
 		}

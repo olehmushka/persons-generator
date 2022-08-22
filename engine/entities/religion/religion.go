@@ -21,7 +21,7 @@ type Religion struct {
 	Theology        *Theology
 }
 
-func NewReligion(c *culture.Culture) (*Religion, error) {
+func New(c *culture.Culture) (*Religion, error) {
 	r := &Religion{
 		M: Metadata{
 			LowBaseCoef:  pm.RandFloat64InRange(0.45, 0.75),
@@ -46,10 +46,10 @@ func NewReligion(c *culture.Culture) (*Religion, error) {
 	return r, nil
 }
 
-func NewReligions(cultures []*culture.Culture) ([]*Religion, error) {
+func NewMany(cultures []*culture.Culture) ([]*Religion, error) {
 	religions := make([]*Religion, len(cultures))
 	for i := range religions {
-		r, err := NewReligion(cultures[i])
+		r, err := New(cultures[i])
 		if err != nil {
 			return nil, err
 		}

@@ -135,7 +135,7 @@ func (w *World) religionsPropagateForCultureNumberLess(amount int) (*World, erro
 	for i := range chunkSampleReligions {
 		for range chunkSampleReligions[i] {
 			c := w.Cultures[i]
-			r, err := religion.NewReligion(c)
+			r, err := religion.New(c)
 			if err != nil {
 				return nil, err
 			}
@@ -179,7 +179,7 @@ func (w *World) religionsPropagateForCultureNumberEqual(amount int) (*World, err
 	)
 
 	for _, c := range w.Cultures {
-		r, err := religion.NewReligion(c)
+		r, err := religion.New(c)
 		if err != nil {
 			return nil, err
 		}
@@ -218,7 +218,7 @@ func (w *World) religionsPropagateForCultureNumberGreater(amount int) (*World, e
 		if err != nil {
 			return nil, err
 		}
-		r, err := religion.NewReligion(hybridCulture)
+		r, err := religion.New(hybridCulture)
 		if err != nil {
 			return nil, err
 		}

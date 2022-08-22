@@ -17,5 +17,18 @@ func (o *Orchestrator) ShowReligions() {
 }
 
 func (o *Orchestrator) CreateReligion(c *culture.Culture) (*religion.Religion, error) {
-	return religion.NewReligion(c)
+	return religion.New(c)
+}
+
+func (o *Orchestrator) CreateReligions(c []*culture.Culture) ([]*religion.Religion, error) {
+	out := make([]*religion.Religion, len(c))
+	for i := range out {
+		r, err := o.CreateReligion(c[i])
+		if err != nil {
+			return nil, err
+		}
+		out[i] = r
+	}
+
+	return out, nil
 }

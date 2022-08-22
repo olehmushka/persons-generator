@@ -51,3 +51,16 @@ func (s *culture) GetProtoCultures(ctx context.Context, q string, limit, offset 
 func (s *culture) GetCultureByID(ctx context.Context, id uuid.UUID) (*entities.Culture, error) {
 	return s.storageAdp.GetCultureByID(ctx, id)
 }
+
+func (s *culture) GetOriginalCultureByID(ctx context.Context, id uuid.UUID) ([]byte, error) {
+	c, err := s.storageAdp.GetCultureByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return s.engineAdp.GetOriginalCulture(ctx, c)
+}
+
+func (s *culture) HybridCulture(ctx context.Context, cultures []*entities.Culture) (*entities.Culture, error) {
+	return nil, nil
+}

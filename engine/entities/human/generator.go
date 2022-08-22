@@ -13,7 +13,7 @@ func GenerateHuman() (*human.Human, error) {
 	if err != nil {
 		return nil, err
 	}
-	r, err := religion.NewReligion(c)
+	r, err := religion.New(c)
 	if err != nil {
 		return nil, err
 	}

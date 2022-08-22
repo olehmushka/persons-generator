@@ -26,6 +26,8 @@ type GetCultureByIDResponse struct {
 	Data *Culture `json:"data"`
 }
 
+type PostCreateReligionsResponse struct{}
+
 type Culture struct {
 	ID              uuid.UUID     `json:"id"`
 	Name            string        `json:"name"`

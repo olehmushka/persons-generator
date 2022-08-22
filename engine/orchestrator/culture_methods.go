@@ -1,6 +1,7 @@
 package orchestrator
 
 import (
+	"errors"
 	"fmt"
 
 	"persons_generator/engine/entities/culture"
@@ -25,4 +26,12 @@ func (o *Orchestrator) SearchCultures(search string) ([]*culture.Culture, error)
 	}
 
 	return culture.GetCulturesByName(search, culture.AllCultures), nil
+}
+
+func (o *Orchestrator) HybridCultures(cultures []*culture.Culture) (*culture.Culture, error) {
+	if len(cultures) == 0 {
+		return nil, errors.New("base cultures can not be empty")
+	}
+
+	return culture.NewWithProto(cultures)
 }
