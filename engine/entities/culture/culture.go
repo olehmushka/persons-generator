@@ -1,16 +1,23 @@
 package culture
 
 import (
-	"errors"
+	"encoding/json"
 	"fmt"
+	"net/http"
+	"strings"
 
+	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/tools"
+	we "persons_generator/core/wrapped_error"
 	g "persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/language"
 	pm "persons_generator/engine/probability_machine"
+
+	"github.com/google/uuid"
 )
 
 type Culture struct {
+	ID    uuid.UUID
 	Proto []*Culture
 	Name  string
 
@@ -21,18 +28,20 @@ type Culture struct {
 	Traditions      []*Tradition
 	GenderDominance *g.Dominance
 	MartialCustom   g.Acceptance
+
+	storageFolderName string
 }
 
-func New(preferred *Preference) (*Culture, error) {
+func New(cfg Config, preferred *Preference) (*Culture, error) {
 	proto, err := getProtoCultures(preferred)
 	if err != nil {
 		return nil, err
 	}
 	if len(proto) == 0 {
-		return nil, errors.New("proto cultures can not be zero")
+		return nil, we.New(http.StatusInternalServerError, nil, "proto cultures can not be zero")
 	}
 
-	return NewWithProto(proto)
+	return NewWithProto(cfg, proto)
 }
 
 func getProtoCultures(preferred *Preference) ([]*Culture, error) {
@@ -46,16 +55,16 @@ func getProtoCultures(preferred *Preference) ([]*Culture, error) {
 	case HybridPrefKind:
 		return getProtoCulturesForHybridKind(preferred)
 	default:
-		return nil, fmt.Errorf("unexpected preference kind (kind_name=%s)", preferred.Kind)
+		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("unexpected preference kind (kind_name=%s)", preferred.Kind))
 	}
 }
 
 func getProtoCulturesForStrictKind(preferred *Preference) ([]*Culture, error) {
 	if preferred == nil {
-		return nil, errors.New("preferred can not be nil")
+		return nil, we.New(http.StatusInternalServerError, nil, "preferred can not be nil")
 	}
 	if preferred.Kind == StrictPrefKind && len(preferred.Names) != preferred.Amount {
-		return nil, fmt.Errorf("for strict kind of preference number preferred names (%d) can not be not equal to amount (%d)", len(preferred.Names), preferred.Amount)
+		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("for strict kind of preference number preferred names (%d) can not be not equal to amount (%d)", len(preferred.Names), preferred.Amount))
 	}
 
 	out, err := GetProtoCulturesByPreferred(preferred.Names)
@@ -68,7 +77,7 @@ func getProtoCulturesForStrictKind(preferred *Preference) ([]*Culture, error) {
 
 func getProtoCulturesForHybridKind(preferred *Preference) ([]*Culture, error) {
 	if preferred == nil {
-		return nil, errors.New("preferred can not be nil")
+		return nil, we.New(http.StatusInternalServerError, nil, "preferred can not be nil")
 	}
 
 	out, err := GetProtoCulturesByPreferred(preferred.Names)
@@ -79,7 +88,11 @@ func getProtoCulturesForHybridKind(preferred *Preference) ([]*Culture, error) {
 		return out, nil
 	}
 	for i := 0; i < 20; i++ {
-		out = append(out, tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, preferred.Amount-len(out))...)
+		cs, err := tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, preferred.Amount-len(out))
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, cs...)
 		out = UniqueCultures(out)
 		if len(out) == preferred.Amount {
 			break
@@ -89,34 +102,51 @@ func getProtoCulturesForHybridKind(preferred *Preference) ([]*Culture, error) {
 	return out, nil
 }
 
-func NewWithProto(proto []*Culture) (*Culture, error) {
-	c := &Culture{Proto: proto}
+func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
+	c := &Culture{
+		ID:    uuid.New(),
+		Proto: proto,
+
+		storageFolderName: cfg.StorageFolderName,
+	}
 	c.GenderDominance = getGenderDominance(c.Proto)
 	c.MartialCustom = getMartialCustom(c.Proto)
-	c.Language = language.New(getLanguageNamesFromProto(c.Proto))
+	l, err := language.New(getLanguageNamesFromProto(c.Proto))
+	if err != nil {
+		return nil, err
+	}
+	c.Language = l
 	name, err := c.Language.GetCultureName()
 	if err != nil {
 		return nil, err
 	}
 	c.Name = name
 	c.Ethos = getEthos(c.Proto)
-	c.Traditions = getTraditions(c.Proto)
-	c.Root = getRoot(c.Proto)
+	t, err := getTraditions(c.Proto)
+	if err != nil {
+		return nil, err
+	}
+	c.Traditions = t
+	r, err := getRoot(c.Proto)
+	if err != nil {
+		return nil, err
+	}
+	c.Root = r
 
 	return c, nil
 }
 
-func NewCultures(amount int, preferred []*Preference) ([]*Culture, error) {
+func NewMany(cfg Config, amount int, preferred []*Preference) ([]*Culture, error) {
 	cultures := make([]*Culture, amount)
 	if amount < len(preferred) {
-		return nil, fmt.Errorf("amount (%d) can not be less than length of preferred (length=%d)", amount, len(preferred))
+		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("amount (%d) can not be less than length of preferred (length=%d)", amount, len(preferred)))
 	}
 	for i := range cultures {
 		var p *Preference
 		if len(preferred) > i {
 			p = preferred[i]
 		}
-		c, err := New(p)
+		c, err := New(cfg, p)
 		if err != nil {
 			return nil, err
 		}
@@ -169,7 +199,7 @@ func GetProtoCulturesByPreferred(names []string) ([]*Culture, error) {
 	for i := range out {
 		found := GetProtoCultureByPreferredName(names[i])
 		if found == nil {
-			return nil, fmt.Errorf("can not found proto culture by name (name=%s)", names[i])
+			return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("can not found proto culture by name (name=%s)", names[i]))
 		}
 		out[i] = found
 	}
@@ -207,14 +237,19 @@ func UniqueCultures(cultures []*Culture) []*Culture {
 
 func GetRandomProtoCultures(min, max int) ([]*Culture, error) {
 	if max > len(AllCultures) {
-		return nil, fmt.Errorf("number of all cultures can not be less than max for random generation (%d)", max)
+		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("number of all cultures can not be less than max for random generation (%d)", max))
 	}
-	var (
-		amount = pm.RandIntInRange(min, max)
-		out    = make([]*Culture, 0, amount)
-	)
+	amount, err := pm.RandIntInRange(min, max)
+	if err != nil {
+		return nil, err
+	}
+	var out = make([]*Culture, 0, amount)
 	for i := 0; i < 20; i++ {
-		out = append(out, tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, amount-len(out))...)
+		cs, err := tools.RandomValuesOfSlice(pm.RandFloat64, AllCultures, amount-len(out))
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, cs...)
 		out = UniqueCultures(out)
 		if len(out) == amount {
 			break
@@ -251,4 +286,20 @@ func MapCultureNames(cultures []*Culture) []string {
 	}
 
 	return out
+}
+
+func (c *Culture) Save() error {
+	if c == nil {
+		return we.New(http.StatusInternalServerError, nil, "can not save nil culture")
+	}
+	fmt.Printf("B\n%s\n\n", string(c.ID.String()))
+	b, err := json.MarshalIndent(c, "", " ")
+	if err != nil {
+		return err
+	}
+	fmt.Printf("B\n%s\n\n", string(b))
+
+	return js.
+		New(js.Config{StorageFolderName: c.storageFolderName}).
+		Store(strings.Join([]string{"culture", c.ID.String()}, "_")+".json", b)
 }

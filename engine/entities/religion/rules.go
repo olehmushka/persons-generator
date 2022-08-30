@@ -8,15 +8,19 @@ type Rules struct {
 	Rules []*trait
 }
 
-func (t *Theology) generateRules() *Rules {
+func (t *Theology) generateRules() (*Rules, error) {
 	rs := &Rules{religion: t.religion}
-	rs.Rules = generateTraits(rs.religion, rs.getAllRules(), generateTraitsOpts{
+	rules, err := generateTraits(rs.religion, rs.getAllRules(), generateTraitsOpts{
 		Label: "Rules.generateRules",
 		Min:   1,
 		Max:   5,
 	})
+	if err != nil {
+		return nil, err
+	}
+	rs.Rules = rules
 
-	return rs
+	return rs, nil
 }
 
 func (rs *Rules) Print() {
@@ -33,42 +37,42 @@ func (rs *Rules) Print() {
 func (rs *Rules) getAllRules() []*trait {
 	return []*trait{
 		{
-			Name: "PrayWithFrequency",
+			Name: "pray_with_frequency",
 			_religionMetadata: &religionMetadata{
 				Lawful:  0.5,
 				Ascetic: 0.25,
 				Simple:  0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "TaxToSupportPoor",
+			Name: "tax_to_support_poor",
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 0.25,
 				Altruistic:  1,
 				Lawful:      0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "Tithe",
+			Name: "tithe",
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 1,
 				Lawful:      0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "DressCode",
+			Name: "dress_code",
 			_religionMetadata: &religionMetadata{
 				Lawful:          0.5,
 				Ascetic:         0.5,
@@ -76,51 +80,51 @@ func (rs *Rules) getAllRules() []*trait {
 				Collectivistic:  0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "BeHumble",
+			Name: "be_humble",
 			_religionMetadata: &religionMetadata{
 				Altruistic: 1,
 				Simple:     1,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "BeHonest",
+			Name: "be_honest",
 			_religionMetadata: &religionMetadata{
 				Altruistic: 0.5,
 				Simple:     1,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "LearnKeyScriptures",
+			Name: "learn_key_scriptures",
 			_religionMetadata: &religionMetadata{
 				Educational:     0.75,
 				Authoritaristic: 0.25,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "TaxNonbelievers",
+			Name: "tax_nonbelievers",
 			_religionMetadata: &religionMetadata{
 				Plutocratic:     0.5,
 				Authoritaristic: 0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},

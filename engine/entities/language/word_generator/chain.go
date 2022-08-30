@@ -2,10 +2,12 @@ package word_generator
 
 import (
 	"fmt"
+	"net/http"
 	"regexp"
 	"strings"
 
 	"persons_generator/core/tools"
+	we "persons_generator/core/wrapped_error"
 )
 
 type Chain map[string][]string
@@ -24,13 +26,13 @@ func AppendByBase(chains map[string]Chain, base string, el Chain) map[string]Cha
 	return chains
 }
 
-func CalculateChain(nameBases []string) Chain {
+func CalculateChain(nameBases []string) (Chain, error) {
 	chain := make(Chain)
 	for _, n := range nameBases {
 		name := strings.ToLower(strings.TrimSpace(n))
 		isMatch, err := regexp.MatchString("[^\u0000-\u007f]", name)
 		if err != nil {
-			panic(fmt.Sprintf("[CalculateChain] can not match basic chars and en rules can be applied (err = %+v)", err))
+			return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("[CalculateChain] can not match basic chars and en rules can be applied (err = %+v)", err))
 		}
 		basic := !isMatch // basic chars and English rules can be applied
 
@@ -104,21 +106,25 @@ func CalculateChain(nameBases []string) Chain {
 		}
 	}
 
-	return chain
+	return chain, nil
 }
 
-func UpdateChain(base string, nameBases map[string][]string, chains map[string]Chain) map[string]Chain {
+func UpdateChain(base string, nameBases map[string][]string, chains map[string]Chain) (map[string]Chain, error) {
 	if chain, ok := nameBases[base]; ok {
 		if len(chain) == 0 {
-			panic(fmt.Sprintf("word base is empty (base=%s)", base))
+			return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("word base is empty (base=%s)", base))
 		}
-		chains = AppendByBase(chains, base, CalculateChain(chain))
-		return chains
+		c, err := CalculateChain(chain)
+		if err != nil {
+			return nil, err
+		}
+		chains = AppendByBase(chains, base, c)
+		return chains, nil
 	}
 
 	chains = AppendByBase(chains, base, nil)
 
-	return chains
+	return chains, nil
 }
 
 func mergeChains(c1, c2 Chain) Chain {

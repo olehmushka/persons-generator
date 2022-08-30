@@ -4,25 +4,34 @@ import (
 	"math"
 )
 
-func RandomValueOfSlice[T interface{}](randSrc func(float64) float64, sl []T) T {
+func RandomValueOfSlice[T interface{}](randSrc func(float64) (float64, error), sl []T) (T, error) {
+	var zero T
 	if len(sl) == 0 {
-		var zero T
-		return zero
+		return zero, nil
 	}
-	return sl[int(math.Floor(randSrc(1)*float64(len(sl))))]
+	r, err := randSrc(1)
+	if err != nil {
+		return zero, err
+	}
+
+	return sl[int(math.Floor(r*float64(len(sl))))], nil
 }
 
-func RandomValuesOfSlice[T interface{}](randSrc func(float64) float64, sl []T, amount int) []T {
+func RandomValuesOfSlice[T interface{}](randSrc func(float64) (float64, error), sl []T, amount int) ([]T, error) {
 	if amount == 0 {
-		return []T{}
+		return []T{}, nil
 	}
 	if len(sl) <= amount {
-		return sl
+		return sl, nil
 	}
 
 	preOut := make(map[int]T)
 	for {
-		index := int(math.Floor(randSrc(1) * float64(len(sl))))
+		r, err := randSrc(1)
+		if err != nil {
+			return nil, err
+		}
+		index := int(math.Floor(r * float64(len(sl))))
 		preOut[index] = sl[index]
 		if len(preOut) == amount {
 			break
@@ -34,5 +43,5 @@ func RandomValuesOfSlice[T interface{}](randSrc func(float64) float64, sl []T, a
 		out = append(out, v)
 	}
 
-	return out
+	return out, nil
 }

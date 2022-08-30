@@ -5,7 +5,7 @@ default: run
 install:
 	go mod download
 
-just-run:
+just_run:
 	go run main.go
 
 run: install just-run
@@ -19,13 +19,13 @@ run_generate_religion:
 test:
 	go test ./...
 
-test-force:
+test_force:
 	go clean -testcache && go test ./...
 
-test-force-v:
+test_force_v:
 	go clean -testcache && go test -v ./...
 
-test-coverage:
+test_coverage:
 	go test -cover ./...
 
 fmt:

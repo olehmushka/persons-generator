@@ -5,9 +5,9 @@ import (
 	pm "persons_generator/engine/probability_machine"
 )
 
-func GetReligionCultures(amount int, cultures []*Culture) []*Culture {
+func GetReligionCultures(amount int, cultures []*Culture) ([]*Culture, error) {
 	if len(cultures) == 0 {
-		return []*Culture{}
+		return []*Culture{}, nil
 	}
 	out := make([]*Culture, amount)
 	if amount >= len(cultures) {
@@ -16,9 +16,13 @@ func GetReligionCultures(amount int, cultures []*Culture) []*Culture {
 				out[i] = cultures[i]
 				continue
 			}
-			out[i] = tools.RandomValueOfSlice(pm.RandFloat64, cultures)
+			c, err := tools.RandomValueOfSlice(pm.RandFloat64, cultures)
+			if err != nil {
+				return nil, err
+			}
+			out[i] = c
 		}
-		return out
+		return out, nil
 	}
 
 	shuffledCultures := tools.Shuffle(cultures)
@@ -26,5 +30,5 @@ func GetReligionCultures(amount int, cultures []*Culture) []*Culture {
 		out[i] = shuffledCultures[i]
 	}
 
-	return out
+	return out, nil
 }

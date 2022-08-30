@@ -13,16 +13,40 @@ type Doctrine struct {
 	Afterlife        *Afterlife
 }
 
-func NewDoctrine(r *Religion) *Doctrine {
+func NewDoctrine(r *Religion) (*Doctrine, error) {
 	d := &Doctrine{religion: r}
-	d.HighGoal = d.generateHighGoal()
-	d.Deity = d.generateDeityDoctrine()
-	d.Human = d.generateHumanDoctrine()
-	d.Social = d.generateSocialDoctrine()
-	d.SourceOfMoralLaw = d.generateSourceOfMoralLaw()
-	d.Afterlife = d.generateAfterlife()
+	hg, err := d.generateHighGoal()
+	if err != nil {
+		return nil, err
+	}
+	d.HighGoal = hg
+	deity, err := d.generateDeityDoctrine()
+	if err != nil {
+		return nil, err
+	}
+	d.Deity = deity
+	h, err := d.generateHumanDoctrine()
+	if err != nil {
+		return nil, err
+	}
+	d.Human = h
+	social, err := d.generateSocialDoctrine()
+	if err != nil {
+		return nil, err
+	}
+	d.Social = social
+	sourceOfMoralLaw, err := d.generateSourceOfMoralLaw()
+	if err != nil {
+		return nil, err
+	}
+	d.SourceOfMoralLaw = sourceOfMoralLaw
+	al, err := d.generateAfterlife()
+	if err != nil {
+		return nil, err
+	}
+	d.Afterlife = al
 
-	return d
+	return d, nil
 }
 
 func (d *Doctrine) Print() {

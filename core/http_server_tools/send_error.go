@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	cont "persons_generator/core/context"
+	"persons_generator/core/wrapped_error"
 )
 
 func SendErrorResp(ctx context.Context, w http.ResponseWriter, err error) {
@@ -13,9 +14,11 @@ func SendErrorResp(ctx context.Context, w http.ResponseWriter, err error) {
 		return
 	}
 
+	wErr := wrapped_error.Cast(err)
 	resp := ErrorResp{
-		Error:   err.Error(),
-		TraceID: cont.GetTraceID(ctx),
+		Error:        wErr.Err.Error(),
+		ErrorMessage: wErr.Msg,
+		TraceID:      cont.GetTraceID(ctx),
 	}
 	respJSON, err := json.Marshal(resp)
 	if err != nil {
@@ -25,5 +28,6 @@ func SendErrorResp(ctx context.Context, w http.ResponseWriter, err error) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("X-Trace-ID", cont.GetTraceID(ctx))
+	w.WriteHeader(wErr.StatusCode)
 	_, _ = w.Write(respJSON)
 }

@@ -12,11 +12,15 @@ type Dominance struct {
 	Influence influence.Influence
 }
 
-func NewDominance() *Dominance {
-	return &Dominance{
-		Dominance: generateDominance(),
-		Influence: generateInfluence(),
+func NewDominance() (*Dominance, error) {
+	d, err := generateDominance()
+	if err != nil {
+		return nil, err
 	}
+	return &Dominance{
+		Dominance: d,
+		Influence: generateInfluence(),
+	}, nil
 }
 
 func NewDominanceWithParams(d GenderDominance, i influence.Influence) *Dominance {
@@ -61,14 +65,21 @@ func (gd *Dominance) GetCoef() float64 {
 	return 1
 }
 
-func generateDominance() GenderDominance {
-	var (
-		maleDominance     = pm.RandFloat64InRange(0.25, 0.35)
-		equalityDominance = pm.RandFloat64InRange(0.2, 0.3)
-		femaleDominance   = pm.RandFloat64InRange(0.15, 0.25)
-	)
+func generateDominance() (GenderDominance, error) {
+	maleDominance, err := pm.RandFloat64InRange(0.25, 0.35)
+	if err != nil {
+		return "", err
+	}
+	equalityDominance, err := pm.RandFloat64InRange(0.2, 0.3)
+	if err != nil {
+		return "", err
+	}
+	femaleDominance, err := pm.RandFloat64InRange(0.15, 0.25)
+	if err != nil {
+		return "", err
+	}
 
-	return GetGenderDominanceByProbability(maleDominance, equalityDominance, femaleDominance)
+	return GetGenderDominanceByProbability(maleDominance, equalityDominance, femaleDominance), nil
 }
 
 func generateInfluence() influence.Influence {

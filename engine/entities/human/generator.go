@@ -8,16 +8,19 @@ import (
 	"persons_generator/engine/entities/religion"
 )
 
-func GenerateHuman() (*human.Human, error) {
-	c, err := culture.New(&culture.Preference{Names: []string{"ruthenian"}})
+func GenerateHuman(cfg Config) (*human.Human, error) {
+	c, err := culture.New(culture.Config{StorageFolderName: cfg.StorageFolderName}, &culture.Preference{Names: []string{"ruthenian"}})
 	if err != nil {
 		return nil, err
 	}
-	r, err := religion.New(c)
+	r, err := religion.New(religion.Config{StorageFolderName: cfg.StorageFolderName}, c)
 	if err != nil {
 		return nil, err
 	}
-	sex := g.GetRandomSex()
+	sex, err := g.GetRandomSex()
+	if err != nil {
+		return nil, err
+	}
 	h, err := human.NewHuman(c, r, sex, presets.SlavicHumanPreset)
 	if err != nil {
 		return nil, err

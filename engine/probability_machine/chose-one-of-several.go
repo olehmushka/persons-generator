@@ -43,7 +43,7 @@ func GetRandomFromSeveral[T string](values map[T]float64) T {
 		tempValues = make(map[T]float64)
 
 		for value, prob := range iterValues {
-			if GetRandomBool(prob) {
+			if r, _ := GetRandomBool(prob); r {
 				tempValues[value] = prob
 			}
 		}

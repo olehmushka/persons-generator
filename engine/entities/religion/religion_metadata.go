@@ -186,106 +186,222 @@ func (rm *religionMetadata) IsComplicated() bool {
 	return rm.Complicated >= 2
 }
 
-func (r *Religion) generateMetadata() *religionMetadata {
+func (r *Religion) generateMetadata() (*religionMetadata, error) {
 	rm := &religionMetadata{}
 	switch {
 	case r.Type.IsMonotheism():
-		rm.Lawful += pm.RandFloat64InRange(0.01, 0.1)
-		rm.Authoritaristic += pm.RandFloat64InRange(0.01, 0.05)
+		pLawful, err := pm.RandFloat64InRange(0.01, 0.1)
+		if err != nil {
+			return nil, err
+		}
+		rm.Lawful += pLawful
+		pAuthoritaristic, err := pm.RandFloat64InRange(0.01, 0.05)
+		if err != nil {
+			return nil, err
+		}
+		rm.Authoritaristic += pAuthoritaristic
 	case r.Type.IsPolytheism():
-		rm.Naturalistic += pm.RandFloat64InRange(0.01, 0.25)
-		rm.Liberal += pm.RandFloat64InRange(0.01, 0.05)
-		rm.Collectivistic += pm.RandFloat64InRange(0.01, 0.05)
+		pNaturalistic, err := pm.RandFloat64InRange(0.01, 0.25)
+		if err != nil {
+			return nil, err
+		}
+		rm.Naturalistic += pNaturalistic
+		pLiberal, err := pm.RandFloat64InRange(0.01, 0.05)
+		if err != nil {
+			return nil, err
+		}
+		rm.Liberal += pLiberal
+		pCollectivistic, err := pm.RandFloat64InRange(0.01, 0.05)
+		if err != nil {
+			return nil, err
+		}
+		rm.Collectivistic += pCollectivistic
 	case r.Type.IsDeityDualism():
 	case r.Type.IsDeism():
-		rm.Naturalistic += pm.RandFloat64InRange(0.01, 0.25)
-		rm.Liberal += pm.RandFloat64InRange(0.01, 0.075)
+		pNaturalistic, err := pm.RandFloat64InRange(0.01, 0.25)
+		if err != nil {
+			return nil, err
+		}
+		rm.Naturalistic += pNaturalistic
+		pLiberal, err := pm.RandFloat64InRange(0.01, 0.075)
+		if err != nil {
+			return nil, err
+		}
+		rm.Liberal += pLiberal
 	case r.Type.IsAtheism():
-		rm.Liberal += pm.RandFloat64InRange(0.01, 0.1)
+		pLiberal, err := pm.RandFloat64InRange(0.01, 0.1)
+		if err != nil {
+			return nil, err
+		}
+		rm.Liberal += pLiberal
 	}
 
-	return rm
+	return rm, nil
 }
 
-func updateReligionMetadata(r *Religion, rm, u religionMetadata, coef float64) *religionMetadata {
+func updateReligionMetadata(r *Religion, rm, u religionMetadata, coef float64) (*religionMetadata, error) {
 	if u.Naturalistic > 0 {
-		rm.Naturalistic = prepareMetadataValueForUpdate(r, rm.Naturalistic+u.Naturalistic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Naturalistic+u.Naturalistic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Naturalistic = p
 	}
 
 	if u.SexualActive > 0 {
-		rm.SexualActive = prepareMetadataValueForUpdate(r, rm.SexualActive+u.SexualActive*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.SexualActive+u.SexualActive*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.SexualActive = p
 	}
 	if u.SexualStrictness > 0 {
-		rm.SexualStrictness = prepareMetadataValueForUpdate(r, rm.SexualStrictness+u.SexualStrictness*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.SexualStrictness+u.SexualStrictness*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.SexualStrictness = p
 	}
 
 	if u.Chthonic > 0 {
-		rm.Chthonic = prepareMetadataValueForUpdate(r, rm.Chthonic+u.Chthonic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Chthonic+u.Chthonic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Chthonic = p
 	}
 	if u.Plutocratic > 0 {
-		rm.Plutocratic = prepareMetadataValueForUpdate(r, rm.Plutocratic+u.Plutocratic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Plutocratic+u.Plutocratic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Plutocratic = p
 	}
 	if u.Altruistic > 0 {
-		rm.Altruistic = prepareMetadataValueForUpdate(r, rm.Altruistic+u.Altruistic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Altruistic+u.Altruistic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Altruistic = p
 	}
 	if u.Lawful > 0 {
-		rm.Lawful = prepareMetadataValueForUpdate(r, rm.Lawful+u.Lawful*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Lawful+u.Lawful*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Lawful = p
 	}
 	if u.Educational > 0 {
-		rm.Educational = prepareMetadataValueForUpdate(r, rm.Educational+u.Educational*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Educational+u.Educational*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Educational = p
 	}
 
 	if u.Aggressive > 0 {
-		rm.Aggressive = prepareMetadataValueForUpdate(r, rm.Aggressive+u.Aggressive*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Aggressive+u.Aggressive*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Aggressive = p
 	}
 	if u.Pacifistic > 0 {
-		rm.Pacifistic = prepareMetadataValueForUpdate(r, rm.Pacifistic+u.Pacifistic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Pacifistic+u.Pacifistic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Pacifistic = p
 	}
 
 	if u.Hedonistic > 0 {
-		rm.Hedonistic = prepareMetadataValueForUpdate(r, rm.Hedonistic+u.Hedonistic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Hedonistic+u.Hedonistic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Hedonistic = p
 	}
 	if u.Ascetic > 0 {
-		rm.Ascetic = prepareMetadataValueForUpdate(r, rm.Ascetic+u.Ascetic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Ascetic+u.Ascetic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Ascetic = p
 	}
 
 	if u.Authoritaristic > 0 {
-		rm.Authoritaristic = prepareMetadataValueForUpdate(r, rm.Authoritaristic+u.Authoritaristic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Authoritaristic+u.Authoritaristic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Authoritaristic = p
 	}
 	if u.Liberal > 0 {
-		rm.Liberal = prepareMetadataValueForUpdate(r, rm.Liberal+u.Liberal*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Liberal+u.Liberal*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Liberal = p
 	}
 
 	if u.Individualistic > 0 {
-		rm.Individualistic = prepareMetadataValueForUpdate(r, rm.Individualistic+u.Individualistic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Individualistic+u.Individualistic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Individualistic = p
 	}
 	if u.Collectivistic > 0 {
-		rm.Collectivistic = prepareMetadataValueForUpdate(r, rm.Collectivistic+u.Collectivistic*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Collectivistic+u.Collectivistic*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Collectivistic = p
 	}
 
 	if u.Simple > 0 {
-		rm.Simple = prepareMetadataValueForUpdate(r, rm.Simple+u.Simple*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Simple+u.Simple*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Simple = p
 	}
 	if u.Complicated > 0 {
-		rm.Complicated = prepareMetadataValueForUpdate(r, rm.Complicated+u.Complicated*coef)
+		p, err := prepareMetadataValueForUpdate(r, rm.Complicated+u.Complicated*coef)
+		if err != nil {
+			return nil, err
+		}
+		rm.Complicated = p
 	}
 
-	return &rm
+	return &rm, nil
 }
 
-func UpdateReligionMetadata(r *Religion, rm, u religionMetadata) *religionMetadata {
+func UpdateReligionMetadata(r *Religion, rm, u religionMetadata) (*religionMetadata, error) {
 	return updateReligionMetadata(r, rm, u, 1)
 }
 
-func UpdateReligionMetadataWithAcceptance(r *Religion, rm, u religionMetadata, a Acceptance) *religionMetadata {
+func UpdateReligionMetadataWithAcceptance(r *Religion, rm, u religionMetadata, a Acceptance) (*religionMetadata, error) {
 	var coef float64
 	switch a {
 	case Accepted:
-		coef = pm.RandFloat64InRange(0.3, 0.5)
+		c, err := pm.RandFloat64InRange(0.3, 0.5)
+		if err != nil {
+			return nil, err
+		}
+		coef = c
 	case Shunned:
-		coef = -pm.RandFloat64InRange(0.05, 0.25)
+		c, err := pm.RandFloat64InRange(0.05, 0.25)
+		if err != nil {
+			return nil, err
+		}
+		coef = -c
 	case Criminal:
-		coef = -pm.RandFloat64InRange(0.3, 0.5)
+		c, err := pm.RandFloat64InRange(0.3, 0.5)
+		if err != nil {
+			return nil, err
+		}
+		coef = -c
 	}
 	return updateReligionMetadata(r, rm, u, coef)
 }
@@ -295,110 +411,193 @@ type CalcProbOpts struct {
 	Label string
 }
 
-func getRMProbability(coef float64, isMatchSame, isMatchContrary bool) float64 {
-	var (
-		sameCoef     = pm.RandFloat64InRange(0.4, 0.8)
-		contraryCoef = pm.RandFloat64InRange(0.3, 0.7)
-		newCoef      = pm.RandFloat64InRange(0.5, 1)
-	)
+func getRMProbability(coef float64, isMatchSame, isMatchContrary bool) (float64, error) {
+	sameCoef, err := pm.RandFloat64InRange(0.4, 0.8)
+	if err != nil {
+		return 0, err
+	}
+	contraryCoef, err := pm.RandFloat64InRange(0.3, 0.7)
+	if err != nil {
+		return 0, err
+	}
+	newCoef, err := pm.RandFloat64InRange(0.5, 1)
+	if err != nil {
+		return 0, err
+	}
+
 	if isMatchSame && isMatchContrary {
-		return coef * pm.PrepareProbability(sameCoef-contraryCoef)
+		return coef * pm.PrepareProbability(sameCoef-contraryCoef), nil
 	}
 	if isMatchSame && !isMatchContrary {
-		return coef * sameCoef
+		return coef * sameCoef, nil
 	}
 	if !isMatchSame && !isMatchContrary {
-		return coef * sameCoef * newCoef
+		return coef * sameCoef * newCoef, nil
 	}
 
-	return 0
+	return 0, nil
 }
 
-func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *religionMetadata, opts CalcProbOpts) bool {
+func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *religionMetadata, opts CalcProbOpts) (bool, error) {
 	baseCoef = pm.PrepareCoef(baseCoef)
 	var (
 		primaryProbability float64
-		randCoef           = pm.RandFloat64InRange(0.9, 1.1)
 		ideasCount         int
 	)
+	randCoef, err := pm.RandFloat64InRange(0.9, 1.1)
+	if err != nil {
+		return false, err
+	}
 
 	if u.Naturalistic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsNaturalistic(), false)
+		p, err := getRMProbability(randCoef, r.metadata.IsNaturalistic(), false)
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 
 	if u.SexualActive > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsSexualActive(), r.metadata.IsSexualStrictness())
+		p, err := getRMProbability(randCoef, r.metadata.IsSexualActive(), r.metadata.IsSexualStrictness())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.SexualStrictness > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsSexualStrictness(), r.metadata.IsSexualActive())
+		p, err := getRMProbability(randCoef, r.metadata.IsSexualStrictness(), r.metadata.IsSexualActive())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 
 	if u.Chthonic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsChthonic(), false)
+		p, err := getRMProbability(randCoef, r.metadata.IsChthonic(), false)
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.Plutocratic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsPlutocratic(), r.metadata.IsAltruistic())
+		p, err := getRMProbability(randCoef, r.metadata.IsPlutocratic(), r.metadata.IsAltruistic())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.Altruistic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsAltruistic(), r.metadata.IsPlutocratic())
+		p, err := getRMProbability(randCoef, r.metadata.IsAltruistic(), r.metadata.IsPlutocratic())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.Lawful > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsLawful(), false)
+		p, err := getRMProbability(randCoef, r.metadata.IsLawful(), false)
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.Educational > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsEducational(), false)
+		p, err := getRMProbability(randCoef, r.metadata.IsEducational(), false)
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 
 	if u.Aggressive > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsAggressive(), r.metadata.IsPacifistic())
+		p, err := getRMProbability(randCoef, r.metadata.IsAggressive(), r.metadata.IsPacifistic())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.Pacifistic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsPacifistic(), r.metadata.IsAggressive())
+		p, err := getRMProbability(randCoef, r.metadata.IsPacifistic(), r.metadata.IsAggressive())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 
 	if u.Hedonistic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsHedonistic(), r.metadata.IsAscetic())
+		p, err := getRMProbability(randCoef, r.metadata.IsHedonistic(), r.metadata.IsAscetic())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsAscetic(), r.metadata.IsHedonistic())
+		p, err := getRMProbability(randCoef, r.metadata.IsAscetic(), r.metadata.IsHedonistic())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 
 	if u.Authoritaristic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsAuthoritaristic(), r.metadata.IsLiberal())
+		p, err := getRMProbability(randCoef, r.metadata.IsAuthoritaristic(), r.metadata.IsLiberal())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsLiberal(), r.metadata.IsAuthoritaristic())
+		p, err := getRMProbability(randCoef, r.metadata.IsLiberal(), r.metadata.IsAuthoritaristic())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 
 	if u.Individualistic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsIndividualistic(), r.metadata.IsCollectivistic())
+		p, err := getRMProbability(randCoef, r.metadata.IsIndividualistic(), r.metadata.IsCollectivistic())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsCollectivistic(), r.metadata.IsIndividualistic())
+		p, err := getRMProbability(randCoef, r.metadata.IsCollectivistic(), r.metadata.IsIndividualistic())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 
 	if u.Simple > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsSimple(), r.metadata.IsComplicated())
+		p, err := getRMProbability(randCoef, r.metadata.IsSimple(), r.metadata.IsComplicated())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		primaryProbability += getRMProbability(randCoef, r.metadata.IsComplicated(), r.metadata.IsSimple())
+		p, err := getRMProbability(randCoef, r.metadata.IsComplicated(), r.metadata.IsSimple())
+		if err != nil {
+			return false, err
+		}
+		primaryProbability += p
 		ideasCount++
 	}
 
@@ -414,84 +613,115 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	return pm.GetRandomBool(pm.PrepareProbability(probability))
 }
 
-func getRMAcceptanceProbability(coef float64, isMatchSame, isMatchContrary bool) (float64, float64, float64) {
-	var (
-		sameCoef     = pm.RandFloat64InRange(0.4, 0.8)
-		contraryCoef = pm.RandFloat64InRange(0.3, 0.7)
-		newCoef      = pm.RandFloat64InRange(0.5, 1)
+func getRMAcceptanceProbability(coef float64, isMatchSame, isMatchContrary bool) (float64, float64, float64, error) {
+	sameCoef, err := pm.RandFloat64InRange(0.4, 0.8)
+	if err != nil {
+		return 0, 0, 0, err
+	}
+	contraryCoef, err := pm.RandFloat64InRange(0.3, 0.7)
+	if err != nil {
+		return 0, 0, 0, err
+	}
+	newCoef, err := pm.RandFloat64InRange(0.5, 1)
+	if err != nil {
+		return 0, 0, 0, err
+	}
 
-		newProbability = coef * sameCoef * newCoef
-	)
+	newProbability := coef * sameCoef * newCoef
 	if isMatchSame && isMatchContrary {
-		return coef * sameCoef, coef * pm.PrepareProbability(sameCoef-contraryCoef), coef * contraryCoef
+		return coef * sameCoef, coef * pm.PrepareProbability(sameCoef-contraryCoef), coef * contraryCoef, nil
 	}
 	if isMatchSame && !isMatchContrary {
-		return coef * sameCoef, newProbability, 0
+		return coef * sameCoef, newProbability, 0, nil
 	}
 	if !isMatchSame && isMatchContrary {
-		return 0, newProbability, coef * contraryCoef
+		return 0, newProbability, coef * contraryCoef, nil
 	}
 	if !isMatchSame && !isMatchContrary {
-		return newProbability, newProbability, newProbability
+		return newProbability, newProbability, newProbability, nil
 	}
 
-	return 0, 0, 0
+	return 0, 0, 0, nil
 }
 
-func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, criminalBaseCoef float64, r *Religion, u *religionMetadata, opts CalcProbOpts) Acceptance {
+func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, criminalBaseCoef float64, r *Religion, u *religionMetadata, opts CalcProbOpts) (Acceptance, error) {
 	acceptedBaseCoef = pm.PrepareCoef(acceptedBaseCoef)
 	stunnedBaseCoef = pm.PrepareCoef(stunnedBaseCoef)
 	criminalBaseCoef = pm.PrepareCoef(criminalBaseCoef)
 	var (
 		accepted, shunned, criminal float64
-		randCoef                    = pm.RandFloat64InRange(0.9, 1.1)
 		ideasCount                  int
 	)
+	randCoef, err := pm.RandFloat64InRange(0.9, 1.1)
+	if err != nil {
+		return "", err
+	}
 
 	if u.Naturalistic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsNaturalistic(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsNaturalistic(), false)
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.SexualActive > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsSexualActive(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsSexualActive(), false)
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Chthonic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsChthonic(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsChthonic(), false)
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Plutocratic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsPlutocratic(), r.metadata.IsAltruistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsPlutocratic(), r.metadata.IsAltruistic())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Altruistic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsAltruistic(), r.metadata.IsPlutocratic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsAltruistic(), r.metadata.IsPlutocratic())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Lawful > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsLawful(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsLawful(), false)
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Educational > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsEducational(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsEducational(), false)
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
@@ -499,14 +729,20 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Aggressive > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsAggressive(), r.metadata.IsPacifistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsAggressive(), r.metadata.IsPacifistic())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Pacifistic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsPacifistic(), r.metadata.IsAggressive())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsPacifistic(), r.metadata.IsAggressive())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
@@ -514,14 +750,20 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Hedonistic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsHedonistic(), r.metadata.IsAscetic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsHedonistic(), r.metadata.IsAscetic())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsAscetic(), r.metadata.IsHedonistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsAscetic(), r.metadata.IsHedonistic())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
@@ -529,14 +771,20 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Authoritaristic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsAuthoritaristic(), r.metadata.IsLiberal())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsAuthoritaristic(), r.metadata.IsLiberal())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsLiberal(), r.metadata.IsAuthoritaristic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsLiberal(), r.metadata.IsAuthoritaristic())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
@@ -544,14 +792,20 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Individualistic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsIndividualistic(), r.metadata.IsCollectivistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsIndividualistic(), r.metadata.IsCollectivistic())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsCollectivistic(), r.metadata.IsIndividualistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsCollectivistic(), r.metadata.IsIndividualistic())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
@@ -559,14 +813,20 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Simple > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsSimple(), r.metadata.IsComplicated())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsSimple(), r.metadata.IsComplicated())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		acc, shun, crim := getRMAcceptanceProbability(randCoef, r.metadata.IsComplicated(), r.metadata.IsSimple())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsComplicated(), r.metadata.IsSimple())
+		if err != nil {
+			return "", err
+		}
 		accepted += acc
 		shunned += shun
 		criminal += crim
@@ -584,10 +844,10 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		fmt.Printf("\n>>>>>>>>>>\nLabel: %s\naccepted: %f, shunned: %f, criminal: %f\n<<<<<<<<<<<<\n", opts.Label, accepted, shunned, criminal)
 	}
 
-	return getAcceptanceByProbability(accepted, shunned, criminal)
+	return getAcceptanceByProbability(accepted, shunned, criminal), nil
 }
 
-func prepareMetadataValueForUpdate(r *Religion, v float64) float64 {
+func prepareMetadataValueForUpdate(r *Religion, v float64) (float64, error) {
 	var out float64
 	if v > 0 {
 		out = v
@@ -595,16 +855,32 @@ func prepareMetadataValueForUpdate(r *Religion, v float64) float64 {
 
 	switch rel := out / r.M.MaxMetadataValue; {
 	case rel < 0.25:
-		return out * pm.RandFloat64InRange(1, 1.01)
+		p, err := pm.RandFloat64InRange(1, 1.01)
+		if err != nil {
+			return 0, err
+		}
+		return out * p, nil
 	case rel < 0.5:
-		return out * pm.RandFloat64InRange(1, 1.001)
+		p, err := pm.RandFloat64InRange(1, 1.001)
+		if err != nil {
+			return 0, err
+		}
+		return out * p, nil
 	case rel < 0.75:
-		return out
+		return out, nil
 	case rel < 0.9:
-		return out * pm.RandFloat64InRange(0.999, 0.9999)
+		p, err := pm.RandFloat64InRange(0.999, 0.9999)
+		if err != nil {
+			return 0, err
+		}
+		return out * p, nil
 	case rel < 1:
-		return out * pm.RandFloat64InRange(0.98, 0.99)
+		p, err := pm.RandFloat64InRange(0.98, 0.99)
+		if err != nil {
+			return 0, err
+		}
+		return out * p, nil
 	default:
-		return r.M.MaxMetadataValue
+		return r.M.MaxMetadataValue, nil
 	}
 }

@@ -29,19 +29,35 @@ func (al *Afterlife) Print() {
 	}
 }
 
-func (d *Doctrine) generateAfterlife() *Afterlife {
+func (d *Doctrine) generateAfterlife() (*Afterlife, error) {
 	al := &Afterlife{religion: d.religion, doctrine: d}
-	al.IsExists = al.generateIsExistsAfterlife()
+	isExists, err := al.generateIsExistsAfterlife()
+	if err != nil {
+		return nil, err
+	}
+	al.IsExists = isExists
 	if al.IsExists {
-		al.generateAfterlifeContent()
+		if err := al.generateAfterlifeContent(); err != nil {
+			return nil, err
+		}
 	}
 
-	return al
+	return al, nil
 }
 
-func (al *Afterlife) generateAfterlifeContent() {
-	al.Participants = al.generateAfterlifeParticipants()
-	al.Traits = al.generateTraits(0, len(al.getAllAfterlifeTraits()))
+func (al *Afterlife) generateAfterlifeContent() error {
+	ps, err := al.generateAfterlifeParticipants()
+	if err != nil {
+		return err
+	}
+	al.Participants = ps
+	ts, err := al.generateTraits(0, len(al.getAllAfterlifeTraits()))
+	if err != nil {
+		return err
+	}
+	al.Traits = ts
+
+	return nil
 }
 
 func (al *Afterlife) clearAfterlifeContent() {
@@ -49,29 +65,49 @@ func (al *Afterlife) clearAfterlifeContent() {
 	al.Traits = nil
 }
 
-func (al *Afterlife) generateIsExistsAfterlife() bool {
+func (al *Afterlife) generateIsExistsAfterlife() (bool, error) {
 	if al.religion.Type.IsAtheism() {
-		return false
+		return false, nil
 	}
 	if al.religion.HasReincarnation() {
-		return false
+		return false, nil
 	}
 
 	var probability float64
 	switch {
 	case al.religion.Type.IsMonotheism():
-		probability += pm.RandFloat64InRange(0.75, 1)
+		p, err := pm.RandFloat64InRange(0.75, 1)
+		if err != nil {
+			return false, err
+		}
+		probability += p
 	case al.religion.Type.IsPolytheism():
-		probability += pm.RandFloat64InRange(0.3, 1)
+		p, err := pm.RandFloat64InRange(0.3, 1)
+		if err != nil {
+			return false, err
+		}
+		probability += p
 	case al.religion.Type.IsDeityDualism():
-		probability += pm.RandFloat64InRange(0.5, 1)
+		p, err := pm.RandFloat64InRange(0.5, 1)
+		if err != nil {
+			return false, err
+		}
+		probability += p
 	case al.religion.Type.IsDeism():
-		probability += pm.RandFloat64InRange(0.05, 1)
+		p, err := pm.RandFloat64InRange(0.05, 1)
+		if err != nil {
+			return false, err
+		}
+		probability += p
 	}
 
 	for _, trait := range al.doctrine.Human.Nature.Traits {
-		if trait.Name == "HasSoul" {
-			probability += pm.RandFloat64InRange(0.25, 0.75)
+		if trait.Name == "has_soul" {
+			p, err := pm.RandFloat64InRange(0.25, 0.75)
+			if err != nil {
+				return false, err
+			}
+			probability += p
 		}
 	}
 
@@ -88,14 +124,30 @@ type AfterlifeParticipants struct {
 	ForAtheists        AfterlifeOption
 }
 
-func (al *Afterlife) generateAfterlifeParticipants() *AfterlifeParticipants {
+func (al *Afterlife) generateAfterlifeParticipants() (*AfterlifeParticipants, error) {
 	alp := &AfterlifeParticipants{religion: al.religion, afterlife: al}
-	alp.ForTopBelievers = al.generateForTopBelieversAfterlife(alp)
-	alp.ForBelievers = al.generateForBelieversAfterlife(alp)
-	alp.ForUntrueBelievers = al.generateForUntrueBelieversAfterlife(alp)
-	alp.ForAtheists = al.generateForAtheistsAfterlife(alp)
+	topBelivers, err := al.generateForTopBelieversAfterlife(alp)
+	if err != nil {
+		return nil, err
+	}
+	alp.ForTopBelievers = topBelivers
+	believers, err := al.generateForBelieversAfterlife(alp)
+	if err != nil {
+		return nil, err
+	}
+	alp.ForBelievers = believers
+	untrueBelievers, err := al.generateForUntrueBelieversAfterlife(alp)
+	if err != nil {
+		return nil, err
+	}
+	alp.ForUntrueBelievers = untrueBelievers
+	atheists, err := al.generateForAtheistsAfterlife(alp)
+	if err != nil {
+		return nil, err
+	}
+	alp.ForAtheists = atheists
 
-	return alp
+	return alp, nil
 }
 
 func (alp *AfterlifeParticipants) Print() {
@@ -105,22 +157,37 @@ func (alp *AfterlifeParticipants) Print() {
 	fmt.Printf("Afterlife for atheists is %s\n", alp.ForAtheists)
 }
 
-func (al *Afterlife) generateForTopBelieversAfterlife(alp *AfterlifeParticipants) AfterlifeOption {
-	var (
-		good    = pm.RandFloat64InRange(0.5, 1)
-		depends = pm.RandFloat64InRange(0.3, 0.8)
-		bad     = pm.RandFloat64InRange(0, 0.4)
-	)
+func (al *Afterlife) generateForTopBelieversAfterlife(alp *AfterlifeParticipants) (AfterlifeOption, error) {
+	good, err := pm.RandFloat64InRange(0.5, 1)
+	if err != nil {
+		return "", err
+	}
+	depends, err := pm.RandFloat64InRange(0.3, 0.8)
+	if err != nil {
+		return "", err
+	}
+	bad, err := pm.RandFloat64InRange(0, 0.4)
+	if err != nil {
+		return "", err
+	}
 
-	return getAfterlifeOptionByProbability(good, depends, bad)
+	return getAfterlifeOptionByProbability(good, depends, bad), nil
 }
 
-func (al *Afterlife) generateForBelieversAfterlife(alp *AfterlifeParticipants) AfterlifeOption {
-	var (
-		good    = pm.RandFloat64InRange(0.5, 0.9)
-		depends = pm.RandFloat64InRange(0.3, 0.75)
-		bad     = pm.RandFloat64InRange(0, 0.45)
-	)
+func (al *Afterlife) generateForBelieversAfterlife(alp *AfterlifeParticipants) (AfterlifeOption, error) {
+	good, err := pm.RandFloat64InRange(0.5, 0.9)
+	if err != nil {
+		return "", err
+	}
+	depends, err := pm.RandFloat64InRange(0.3, 0.75)
+	if err != nil {
+		return "", err
+	}
+	bad, err := pm.RandFloat64InRange(0, 0.45)
+	if err != nil {
+		return "", err
+	}
+
 	switch {
 	case alp.ForTopBelievers.GetScore() < GoodAfterlife.GetScore():
 		good = 0
@@ -129,21 +196,36 @@ func (al *Afterlife) generateForBelieversAfterlife(alp *AfterlifeParticipants) A
 		depends = 0
 	}
 
-	return getAfterlifeOptionByProbability(good, depends, bad)
+	return getAfterlifeOptionByProbability(good, depends, bad), nil
 }
 
-func (al *Afterlife) generateForUntrueBelieversAfterlife(alp *AfterlifeParticipants) AfterlifeOption {
-	var (
-		good    = pm.RandFloat64InRange(0.1, 0.5)
-		depends = pm.RandFloat64InRange(0.1, 0.6)
-		bad     = pm.RandFloat64InRange(0.1, 0.7)
-	)
+func (al *Afterlife) generateForUntrueBelieversAfterlife(alp *AfterlifeParticipants) (AfterlifeOption, error) {
+	good, err := pm.RandFloat64InRange(0.1, 0.5)
+	if err != nil {
+		return "", err
+	}
+	depends, err := pm.RandFloat64InRange(0.1, 0.6)
+	if err != nil {
+		return "", err
+	}
+	bad, err := pm.RandFloat64InRange(0.1, 0.7)
+	if err != nil {
+		return "", err
+	}
 	if al.religion.Type.IsPolytheism() {
 		if al.religion.Type.IsMonolatryPolytheism() {
-			good += pm.RandFloat64InRange(0.01, 0.1)
+			p, err := pm.RandFloat64InRange(0.01, 0.1)
+			if err != nil {
+				return "", err
+			}
+			good += p
 		}
 		if al.religion.Type.IsOmnismPolytheism() {
-			good += pm.RandFloat64InRange(0.05, 0.2)
+			p, err := pm.RandFloat64InRange(0.05, 0.2)
+			if err != nil {
+				return "", err
+			}
+			good += p
 		}
 	}
 	switch {
@@ -154,18 +236,34 @@ func (al *Afterlife) generateForUntrueBelieversAfterlife(alp *AfterlifeParticipa
 		depends = 0
 	}
 
-	return getAfterlifeOptionByProbability(good, depends, bad)
+	return getAfterlifeOptionByProbability(good, depends, bad), nil
 }
 
-func (al *Afterlife) generateForAtheistsAfterlife(alp *AfterlifeParticipants) AfterlifeOption {
-	var (
-		good    = pm.RandFloat64InRange(0.05, 0.35)
-		depends = pm.RandFloat64InRange(0.05, 0.45)
-		bad     = pm.RandFloat64InRange(0.1, 0.8)
-	)
+func (al *Afterlife) generateForAtheistsAfterlife(alp *AfterlifeParticipants) (AfterlifeOption, error) {
+	good, err := pm.RandFloat64InRange(0.05, 0.35)
+	if err != nil {
+		return "", err
+	}
+	depends, err := pm.RandFloat64InRange(0.05, 0.45)
+	if err != nil {
+		return "", err
+	}
+	bad, err := pm.RandFloat64InRange(0.1, 0.8)
+	if err != nil {
+		return "", err
+	}
+
 	if al.religion.Type.IsDeism() {
-		good += pm.RandFloat64InRange(0.01, 0.1)
-		depends += pm.RandFloat64InRange(0.01, 0.1)
+		goodP, err := pm.RandFloat64InRange(0.01, 0.1)
+		if err != nil {
+			return "", err
+		}
+		good += goodP
+		dependsP, err := pm.RandFloat64InRange(0.01, 0.1)
+		if err != nil {
+			return "", err
+		}
+		depends += dependsP
 	}
 	switch {
 	case alp.ForBelievers.GetScore() < GoodAfterlife.GetScore():
@@ -175,7 +273,7 @@ func (al *Afterlife) generateForAtheistsAfterlife(alp *AfterlifeParticipants) Af
 		depends = 0
 	}
 
-	return getAfterlifeOptionByProbability(good, depends, bad)
+	return getAfterlifeOptionByProbability(good, depends, bad), nil
 }
 
 func (al *Afterlife) updateAfterlife(isExists bool) {
@@ -194,9 +292,9 @@ func (al *Afterlife) updateAfterlife(isExists bool) {
 type AfterlifeOption string
 
 const (
-	GoodAfterlife    AfterlifeOption = "Good"
-	DependsAfterlife AfterlifeOption = "Depends"
-	BadAfterlife     AfterlifeOption = "Bad"
+	GoodAfterlife    AfterlifeOption = "good"
+	DependsAfterlife AfterlifeOption = "depends"
+	BadAfterlife     AfterlifeOption = "bad"
 )
 
 func getAfterlifeOptionByProbability(good, depends, bad float64) AfterlifeOption {
@@ -220,7 +318,7 @@ func (o AfterlifeOption) GetScore() int {
 	}
 }
 
-func (al *Afterlife) generateTraits(min, max int) []*trait {
+func (al *Afterlife) generateTraits(min, max int) ([]*trait, error) {
 	return generateTraits(al.religion, al.getAllAfterlifeTraits(), generateTraitsOpts{
 		Label: "Afterlife.generateTraits",
 		Min:   min,
@@ -231,30 +329,38 @@ func (al *Afterlife) generateTraits(min, max int) []*trait {
 func (al *Afterlife) getAllAfterlifeTraits() []*trait {
 	return []*trait{
 		{
-			Name: "HeavenlyPalace",
+			Name: "heavenly_palace",
 			_religionMetadata: &religionMetadata{
 				Simple: 0.5,
 			},
 			baseCoef: al.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				if r.Type.IsPolytheism() {
-					addCoef += pm.RandFloat64InRange(0.01, 0.1)
+					c, err := pm.RandFloat64InRange(0.01, 0.1)
+					if err != nil {
+						return false, err
+					}
+					addCoef += c
 				}
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "Psychopomp",
+			Name: "psychopomp",
 			_religionMetadata: &religionMetadata{
 				Chthonic: 0.5,
 			},
 			baseCoef: al.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				if r.Type.IsPolytheism() {
-					addCoef += pm.RandFloat64InRange(0.01, 0.1)
+					c, err := pm.RandFloat64InRange(0.01, 0.1)
+					if err != nil {
+						return false, err
+					}
+					addCoef += c
 				}
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})

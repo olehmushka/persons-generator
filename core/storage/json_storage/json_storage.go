@@ -1,22 +1,19 @@
 package json_storage
 
 import (
-	"context"
 	"io/ioutil"
 	"strings"
-
-	"persons_generator/config"
 
 	"go.uber.org/fx"
 )
 
 type storage struct {
-	storageFolder string
+	storageFolderName string
 }
 
-func New(cfg *config.Config) Storage {
+func New(cfg Config) Storage {
 	return &storage{
-		storageFolder: cfg.JSONStorage.StorageFolder,
+		storageFolderName: cfg.StorageFolderName,
 	}
 }
 
@@ -24,14 +21,14 @@ var Module = fx.Options(
 	fx.Provide(New),
 )
 
-func (s *storage) Get(ctx context.Context, filename string) ([]byte, error) {
+func (s *storage) Get(filename string) ([]byte, error) {
 	return ioutil.ReadFile(s.getFullFilename(filename))
 }
 
-func (s *storage) Store(ctx context.Context, filename string, file []byte) error {
+func (s *storage) Store(filename string, file []byte) error {
 	return ioutil.WriteFile(s.getFullFilename(filename), file, 0o644)
 }
 
 func (s *storage) getFullFilename(filename string) string {
-	return strings.Join([]string{s.storageFolder, filename}, "/")
+	return strings.Join([]string{s.storageFolderName, filename}, "/")
 }

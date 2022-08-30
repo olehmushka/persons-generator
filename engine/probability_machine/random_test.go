@@ -36,7 +36,7 @@ func TestGetRandomBool(t *testing.T) {
 	for _, tc := range tCases {
 		t.Run(tc.name, func(tt *testing.T) {
 			for i := 0; i < tc.times; i++ {
-				output := GetRandomBool(tc.input)
+				output, _ := GetRandomBool(tc.input)
 				if output != tc.expectedOutput && !tc.skip {
 					tt.Errorf("unexpected output (expected=%t but actual=%t)", tc.expectedOutput, output)
 				}

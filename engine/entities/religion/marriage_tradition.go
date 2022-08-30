@@ -16,14 +16,30 @@ type MarriageTradition struct {
 	Divorce       Permission
 }
 
-func (t *Theology) generateMarriageTradition(c *culture.Culture) *MarriageTradition {
+func (t *Theology) generateMarriageTradition(c *culture.Culture) (*MarriageTradition, error) {
 	mt := &MarriageTradition{religion: t.religion}
-	mt.Kind = mt.generateKind(c)
-	mt.Bastardry = mt.generateBastardry()
-	mt.Consanguinity = mt.generateConsanguinity()
-	mt.Divorce = mt.generateDivorce()
+	k, err := mt.generateKind(c)
+	if err != nil {
+		return nil, err
+	}
+	mt.Kind = k
+	b, err := mt.generateBastardry()
+	if err != nil {
+		return nil, err
+	}
+	mt.Bastardry = b
+	con, err := mt.generateConsanguinity()
+	if err != nil {
+		return nil, err
+	}
+	mt.Consanguinity = con
+	d, err := mt.generateDivorce()
+	if err != nil {
+		return nil, err
+	}
+	mt.Divorce = d
 
-	return mt
+	return mt, nil
 }
 
 func (mt *MarriageTradition) Print() {
@@ -39,44 +55,87 @@ const (
 	ConsortsAndConcubines MarriageKind = "consorts_and_concubines"
 )
 
-func (mt *MarriageTradition) generateKind(c *culture.Culture) MarriageKind {
+func (mt *MarriageTradition) generateKind(c *culture.Culture) (MarriageKind, error) {
 	if mk := getMarriageKindByCulture(c); mk != "" {
-		return mk
+		return mk, nil
 	}
 
-	var (
-		monogamy              = pm.RandFloat64InRange(0.25, 0.35)
-		consortsAndConcubines = pm.RandFloat64InRange(0.15, 0.25)
-		polygamy              = pm.RandFloat64InRange(0.05, 0.15)
-	)
+	monogamy, err := pm.RandFloat64InRange(0.25, 0.35)
+	if err != nil {
+		return "", err
+	}
+	consortsAndConcubines, err := pm.RandFloat64InRange(0.15, 0.25)
+	if err != nil {
+		return "", err
+	}
+	polygamy, err := pm.RandFloat64InRange(0.05, 0.15)
+	if err != nil {
+		return "", err
+	}
 
 	switch {
 	case mt.religion.GenderDominance.IsMaleDominate():
-		consortsAndConcubines += pm.RandFloat64InRange(0.01, 0.05)
-		polygamy += pm.RandFloat64InRange(0.01, 0.1)
+		consortsAndConcubinesP, err := pm.RandFloat64InRange(0.01, 0.05)
+		if err != nil {
+			return "", err
+		}
+		consortsAndConcubines += consortsAndConcubinesP
+		polygamyP, err := pm.RandFloat64InRange(0.01, 0.1)
+		if err != nil {
+			return "", err
+		}
+		polygamy += polygamyP
 	case mt.religion.GenderDominance.IsEquality():
-		monogamy += pm.RandFloat64InRange(0.01, 0.1)
+		monogamyP, err := pm.RandFloat64InRange(0.01, 0.1)
+		if err != nil {
+			return "", err
+		}
+		monogamy += monogamyP
 	case mt.religion.GenderDominance.IsFemaleDominate():
-		monogamy += pm.RandFloat64InRange(0.1, 0.2)
+		monogamyP, err := pm.RandFloat64InRange(0.1, 0.2)
+		if err != nil {
+			return "", err
+		}
+		monogamy += monogamyP
 	}
 
 	if mt.religion.metadata.IsSexualActive() {
-		consortsAndConcubines += pm.RandFloat64InRange(0.01, 0.1)
-		polygamy += pm.RandFloat64InRange(0.01, 0.1)
+		consortsAndConcubinesP, err := pm.RandFloat64InRange(0.01, 0.1)
+		if err != nil {
+			return "", err
+		}
+		consortsAndConcubines += consortsAndConcubinesP
+		polygamyP, err := pm.RandFloat64InRange(0.01, 0.1)
+		if err != nil {
+			return "", err
+		}
+		polygamy += polygamyP
 	}
 	if mt.religion.metadata.IsSexualStrictness() {
-		monogamy += pm.RandFloat64InRange(0.1, 0.2)
+		monogamyP, err := pm.RandFloat64InRange(0.1, 0.2)
+		if err != nil {
+			return "", err
+		}
+		monogamy += monogamyP
 	}
 	if mt.religion.metadata.IsHedonistic() {
-		consortsAndConcubines += pm.RandFloat64InRange(0.01, 0.05)
-		polygamy += pm.RandFloat64InRange(0.01, 0.05)
+		consortsAndConcubinesP, err := pm.RandFloat64InRange(0.01, 0.05)
+		if err != nil {
+			return "", err
+		}
+		consortsAndConcubines += consortsAndConcubinesP
+		polygamyP, err := pm.RandFloat64InRange(0.01, 0.05)
+		if err != nil {
+			return "", err
+		}
+		polygamy += polygamyP
 	}
 
 	return MarriageKind(pm.GetRandomFromSeveral(map[string]float64{
 		string(Monogamy):              pm.PrepareProbability(monogamy),
 		string(ConsortsAndConcubines): pm.PrepareProbability(consortsAndConcubines),
 		string(Polygamy):              pm.PrepareProbability(polygamy),
-	}))
+	})), nil
 }
 
 func getMarriageKindByCulture(c *culture.Culture) MarriageKind {
@@ -110,39 +169,86 @@ const (
 	NoLegitimization Bastardry = "no_legitimization"
 )
 
-func (mt *MarriageTradition) generateBastardry() Bastardry {
-	var (
-		noBastards       = pm.RandFloat64InRange(0.055, 0.155)
-		legitimization   = pm.RandFloat64InRange(0.15, 0.25)
-		noLegitimization = pm.RandFloat64InRange(0.06, 0.16)
-	)
+func (mt *MarriageTradition) generateBastardry() (Bastardry, error) {
+	noBastards, err := pm.RandFloat64InRange(0.055, 0.155)
+	if err != nil {
+		return "", err
+	}
+	legitimization, err := pm.RandFloat64InRange(0.15, 0.25)
+	if err != nil {
+		return "", err
+	}
+	noLegitimization, err := pm.RandFloat64InRange(0.06, 0.16)
+	if err != nil {
+		return "", err
+	}
 
 	switch {
 	case mt.religion.GenderDominance.IsMaleDominate():
-		noBastards += pm.RandFloat64InRange(0.03, 0.075)
-		legitimization += pm.RandFloat64InRange(0.07, 0.13)
-		noLegitimization += pm.RandFloat64InRange(0.03, 0.075)
+		noBastardsP, err := pm.RandFloat64InRange(0.03, 0.075)
+		if err != nil {
+			return "", err
+		}
+		noBastards += noBastardsP
+		legitimizationP, err := pm.RandFloat64InRange(0.07, 0.13)
+		if err != nil {
+			return "", err
+		}
+		legitimization += legitimizationP
+		noLegitimizationP, err := pm.RandFloat64InRange(0.03, 0.075)
+		if err != nil {
+			return "", err
+		}
+		noLegitimization += noLegitimizationP
 	case mt.religion.GenderDominance.IsEquality():
-		noBastards += pm.RandFloat64InRange(0.03, 0.075)
-		legitimization += pm.RandFloat64InRange(0.07, 0.13)
+		noBastardsP, err := pm.RandFloat64InRange(0.03, 0.075)
+		if err != nil {
+			return "", err
+		}
+		noBastards += noBastardsP
+		legitimizationP, err := pm.RandFloat64InRange(0.07, 0.13)
+		if err != nil {
+			return "", err
+		}
+		legitimization += legitimizationP
 	case mt.religion.GenderDominance.IsFemaleDominate():
-		noBastards += pm.RandFloat64InRange(0.1, 0.2)
-		legitimization += pm.RandFloat64InRange(0.07, 0.13)
+		noBastardsP, err := pm.RandFloat64InRange(0.1, 0.2)
+		if err != nil {
+			return "", err
+		}
+		noBastards += noBastardsP
+		legitimizationP, err := pm.RandFloat64InRange(0.07, 0.13)
+		if err != nil {
+			return "", err
+		}
+		legitimization += legitimizationP
 	}
 
 	if mt.religion.metadata.IsLawful() {
-		legitimization += pm.RandFloat64InRange(0.05, 0.1)
+		legitimizationP, err := pm.RandFloat64InRange(0.05, 0.1)
+		if err != nil {
+			return "", err
+		}
+		legitimization += legitimizationP
 	}
 	if mt.religion.metadata.IsAltruistic() {
-		noBastards += pm.RandFloat64InRange(0.04, 0.09)
-		legitimization += pm.RandFloat64InRange(0.04, 0.09)
+		noBastardsP, err := pm.RandFloat64InRange(0.04, 0.09)
+		if err != nil {
+			return "", err
+		}
+		noBastards += noBastardsP
+		legitimizationP, err := pm.RandFloat64InRange(0.04, 0.09)
+		if err != nil {
+			return "", err
+		}
+		legitimization += legitimizationP
 	}
 
 	return Bastardry(pm.GetRandomFromSeveral(map[string]float64{
 		string(NoBastards):       pm.PrepareProbability(noBastards),
 		string(Legitimization):   pm.PrepareProbability(legitimization),
 		string(NoLegitimization): pm.PrepareProbability(noLegitimization),
-	}))
+	})), nil
 }
 
 type Consanguinity string
@@ -154,44 +260,122 @@ const (
 	UnrestrictedMarriage Consanguinity = "unrestricted_marriage" // people can marry all family members
 )
 
-func (mt *MarriageTradition) generateConsanguinity() Consanguinity {
-	var (
-		closeKinTaboo        = pm.RandFloat64InRange(0.15, 0.25)
-		cousinMarriage       = pm.RandFloat64InRange(0.14, 0.26)
-		avunculateMarriage   = pm.RandFloat64InRange(0.25, 0.35)
-		unrestrictedMarriage = pm.RandFloat64InRange(0.05, 0.15)
-	)
+func (mt *MarriageTradition) generateConsanguinity() (Consanguinity, error) {
+	closeKinTaboo, err := pm.RandFloat64InRange(0.15, 0.25)
+	if err != nil {
+		return "", err
+	}
+	cousinMarriage, err := pm.RandFloat64InRange(0.14, 0.26)
+	if err != nil {
+		return "", err
+	}
+	avunculateMarriage, err := pm.RandFloat64InRange(0.25, 0.35)
+	if err != nil {
+		return "", err
+	}
+	unrestrictedMarriage, err := pm.RandFloat64InRange(0.05, 0.15)
+	if err != nil {
+		return "", err
+	}
 
 	switch {
 	case mt.religion.GenderDominance.IsMaleDominate():
-		closeKinTaboo += pm.RandFloat64InRange(0.025, 0.075)
-		cousinMarriage += pm.RandFloat64InRange(0.05, 0.15)
-		avunculateMarriage += pm.RandFloat64InRange(0.05, 0.1)
-		unrestrictedMarriage += pm.RandFloat64InRange(0.015, 0.035)
+		closeKinTabooP, err := pm.RandFloat64InRange(0.025, 0.075)
+		if err != nil {
+			return "", err
+		}
+		closeKinTaboo += closeKinTabooP
+		cousinMarriageP, err := pm.RandFloat64InRange(0.05, 0.15)
+		if err != nil {
+			return "", err
+		}
+		cousinMarriage += cousinMarriageP
+		avunculateMarriageP, err := pm.RandFloat64InRange(0.05, 0.1)
+		if err != nil {
+			return "", err
+		}
+		avunculateMarriage += avunculateMarriageP
+		unrestrictedMarriageP, err := pm.RandFloat64InRange(0.015, 0.035)
+		if err != nil {
+			return "", err
+		}
+		unrestrictedMarriage += unrestrictedMarriageP
 	case mt.religion.GenderDominance.IsEquality():
-		closeKinTaboo += pm.RandFloat64InRange(0.015, 0.035)
-		cousinMarriage += pm.RandFloat64InRange(0.05, 0.1)
-		avunculateMarriage += pm.RandFloat64InRange(0.05, 0.15)
-		unrestrictedMarriage += pm.RandFloat64InRange(0.025, 0.075)
+		closeKinTabooP, err := pm.RandFloat64InRange(0.015, 0.035)
+		if err != nil {
+			return "", err
+		}
+		closeKinTaboo += closeKinTabooP
+		cousinMarriageP, err := pm.RandFloat64InRange(0.05, 0.1)
+		if err != nil {
+			return "", err
+		}
+		cousinMarriage += cousinMarriageP
+		avunculateMarriageP, err := pm.RandFloat64InRange(0.05, 0.15)
+		if err != nil {
+			return "", err
+		}
+		avunculateMarriage += avunculateMarriageP
+		unrestrictedMarriageP, err := pm.RandFloat64InRange(0.025, 0.075)
+		if err != nil {
+			return "", err
+		}
+		unrestrictedMarriage += unrestrictedMarriageP
 	case mt.religion.GenderDominance.IsFemaleDominate():
-		closeKinTaboo += pm.RandFloat64InRange(0.05, 0.1)
-		cousinMarriage += pm.RandFloat64InRange(0.05, 0.15)
-		avunculateMarriage += pm.RandFloat64InRange(0.025, 0.075)
-		unrestrictedMarriage += pm.RandFloat64InRange(0.015, 0.035)
+		closeKinTabooP, err := pm.RandFloat64InRange(0.05, 0.1)
+		if err != nil {
+			return "", err
+		}
+		closeKinTaboo += closeKinTabooP
+		cousinMarriageP, err := pm.RandFloat64InRange(0.05, 0.15)
+		if err != nil {
+			return "", err
+		}
+		cousinMarriage += cousinMarriageP
+		avunculateMarriageP, err := pm.RandFloat64InRange(0.025, 0.075)
+		if err != nil {
+			return "", err
+		}
+		avunculateMarriage += avunculateMarriageP
+		unrestrictedMarriageP, err := pm.RandFloat64InRange(0.015, 0.035)
+		if err != nil {
+			return "", err
+		}
+		unrestrictedMarriage += unrestrictedMarriageP
 	}
 
 	if mt.religion.metadata.IsSexualActive() {
-		unrestrictedMarriage += pm.RandFloat64InRange(0.01, 0.03)
+		unrestrictedMarriageP, err := pm.RandFloat64InRange(0.01, 0.03)
+		if err != nil {
+			return "", err
+		}
+		unrestrictedMarriage += unrestrictedMarriageP
 	}
 	if mt.religion.metadata.IsPacifistic() {
-		avunculateMarriage += pm.RandFloat64InRange(0.01, 0.03)
+		avunculateMarriageP, err := pm.RandFloat64InRange(0.01, 0.03)
+		if err != nil {
+			return "", err
+		}
+		avunculateMarriage += avunculateMarriageP
 	}
 	if mt.religion.metadata.IsLawful() {
-		closeKinTaboo += pm.RandFloat64InRange(0.01, 0.05)
-		cousinMarriage += pm.RandFloat64InRange(0.01, 0.03)
+		closeKinTabooP, err := pm.RandFloat64InRange(0.01, 0.05)
+		if err != nil {
+			return "", err
+		}
+		closeKinTaboo += closeKinTabooP
+		cousinMarriageP, err := pm.RandFloat64InRange(0.01, 0.03)
+		if err != nil {
+			return "", err
+		}
+		cousinMarriage += cousinMarriageP
 	}
 	if mt.religion.metadata.IsLiberal() {
-		unrestrictedMarriage += pm.RandFloat64InRange(0.01, 0.03)
+		unrestrictedMarriageP, err := pm.RandFloat64InRange(0.01, 0.03)
+		if err != nil {
+			return "", err
+		}
+		unrestrictedMarriage += unrestrictedMarriageP
 	}
 
 	return Consanguinity(pm.GetRandomFromSeveral(map[string]float64{
@@ -199,46 +383,109 @@ func (mt *MarriageTradition) generateConsanguinity() Consanguinity {
 		string(CousinMarriage):       pm.PrepareProbability(cousinMarriage),
 		string(AvunculateMarriage):   pm.PrepareProbability(avunculateMarriage),
 		string(UnrestrictedMarriage): pm.PrepareProbability(unrestrictedMarriage),
-	}))
+	})), nil
 }
 
-func (mt *MarriageTradition) generateDivorce() Permission {
-	var (
-		alwaysAllowed  = pm.RandFloat64InRange(0.1, 0.2)
-		mustBeApproved = pm.RandFloat64InRange(0.2, 0.3)
-		disallowed     = pm.RandFloat64InRange(0.1, 0.2)
-	)
+func (mt *MarriageTradition) generateDivorce() (Permission, error) {
+	alwaysAllowed, err := pm.RandFloat64InRange(0.1, 0.2)
+	if err != nil {
+		return "", err
+	}
+	mustBeApproved, err := pm.RandFloat64InRange(0.2, 0.3)
+	if err != nil {
+		return "", err
+	}
+	disallowed, err := pm.RandFloat64InRange(0.1, 0.2)
+	if err != nil {
+		return "", err
+	}
 
 	switch {
 	case mt.religion.GenderDominance.IsMaleDominate():
-		alwaysAllowed += pm.RandFloat64InRange(0.015, 0.035)
-		mustBeApproved += pm.RandFloat64InRange(0.05, 0.15)
-		disallowed += pm.RandFloat64InRange(0.1, 0.2)
+		alwaysAllowedP, err := pm.RandFloat64InRange(0.015, 0.035)
+		if err != nil {
+			return "", err
+		}
+		alwaysAllowed += alwaysAllowedP
+		mustBeApprovedP, err := pm.RandFloat64InRange(0.05, 0.15)
+		if err != nil {
+			return "", err
+		}
+		mustBeApproved += mustBeApprovedP
+		disallowedP, err := pm.RandFloat64InRange(0.1, 0.2)
+		if err != nil {
+			return "", err
+		}
+		disallowed += disallowedP
 	case mt.religion.GenderDominance.IsEquality():
-		alwaysAllowed += pm.RandFloat64InRange(0.1, 0.2)
-		mustBeApproved += pm.RandFloat64InRange(0.05, 0.15)
-		disallowed += pm.RandFloat64InRange(0.015, 0.035)
+		alwaysAllowedP, err := pm.RandFloat64InRange(0.1, 0.2)
+		if err != nil {
+			return "", err
+		}
+		alwaysAllowed += alwaysAllowedP
+		mustBeApprovedP, err := pm.RandFloat64InRange(0.05, 0.15)
+		if err != nil {
+			return "", err
+		}
+		mustBeApproved += mustBeApprovedP
+		disallowedP, err := pm.RandFloat64InRange(0.015, 0.035)
+		if err != nil {
+			return "", err
+		}
+		disallowed += disallowedP
 	case mt.religion.GenderDominance.IsFemaleDominate():
-		alwaysAllowed += pm.RandFloat64InRange(0.015, 0.035)
-		mustBeApproved += pm.RandFloat64InRange(0.1, 0.2)
-		disallowed += pm.RandFloat64InRange(0.05, 0.15)
+		alwaysAllowedP, err := pm.RandFloat64InRange(0.015, 0.035)
+		if err != nil {
+			return "", err
+		}
+		alwaysAllowed += alwaysAllowedP
+		mustBeApprovedP, err := pm.RandFloat64InRange(0.1, 0.2)
+		if err != nil {
+			return "", err
+		}
+		mustBeApproved += mustBeApprovedP
+		disallowedP, err := pm.RandFloat64InRange(0.05, 0.15)
+		if err != nil {
+			return "", err
+		}
+		disallowed += disallowedP
 	}
 
 	if mt.religion.metadata.IsSexualActive() {
-		alwaysAllowed += pm.RandFloat64InRange(0.01, 0.03)
+		alwaysAllowedP, err := pm.RandFloat64InRange(0.01, 0.03)
+		if err != nil {
+			return "", err
+		}
+		alwaysAllowed += alwaysAllowedP
 	}
 	if mt.religion.metadata.IsSexualStrictness() {
-		disallowed += pm.RandFloat64InRange(0.01, 0.03)
+		disallowedP, err := pm.RandFloat64InRange(0.01, 0.03)
+		if err != nil {
+			return "", err
+		}
+		disallowed += disallowedP
 	}
 	if mt.religion.metadata.IsLawful() {
-		mustBeApproved += pm.RandFloat64InRange(0.01, 0.03)
+		mustBeApprovedP, err := pm.RandFloat64InRange(0.01, 0.03)
+		if err != nil {
+			return "", err
+		}
+		mustBeApproved += mustBeApprovedP
 	}
 	if mt.religion.metadata.IsAuthoritaristic() {
-		disallowed += pm.RandFloat64InRange(0.01, 0.03)
+		disallowedP, err := pm.RandFloat64InRange(0.01, 0.03)
+		if err != nil {
+			return "", err
+		}
+		disallowed += disallowedP
 	}
 	if mt.religion.metadata.IsLiberal() {
-		alwaysAllowed += pm.RandFloat64InRange(0.01, 0.03)
+		alwaysAllowedP, err := pm.RandFloat64InRange(0.01, 0.03)
+		if err != nil {
+			return "", err
+		}
+		alwaysAllowed += alwaysAllowedP
 	}
 
-	return getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed)
+	return getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed), nil
 }

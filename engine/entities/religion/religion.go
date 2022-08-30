@@ -1,35 +1,65 @@
 package religion
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+	"strings"
 
+	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/tools"
 	"persons_generator/engine/entities/culture"
 	g "persons_generator/engine/entities/gender"
 	pm "persons_generator/engine/probability_machine"
+
+	"github.com/google/uuid"
 )
 
 type Religion struct {
 	M        Metadata
 	metadata *religionMetadata
 
+	ID              uuid.UUID
 	Name            string
 	Type            *Type
 	GenderDominance *g.Dominance
 	Doctrine        *Doctrine
 	Attributes      *Attributes
 	Theology        *Theology
+
+	storageFolderName string
 }
 
-func New(c *culture.Culture) (*Religion, error) {
+func New(cfg Config, c *culture.Culture) (*Religion, error) {
+	lowBaseCoef, err := pm.RandFloat64InRange(0.45, 0.75)
+	if err != nil {
+		return nil, err
+	}
+	baseCoef, err := pm.RandFloat64InRange(0.95, 1.05)
+	if err != nil {
+		return nil, err
+	}
+	highBaseCoef, err := pm.RandFloat64InRange(1, 1.25)
+	if err != nil {
+		return nil, err
+	}
+	maxMetadataValue, err := pm.RandFloat64InRange(8, 10)
+	if err != nil {
+		return nil, err
+	}
+
 	r := &Religion{
 		M: Metadata{
-			LowBaseCoef:  pm.RandFloat64InRange(0.45, 0.75),
-			BaseCoef:     pm.RandFloat64InRange(0.95, 1.05),
-			HighBaseCoef: pm.RandFloat64InRange(1, 1.25),
+			LowBaseCoef:  lowBaseCoef,
+			BaseCoef:     baseCoef,
+			HighBaseCoef: highBaseCoef,
 
-			MaxMetadataValue: pm.RandFloat64InRange(8, 10),
+			MaxMetadataValue: maxMetadataValue,
 		},
+
+		ID: uuid.New(),
+
+		storageFolderName: cfg.StorageFolderName,
 	}
 	name, err := c.Language.GetReligionName()
 	if err != nil {
@@ -38,18 +68,34 @@ func New(c *culture.Culture) (*Religion, error) {
 	r.Name = name
 	r.Type = NewType(r)
 	r.GenderDominance = c.GenderDominance
-	r.metadata = r.generateMetadata()
-	r.Doctrine = NewDoctrine(r)
-	r.Attributes = NewAttributes(r, c)
-	r.Theology = NewTheology(r, c)
+	metadata, err := r.generateMetadata()
+	if err != nil {
+		return nil, err
+	}
+	r.metadata = metadata
+	doctrine, err := NewDoctrine(r)
+	if err != nil {
+		return nil, err
+	}
+	r.Doctrine = doctrine
+	attributes, err := NewAttributes(r, c)
+	if err != nil {
+		return nil, err
+	}
+	r.Attributes = attributes
+	theology, err := NewTheology(r, c)
+	if err != nil {
+		return nil, err
+	}
+	r.Theology = theology
 
 	return r, nil
 }
 
-func NewMany(cultures []*culture.Culture) ([]*Religion, error) {
+func NewMany(cfg Config, cultures []*culture.Culture) ([]*Religion, error) {
 	religions := make([]*Religion, len(cultures))
 	for i := range religions {
-		r, err := New(cultures[i])
+		r, err := New(cfg, cultures[i])
 		if err != nil {
 			return nil, err
 		}
@@ -114,4 +160,16 @@ func MapReligionNames(religions []*Religion) []string {
 	}
 
 	return out
+}
+
+func (r *Religion) Save() error {
+	if r == nil {
+		return errors.New("can not save nil religion")
+	}
+	b, err := json.MarshalIndent(r, "", " ")
+	if err != nil {
+		return err
+	}
+
+	return js.New(js.Config{StorageFolderName: r.storageFolderName}).Store(strings.Join([]string{"religion", r.ID.String()}, "_")+".json", b)
 }

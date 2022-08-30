@@ -9,8 +9,12 @@ const (
 	FemaleSex Sex = "female_sex"
 )
 
-func GetRandomSex() Sex {
+func GetRandomSex() (Sex, error) {
 	list := []Sex{MaleSex, FemaleSex}
+	i, err := pm.RandInt(len(list) - 1)
+	if err != nil {
+		return "", err
+	}
 
-	return list[pm.RandInt(len(list)-1)]
+	return list[i], nil
 }

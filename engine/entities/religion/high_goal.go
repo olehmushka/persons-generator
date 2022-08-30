@@ -10,15 +10,19 @@ type HighGoal struct {
 	Goals []*trait
 }
 
-func (d *Doctrine) generateHighGoal() *HighGoal {
+func (d *Doctrine) generateHighGoal() (*HighGoal, error) {
 	hg := &HighGoal{religion: d.religion}
-	hg.Goals = generateTraits(hg.religion, hg.getAllGoals(), generateTraitsOpts{
+	gs, err := generateTraits(hg.religion, hg.getAllGoals(), generateTraitsOpts{
 		Label: "HighGoal.generateGoals",
 		Min:   1,
 		Max:   3,
 	})
+	if err != nil {
+		return nil, err
+	}
+	hg.Goals = gs
 
-	return hg
+	return hg, nil
 }
 
 func (hg *HighGoal) Print() {
@@ -35,9 +39,9 @@ func (hg *HighGoal) Print() {
 func (hg *HighGoal) ContainsReincarnation() bool {
 	for _, goal := range hg.Goals {
 		switch goal.Name {
-		case "StopReincarnation":
+		case "stop_reincarnation":
 			return true
-		case "NeverStopReincarnation":
+		case "never_stop_reincarnation":
 			return true
 		}
 	}
@@ -47,75 +51,75 @@ func (hg *HighGoal) ContainsReincarnation() bool {
 func (hg *HighGoal) getAllGoals() []*trait {
 	return []*trait{
 		{
-			Name: "TransformingIntoLikenessOfGod",
+			Name: "transforming_into_likeness_of_god",
 			_religionMetadata: &religionMetadata{
 				Individualistic: 1,
 				Ascetic:         0.5,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				if !r.Type.IsMonotheism() {
-					return false
+					return false, nil
 				}
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "AttainHeavenAndResidesThereWithGod",
+			Name: "attain_heaven_and_resides_there_with_god",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Ascetic:      0.1,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				if r.Type.IsAtheism() {
-					return false
+					return false, nil
 				}
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "BringManToCompletenessAndToCloseRelationshipWithGod",
+			Name: "bring_man_to_completeness_and_to_close_relationship_with_god",
 			_religionMetadata: &religionMetadata{
 				Naturalistic:    0.1,
 				Individualistic: 1,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				if !r.Type.IsMonotheism() && !r.Type.IsDeityDualism() {
-					return false
+					return false, nil
 				}
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "BringHolinessDownToTheWorld",
+			Name: "bring_holiness_down_to_the_world",
 			_religionMetadata: &religionMetadata{
 				Altruistic:     0.5,
 				Collectivistic: 0.5,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "StopReincarnation",
+			Name: "stop_reincarnation",
 			_religionMetadata: &religionMetadata{
 				Ascetic:         0.5,
 				Individualistic: 1,
 			},
 			baseCoef: hg.religion.M.LowBaseCoef,
-			Calc: func(r *Religion, self *trait, selectedGoals []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedGoals []*trait) (bool, error) {
 				for _, goal := range selectedGoals {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "NeverStopReincarnation" {
-						return false
+					if goal.Name == "never_stop_reincarnation" {
+						return false, nil
 					}
 				}
 
@@ -123,19 +127,19 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "NeverStopReincarnation",
+			Name: "never_stop_reincarnation",
 			_religionMetadata: &religionMetadata{
 				Ascetic:         0.5,
 				Individualistic: 1,
 			},
 			baseCoef: hg.religion.M.LowBaseCoef,
-			Calc: func(r *Religion, self *trait, selectedGoals []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedGoals []*trait) (bool, error) {
 				for _, goal := range selectedGoals {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "StopReincarnation" {
-						return false
+					if goal.Name == "stop_reincarnation" {
+						return false, nil
 					}
 				}
 
@@ -143,91 +147,91 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "ProduceChildren",
+			Name: "produce_children",
 			_religionMetadata: &religionMetadata{
 				Naturalistic:   1,
 				SexualActive:   0.75,
 				Collectivistic: 0.1,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "InvestigateMyself",
+			Name: "investigate_myself",
 			_religionMetadata: &religionMetadata{
 				Individualistic: 1,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "GetMaxPleasure",
+			Name: "get_max_pleasure",
 			_religionMetadata: &religionMetadata{
 				SexualActive: 0.25,
 				Liberal:      0.25,
 				Hedonistic:   1,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				if r.metadata.IsAscetic() && !r.metadata.IsHedonistic() {
-					return false
+					return false, nil
 				}
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "SpreadReligion",
+			Name: "spread_religion",
 			_religionMetadata: &religionMetadata{
 				Aggressive:     0.25,
 				Collectivistic: 1,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "LovePeople",
+			Name: "love_people",
 			_religionMetadata: &religionMetadata{
 				SexualActive: 0.1,
 				Altruistic:   1,
 				Pacifistic:   0.25,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "BecomePerfectAndSaints",
+			Name: "become_perfect_and_saints",
 			_religionMetadata: &religionMetadata{
 				Ascetic:         1,
 				Individualistic: 1,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "FightAgainstEvil",
+			Name: "fight_against_evil",
 			_religionMetadata: &religionMetadata{
 				Lawful:     0.1,
 				Aggressive: 0.75,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, selectedGoals []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedGoals []*trait) (bool, error) {
 				for _, goal := range selectedGoals {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "FightForEvil" {
-						return false
+					if goal.Name == "fight_for_evil" {
+						return false, nil
 					}
 				}
 
@@ -235,19 +239,19 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "FightForEvil",
+			Name: "fight_for_evil",
 			_religionMetadata: &religionMetadata{
 				Chthonic:   1,
 				Aggressive: 0.75,
 			},
 			baseCoef: hg.religion.M.LowBaseCoef,
-			Calc: func(r *Religion, self *trait, selectedGoals []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedGoals []*trait) (bool, error) {
 				for _, goal := range selectedGoals {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "FightAgainstEvil" {
-						return false
+					if goal.Name == "fight_against_evil" {
+						return false, nil
 					}
 				}
 
@@ -255,18 +259,18 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "StopArmageddon",
+			Name: "stop_armageddon",
 			_religionMetadata: &religionMetadata{
 				Altruistic: 0.5,
 			},
 			baseCoef: hg.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, selectedGoals []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedGoals []*trait) (bool, error) {
 				for _, goal := range selectedGoals {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "StartArmageddon" {
-						return false
+					if goal.Name == "start_armageddon" {
+						return false, nil
 					}
 				}
 
@@ -274,18 +278,18 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "StartArmageddon",
+			Name: "start_armageddon",
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
 			baseCoef: hg.religion.M.LowBaseCoef,
-			Calc: func(r *Religion, self *trait, selectedGoals []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedGoals []*trait) (bool, error) {
 				for _, goal := range selectedGoals {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "StopArmageddon" {
-						return false
+					if goal.Name == "stop_armageddon" {
+						return false, nil
 					}
 				}
 

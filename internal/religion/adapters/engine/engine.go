@@ -3,6 +3,7 @@ package engine
 import (
 	"context"
 
+	"persons_generator/config"
 	"persons_generator/engine/orchestrator"
 	cultureEntities "persons_generator/internal/culture/entities"
 	"persons_generator/internal/religion/entities"
@@ -14,8 +15,10 @@ type adapter struct {
 	engine *orchestrator.Orchestrator
 }
 
-func New() (Adapter, error) {
-	e, err := orchestrator.New()
+func New(cfg *config.Config) (Adapter, error) {
+	e, err := orchestrator.New(orchestrator.Config{
+		StorageFolderName: cfg.JSONStorage.StorageFolder,
+	})
 	if err != nil {
 		return nil, err
 	}

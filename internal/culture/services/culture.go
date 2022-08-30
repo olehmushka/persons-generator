@@ -2,9 +2,9 @@ package services
 
 import (
 	"context"
+	"fmt"
 
 	"persons_generator/internal/culture/adapters/engine"
-	js "persons_generator/internal/culture/adapters/json_storage"
 	"persons_generator/internal/culture/entities"
 
 	"github.com/google/uuid"
@@ -12,14 +12,12 @@ import (
 )
 
 type culture struct {
-	engineAdp  engine.Adapter
-	storageAdp js.Adapter
+	engineAdp engine.Adapter
 }
 
-func New(engineAdp engine.Adapter, storageAdp js.Adapter) Culture {
+func New(engineAdp engine.Adapter) Culture {
 	return &culture{
-		engineAdp:  engineAdp,
-		storageAdp: storageAdp,
+		engineAdp: engineAdp,
 	}
 }
 
@@ -28,37 +26,45 @@ var Module = fx.Options(
 )
 
 func (s *culture) CreateCultures(ctx context.Context, amount int, preferred []*entities.CulturePreference) ([]*entities.Culture, error) {
+	fmt.Printf("Before create cultures\n\n")
 	cultures, err := s.engineAdp.CreateCultures(ctx, amount, preferred)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("After create cultures\n\n")
 	out := make([]*entities.Culture, len(cultures))
 	for i, c := range cultures {
-		c.ID = uuid.New()
-		if err := s.storageAdp.SaveCulture(ctx, c); err != nil {
+		if err := c.Save(); err != nil {
 			return nil, err
 		}
-		out[i] = c
+		out[i] = serializeCulture(c)
 	}
 
 	return out, nil
 }
 
 func (s *culture) GetProtoCultures(ctx context.Context, q string, limit, offset int) ([]*entities.Culture, int, error) {
-	return s.engineAdp.GetProtoCultures(ctx, q, limit, offset)
+	protos, total, err := s.engineAdp.GetProtoCultures(ctx, q, limit, offset)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return serializeCultures(protos), total, nil
 }
 
 func (s *culture) GetCultureByID(ctx context.Context, id uuid.UUID) (*entities.Culture, error) {
-	return s.storageAdp.GetCultureByID(ctx, id)
+	// return s.storageAdp.GetCultureByID(ctx, id)
+	return nil, nil
 }
 
 func (s *culture) GetOriginalCultureByID(ctx context.Context, id uuid.UUID) ([]byte, error) {
-	c, err := s.storageAdp.GetCultureByID(ctx, id)
-	if err != nil {
-		return nil, err
-	}
+	// c, err := s.storageAdp.GetCultureByID(ctx, id)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
-	return s.engineAdp.GetOriginalCulture(ctx, c)
+	// return s.engineAdp.GetOriginalCulture(ctx, c)
+	return nil, nil
 }
 
 func (s *culture) HybridCulture(ctx context.Context, cultures []*entities.Culture) (*entities.Culture, error) {

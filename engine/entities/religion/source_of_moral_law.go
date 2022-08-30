@@ -9,10 +9,10 @@ import (
 type SourceOfMoralLaw string
 
 const (
-	DeitySourceOfMoralLaw  SourceOfMoralLaw = "Deity"
-	NoneSourceOfMoralLaw   SourceOfMoralLaw = "None"
-	HumanSourceOfMoralLaw  SourceOfMoralLaw = "Human"
-	NatureSourceOfMoralLaw SourceOfMoralLaw = "Nature"
+	DeitySourceOfMoralLaw  SourceOfMoralLaw = "deity"
+	NoneSourceOfMoralLaw   SourceOfMoralLaw = "none"
+	HumanSourceOfMoralLaw  SourceOfMoralLaw = "human"
+	NatureSourceOfMoralLaw SourceOfMoralLaw = "nature"
 )
 
 func (s SourceOfMoralLaw) IsDeity() bool {
@@ -31,39 +31,69 @@ func (s SourceOfMoralLaw) IsNature() bool {
 	return s == NatureSourceOfMoralLaw
 }
 
-func (d *Doctrine) generateSourceOfMoralLaw() SourceOfMoralLaw {
+func (d *Doctrine) generateSourceOfMoralLaw() (SourceOfMoralLaw, error) {
 	if d.religion.Type.IsAtheism() {
-		return NoneSourceOfMoralLaw
+		return NoneSourceOfMoralLaw, nil
 	}
 
-	var (
-		deity  = pm.RandFloat64InRange(0.1, 0.2)
-		none   = pm.RandFloat64InRange(0.01, 0.1)
-		human  = pm.RandFloat64InRange(0.05, 0.15)
-		nature = pm.RandFloat64InRange(0.05, 0.15)
-		rmCoef = d.religion.M.LowBaseCoef
-	)
+	deity, err := pm.RandFloat64InRange(0.1, 0.2)
+	if err != nil {
+		return "", err
+	}
+	none, err := pm.RandFloat64InRange(0.01, 0.1)
+	if err != nil {
+		return "", err
+	}
+	human, err := pm.RandFloat64InRange(0.05, 0.15)
+	if err != nil {
+		return "", err
+	}
+	nature, err := pm.RandFloat64InRange(0.05, 0.15)
+	if err != nil {
+		return "", err
+	}
+	rmCoef := d.religion.M.LowBaseCoef
 	if d.religion.Type.IsMonotheism() {
-		deity += pm.RandFloat64InRange(0.05, 0.1)
+		deityP, err := pm.RandFloat64InRange(0.05, 0.1)
+		if err != nil {
+			return "", err
+		}
+		deity += deityP
 	}
 	if d.religion.metadata.IsHedonistic() {
-		human += rmCoef * pm.RandFloat64InRange(0.05, 0.15)
+		humanP, err := pm.RandFloat64InRange(0.05, 0.15)
+		if err != nil {
+			return "", err
+		}
+		human += rmCoef * humanP
 	}
 
 	if d.Deity.Nature.Goodness.Goodness == Good {
-		deity += pm.RandFloat64InRange(0.05, 0.15) * d.Deity.Nature.Goodness.Level.GetLevelCoef()
+		deityP, err := pm.RandFloat64InRange(0.05, 0.15)
+		if err != nil {
+			return "", err
+		}
+		deity += deityP * d.Deity.Nature.Goodness.Level.GetLevelCoef()
 	}
 	for _, trait := range d.Deity.Nature.Traits {
-		if trait.Name == "IsJust" {
-			deity += pm.RandFloat64InRange(0.01, 0.1)
+		if trait.Name == "is_just" {
+			deityP, err := pm.RandFloat64InRange(0.01, 0.1)
+			if err != nil {
+				return "", err
+			}
+			deity += deityP
 		}
 	}
 
 	if d.Human.Nature.Goodness.Goodness == Good {
-		human += pm.RandFloat64InRange(0.05, 0.15) * d.Human.Nature.Goodness.Level.GetLevelCoef()
+		humanP, err := pm.RandFloat64InRange(0.05, 0.15)
+		if err != nil {
+			return "", err
+		}
+		human += humanP * d.Human.Nature.Goodness.Level.GetLevelCoef()
 	}
 
-	return getSourceOfMoralLawByProbability(deity, none, human, nature)
+	return getSourceOfMoralLawByProbability(deity, none, human, nature), nil
 }
 
 func (soml SourceOfMoralLaw) Print() {

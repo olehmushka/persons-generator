@@ -18,11 +18,15 @@ type World struct {
 	Locations [][]*location.Location
 	Cultures  []*culture.Culture
 	Religions []*religion.Religion
+
+	storageFolderName string
 }
 
-func New(s int) *World {
+func New(cfg Config, s int) *World {
 	return &World{
 		Size: s,
+
+		storageFolderName: cfg.StorageFolderName,
 	}
 }
 
@@ -51,7 +55,7 @@ func (w *World) CulturesPropagate(amount int, preferred []*culture.Preference) (
 	if totalLocs < amount {
 		return nil, fmt.Errorf("[World.CulturesPropagate] incorrect cultures number (max culture_number=%d, actual culture_number=%d)", totalLocs, amount)
 	}
-	cultures, err := culture.NewCultures(amount, preferred)
+	cultures, err := culture.NewMany(culture.Config{StorageFolderName: w.storageFolderName}, amount, preferred)
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +139,7 @@ func (w *World) religionsPropagateForCultureNumberLess(amount int) (*World, erro
 	for i := range chunkSampleReligions {
 		for range chunkSampleReligions[i] {
 			c := w.Cultures[i]
-			r, err := religion.New(c)
+			r, err := religion.New(religion.Config{StorageFolderName: w.storageFolderName}, c)
 			if err != nil {
 				return nil, err
 			}
@@ -164,7 +168,10 @@ func (w *World) religionsPropagateForCultureNumberLess(amount int) (*World, erro
 			if len(religionNames) == 0 {
 				return nil, fmt.Errorf("[World.religionsPropagateForCultureNumberLess] can not get religion names from empty list (culture_religion_map=%+v, name=%s)", cultureReligionMap, cultureName)
 			}
-			religionName := tools.RandomValueOfSlice(pm.RandFloat64, religionNames)
+			religionName, err := tools.RandomValueOfSlice(pm.RandFloat64, religionNames)
+			if err != nil {
+				return nil, err
+			}
 			w.Locations[y][x].InitReligion = religion.GetReligionByName(religionName, religions)
 		}
 	}
@@ -179,7 +186,7 @@ func (w *World) religionsPropagateForCultureNumberEqual(amount int) (*World, err
 	)
 
 	for _, c := range w.Cultures {
-		r, err := religion.New(c)
+		r, err := religion.New(religion.Config{StorageFolderName: w.storageFolderName}, c)
 		if err != nil {
 			return nil, err
 		}
@@ -214,11 +221,11 @@ func (w *World) religionsPropagateForCultureNumberGreater(amount int) (*World, e
 	)
 
 	for _, chunk := range culturesChunks {
-		hybridCulture, err := culture.NewWithProto(chunk)
+		hybridCulture, err := culture.NewWithProto(culture.Config{StorageFolderName: w.storageFolderName}, chunk)
 		if err != nil {
 			return nil, err
 		}
-		r, err := religion.New(hybridCulture)
+		r, err := religion.New(religion.Config{StorageFolderName: w.storageFolderName}, hybridCulture)
 		if err != nil {
 			return nil, err
 		}

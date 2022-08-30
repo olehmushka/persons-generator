@@ -13,15 +13,19 @@ type Holydays struct {
 	Holydays []*trait
 }
 
-func (t *Theology) generateHolydays() *Holydays {
+func (t *Theology) generateHolydays() (*Holydays, error) {
 	hs := &Holydays{religion: t.religion, theology: t}
-	hs.Holydays = generateTraits(t.religion, hs.getAllHolydays(), generateTraitsOpts{
+	ts, err := generateTraits(t.religion, hs.getAllHolydays(), generateTraitsOpts{
 		Label: "Holydays.generateHolydays",
 		Min:   1,
 		Max:   len(hs.getAllHolydays()),
 	})
+	if err != nil {
+		return nil, err
+	}
+	hs.Holydays = ts
 
-	return hs
+	return hs, nil
 }
 
 func (hs *Holydays) Print() {
@@ -36,51 +40,59 @@ func (hs *Holydays) Print() {
 func (hs *Holydays) getAllHolydays() []*trait {
 	return []*trait{
 		{
-			Name: "Samhain",
+			Name: "samhain",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Chthonic:     0.1,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "Mysteries",
+			Name: "mysteries",
 			_religionMetadata: &religionMetadata{
 				Hedonistic:     0.1,
 				Collectivistic: 0.25,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "SummerSolstice",
+			Name: "summer_solstice",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Educational:  0.1,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				if len(hs.theology.Cults) > 0 {
 					for _, cult := range hs.theology.Cults {
 						if cult == nil {
 							continue
 						}
-						if cult.Name == "SunWorship" || cult.Name == "MoonWorship" {
-							addCoef += pm.RandFloat64InRange(0.05, 0.15)
+						if cult.Name == "sun_worship" || cult.Name == "moon_worship" {
+							coef, err := pm.RandFloat64InRange(0.05, 0.15)
+							if err != nil {
+								return false, err
+							}
+							addCoef += coef
 						}
 					}
 				}
 
 				if len(hs.theology.Traits) > 0 {
 					for _, trait := range hs.theology.Traits {
-						if trait.Name == "Astrology" {
-							addCoef += pm.RandFloat64InRange(0.1, 0.2)
+						if trait.Name == "astrology" {
+							coef, err := pm.RandFloat64InRange(0.1, 0.2)
+							if err != nil {
+								return false, err
+							}
+							addCoef += coef
 						}
 					}
 				}
@@ -89,29 +101,37 @@ func (hs *Holydays) getAllHolydays() []*trait {
 			},
 		},
 		{
-			Name: "WinterSolstice",
+			Name: "winter_solstice",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Educational:  0.1,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, selectedHolydays []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedHolydays []*trait) (bool, error) {
 				var addCoef float64
 				if len(hs.theology.Cults) > 0 {
 					for _, cult := range hs.theology.Cults {
 						if cult == nil {
 							continue
 						}
-						if cult.Name == "SunWorship" || cult.Name == "MoonWorship" {
-							addCoef += pm.RandFloat64InRange(0.05, 0.15)
+						if cult.Name == "sun_worship" || cult.Name == "moon_worship" {
+							coef, err := pm.RandFloat64InRange(0.05, 0.15)
+							if err != nil {
+								return false, err
+							}
+							addCoef += coef
 						}
 					}
 				}
 
 				if len(hs.theology.Traits) > 0 {
 					for _, trait := range hs.theology.Traits {
-						if trait.Name == "Astrology" {
-							addCoef += pm.RandFloat64InRange(0.1, 0.2)
+						if trait.Name == "astrology" {
+							coef, err := pm.RandFloat64InRange(0.1, 0.2)
+							if err != nil {
+								return false, err
+							}
+							addCoef += coef
 						}
 					}
 				}
@@ -120,8 +140,12 @@ func (hs *Holydays) getAllHolydays() []*trait {
 					if holyday == nil {
 						continue
 					}
-					if holyday.Name == "SummerSolstice" {
-						addCoef += pm.RandFloat64InRange(0.25, 0.5)
+					if holyday.Name == "summer_solstice" {
+						coef, err := pm.RandFloat64InRange(0.25, 0.5)
+						if err != nil {
+							return false, err
+						}
+						addCoef += coef
 					}
 				}
 
@@ -129,71 +153,75 @@ func (hs *Holydays) getAllHolydays() []*trait {
 			},
 		},
 		{
-			Name: "CalendarOfFeasts",
+			Name: "calendar_of_feasts",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Educational:  0.5,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "NewYear",
+			Name: "new_year",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.5,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "DanceParty",
+			Name: "dance_party",
 			_religionMetadata: &religionMetadata{
 				Simple:         0.75,
 				Collectivistic: 0.5,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "DrumParty",
+			Name: "drum_party",
 			_religionMetadata: &religionMetadata{
 				Simple:         0.75,
 				Collectivistic: 0.5,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "SocialFestivals",
+			Name: "social_festivals",
 			_religionMetadata: &religionMetadata{
 				Collectivistic: 1,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "TreeCelebration",
+			Name: "tree_celebration",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       0.75,
 			},
 			baseCoef: hs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				if len(hs.theology.Traits) > 0 {
 					for _, trait := range hs.theology.Traits {
-						if trait.Name == "TreeConnection" {
-							addCoef += pm.RandFloat64InRange(0.1, 0.2)
+						if trait.Name == "tree_connection" {
+							coef, err := pm.RandFloat64InRange(0.1, 0.2)
+							if err != nil {
+								return false, err
+							}
+							addCoef += coef
 						}
 					}
 				}

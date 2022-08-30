@@ -17,7 +17,7 @@ func (o *Orchestrator) ShowReligions() {
 }
 
 func (o *Orchestrator) CreateReligion(c *culture.Culture) (*religion.Religion, error) {
-	return religion.New(c)
+	return religion.New(religion.Config{StorageFolderName: o.storageFolderName}, c)
 }
 
 func (o *Orchestrator) CreateReligions(c []*culture.Culture) ([]*religion.Religion, error) {

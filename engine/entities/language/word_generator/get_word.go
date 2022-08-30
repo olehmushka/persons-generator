@@ -2,41 +2,47 @@ package word_generator
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 
 	"persons_generator/core/tools"
+	we "persons_generator/core/wrapped_error"
 	pm "persons_generator/engine/probability_machine"
 )
 
-func GetWord(base string, nameBases map[string][]string, min, max int, dupl string) string {
+func GetWord(base string, nameBases map[string][]string, min, max int, dupl string) (string, error) {
 	if base == "" {
-		panic("Please define a base")
+		return "", we.New(http.StatusInternalServerError, nil, "Please define a base")
 	}
 
+	var err error
 	var data Chain
 	for i := 0; i < 20; i++ {
 		var ok bool
 		if data, ok = Chains[base]; !ok {
-			UpdateChains(base, nameBases)
+			if err := UpdateChains(base, nameBases); err != nil {
+				return "", err
+			}
 			continue
 		}
 		break
 	}
 
 	if len(data) == 0 {
-		panic(fmt.Sprintf("name_base %s is incorrect! [1]", base))
+		return "", we.New(http.StatusInternalServerError, nil, fmt.Sprintf("name_base %s is incorrect! [1]", base))
 	}
 
 	val, ok := data[""]
 	if !ok {
-		panic(fmt.Sprintf("name_base %s is incorrect! [2]", base))
+		return "", we.New(http.StatusInternalServerError, nil, fmt.Sprintf("name_base %s is incorrect! [2]", base))
 	}
 
 	v := val
-	var (
-		cur = tools.RandomValueOfSlice(pm.RandFloat64, v)
-		w   = ""
-	)
+	var cur, w string
+	cur, err = tools.RandomValueOfSlice(pm.RandFloat64, v)
+	if err != nil {
+		return "", err
+	}
 
 	for i := 0; i < 20; i++ {
 		if cur == "" {
@@ -65,7 +71,10 @@ func GetWord(base string, nameBases map[string][]string, min, max int, dupl stri
 		}
 
 		w += cur
-		cur = tools.RandomValueOfSlice(pm.RandFloat64, v)
+		cur, err = tools.RandomValueOfSlice(pm.RandFloat64, v)
+		if err != nil {
+			return "", err
+		}
 	}
 
 	// parse word to get a final name
@@ -121,10 +130,13 @@ func GetWord(base string, nameBases map[string][]string, min, max int, dupl stri
 
 	if len(name) < 2 {
 		fmt.Printf("name is too short! Random name will be selected\n")
-		name = tools.RandomValueOfSlice(pm.RandFloat64, nameBases[base])
+		name, err = tools.RandomValueOfSlice(pm.RandFloat64, nameBases[base])
+		if err != nil {
+			return "", err
+		}
 	}
 
-	return name
+	return name, nil
 }
 
 func hasInsideStrWordsLessThan(str string, min int) bool {

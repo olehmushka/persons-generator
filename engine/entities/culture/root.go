@@ -18,7 +18,7 @@ func (r *Root) Print() {
 	fmt.Printf("Root: %s\n", r.Name)
 }
 
-func getRoot(proto []*Culture) *Root {
+func getRoot(proto []*Culture) (*Root, error) {
 	rs := make([]*Root, 0, len(proto))
 	for _, p := range proto {
 		rs = append(rs, p.Root)
@@ -26,7 +26,7 @@ func getRoot(proto []*Culture) *Root {
 
 	unique := UniqueRoot(rs)
 	if len(unique) == 1 {
-		return unique[0]
+		return unique[0], nil
 	}
 
 	return tools.RandomValueOfSlice(pm.RandFloat64, unique)

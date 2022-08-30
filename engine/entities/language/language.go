@@ -2,8 +2,10 @@ package language
 
 import (
 	"fmt"
+	"net/http"
 
 	"persons_generator/core/tools"
+	"persons_generator/core/wrapped_error"
 	g "persons_generator/engine/entities/gender"
 	wg "persons_generator/engine/entities/language/word_generator"
 	pm "persons_generator/engine/probability_machine"
@@ -17,7 +19,7 @@ type Language struct {
 	IsLiving    bool
 }
 
-func New(preferred []string) *Language {
+func New(preferred []string) (*Language, error) {
 	if len(preferred) == 0 {
 		return tools.RandomValueOfSlice(pm.RandFloat64, AllLanguages)
 	}
@@ -32,7 +34,7 @@ func New(preferred []string) *Language {
 	case 0:
 		return tools.RandomValueOfSlice(pm.RandFloat64, AllLanguages)
 	case 1:
-		return langs[0]
+		return langs[0], nil
 	default:
 		return tools.RandomValueOfSlice(pm.RandFloat64, langs)
 	}
@@ -57,9 +59,10 @@ func (l *Language) GetWord() (string, error) {
 		return "", err
 	}
 	if wb == nil {
-		panic(fmt.Sprintf("can not get word base (language=%s)", l.Name))
+		return "", wrapped_error.New(http.StatusInternalServerError, nil, fmt.Sprintf("can not get word base (language=%s)", l.Name))
 	}
-	return wg.GetWord(wb.Name, ExtractWords(AllWordBases), wb.Min, wb.Max, wb.Dupl), nil
+
+	return wg.GetWord(wb.Name, ExtractWords(AllWordBases), wb.Min, wb.Max, wb.Dupl)
 }
 
 func (l *Language) Print() {
@@ -96,7 +99,7 @@ func (l *Language) GetReligionName() (string, error) {
 	return wg.GetReligionName(w), nil
 }
 
-func (l *Language) GetOwnName(sex g.Sex) string {
+func (l *Language) GetOwnName(sex g.Sex) (string, error) {
 	if sex == g.MaleSex {
 		return tools.RandomValueOfSlice(pm.RandFloat64, l.WordBase.MaleOwnNames)
 	}
@@ -104,7 +107,7 @@ func (l *Language) GetOwnName(sex g.Sex) string {
 		return tools.RandomValueOfSlice(pm.RandFloat64, l.WordBase.FemaleOwnNames)
 	}
 
-	return ""
+	return "", nil
 }
 
 func IsLanguagesEqual(l1, l2 *Language) bool {

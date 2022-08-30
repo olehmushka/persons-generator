@@ -52,11 +52,11 @@ func (t *Type) IsAtheism() bool {
 type TypeName string
 
 const (
-	MonotheismType   TypeName = "Monotheism"
-	PolytheismType   TypeName = "Polytheism"
-	DeityDualismType TypeName = "DeityDualism"
-	DeismType        TypeName = "Deism" // Deism is the belief in the existence of God solely based on rational thought without any reliance on revealed religions or religious authority
-	AtheismType      TypeName = "Atheism"
+	MonotheismType   TypeName = "monotheism"
+	PolytheismType   TypeName = "polytheism"
+	DeityDualismType TypeName = "deity_dualism"
+	DeismType        TypeName = "deism" // Deism is the belief in the existence of God solely based on rational thought without any reliance on revealed religions or religious authority
+	AtheismType      TypeName = "atheism"
 )
 
 func (t *Type) GenerateTypeName() TypeName {
@@ -80,10 +80,10 @@ func (t *Type) GenerateTypeName() TypeName {
 type SubtypeName string
 
 const (
-	ClassicPolytheismSubtype   SubtypeName = "Classic"
-	HenothismPolytheismSubtype SubtypeName = "Henothism" //  is the worship of a single, supreme god while not denying the existence or possible existence of other lower deities.[
-	MonolatryPolytheismSubtype SubtypeName = "Monolatry" // is the belief in the existence of many gods, but with the consistent worship of only one deity
-	OmnismPolytheismSubtype    SubtypeName = "Omnism"
+	ClassicPolytheismSubtype   SubtypeName = "classic"
+	HenothismPolytheismSubtype SubtypeName = "henothism" //  is the worship of a single, supreme god while not denying the existence or possible existence of other lower deities.[
+	MonolatryPolytheismSubtype SubtypeName = "monolatry" // is the belief in the existence of many gods, but with the consistent worship of only one deity
+	OmnismPolytheismSubtype    SubtypeName = "omnism"
 )
 
 func (t *Type) GenerateSubtypeName() SubtypeName {

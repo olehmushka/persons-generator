@@ -16,30 +16,46 @@ type Rituals struct {
 	Holyday    []*trait
 }
 
-func (t *Theology) generateRituals() *Rituals {
+func (t *Theology) generateRituals() (*Rituals, error) {
 	rs := &Rituals{religion: t.religion, theology: t}
-	rs.Initiation = generateTraits(rs.religion, rs.getAllInitiationRituals(), generateTraitsOpts{
+	initiation, err := generateTraits(rs.religion, rs.getAllInitiationRituals(), generateTraitsOpts{
 		Label: "Rituals.generateInitiationRituals",
 		Min:   1,
 		Max:   3,
 	})
-	rs.Funeral = generateTraits(rs.religion, rs.getAllFuneralRituals(), generateTraitsOpts{
+	if err != nil {
+		return nil, err
+	}
+	rs.Initiation = initiation
+	funeral, err := generateTraits(rs.religion, rs.getAllFuneralRituals(), generateTraitsOpts{
 		Label: "Rituals.generateFuneralRituals",
 		Min:   1,
 		Max:   3,
 	})
-	rs.Sacrifice = generateTraits(rs.religion, rs.getAllSacrificeRituals(), generateTraitsOpts{
+	if err != nil {
+		return nil, err
+	}
+	rs.Funeral = funeral
+	sacrifice, err := generateTraits(rs.religion, rs.getAllSacrificeRituals(), generateTraitsOpts{
 		Label: "Rituals.generateSacrificeRituals",
 		Min:   0,
 		Max:   3,
 	})
-	rs.Holyday = generateTraits(rs.religion, rs.getAllHolydayRituals(), generateTraitsOpts{
+	if err != nil {
+		return nil, err
+	}
+	rs.Sacrifice = sacrifice
+	holyday, err := generateTraits(rs.religion, rs.getAllHolydayRituals(), generateTraitsOpts{
 		Label: "Rituals.generateHolydayRituals",
 		Min:   0,
 		Max:   3,
 	})
+	if err != nil {
+		return nil, err
+	}
+	rs.Holyday = holyday
 
-	return rs
+	return rs, nil
 }
 
 func (rs *Rituals) Print() {
@@ -94,49 +110,57 @@ SituativeRituals:
 func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 	return []*trait{
 		{
-			Name: "MarriageWithDeity",
+			Name: "marriage_with_deity",
 			_religionMetadata: &religionMetadata{
 				SexualActive:    0.5,
 				Lawful:          0.1,
 				Individualistic: 0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "Baptism",
+			Name: "baptism",
 			_religionMetadata: &religionMetadata{
 				Individualistic: 0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "InitialTattoo",
+			Name: "initial_tattoo",
 			_religionMetadata: &religionMetadata{
 				Chthonic:        0.1,
 				Individualistic: 0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				if r.Theology != nil && r.Theology.Taboos != nil && len(r.Theology.Taboos.Taboos) > 0 {
 					for _, taboo := range r.Theology.Taboos.Taboos {
 						if taboo == nil {
 							continue
 						}
-						if taboo.Name == "Tattoos" {
+						if taboo.Name == "tattoos" {
 							switch taboo.Acceptance {
 							case Accepted:
-								addCoef += pm.RandFloat64InRange(0.01, 0.1)
+								coef, err := pm.RandFloat64InRange(0.01, 0.1)
+								if err != nil {
+									return false, err
+								}
+								addCoef += coef
 							case Shunned:
-								addCoef += -pm.RandFloat64InRange(0.01, 0.1)
+								coef, err := pm.RandFloat64InRange(0.01, 0.1)
+								if err != nil {
+									return false, err
+								}
+								addCoef -= coef
 							case Criminal:
-								return false
+								return false, nil
 							}
 						}
 					}
@@ -145,36 +169,36 @@ func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 			},
 		},
 		{
-			Name: "OathOfLoyalty",
+			Name: "oath_of_loyalty",
 			_religionMetadata: &religionMetadata{
 				Lawful:          0.75,
 				Individualistic: 0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "InitiationByFast",
+			Name: "initiation_by_fast",
 			_religionMetadata: &religionMetadata{
 				Ascetic:         1,
 				Individualistic: 0.25,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "InitiationByFire",
+			Name: "initiation_by_fire",
 			_religionMetadata: &religionMetadata{
 				Chthonic:        0.25,
 				Aggressive:      0.1,
 				Individualistic: 0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -184,35 +208,35 @@ func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 func (rs *Rituals) getAllFuneralRituals() []*trait {
 	return []*trait{
 		{
-			Name: "SkyBurials",
+			Name: "sky_burials",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Lawful:       0.25,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "CaveBurials",
+			Name: "cave_burials",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Lawful:       0.25,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "UndergroundBurials",
+			Name: "underground_burials",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Lawful:       0.25,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -222,23 +246,27 @@ func (rs *Rituals) getAllFuneralRituals() []*trait {
 func (rs *Rituals) getAllSacrificeRituals() []*trait {
 	return []*trait{
 		{
-			Name: "RitualSuicide",
+			Name: "ritual_suicide",
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "Suicide" {
+					if taboo.Name == "suicide" {
 						if taboo.Acceptance.IsCriminal() {
-							return false
+							return false, nil
 						}
 						if taboo.Acceptance.IsShunned() {
-							addCoef += -pm.RandFloat64InRange(0.01, 0.05)
+							coef, err := pm.RandFloat64InRange(0.01, 0.05)
+							if err != nil {
+								return false, err
+							}
+							addCoef -= coef
 						}
 					}
 				}
@@ -246,75 +274,91 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 			},
 		},
 		{
-			Name: "AnimalSacrifice",
+			Name: "animal_sacrifice",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Simple:       0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "KillAnimals" {
+					if taboo.Name == "kill_animals" {
 						if taboo.Acceptance.IsCriminal() {
-							return false
+							return false, nil
 						}
 						if taboo.Acceptance.IsShunned() {
-							addCoef += -pm.RandFloat64InRange(0.01, 0.05)
+							coef, err := pm.RandFloat64InRange(0.01, 0.05)
+							if err != nil {
+								return false, err
+							}
+							addCoef -= coef
 						}
 					}
 				}
 				if r.Type.IsPolytheism() {
-					addCoef += pm.RandFloat64InRange(0.1, 0.2)
+					coef, err := pm.RandFloat64InRange(0.1, 0.2)
+					if err != nil {
+						return false, err
+					}
+					addCoef += coef
 				}
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "Hecatombs",
+			Name: "hecatombs",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Simple:       0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, selectedRituals []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedRituals []*trait) (bool, error) {
 				var addCoef float64
 				for _, ritual := range selectedRituals {
 					if ritual == nil {
 						continue
 					}
-					if ritual.Name == "AnimalSacrifice" {
-						addCoef += pm.RandFloat64InRange(0.1, 0.2)
+					if ritual.Name == "animal_sacrifice" {
+						coef, err := pm.RandFloat64InRange(0.1, 0.2)
+						if err != nil {
+							return false, err
+						}
+						addCoef += coef
 					}
 				}
 				if addCoef == 0 {
-					return false
+					return false, nil
 				}
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "HumanSacrifice",
+			Name: "human_sacrifice",
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "KillHumans" {
+					if taboo.Name == "kill_humans" {
 						if taboo.Acceptance.IsCriminal() {
-							return false
+							return false, nil
 						}
 						if taboo.Acceptance.IsShunned() {
-							addCoef += -pm.RandFloat64InRange(0.05, 0.15)
+							coef, err := pm.RandFloat64InRange(0.05, 0.15)
+							if err != nil {
+								return false, err
+							}
+							addCoef -= coef
 						}
 					}
 				}
@@ -322,35 +366,39 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 			},
 		},
 		{
-			Name: "ChildSacrifice",
+			Name: "child_sacrifice",
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
 			baseCoef: rs.religion.M.LowBaseCoef,
-			Calc: func(r *Religion, self *trait, selectedRituals []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedRituals []*trait) (bool, error) {
 				var addCoef float64
 				for _, ritual := range selectedRituals {
 					if ritual == nil {
 						continue
 					}
-					if ritual.Name == "HumanSacrifice" {
-						addCoef += pm.RandFloat64InRange(0.01, 0.1)
+					if ritual.Name == "human_sacrifice" {
+						coef, err := pm.RandFloat64InRange(0.01, 0.1)
+						if err != nil {
+							return false, err
+						}
+						addCoef += coef
 					}
 				}
 				if addCoef == 0 {
-					return false
+					return false, nil
 				}
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "PlantsSacrifice",
+			Name: "plants_sacrifice",
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
@@ -360,43 +408,51 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 func (rs *Rituals) getAllHolydayRituals() []*trait {
 	return []*trait{
 		{
-			Name: "GreatFast",
+			Name: "great_fast",
 			_religionMetadata: &religionMetadata{
 				Ascetic:        1,
 				Collectivistic: 0.25,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "RitesAndChants",
+			Name: "rites_and_chants",
 			_religionMetadata: &religionMetadata{
 				Hedonistic: 0.75,
 				Simple:     1,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "Orgy",
+			Name: "orgy",
 			_religionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Hedonistic:   1,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
-					if taboo.Name == "MaleAdultery" || taboo.Name == "FemaleAdultery" {
+					if taboo.Name == "male_adultery" || taboo.Name == "female_adultery" {
 						if taboo.Acceptance.IsCriminal() {
-							addCoef += -pm.RandFloat64InRange(0.1, 0.3)
+							coef, err := pm.RandFloat64InRange(0.1, 0.3)
+							if err != nil {
+								return false, err
+							}
+							addCoef -= coef
 						}
 						if taboo.Acceptance.IsShunned() {
-							addCoef += -pm.RandFloat64InRange(0.05, 0.1)
+							coef, err := pm.RandFloat64InRange(0.05, 0.1)
+							if err != nil {
+								return false, err
+							}
+							addCoef -= coef
 						}
 					}
 				}
@@ -404,23 +460,35 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			},
 		},
 		{
-			Name: "SmokeCircle",
+			Name: "smoke_circle",
 			_religionMetadata: &religionMetadata{
 				Naturalistic:   0.25,
 				Collectivistic: 0.5,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
-					if taboo.Name == "UseNicotine" || taboo.Name == "UseCannabis" || taboo.Name == "UseHallucinogens" {
+					if taboo.Name == "use_nicotine" || taboo.Name == "use_cannabis" || taboo.Name == "use_hallucinogens" {
 						switch {
 						case taboo.Acceptance.IsAccepted():
-							addCoef += pm.RandFloat64InRange(0.05, 0.15)
+							coef, err := pm.RandFloat64InRange(0.05, 0.15)
+							if err != nil {
+								return false, err
+							}
+							addCoef += coef
 						case taboo.Acceptance.IsShunned():
-							addCoef += -pm.RandFloat64InRange(0.01, 0.05)
+							coef, err := pm.RandFloat64InRange(0.01, 0.05)
+							if err != nil {
+								return false, err
+							}
+							addCoef -= coef
 						case taboo.Acceptance.IsCriminal():
-							addCoef += -pm.RandFloat64InRange(0.05, 0.1)
+							coef, err := pm.RandFloat64InRange(0.05, 0.1)
+							if err != nil {
+								return false, err
+							}
+							addCoef -= coef
 						}
 					}
 				}
@@ -428,22 +496,30 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			},
 		},
 		{
-			Name: "GladiatorDuel",
+			Name: "gladiator_duel",
 			_religionMetadata: &religionMetadata{
 				Aggressive: 1,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
-					if taboo.Name == "KillHumans" {
+					if taboo.Name == "kill_humans" {
 						switch {
 						case taboo.Acceptance.IsAccepted():
-							addCoef += pm.RandFloat64InRange(0.05, 0.15)
+							coef, err := pm.RandFloat64InRange(0.05, 0.15)
+							if err != nil {
+								return false, err
+							}
+							addCoef += coef
 						case taboo.Acceptance.IsShunned():
-							addCoef += -pm.RandFloat64InRange(0.01, 0.05)
+							coef, err := pm.RandFloat64InRange(0.01, 0.05)
+							if err != nil {
+								return false, err
+							}
+							addCoef -= coef
 						case taboo.Acceptance.IsCriminal():
-							return false
+							return false, nil
 						}
 					}
 				}
@@ -451,22 +527,30 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			},
 		},
 		{
-			Name: "RitualCannibalism",
+			Name: "ritual_cannibalism",
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
 			baseCoef: rs.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
-					if taboo.Name == "Cannibalism" {
+					if taboo.Name == "cannibalism" {
 						switch {
 						case taboo.Acceptance.IsAccepted():
-							addCoef += pm.RandFloat64InRange(0.05, 0.15)
+							coef, err := pm.RandFloat64InRange(0.05, 0.15)
+							if err != nil {
+								return false, err
+							}
+							addCoef += coef
 						case taboo.Acceptance.IsShunned():
-							addCoef += -pm.RandFloat64InRange(0.03, 0.075)
+							coef, err := pm.RandFloat64InRange(0.03, 0.075)
+							if err != nil {
+								return false, err
+							}
+							addCoef -= coef
 						case taboo.Acceptance.IsCriminal():
-							return false
+							return false, nil
 						}
 					}
 				}

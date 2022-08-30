@@ -58,7 +58,11 @@ func NewHuman(
 	if err := json.Unmarshal(b.Bytes(), &h); err != nil {
 		return nil, err
 	}
-	h.OwnName = c.Language.GetOwnName(sex)
+	name, err := c.Language.GetOwnName(sex)
+	if err != nil {
+		return nil, err
+	}
+	h.OwnName = name
 	h.Culture = c
 	h.Religion = r
 	h.Gene = g

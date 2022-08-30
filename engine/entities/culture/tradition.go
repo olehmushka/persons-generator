@@ -34,7 +34,7 @@ func (c *Culture) PrintTraditions() {
 	}
 }
 
-func getTraditions(proto []*Culture) []*Tradition {
+func getTraditions(proto []*Culture) ([]*Tradition, error) {
 	ts := make([]*Tradition, 0, len(proto))
 	var traditionsAmount int
 	for _, p := range proto {

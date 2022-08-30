@@ -13,11 +13,15 @@ type HumanDoctrine struct {
 	Nature *HumanNature
 }
 
-func (d *Doctrine) generateHumanDoctrine() *HumanDoctrine {
+func (d *Doctrine) generateHumanDoctrine() (*HumanDoctrine, error) {
 	hd := &HumanDoctrine{religion: d.religion, doctrine: d}
-	hd.Nature = hd.generateHumanNature()
+	n, err := hd.generateHumanNature()
+	if err != nil {
+		return nil, err
+	}
+	hd.Nature = n
 
-	return hd
+	return hd, nil
 }
 
 func (hd *HumanDoctrine) Print() {
@@ -32,16 +36,24 @@ type HumanNature struct {
 	Traits   []*trait
 }
 
-func (hd *HumanDoctrine) generateHumanNature() *HumanNature {
+func (hd *HumanDoctrine) generateHumanNature() (*HumanNature, error) {
 	hn := &HumanNature{religion: hd.religion, humanDoctrine: hd}
-	hn.Goodness = hn.generateGoodness()
-	hn.Traits = generateTraits(hd.religion, hn.getAllHumanNatureTraits(), generateTraitsOpts{
+	goodness, err := hn.generateGoodness()
+	if err != nil {
+		return nil, err
+	}
+	hn.Goodness = goodness
+	ts, err := generateTraits(hd.religion, hn.getAllHumanNatureTraits(), generateTraitsOpts{
 		Label: "HumanNature.generateTraits",
 		Min:   1,
 		Max:   2,
 	})
+	if err != nil {
+		return nil, err
+	}
+	hn.Traits = ts
 
-	return hn
+	return hn, nil
 }
 
 func (hn *HumanNature) Print() {
@@ -54,79 +66,134 @@ func (hn *HumanNature) Print() {
 	}
 }
 
-func (hn *HumanNature) generateGoodness() GoodnessNature {
-	return GoodnessNature{
-		Goodness: hn.getGoodnessByReligionMetadata(),
-		Level:    hn.getGoodnessLevelByReligionMetadata(),
+func (hn *HumanNature) generateGoodness() (GoodnessNature, error) {
+	out := GoodnessNature{}
+	goodness, err := hn.getGoodnessByReligionMetadata()
+	if err != nil {
+		return out, err
 	}
+	out.Goodness = goodness
+
+	level, err := hn.getGoodnessLevelByReligionMetadata()
+	if err != nil {
+		return out, err
+	}
+	out.Level = level
+
+	return out, nil
 }
 
-func (hn *HumanNature) getGoodnessByReligionMetadata() Goodness {
-	var (
-		rmCoef  = pm.RandFloat64InRange(0.05, 0.15)
-		good    = pm.RandFloat64InRange(0.1, 0.2)
-		neutral = pm.RandFloat64InRange(0.1, 0.2)
-		evil    = pm.RandFloat64InRange(0.1, 0.2)
-	)
+func (hn *HumanNature) getGoodnessByReligionMetadata() (Goodness, error) {
+	rmCoef, err := pm.RandFloat64InRange(0.05, 0.15)
+	if err != nil {
+		return "", err
+	}
+	good, err := pm.RandFloat64InRange(0.1, 0.2)
+	if err != nil {
+		return "", err
+	}
+	neutral, err := pm.RandFloat64InRange(0.1, 0.2)
+	if err != nil {
+		return "", err
+	}
+	evil, err := pm.RandFloat64InRange(0.1, 0.2)
+	if err != nil {
+		return "", err
+	}
+
 	if hn.religion.metadata.IsHedonistic() || hn.religion.metadata.IsAltruistic() {
-		good += pm.RandFloat64InRange(0.05, 0.1) * rmCoef
-		neutral += pm.RandFloat64InRange(0.05, 0.1) * rmCoef
+		goodP, err := pm.RandFloat64InRange(0.05, 0.1)
+		if err != nil {
+			return "", err
+		}
+		good += goodP * rmCoef
+		neutralP, err := pm.RandFloat64InRange(0.05, 0.1)
+		if err != nil {
+			return "", err
+		}
+		neutral += neutralP * rmCoef
 	}
 	if hn.religion.metadata.IsChthonic() {
-		evil += pm.RandFloat64InRange(0.1, 0.25) * rmCoef
+		evilP, err := pm.RandFloat64InRange(0.1, 0.25)
+		if err != nil {
+			return "", err
+		}
+		evil += evilP * rmCoef
 	}
 
 	for _, goal := range hn.humanDoctrine.doctrine.HighGoal.Goals {
-		if goal.Name == "InvestigateMyself" {
-			good += pm.RandFloat64InRange(0.01, 0.1)
+		if goal.Name == "investigate_myself" {
+			goodP, err := pm.RandFloat64InRange(0.01, 0.1)
+			if err != nil {
+				return "", err
+			}
+			good += goodP
 		}
 	}
 
-	return getGoodnessByProbability(good, neutral, evil)
+	return getGoodnessByProbability(good, neutral, evil), nil
 }
 
-func (hn *HumanNature) getGoodnessLevelByReligionMetadata() Level {
-	var (
-		rmCoef = pm.RandFloat64InRange(0.05, 0.15)
-		major  = pm.RandFloat64InRange(0.1, 0.2)
-		middle = pm.RandFloat64InRange(0.1, 0.2)
-		minor  = pm.RandFloat64InRange(0.1, 0.2)
-	)
+func (hn *HumanNature) getGoodnessLevelByReligionMetadata() (Level, error) {
+	rmCoef, err := pm.RandFloat64InRange(0.05, 0.15)
+	if err != nil {
+		return "", err
+	}
+	major, err := pm.RandFloat64InRange(0.1, 0.2)
+	if err != nil {
+		return "", err
+	}
+	middle, err := pm.RandFloat64InRange(0.1, 0.2)
+	if err != nil {
+		return "", err
+	}
+	minor, err := pm.RandFloat64InRange(0.1, 0.2)
+	if err != nil {
+		return "", err
+	}
 	if hn.religion.metadata.IsLiberal() {
-		minor += pm.RandFloat64InRange(0.1, 0.25) * rmCoef
+		minorP, err := pm.RandFloat64InRange(0.1, 0.25)
+		if err != nil {
+			return "", err
+		}
+		minor += minorP * rmCoef
 	}
 
-	return getLevelByProbability(major, middle, minor)
+	return getLevelByProbability(major, middle, minor), nil
 }
 
 func (hn *HumanNature) getAllHumanNatureTraits() []*trait {
 	return []*trait{
 		{
-			Name: "HasSoul",
+			Name: "has_soul",
 			_religionMetadata: &religionMetadata{
 				Naturalistic:    0.5,
 				Individualistic: 0.75,
 			},
 			baseCoef: hn.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, _ []*trait) bool {
+			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "CanBeSaint",
+			Name: "can_be_saint",
 			_religionMetadata: &religionMetadata{
 				Ascetic:         0.5,
 				Individualistic: 1,
 			},
 			baseCoef: hn.religion.M.BaseCoef,
-			Calc: func(r *Religion, self *trait, selectedTraits []*trait) bool {
+			Calc: func(r *Religion, self *trait, selectedTraits []*trait) (bool, error) {
 				var addCoef float64
 				for _, goal := range hn.humanDoctrine.doctrine.HighGoal.Goals {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "BecomePerfectAndSaints" {
-						addCoef += pm.RandFloat64InRange(0.15, 0.25)
+					if goal.Name == "become_perfect_and_saints" {
+						coef, err := pm.RandFloat64InRange(0.15, 0.25)
+						if err != nil {
+							return false, err
+						}
+						addCoef += coef
 					}
 				}
 
