@@ -21,6 +21,7 @@ func serializeCulture(in *engineCulture.Culture) *entities.Culture {
 	}
 
 	return &entities.Culture{
+		ID:              in.ID,
 		Name:            in.Name,
 		Proto:           serializeCultures(in.Proto),
 		CultureGroup:    serializeWideCulture(in.Abstuct),

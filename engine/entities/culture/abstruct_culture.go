@@ -1,6 +1,6 @@
 package culture
 
 type AbstructCulture struct {
-	Name string
-	Root *Root
+	Name string `json:"name"`
+	Root *Root  `json:"root"`
 }

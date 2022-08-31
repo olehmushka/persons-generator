@@ -7,13 +7,13 @@ import (
 )
 
 type Ethos struct {
-	Name string
+	Name string `json:"name"`
 
-	IsDiplomatic     bool
-	IsWarlike        bool
-	IsAdministrative bool
-	IsIntrigue       bool
-	IsScholarly      bool
+	IsDiplomatic     bool `json:"is_diplomatic"`
+	IsWarlike        bool `json:"is_warlike"`
+	IsAdministrative bool `json:"is_administrative"`
+	IsIntrigue       bool `json:"is_intrigue"`
+	IsScholarly      bool `json:"is_scholarly"`
 }
 
 func (e *Ethos) Print() {

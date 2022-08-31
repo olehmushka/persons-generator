@@ -17,17 +17,17 @@ import (
 )
 
 type Culture struct {
-	ID    uuid.UUID
-	Proto []*Culture
-	Name  string
+	ID    uuid.UUID  `json:"id"`
+	Proto []*Culture `json:"proto"`
+	Name  string     `json:"name"`
 
-	Abstuct         *AbstructCulture
-	Root            *Root
-	Language        *language.Language
-	Ethos           *Ethos
-	Traditions      []*Tradition
-	GenderDominance *g.Dominance
-	MartialCustom   g.Acceptance
+	Abstuct         *AbstructCulture   `json:"abstract"`
+	Root            *Root              `json:"root"`
+	Language        *language.Language `json:"language"`
+	Ethos           *Ethos             `json:"ethos"`
+	Traditions      []*Tradition       `json:"traditions"`
+	GenderDominance *g.Dominance       `json:"gender_dominance"`
+	MartialCustom   g.Acceptance       `json:"martial_custom"`
 
 	storageFolderName string
 }
@@ -292,14 +292,30 @@ func (c *Culture) Save() error {
 	if c == nil {
 		return we.New(http.StatusInternalServerError, nil, "can not save nil culture")
 	}
-	fmt.Printf("B\n%s\n\n", string(c.ID.String()))
+
 	b, err := json.MarshalIndent(c, "", " ")
 	if err != nil {
 		return err
 	}
-	fmt.Printf("B\n%s\n\n", string(b))
 
 	return js.
 		New(js.Config{StorageFolderName: c.storageFolderName}).
 		Store(strings.Join([]string{"culture", c.ID.String()}, "_")+".json", b)
+}
+
+func ReadByID(storageFolderName string, id uuid.UUID) (*Culture, error) {
+	filename := strings.Join([]string{"culture", id.String()}, "_") + ".json"
+	b, err := js.
+		New(js.Config{StorageFolderName: storageFolderName}).
+		Get(filename)
+	if err != nil {
+		return nil, err
+	}
+
+	var out Culture
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, err
+	}
+
+	return &out, nil
 }

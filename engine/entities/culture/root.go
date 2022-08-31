@@ -8,7 +8,7 @@ import (
 )
 
 type Root struct {
-	Name string
+	Name string `json:"name"`
 }
 
 func (r *Root) Print() {

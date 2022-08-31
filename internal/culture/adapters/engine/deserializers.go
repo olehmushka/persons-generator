@@ -41,6 +41,7 @@ func deserializeCulture(in *entities.Culture) *culture.Culture {
 	}
 
 	return &culture.Culture{
+		ID:      in.ID,
 		Name:    in.Name,
 		Proto:   deserializeCultures(in.Proto),
 		Abstuct: deserializeAbstractCulture(in.CultureGroup),

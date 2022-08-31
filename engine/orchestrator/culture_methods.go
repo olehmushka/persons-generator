@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	"persons_generator/engine/entities/culture"
+
+	"github.com/google/uuid"
 )
 
 func (o *Orchestrator) ShowCultures() {
@@ -18,6 +20,10 @@ func (o *Orchestrator) ShowCultures() {
 
 func (o *Orchestrator) CreateCultures(amount int, preferred []*culture.Preference) ([]*culture.Culture, error) {
 	return culture.NewMany(culture.Config{StorageFolderName: o.storageFolderName}, amount, preferred)
+}
+
+func (o *Orchestrator) GetCultureByID(id uuid.UUID) (*culture.Culture, error) {
+	return culture.ReadByID(o.storageFolderName, id)
 }
 
 func (o *Orchestrator) SearchCultures(search string) ([]*culture.Culture, error) {

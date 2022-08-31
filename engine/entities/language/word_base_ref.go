@@ -9,11 +9,11 @@ import (
 const PrefixWordBasesPath = "engine/entities/language/word_bases/"
 
 type WordBaseRef struct {
-	filename string
+	Filename string `json:"filename"`
 }
 
 func (wbr *WordBaseRef) LoadWordBase() (*WordBase, error) {
-	jsonFile, err := os.Open(PrefixWordBasesPath + wbr.filename)
+	jsonFile, err := os.Open(PrefixWordBasesPath + wbr.Filename)
 	if err != nil {
 		return nil, err
 	}

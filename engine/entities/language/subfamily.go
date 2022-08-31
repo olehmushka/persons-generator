@@ -7,10 +7,10 @@ import (
 )
 
 type Subfamily struct {
-	Name              string
-	Family            Family
-	ExtendedSubfamily *Subfamily
-	IsLiving          bool
+	Name              string     `json:"name"`
+	Family            Family     `json:"family"`
+	ExtendedSubfamily *Subfamily `json:"extended_subfamily"`
+	IsLiving          bool       `json:"is_living"`
 }
 
 func (sf *Subfamily) Print() {

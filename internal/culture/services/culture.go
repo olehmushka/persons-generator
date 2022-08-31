@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"fmt"
 
 	"persons_generator/internal/culture/adapters/engine"
 	"persons_generator/internal/culture/entities"
@@ -26,12 +25,11 @@ var Module = fx.Options(
 )
 
 func (s *culture) CreateCultures(ctx context.Context, amount int, preferred []*entities.CulturePreference) ([]*entities.Culture, error) {
-	fmt.Printf("Before create cultures\n\n")
 	cultures, err := s.engineAdp.CreateCultures(ctx, amount, preferred)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("After create cultures\n\n")
+
 	out := make([]*entities.Culture, len(cultures))
 	for i, c := range cultures {
 		if err := c.Save(); err != nil {
@@ -53,8 +51,12 @@ func (s *culture) GetProtoCultures(ctx context.Context, q string, limit, offset 
 }
 
 func (s *culture) GetCultureByID(ctx context.Context, id uuid.UUID) (*entities.Culture, error) {
-	// return s.storageAdp.GetCultureByID(ctx, id)
-	return nil, nil
+	c, err := s.engineAdp.GetCultureByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return serializeCulture(c), nil
 }
 
 func (s *culture) GetOriginalCultureByID(ctx context.Context, id uuid.UUID) ([]byte, error) {
