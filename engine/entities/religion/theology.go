@@ -99,7 +99,7 @@ func (t *Theology) Print() {
 func (t *Theology) getAllTheologyTraits() []*trait {
 	return []*trait{
 		{
-			Name: "messiah",
+			Name: MessiahTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful:          0.25,
 				Authoritaristic: 0.25,
@@ -135,7 +135,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "prophets",
+			Name: ProphetsTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful:          0.5,
 				Authoritaristic: 0.25,
@@ -150,7 +150,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "religious_law",
+			Name: ReligiousLawTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful: 1,
 			},
@@ -165,7 +165,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "reincarnation",
+			Name: ReincarnationTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Individualistic: 0.75,
 				Complicated:     0.75,
@@ -180,7 +180,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "sanctioned_false_conversions", // If your life is threatened, it is acceptable to confess a false faith, as long as you keep the truth in your heart.
+			Name: SanctionedFalseConversionsTheologyTrait, // If your life is threatened, it is acceptable to confess a false faith, as long as you keep the truth in your heart.
 			_religionMetadata: &religionMetadata{
 				Pacifistic:      0.25,
 				Liberal:         1,
@@ -192,7 +192,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "tree_connection", // Trees are the essence of life, and we must be near them.
+			Name: TreeConnectionTheologyTrait, // Trees are the essence of life, and we must be near them.
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Chthonic:     0.25,
@@ -208,7 +208,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "animal_connection",
+			Name: AnimalConnectionTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Chthonic:     0.25,
@@ -224,7 +224,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "blindsight", // Only the blind can perceive true reality
+			Name: BlindsightTheologyTrait, // Only the blind can perceive true reality
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 				Ascetic:  0.5,
@@ -235,7 +235,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "astrology",
+			Name: AstrologyTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Educational:  0.5,
@@ -247,7 +247,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "repentance",
+			Name: RepentanceTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful:  0.25,
 				Ascetic: 0.25,
@@ -262,7 +262,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "martyrdom",
+			Name: MartyrdomTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Ascetic:        0.25,
 				Collectivistic: 0.25,
@@ -272,13 +272,13 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 				var addCoef float64
 				for _, trait := range selectedTraits {
 					switch trait.Name {
-					case "messiah":
+					case MessiahTheologyTrait:
 						coef, err := pm.RandFloat64InRange(0.01, 0.125)
 						if err != nil {
 							return false, err
 						}
 						addCoef += coef
-					case "prophets":
+					case ProphetsTheologyTrait:
 						coef, err := pm.RandFloat64InRange(0.1, 0.2)
 						if err != nil {
 							return false, err
@@ -290,7 +290,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "indulgences",
+			Name: IndulgencesTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 1,
 			},
@@ -304,7 +304,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "holiness",
+			Name: HolinessTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Ascetic:         0.75,
 				Individualistic: 1,
@@ -314,13 +314,13 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 				var addCoef float64
 				for _, goal := range r.Doctrine.HighGoal.Goals {
 					switch goal.Name {
-					case "bring_holiness_down_to_the_world":
+					case BringHolinessDownToTheWorldHighGoal:
 						coef, err := pm.RandFloat64InRange(0.03, 0.1)
 						if err != nil {
 							return false, err
 						}
 						addCoef += coef
-					case "become_perfect_and_saints":
+					case BecomePerfectAndSaintsHighGoal:
 						coef, err := pm.RandFloat64InRange(0.05, 0.15)
 						if err != nil {
 							return false, err
@@ -333,7 +333,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "celibacy",
+			Name: CelibacyTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				SexualStrictness: 1,
 				Ascetic:          1,
@@ -356,7 +356,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "flagellantism",
+			Name: FlagellantismTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Ascetic: 1,
 			},
@@ -365,9 +365,9 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 				var addCoef float64
 				for _, trait := range selectedTraits {
 					switch trait.Name {
-					case "repentance":
+					case RepentanceTheologyTrait:
 						fallthrough
-					case "martyrdom":
+					case MartyrdomTheologyTrait:
 						coef, err := pm.RandFloat64InRange(0.05, 0.15)
 						if err != nil {
 							return false, err
@@ -380,7 +380,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "feed_the_world",
+			Name: FeedTheWorldTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Altruistic: 1,
 			},
@@ -390,7 +390,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "holy_army",
+			Name: HolyArmyTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Chthonic:       0.25,
 				Aggressive:     1,
@@ -411,7 +411,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "defenders_of_faith",
+			Name: DefendersOfFaithTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful:     0.25,
 				Aggressive: 0.75,
@@ -422,7 +422,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "non_violent_resistance",
+			Name: NonViolentResistanceTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Pacifistic: 1,
 			},
@@ -441,7 +441,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "no_more_killing",
+			Name: NoMoreKillingTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Altruistic: 1,
 				Pacifistic: 1,
@@ -456,7 +456,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "animal_messengers",
+			Name: AnimalMessengersTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 			},
@@ -466,7 +466,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "sanctuary_of_mind",
+			Name: SanctuaryOfMindTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Individualistic: 1,
 				Complicated:     0.25,
@@ -477,7 +477,7 @@ func (t *Theology) getAllTheologyTraits() []*trait {
 			},
 		},
 		{
-			Name: "phantoms",
+			Name: PhantomsTheologyTrait,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -498,7 +498,7 @@ func (t *Theology) HasReincarnation() bool {
 		if trait == nil {
 			continue
 		}
-		if trait.Name == "reincarnation" {
+		if trait.Name == ReincarnationTheologyTrait {
 			return true
 		}
 	}

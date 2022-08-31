@@ -42,7 +42,7 @@ func (sd *SocialDoctrine) Print() {
 func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 	return []*trait{
 		{
-			Name: "purity",
+			Name: PuritySocialTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful:          0.25,
 				Ascetic:         0.25,
@@ -55,7 +55,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "live_is_sacred",
+			Name: LiveIsSacredSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.5,
 				Altruistic:   0.75,
@@ -66,7 +66,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 				var addCoef float64
 				for _, goal := range sd.doctrine.HighGoal.Goals {
 					switch goal.Name {
-					case "love_people":
+					case LovePeopleHighGoal:
 						coef, err := pm.RandFloat64InRange(0.03, 0.1)
 						if err != nil {
 							return false, err
@@ -79,7 +79,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "sanctity_of_nature",
+			Name: SanctityOfNatureSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       0.25,
@@ -90,7 +90,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "sacred_childbirth",
+			Name: SacredChildbirthSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				SexualActive: 0.25,
@@ -100,7 +100,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 				var addCoef float64
 				for _, goal := range sd.doctrine.HighGoal.Goals {
 					switch goal.Name {
-					case "produce_children":
+					case ProduceChildrenHighGoal:
 						coef, err := pm.RandFloat64InRange(0.1, 0.25)
 						if err != nil {
 							return false, err
@@ -113,7 +113,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "karma",
+			Name: KarmaSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Pacifistic:  0.5,
 				Complicated: 0.75,
@@ -133,7 +133,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "polyamory",
+			Name: PolyamorySocialTrait,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Hedonistic:   0.75,
@@ -145,7 +145,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "bad_thing_for_good_purpose",
+			Name: BadThingForGoodPurposeSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 0.25,
 				Liberal:  1,
@@ -155,7 +155,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 				var addCoef float64
 				for _, trait := range sd.doctrine.Deity.Nature.Traits {
 					switch trait.Name {
-					case "is_just":
+					case IsJustDeityTrait:
 						coef, err := pm.RandFloat64InRange(0.01, 0.1)
 						if err != nil {
 							return false, err
@@ -168,7 +168,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "raider",
+			Name: RaiderSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   1,
 				Aggressive: 1,
@@ -178,13 +178,13 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 				var addCoef float64
 				for _, goal := range sd.doctrine.HighGoal.Goals {
 					switch goal.Name {
-					case "love_people":
+					case LovePeopleHighGoal:
 						coef, err := pm.RandFloat64InRange(0.05, 0.1)
 						if err != nil {
 							return false, err
 						}
 						addCoef -= coef
-					case "fight_for_evil":
+					case FightForEvilHighGoal:
 						coef, err := pm.RandFloat64InRange(0.075, 0.1)
 						if err != nil {
 							return false, err
@@ -193,7 +193,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 					}
 				}
 				for _, trait := range allTraits {
-					if trait.Name == "karma" {
+					if trait.Name == KarmaSocialTrait {
 						coef, err := pm.RandFloat64InRange(0.05, 0.1)
 						if err != nil {
 							return false, err
@@ -206,7 +206,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "agoge",
+			Name: AgogeSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Aggressive:      1,
 				Authoritaristic: 0.5,
@@ -227,7 +227,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "berserkers",
+			Name: BerserkersSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Chthonic:       0.5,
 				Aggressive:     1,
@@ -248,7 +248,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "honorable_death",
+			Name: HonorableDeathSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Chthonic:        0.5,
 				Aggressive:      1,
@@ -269,7 +269,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "deed_of_expiation",
+			Name: DeedOfExpiationSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Chthonic:        0.5,
 				Aggressive:      1,
@@ -281,7 +281,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "warriors_path",
+			Name: WarriorsPathSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Chthonic:        0.25,
 				Aggressive:      1,
@@ -302,7 +302,7 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 			},
 		},
 		{
-			Name: "kalokagathos",
+			Name: KalokagathosSocialTrait,
 			_religionMetadata: &religionMetadata{
 				Ascetic:         0.25,
 				Authoritaristic: 0.5,

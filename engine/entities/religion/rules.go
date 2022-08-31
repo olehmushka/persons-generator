@@ -37,7 +37,7 @@ func (rs *Rules) Print() {
 func (rs *Rules) getAllRules() []*trait {
 	return []*trait{
 		{
-			Name: "pray_with_frequency",
+			Name: PrayWithFrequencyRule,
 			_religionMetadata: &religionMetadata{
 				Lawful:  0.5,
 				Ascetic: 0.25,
@@ -49,7 +49,7 @@ func (rs *Rules) getAllRules() []*trait {
 			},
 		},
 		{
-			Name: "tax_to_support_poor",
+			Name: TaxToSupportPoorRule,
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 0.25,
 				Altruistic:  1,
@@ -61,7 +61,7 @@ func (rs *Rules) getAllRules() []*trait {
 			},
 		},
 		{
-			Name: "tithe",
+			Name: TitheRule,
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 1,
 				Lawful:      0.5,
@@ -72,7 +72,7 @@ func (rs *Rules) getAllRules() []*trait {
 			},
 		},
 		{
-			Name: "dress_code",
+			Name: DressCodeRule,
 			_religionMetadata: &religionMetadata{
 				Lawful:          0.5,
 				Ascetic:         0.5,
@@ -85,7 +85,7 @@ func (rs *Rules) getAllRules() []*trait {
 			},
 		},
 		{
-			Name: "be_humble",
+			Name: BeHumbleRule,
 			_religionMetadata: &religionMetadata{
 				Altruistic: 1,
 				Simple:     1,
@@ -96,7 +96,7 @@ func (rs *Rules) getAllRules() []*trait {
 			},
 		},
 		{
-			Name: "be_honest",
+			Name: BeHonestRule,
 			_religionMetadata: &religionMetadata{
 				Altruistic: 0.5,
 				Simple:     1,
@@ -107,7 +107,7 @@ func (rs *Rules) getAllRules() []*trait {
 			},
 		},
 		{
-			Name: "learn_key_scriptures",
+			Name: LearnKeyScripturesRule,
 			_religionMetadata: &religionMetadata{
 				Educational:     0.75,
 				Authoritaristic: 0.25,
@@ -118,7 +118,7 @@ func (rs *Rules) getAllRules() []*trait {
 			},
 		},
 		{
-			Name: "tax_nonbelievers",
+			Name: TaxNonbelieversRule,
 			_religionMetadata: &religionMetadata{
 				Plutocratic:     0.5,
 				Authoritaristic: 0.5,

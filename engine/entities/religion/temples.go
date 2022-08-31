@@ -119,7 +119,7 @@ func (ts *Temples) generateSacredPlaces() (bool, error) {
 func (ts *Temples) getAllTemplesTraits() []*trait {
 	return []*trait{
 		{
-			Name: "cult_property",
+			Name: CultPropertyTempleTrait,
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 0.75,
 				Lawful:      0.25,
@@ -128,7 +128,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, trait := range ts.attrs.HolyScripture.Traits {
-					if trait.Name == "divine_law" {
+					if trait.Name == DivineLawHolyScriptureTrait {
 						coef, err := pm.RandFloat64InRange(0.04, 0.1)
 						if err != nil {
 							return false, err
@@ -141,7 +141,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			},
 		},
 		{
-			Name: "inviolacy_of_temples",
+			Name: InviolacyOfTemplesTempleTrait,
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 1,
 				Lawful:      0.25,
@@ -154,7 +154,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 
 				var addCoef float64
 				for _, trait := range ts.attrs.HolyScripture.Traits {
-					if trait.Name == "divine_law" {
+					if trait.Name == DivineLawHolyScriptureTrait {
 						coef, err := pm.RandFloat64InRange(0.04, 0.1)
 						if err != nil {
 							return false, err
@@ -167,7 +167,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			},
 		},
 		{
-			Name: "has_seminaries",
+			Name: HasSeminariesTempleTrait,
 			_religionMetadata: &religionMetadata{
 				Educational:    1,
 				Collectivistic: 0.25,
@@ -184,7 +184,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 				}
 				if ts.attrs.Clerics.HasClerics {
 					for _, trait := range ts.attrs.Clerics.Traits {
-						if trait.Name == "patronship" {
+						if trait.Name == PatronshipClericTrait {
 							coef, err := pm.RandFloat64InRange(0.04, 0.1)
 							if err != nil {
 								return false, err
@@ -193,7 +193,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 						}
 					}
 					for _, function := range ts.attrs.Clerics.Functions {
-						if function.Name == "teach" {
+						if function.Name == TeachClericFunction {
 							coef, err := pm.RandFloat64InRange(0.05, 0.15)
 							if err != nil {
 								return false, err
@@ -207,7 +207,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			},
 		},
 		{
-			Name: "has_libraries",
+			Name: HasLibrariesTempleTrait,
 			_religionMetadata: &religionMetadata{
 				Educational: 1,
 			},
@@ -226,7 +226,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			},
 		},
 		{
-			Name: "has_schools_of_philosophers",
+			Name: HasSchoolsOfPhilosophersTempleTrait,
 			_religionMetadata: &religionMetadata{
 				Educational: 1,
 				Complicated: 0.5,
@@ -246,7 +246,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			},
 		},
 		{
-			Name: "has_gymnasium_schools",
+			Name: HasGymnasiumSchoolsTempleTrait,
 			_religionMetadata: &religionMetadata{
 				Educational:     0.75,
 				Authoritaristic: 0.25,
@@ -257,7 +257,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 				var addCoef float64
 				if ts.attrs.Clerics.HasClerics {
 					for _, trait := range ts.attrs.Clerics.Traits {
-						if trait.Name == "patronship" {
+						if trait.Name == PatronshipClericTrait {
 							coef, err := pm.RandFloat64InRange(0.02, 0.06)
 							if err != nil {
 								return false, err
@@ -266,7 +266,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 						}
 					}
 					for _, function := range ts.attrs.Clerics.Functions {
-						if function.Name == "teach" {
+						if function.Name == TeachClericFunction {
 							coef, err := pm.RandFloat64InRange(0.02, 0.1)
 							if err != nil {
 								return false, err
@@ -280,7 +280,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			},
 		},
 		{
-			Name: "has_shelters",
+			Name: HasSheltersTempleTrait,
 			_religionMetadata: &religionMetadata{
 				Altruistic:     1,
 				Collectivistic: 0.75,
@@ -290,7 +290,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 				var addCoef float64
 				if ts.attrs.Clerics.HasClerics {
 					for _, trait := range ts.attrs.Clerics.Traits {
-						if trait.Name == "patronship" {
+						if trait.Name == PatronshipClericTrait {
 							coef, err := pm.RandFloat64InRange(0.065, 0.105)
 							if err != nil {
 								return false, err
@@ -304,7 +304,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			},
 		},
 		{
-			Name: "temple_healers",
+			Name: TempleHealersTempleTrait,
 			_religionMetadata: &religionMetadata{
 				Altruistic: 1,
 			},
@@ -317,25 +317,25 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 				if ts.attrs.Clerics.HasClerics {
 					for _, function := range ts.attrs.Clerics.Functions {
 						switch function.Name {
-						case "heal":
+						case HealClericFuction:
 							coef, err := pm.RandFloat64InRange(0.1, 0.2)
 							if err != nil {
 								return false, err
 							}
 							addCoef += coef
-						case "oracle":
+						case OracleClericFunction:
 							coef, err := pm.RandFloat64InRange(0.01, 0.065)
 							if err != nil {
 								return false, err
 							}
 							addCoef += coef
-						case "diviner":
+						case DivinerClericFunction:
 							coef, err := pm.RandFloat64InRange(0.025, 0.1)
 							if err != nil {
 								return false, err
 							}
 							addCoef += coef
-						case "druid":
+						case DruidClericFunction:
 							coef, err := pm.RandFloat64InRange(0.015, 0.9)
 							if err != nil {
 								return false, err
@@ -349,7 +349,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			},
 		},
 		{
-			Name: "sacred_stones",
+			Name: SacredStonesTempleTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       0.5,
@@ -364,7 +364,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 			},
 		},
 		{
-			Name: "temple_prostitution",
+			Name: TempleProstitutionTempleTrait,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Plutocratic:  0.75,
@@ -377,7 +377,7 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 						if taboo == nil {
 							continue
 						}
-						if taboo.Name == "prostitution" {
+						if taboo.Name == ProstitutionTabooName {
 							switch taboo.Acceptance {
 							case Accepted:
 								coef, err := pm.RandFloat64InRange(0.1, 0.2)

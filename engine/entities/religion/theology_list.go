@@ -1,0 +1,27 @@
+package religion
+
+const (
+	MessiahTheologyTrait                    = "messiah"
+	ProphetsTheologyTrait                   = "prophets"
+	ReligiousLawTheologyTrait               = "religious_law"
+	ReincarnationTheologyTrait              = "reincarnation"
+	SanctionedFalseConversionsTheologyTrait = "sanctioned_false_conversions"
+	TreeConnectionTheologyTrait             = "tree_connection"
+	AnimalConnectionTheologyTrait           = "animal_connection"
+	BlindsightTheologyTrait                 = "blindsight"
+	AstrologyTheologyTrait                  = "astrology"
+	RepentanceTheologyTrait                 = "repentance"
+	MartyrdomTheologyTrait                  = "martyrdom"
+	IndulgencesTheologyTrait                = "indulgences"
+	HolinessTheologyTrait                   = "holiness"
+	CelibacyTheologyTrait                   = "celibacy"
+	FlagellantismTheologyTrait              = "flagellantism"
+	FeedTheWorldTheologyTrait               = "feed_the_world"
+	HolyArmyTheologyTrait                   = "holy_army"
+	DefendersOfFaithTheologyTrait           = "defenders_of_faith"
+	NonViolentResistanceTheologyTrait       = "non_violent_resistance"
+	NoMoreKillingTheologyTrait              = "no_more_killing"
+	AnimalMessengersTheologyTrait           = "animal_messengers"
+	SanctuaryOfMindTheologyTrait            = "sanctuary_of_mind"
+	PhantomsTheologyTrait                   = "phantoms"
+)

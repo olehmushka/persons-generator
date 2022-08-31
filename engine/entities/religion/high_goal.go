@@ -39,9 +39,9 @@ func (hg *HighGoal) Print() {
 func (hg *HighGoal) ContainsReincarnation() bool {
 	for _, goal := range hg.Goals {
 		switch goal.Name {
-		case "stop_reincarnation":
-			return true
-		case "never_stop_reincarnation":
+		case StopReincarnationHighGoal:
+			fallthrough
+		case NeverStopReincarnationHighGoal:
 			return true
 		}
 	}
@@ -51,7 +51,7 @@ func (hg *HighGoal) ContainsReincarnation() bool {
 func (hg *HighGoal) getAllGoals() []*trait {
 	return []*trait{
 		{
-			Name: "transforming_into_likeness_of_god",
+			Name: TransformingIntoLikenessOfGodHighGoal,
 			_religionMetadata: &religionMetadata{
 				Individualistic: 1,
 				Ascetic:         0.5,
@@ -66,7 +66,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "attain_heaven_and_resides_there_with_god",
+			Name: AttainHeavenAndResidesThereWithGodHighGoal,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Ascetic:      0.1,
@@ -81,7 +81,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "bring_man_to_completeness_and_to_close_relationship_with_god",
+			Name: BringManToCompletenessAndToCloseRelationshipWithGodHighGoal,
 			_religionMetadata: &religionMetadata{
 				Naturalistic:    0.1,
 				Individualistic: 1,
@@ -96,7 +96,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "bring_holiness_down_to_the_world",
+			Name: BringHolinessDownToTheWorldHighGoal,
 			_religionMetadata: &religionMetadata{
 				Altruistic:     0.5,
 				Collectivistic: 0.5,
@@ -107,7 +107,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "stop_reincarnation",
+			Name: StopReincarnationHighGoal,
 			_religionMetadata: &religionMetadata{
 				Ascetic:         0.5,
 				Individualistic: 1,
@@ -118,7 +118,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "never_stop_reincarnation" {
+					if goal.Name == NeverStopReincarnationHighGoal {
 						return false, nil
 					}
 				}
@@ -127,7 +127,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "never_stop_reincarnation",
+			Name: NeverStopReincarnationHighGoal,
 			_religionMetadata: &religionMetadata{
 				Ascetic:         0.5,
 				Individualistic: 1,
@@ -138,7 +138,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "stop_reincarnation" {
+					if goal.Name == StopReincarnationHighGoal {
 						return false, nil
 					}
 				}
@@ -147,7 +147,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "produce_children",
+			Name: ProduceChildrenHighGoal,
 			_religionMetadata: &religionMetadata{
 				Naturalistic:   1,
 				SexualActive:   0.75,
@@ -159,7 +159,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "investigate_myself",
+			Name: InvestigateMyselfHighGoal,
 			_religionMetadata: &religionMetadata{
 				Individualistic: 1,
 			},
@@ -169,7 +169,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "get_max_pleasure",
+			Name: GetMaxPleasureHighGoal,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 0.25,
 				Liberal:      0.25,
@@ -185,7 +185,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "spread_religion",
+			Name: SpreadReligionHighGoal,
 			_religionMetadata: &religionMetadata{
 				Aggressive:     0.25,
 				Collectivistic: 1,
@@ -196,7 +196,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "love_people",
+			Name: LovePeopleHighGoal,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 0.1,
 				Altruistic:   1,
@@ -208,7 +208,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "become_perfect_and_saints",
+			Name: BecomePerfectAndSaintsHighGoal,
 			_religionMetadata: &religionMetadata{
 				Ascetic:         1,
 				Individualistic: 1,
@@ -219,7 +219,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "fight_against_evil",
+			Name: FightAgainstEvilHighGoal,
 			_religionMetadata: &religionMetadata{
 				Lawful:     0.1,
 				Aggressive: 0.75,
@@ -230,7 +230,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "fight_for_evil" {
+					if goal.Name == FightForEvilHighGoal {
 						return false, nil
 					}
 				}
@@ -239,7 +239,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "fight_for_evil",
+			Name: FightForEvilHighGoal,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   1,
 				Aggressive: 0.75,
@@ -250,7 +250,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "fight_against_evil" {
+					if goal.Name == FightAgainstEvilHighGoal {
 						return false, nil
 					}
 				}
@@ -259,7 +259,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "stop_armageddon",
+			Name: StopArmageddonHighGoal,
 			_religionMetadata: &religionMetadata{
 				Altruistic: 0.5,
 			},
@@ -269,7 +269,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "start_armageddon" {
+					if goal.Name == StartArmageddonHighGoal {
 						return false, nil
 					}
 				}
@@ -278,7 +278,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 			},
 		},
 		{
-			Name: "start_armageddon",
+			Name: StartArmageddonHighGoal,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -288,7 +288,7 @@ func (hg *HighGoal) getAllGoals() []*trait {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "stop_armageddon" {
+					if goal.Name == StopArmageddonHighGoal {
 						return false, nil
 					}
 				}

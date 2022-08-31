@@ -178,7 +178,7 @@ func (cls *ClericsLimitations) Print() {
 func (cs *Clerics) getAllClericsTraits() []*trait {
 	return []*trait{
 		{
-			Name: "naked_priests",
+			Name: NakedPriestsClericTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Chthonic:     0.25,
@@ -193,7 +193,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			},
 		},
 		{
-			Name: "head_of_faith",
+			Name: HeadOfFaithClericTrait,
 			_religionMetadata: &religionMetadata{
 				Plutocratic:     0.5,
 				Lawful:          0.5,
@@ -205,7 +205,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			},
 		},
 		{
-			Name: "internal_circles_of_initiation",
+			Name: InternalCirclesOfInitiationClericTrait,
 			_religionMetadata: &religionMetadata{
 				Authoritaristic: 0.5,
 				Collectivistic:  0.5,
@@ -214,7 +214,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			Calc: func(r *Religion, self *trait, selectedTraits []*trait) (bool, error) {
 				var addCoef float64
 				for _, trait := range selectedTraits {
-					if trait.Name == "head_of_faith" {
+					if trait.Name == HeadOfFaithClericTrait {
 						c, err := pm.RandFloat64InRange(0.01, 0.1)
 						if err != nil {
 							return false, err
@@ -227,7 +227,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			},
 		},
 		{
-			Name: "mendicant_preachers",
+			Name: MendicantPreachersClericTrait,
 			_religionMetadata: &religionMetadata{
 				Ascetic: 0.75,
 			},
@@ -237,7 +237,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			},
 		},
 		{
-			Name: "monasticism",
+			Name: MonasticismClericTrait,
 			_religionMetadata: &religionMetadata{
 				SexualStrictness: 0.5,
 				Ascetic:          0.75,
@@ -250,7 +250,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			},
 		},
 		{
-			Name: "vow_of_poverty",
+			Name: VowOfPovertyClericTrait,
 			_religionMetadata: &religionMetadata{
 				Ascetic:         1,
 				Authoritaristic: 0.25,
@@ -262,7 +262,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			},
 		},
 		{
-			Name: "patronship",
+			Name: PatronshipClericTrait,
 			_religionMetadata: &religionMetadata{
 				Plutocratic:     0.25,
 				Authoritaristic: 0.5,
@@ -273,7 +273,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			},
 		},
 		{
-			Name: "warrior_monks",
+			Name: WarriorMonksClericTrait,
 			_religionMetadata: &religionMetadata{
 				Aggressive:      1,
 				Ascetic:         0.25,
@@ -283,7 +283,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			Calc: func(r *Religion, self *trait, selectedTraits []*trait) (bool, error) {
 				var hasMonasticism bool
 				for _, trait := range selectedTraits {
-					if trait.Name == "monasticism" {
+					if trait.Name == MonasticismClericTrait {
 						hasMonasticism = true
 					}
 				}
@@ -295,7 +295,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 			},
 		},
 		{
-			Name: "is_hereditary",
+			Name: IsHereditaryClericTrait,
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 1,
 			},
@@ -314,7 +314,7 @@ func (cs *Clerics) getAllClericsTraits() []*trait {
 func (cs *Clerics) getAllClericsFunctions() []*trait {
 	return []*trait{
 		{
-			Name: "control",
+			Name: ControlClericFunction,
 			_religionMetadata: &religionMetadata{
 				Authoritaristic: 1,
 			},
@@ -324,7 +324,7 @@ func (cs *Clerics) getAllClericsFunctions() []*trait {
 			},
 		},
 		{
-			Name: "alms_and_pacification",
+			Name: AlmsAndPacificationClericFunction,
 			_religionMetadata: &religionMetadata{
 				Pacifistic: 0.75,
 			},
@@ -334,7 +334,7 @@ func (cs *Clerics) getAllClericsFunctions() []*trait {
 			},
 		},
 		{
-			Name: "heal",
+			Name: HealClericFuction,
 			_religionMetadata: &religionMetadata{
 				Altruistic: 1,
 			},
@@ -344,7 +344,7 @@ func (cs *Clerics) getAllClericsFunctions() []*trait {
 			},
 		},
 		{
-			Name: "recruitment",
+			Name: RecruitmentClericFunction,
 			_religionMetadata: &religionMetadata{
 				Collectivistic: 1,
 			},
@@ -354,7 +354,7 @@ func (cs *Clerics) getAllClericsFunctions() []*trait {
 			},
 		},
 		{
-			Name: "teach",
+			Name: TeachClericFunction,
 			_religionMetadata: &religionMetadata{
 				Lawful:      0.5,
 				Educational: 1,
@@ -365,7 +365,7 @@ func (cs *Clerics) getAllClericsFunctions() []*trait {
 			},
 		},
 		{
-			Name: "oracle",
+			Name: OracleClericFunction,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 0.25,
 			},
@@ -375,7 +375,7 @@ func (cs *Clerics) getAllClericsFunctions() []*trait {
 			},
 		},
 		{
-			Name: "diviner",
+			Name: DivinerClericFunction,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 0.25,
 			},
@@ -385,7 +385,7 @@ func (cs *Clerics) getAllClericsFunctions() []*trait {
 			},
 		},
 		{
-			Name: "druid",
+			Name: DruidClericFunction,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.5,
 				Chthonic:     0.25,

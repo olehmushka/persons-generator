@@ -72,7 +72,7 @@ func (ts *Taboos) generateTaboos(c *culture.Culture) ([]*Taboo, error) {
 func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 	return []*Taboo{
 		{
-			Name: "raising_animals",
+			Name: RaisingAnimalsTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Plutocratic:  0.1,
@@ -85,7 +85,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "raising_plants",
+			Name: RaisingPlantsTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Altruistic:   0.5,
@@ -99,7 +99,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "raising_fungus",
+			Name: RaisingFungusTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Chthonic:     0.1,
@@ -113,7 +113,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "eat_animals",
+			Name: EatAnimalsTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Chthonic:     0.1,
@@ -127,7 +127,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "eat_some_animals",
+			Name: EatSomeAnimalsTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Lawful:       0.25,
@@ -141,7 +141,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "eat_animals" {
+					if taboo.Name == EatAnimalsTabooName {
 						switch taboo.Acceptance {
 						case Shunned:
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -163,7 +163,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "eat_insects",
+			Name: EatInsectsTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Chthonic:     0.1,
@@ -176,7 +176,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "eat_fungus",
+			Name: EatFungusTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 			},
@@ -188,7 +188,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "cannibalism",
+			Name: CannibalismTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   1,
 				Aggressive: 0.25,
@@ -201,7 +201,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "drinking_blood",
+			Name: DrinkingBloodTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   1,
 				Aggressive: 0.25,
@@ -214,7 +214,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "drinking_strong_alcohol",
+			Name: DrinkingStrongAlcoholTabooName,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 0.1,
 				Chthonic:     0.25,
@@ -229,7 +229,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "drinking_not_strong_alcohol",
+			Name: DrinkingNotStrongAlcoholTabooName,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 0.25,
 				Chthonic:     0.1,
@@ -244,7 +244,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "drinking_strong_alcohol" {
+					if taboo.Name == DrinkingStrongAlcoholTabooName {
 						switch taboo.Acceptance {
 						case Accepted:
 							acceptedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -281,7 +281,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "use_nicotine",
+			Name: UseNicotineTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 0.1,
 			},
@@ -293,7 +293,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "use_cannabis",
+			Name: UseCannabisTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Pacifistic:   0.1,
@@ -307,7 +307,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "use_hallucinogens",
+			Name: UseHallucinogensTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Educational:  0.1,
@@ -321,7 +321,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "use_cns_stimulants",
+			Name: UseCMSStimulantsTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   0.1,
 				Aggressive: 0.25,
@@ -334,7 +334,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "use_opium",
+			Name: UseOpiumTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   0.25,
 				Hedonistic: 0.75,
@@ -347,7 +347,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "same_sex_relations",
+			Name: SameSexRelationsTabooName,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Chthonic:     0.1,
@@ -362,7 +362,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "male_adultery",
+			Name: MaleAdulteryTabooName,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Hedonistic:   0.5,
@@ -400,7 +400,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "female_adultery",
+			Name: FemaleAdulteryTabooName,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Hedonistic:   0.5,
@@ -438,7 +438,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "sexual_deviancy",
+			Name: SexualDeviancyTabooName,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Chthonic:     0.25,
@@ -452,7 +452,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "prostitution",
+			Name: ProstitutionTabooName,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Plutocratic:  0.5,
@@ -466,7 +466,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "kill_anyone",
+			Name: KillAnyoneTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   0.1,
 				Aggressive: 1,
@@ -481,7 +481,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 						if trait == nil {
 							continue
 						}
-						if trait.Name == "no_more_killing" {
+						if trait.Name == NoMoreKillingTheologyTrait {
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.05, 0.2)
 							if err != nil {
 								return "", err
@@ -500,7 +500,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "kill_animals",
+			Name: KillAnimalsTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   0.1,
 				Aggressive: 0.1,
@@ -514,7 +514,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "kill_anyone" {
+					if taboo.Name == KillAnyoneTabooName {
 						switch taboo.Acceptance {
 						case Shunned:
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -536,7 +536,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "kill_holly_animals",
+			Name: KillHollyAnimalsTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   0.1,
 				Aggressive: 0.1,
@@ -550,7 +550,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "kill_anyone" {
+					if taboo.Name == KillAnyoneTabooName {
 						switch taboo.Acceptance {
 						case Shunned:
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -567,7 +567,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 							return Criminal, nil
 						}
 					}
-					if taboo.Name == "kill_animals" {
+					if taboo.Name == KillAnimalsTabooName {
 						switch taboo.Acceptance {
 						case Shunned:
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -589,7 +589,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "kill_humans",
+			Name: KillHumansTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   0.25,
 				Aggressive: 0.75,
@@ -603,7 +603,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "kill_anyone" {
+					if taboo.Name == KillAnyoneTabooName {
 						switch taboo.Acceptance {
 						case Shunned:
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -625,7 +625,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "kinslaying",
+			Name: KinslayingTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   0.75,
 				Aggressive: 1,
@@ -639,7 +639,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "kill_anyone" {
+					if taboo.Name == KillAnyoneTabooName {
 						switch taboo.Acceptance {
 						case Shunned:
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -656,7 +656,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 							return Criminal, nil
 						}
 					}
-					if taboo.Name == "kill_humans" {
+					if taboo.Name == KillHumansTabooName {
 						switch taboo.Acceptance {
 						case Shunned:
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -678,7 +678,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "suicide",
+			Name: SuicideTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -691,7 +691,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "kill_anyone" {
+					if taboo.Name == KillAnyoneTabooName {
 						switch taboo.Acceptance {
 						case Shunned:
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -708,7 +708,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 							return Criminal, nil
 						}
 					}
-					if taboo.Name == "kill_humans" {
+					if taboo.Name == KillHumansTabooName {
 						switch taboo.Acceptance {
 						case Shunned:
 							shunnedAddCoefP, err := pm.RandFloat64InRange(0.01, 0.05)
@@ -730,7 +730,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "tattoos",
+			Name: TattoosTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 0.1,
 			},
@@ -742,7 +742,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "witchcraft",
+			Name: WitchcraftTabooName,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -765,7 +765,7 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 		{
-			Name: "nudism",
+			Name: NudismTabooName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				SexualActive: 0.1,

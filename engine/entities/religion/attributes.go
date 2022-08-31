@@ -62,7 +62,7 @@ func (as *Attributes) Print() {
 func (as *Attributes) getAllAttributeTraits() []*trait {
 	return []*trait{
 		{
-			Name: "amulets",
+			Name: AmuletsAttribute,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Chthonic:     0.1,
@@ -74,7 +74,7 @@ func (as *Attributes) getAllAttributeTraits() []*trait {
 			},
 		},
 		{
-			Name: "religion_music",
+			Name: ReligionMusicAttribute,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Simple:       0.25,
@@ -89,7 +89,7 @@ func (as *Attributes) getAllAttributeTraits() []*trait {
 			},
 		},
 		{
-			Name: "religion_theatre",
+			Name: ReligionTheatreAttribute,
 			_religionMetadata: &religionMetadata{
 				Naturalistic:   0.75,
 				Collectivistic: 0.75,
@@ -105,7 +105,7 @@ func (as *Attributes) getAllAttributeTraits() []*trait {
 			},
 		},
 		{
-			Name: "religion_poetry",
+			Name: ReligionPoetryAttribute,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Simple:       0.25,
@@ -120,7 +120,7 @@ func (as *Attributes) getAllAttributeTraits() []*trait {
 			},
 		},
 		{
-			Name: "religion_tapestry",
+			Name: ReligionTapestryAttribute,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Simple:       0.25,
@@ -135,7 +135,7 @@ func (as *Attributes) getAllAttributeTraits() []*trait {
 			},
 		},
 		{
-			Name: "calligraphy",
+			Name: CalligraphyAttribute,
 			_religionMetadata: &religionMetadata{
 				Individualistic: 0.5,
 			},
@@ -145,7 +145,7 @@ func (as *Attributes) getAllAttributeTraits() []*trait {
 			},
 		},
 		{
-			Name: "idols",
+			Name: IdolsAttribute,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 0.5,
 			},

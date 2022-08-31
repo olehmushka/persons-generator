@@ -33,7 +33,7 @@ func (t *Theology) generateCults(min, max int) ([]*trait, error) {
 func (t *Theology) getAllCults() []*trait {
 	return []*trait{
 		{
-			Name: "god_of_king_cult",
+			Name: GodOfKingCultCultName,
 			_religionMetadata: &religionMetadata{
 				Plutocratic:     0.75,
 				Authoritaristic: 1,
@@ -48,7 +48,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "god_of_prosperity_and_wealth",
+			Name: GodOfProsperityAndWealthCultName,
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 0.75,
 				Hedonistic:  0.75,
@@ -63,7 +63,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "cult_of_justice",
+			Name: CultOfJusticeCultName,
 			_religionMetadata: &religionMetadata{
 				Lawful: 1,
 			},
@@ -77,7 +77,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "god_of_war",
+			Name: GodOfWarCultName,
 			_religionMetadata: &religionMetadata{
 				Chthonic:   0.5,
 				Aggressive: 1,
@@ -95,7 +95,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "Patron_saint_of_merchants",
+			Name: PatronSaintOfMerchantsCultName,
 			_religionMetadata: &religionMetadata{
 				Plutocratic: 0.5,
 			},
@@ -105,7 +105,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "god_of_death",
+			Name: GodOfDeathCultName,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -119,7 +119,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "god_of_wisdom",
+			Name: GodOfWisdomCultName,
 			_religionMetadata: &religionMetadata{
 				Lawful:      0.25,
 				Educational: 0.75,
@@ -134,7 +134,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "God_of_sea",
+			Name: GodOfSeaCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Simple:       0.25,
@@ -149,7 +149,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "god_of_love",
+			Name: GodOfLoveCultName,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 0.75,
 				Pacifistic:   0.25,
@@ -165,7 +165,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "sun_worship",
+			Name: SunWorshipCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.5,
 				Simple:       0.25,
@@ -176,7 +176,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "moon_worship",
+			Name: MoonWorshipCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.5,
 				Chthonic:     0.25,
@@ -187,7 +187,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "god_of_wine",
+			Name: GodOfWineCultName,
 			_religionMetadata: &religionMetadata{
 				Hedonistic: 1,
 			},
@@ -201,7 +201,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "god_of_thunder",
+			Name: GodOfThunderCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 			},
@@ -215,7 +215,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "mother_goddess",
+			Name: MotherGoddessCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Simple:       0.25,
@@ -230,7 +230,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "holy_animals",
+			Name: HolyAnimalsCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       0.5,
@@ -241,7 +241,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "holy_plants",
+			Name: HolyPlantsCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       0.5,
@@ -252,7 +252,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "holy_fungus",
+			Name: HolyFungusCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Chthonic:     0.25,
@@ -268,7 +268,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "holy_parasite",
+			Name: HolyParasiteCultName,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -278,7 +278,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "holy_insects",
+			Name: HolyInsectsCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Chthonic:     1,
@@ -294,7 +294,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "holy_stones",
+			Name: HolyStonesCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       1,
@@ -305,7 +305,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "holy_river",
+			Name: HolyRiverCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       1,
@@ -316,7 +316,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "holy_lake",
+			Name: HolyLakeCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       1,
@@ -327,7 +327,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "holy_mountain",
+			Name: HolyMountainCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       1,
@@ -338,7 +338,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "ancestor_worship",
+			Name: AncestorWorshipCultName,
 			_religionMetadata: &religionMetadata{
 				Lawful:          0.25,
 				Authoritaristic: 0.25,
@@ -350,7 +350,7 @@ func (t *Theology) getAllCults() []*trait {
 			},
 		},
 		{
-			Name: "trickster",
+			Name: TricksterCultName,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Chthonic:     0.25,
@@ -366,14 +366,14 @@ func (t *Theology) getAllCults() []*trait {
 					if err != nil {
 						return false, err
 					}
-					addCoef += (-1) * c
+					addCoef -= c
 				}
 
 				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
 			},
 		},
 		{
-			Name: "spirits_of_death",
+			Name: SpiritsOfDeathCultName,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},

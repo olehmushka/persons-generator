@@ -1,0 +1,25 @@
+package religion
+
+const (
+	MarriageWithDeityRitual  = "marriage_with_deity"
+	BaptismRitual            = "baptism"
+	InitialTattooRitual      = "initial_tattoo"
+	OathOfLoyaltyRitual      = "oath_of_loyalty"
+	InitiationByFastRitual   = "initiation_by_fast"
+	InitiationByFireRitual   = "initiation_by_fire"
+	SkyBurialsRitual         = "sky_burials"
+	CaveBurialsRitual        = "cave_burials"
+	UndergroundBurialsRitual = "underground_burials"
+	RitualSuicideRitual      = "ritual_suicide"
+	AnimalSacrificeRitual    = "animal_sacrifice"
+	HecatombsRitual          = "hecatombs"
+	HumanSacrificeRitual     = "human_sacrifice"
+	ChildSacrificeRitual     = "child_sacrifice"
+	PlantsSacrificeRitual    = "plants_sacrifice"
+	GreatFastRitual          = "great_fast"
+	RitesAndChantsRitual     = "rites_and_chants"
+	OrgyRitual               = "orgy"
+	SmokeCircleRitual        = "smoke_circle"
+	GladiatorDuelRitual      = "gladiator_duel"
+	RitualCannibalismRitual  = "ritual_cannibalism"
+)

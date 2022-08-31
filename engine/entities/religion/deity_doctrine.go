@@ -130,13 +130,13 @@ func (dn *DeityNature) getGoodnessByReligionMetadata() (Goodness, error) {
 
 	for _, goal := range dn.deityDoctrine.doctrine.HighGoal.Goals {
 		switch goal.Name {
-		case "fight_against_evil":
+		case FightAgainstEvilHighGoal:
 			p, err := pm.RandFloat64InRange(0.15, 0.25)
 			if err != nil {
 				return "", err
 			}
 			good += p * rmCoef
-		case "fight_for_evil":
+		case FightForEvilHighGoal:
 			p, err := pm.RandFloat64InRange(0.15, 0.25)
 			if err != nil {
 				return "", err
@@ -187,7 +187,7 @@ func (dn *DeityNature) getGoodnessLevelByReligionMetadata() (Level, error) {
 func (dd *DeityNature) getAllDeityNatureTraits() []*trait {
 	return []*trait{
 		{
-			Name: "is_just",
+			Name: IsJustDeityTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful: 1,
 				Simple: 0.25,
@@ -202,7 +202,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*trait {
 			},
 		},
 		{
-			Name: "is_world_creator",
+			Name: IsWorldCreatorDeityTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Lawful:       0.25,
@@ -218,7 +218,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*trait {
 			},
 		},
 		{
-			Name: "is_immortal",
+			Name: IsImmortalDeityTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Lawful:       0.25,
@@ -242,18 +242,25 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*trait {
 			},
 		},
 		{
-			Name: "is_transcendental",
+			Name: IsTranscendentalDeityTrait,
 			_religionMetadata: &religionMetadata{
 				Complicated: 1,
 			},
 			baseCoef: dd.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, selectedTraits []*trait) (bool, error) {
-				if r.Type.IsAtheism() {
-					return false, nil
-				}
-
 				var addCoef float64
-				if r.Type.IsMonotheism() || r.Type.IsDeism() || r.Type.IsDeityDualism() {
+				switch {
+				case r.Type.IsAtheism():
+					return false, nil
+				case r.Type.IsMonotheism():
+					c, err := pm.RandFloat64InRange(0.15, 0.25)
+					if err != nil {
+						return false, err
+					}
+					addCoef += c
+				case r.Type.IsDeism():
+					fallthrough
+				case r.Type.IsDeityDualism():
 					c, err := pm.RandFloat64InRange(0.05, 0.15)
 					if err != nil {
 						return false, err
@@ -265,7 +272,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*trait {
 			},
 		},
 		{
-			Name: "take_part_in_human_life",
+			Name: TakePartInHumanLifeDeityTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic:    0.25,
 				Authoritaristic: 1,
@@ -280,7 +287,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*trait {
 			},
 		},
 		{
-			Name: "communicate_with_humans",
+			Name: CommunicateWithHumansDeityTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic:    0.25,
 				Authoritaristic: 1,
@@ -295,7 +302,7 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*trait {
 			},
 		},
 		{
-			Name: "is_gnostic_deity", // God(s) created spiritual world but Demiurge(s) created physical world. Body is sinful
+			Name: IsGnosticDeityDeityTrait, // God(s) created spiritual world but Demiurge(s) created physical world. Body is sinful
 			_religionMetadata: &religionMetadata{
 				Chthonic:    0.25,
 				Complicated: 1,

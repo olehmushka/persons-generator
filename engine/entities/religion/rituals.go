@@ -110,7 +110,7 @@ SituativeRituals:
 func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 	return []*trait{
 		{
-			Name: "marriage_with_deity",
+			Name: MarriageWithDeityRitual,
 			_religionMetadata: &religionMetadata{
 				SexualActive:    0.5,
 				Lawful:          0.1,
@@ -122,7 +122,7 @@ func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 			},
 		},
 		{
-			Name: "baptism",
+			Name: BaptismRitual,
 			_religionMetadata: &religionMetadata{
 				Individualistic: 0.5,
 			},
@@ -132,7 +132,7 @@ func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 			},
 		},
 		{
-			Name: "initial_tattoo",
+			Name: InitialTattooRitual,
 			_religionMetadata: &religionMetadata{
 				Chthonic:        0.1,
 				Individualistic: 0.5,
@@ -145,7 +145,7 @@ func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 						if taboo == nil {
 							continue
 						}
-						if taboo.Name == "tattoos" {
+						if taboo.Name == TattoosTabooName {
 							switch taboo.Acceptance {
 							case Accepted:
 								coef, err := pm.RandFloat64InRange(0.01, 0.1)
@@ -169,7 +169,7 @@ func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 			},
 		},
 		{
-			Name: "oath_of_loyalty",
+			Name: OathOfLoyaltyRitual,
 			_religionMetadata: &religionMetadata{
 				Lawful:          0.75,
 				Individualistic: 0.5,
@@ -180,7 +180,7 @@ func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 			},
 		},
 		{
-			Name: "initiation_by_fast",
+			Name: InitiationByFastRitual,
 			_religionMetadata: &religionMetadata{
 				Ascetic:         1,
 				Individualistic: 0.25,
@@ -191,7 +191,7 @@ func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 			},
 		},
 		{
-			Name: "initiation_by_fire",
+			Name: InitiationByFireRitual,
 			_religionMetadata: &religionMetadata{
 				Chthonic:        0.25,
 				Aggressive:      0.1,
@@ -208,7 +208,7 @@ func (rs *Rituals) getAllInitiationRituals() []*trait { // @TODO: finish it
 func (rs *Rituals) getAllFuneralRituals() []*trait {
 	return []*trait{
 		{
-			Name: "sky_burials",
+			Name: SkyBurialsRitual,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Lawful:       0.25,
@@ -219,7 +219,7 @@ func (rs *Rituals) getAllFuneralRituals() []*trait {
 			},
 		},
 		{
-			Name: "cave_burials",
+			Name: CaveBurialsRitual,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Lawful:       0.25,
@@ -230,7 +230,7 @@ func (rs *Rituals) getAllFuneralRituals() []*trait {
 			},
 		},
 		{
-			Name: "underground_burials",
+			Name: UndergroundBurialsRitual,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Lawful:       0.25,
@@ -246,7 +246,7 @@ func (rs *Rituals) getAllFuneralRituals() []*trait {
 func (rs *Rituals) getAllSacrificeRituals() []*trait {
 	return []*trait{
 		{
-			Name: "ritual_suicide",
+			Name: RitualSuicideRitual,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -257,7 +257,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "suicide" {
+					if taboo.Name == SuicideTabooName {
 						if taboo.Acceptance.IsCriminal() {
 							return false, nil
 						}
@@ -274,7 +274,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 			},
 		},
 		{
-			Name: "animal_sacrifice",
+			Name: AnimalSacrificeRitual,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Simple:       0.5,
@@ -286,7 +286,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "kill_animals" {
+					if taboo.Name == KillAnimalsTabooName {
 						if taboo.Acceptance.IsCriminal() {
 							return false, nil
 						}
@@ -310,7 +310,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 			},
 		},
 		{
-			Name: "hecatombs",
+			Name: HecatombsRitual,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Simple:       0.5,
@@ -322,7 +322,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 					if ritual == nil {
 						continue
 					}
-					if ritual.Name == "animal_sacrifice" {
+					if ritual.Name == AnimalSacrificeRitual {
 						coef, err := pm.RandFloat64InRange(0.1, 0.2)
 						if err != nil {
 							return false, err
@@ -338,7 +338,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 			},
 		},
 		{
-			Name: "human_sacrifice",
+			Name: HumanSacrificeRitual,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -349,7 +349,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 					if taboo == nil {
 						continue
 					}
-					if taboo.Name == "kill_humans" {
+					if taboo.Name == KillHumansTabooName {
 						if taboo.Acceptance.IsCriminal() {
 							return false, nil
 						}
@@ -366,7 +366,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 			},
 		},
 		{
-			Name: "child_sacrifice",
+			Name: ChildSacrificeRitual,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -377,7 +377,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 					if ritual == nil {
 						continue
 					}
-					if ritual.Name == "human_sacrifice" {
+					if ritual.Name == HumanSacrificeRitual {
 						coef, err := pm.RandFloat64InRange(0.01, 0.1)
 						if err != nil {
 							return false, err
@@ -393,7 +393,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 			},
 		},
 		{
-			Name: "plants_sacrifice",
+			Name: PlantsSacrificeRitual,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 1,
 			},
@@ -408,7 +408,7 @@ func (rs *Rituals) getAllSacrificeRituals() []*trait {
 func (rs *Rituals) getAllHolydayRituals() []*trait {
 	return []*trait{
 		{
-			Name: "great_fast",
+			Name: GreatFastRitual,
 			_religionMetadata: &religionMetadata{
 				Ascetic:        1,
 				Collectivistic: 0.25,
@@ -419,7 +419,7 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			},
 		},
 		{
-			Name: "rites_and_chants",
+			Name: RitesAndChantsRitual,
 			_religionMetadata: &religionMetadata{
 				Hedonistic: 0.75,
 				Simple:     1,
@@ -430,7 +430,7 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			},
 		},
 		{
-			Name: "orgy",
+			Name: OrgyRitual,
 			_religionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Hedonistic:   1,
@@ -439,7 +439,7 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
-					if taboo.Name == "male_adultery" || taboo.Name == "female_adultery" {
+					if taboo.Name == MaleAdulteryTabooName || taboo.Name == FemaleAdulteryTabooName {
 						if taboo.Acceptance.IsCriminal() {
 							coef, err := pm.RandFloat64InRange(0.1, 0.3)
 							if err != nil {
@@ -460,7 +460,7 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			},
 		},
 		{
-			Name: "smoke_circle",
+			Name: SmokeCircleRitual,
 			_religionMetadata: &religionMetadata{
 				Naturalistic:   0.25,
 				Collectivistic: 0.5,
@@ -469,7 +469,7 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
-					if taboo.Name == "use_nicotine" || taboo.Name == "use_cannabis" || taboo.Name == "use_hallucinogens" {
+					if taboo.Name == UseNicotineTabooName || taboo.Name == UseCannabisTabooName || taboo.Name == UseHallucinogensTabooName {
 						switch {
 						case taboo.Acceptance.IsAccepted():
 							coef, err := pm.RandFloat64InRange(0.05, 0.15)
@@ -496,7 +496,7 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			},
 		},
 		{
-			Name: "gladiator_duel",
+			Name: GladiatorDuelRitual,
 			_religionMetadata: &religionMetadata{
 				Aggressive: 1,
 			},
@@ -504,7 +504,7 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
-					if taboo.Name == "kill_humans" {
+					if taboo.Name == KillHumansTabooName {
 						switch {
 						case taboo.Acceptance.IsAccepted():
 							coef, err := pm.RandFloat64InRange(0.05, 0.15)
@@ -527,7 +527,7 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			},
 		},
 		{
-			Name: "ritual_cannibalism",
+			Name: RitualCannibalismRitual,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
@@ -535,7 +535,7 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				for _, taboo := range rs.theology.Taboos.Taboos {
-					if taboo.Name == "cannibalism" {
+					if taboo.Name == CannibalismTabooName {
 						switch {
 						case taboo.Acceptance.IsAccepted():
 							coef, err := pm.RandFloat64InRange(0.05, 0.15)

@@ -122,7 +122,7 @@ func (hn *HumanNature) getGoodnessByReligionMetadata() (Goodness, error) {
 	}
 
 	for _, goal := range hn.humanDoctrine.doctrine.HighGoal.Goals {
-		if goal.Name == "investigate_myself" {
+		if goal.Name == InvestigateMyselfHighGoal {
 			goodP, err := pm.RandFloat64InRange(0.01, 0.1)
 			if err != nil {
 				return "", err
@@ -165,7 +165,7 @@ func (hn *HumanNature) getGoodnessLevelByReligionMetadata() (Level, error) {
 func (hn *HumanNature) getAllHumanNatureTraits() []*trait {
 	return []*trait{
 		{
-			Name: "has_soul",
+			Name: HasSoulHumanTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic:    0.5,
 				Individualistic: 0.75,
@@ -176,7 +176,7 @@ func (hn *HumanNature) getAllHumanNatureTraits() []*trait {
 			},
 		},
 		{
-			Name: "can_be_saint",
+			Name: CanBeSaintHumanTrait,
 			_religionMetadata: &religionMetadata{
 				Ascetic:         0.5,
 				Individualistic: 1,
@@ -188,7 +188,7 @@ func (hn *HumanNature) getAllHumanNatureTraits() []*trait {
 					if goal == nil {
 						continue
 					}
-					if goal.Name == "become_perfect_and_saints" {
+					if goal.Name == BecomePerfectAndSaintsHighGoal {
 						coef, err := pm.RandFloat64InRange(0.15, 0.25)
 						if err != nil {
 							return false, err

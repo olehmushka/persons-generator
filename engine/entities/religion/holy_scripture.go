@@ -70,7 +70,7 @@ func (hs *HolyScripture) Print() {
 func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 	return []*trait{
 		{
-			Name: "commandments",
+			Name: CommandmentsHolyScriptureTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful: 1,
 			},
@@ -96,7 +96,7 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 			},
 		},
 		{
-			Name: "devotional_code",
+			Name: DevotionalCodeHolyScriptureTrait,
 			_religionMetadata: &religionMetadata{
 				Individualistic: 0.25,
 			},
@@ -106,7 +106,7 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 			},
 		},
 		{
-			Name: "divine_law",
+			Name: DivineLawHolyScriptureTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful:          1,
 				Authoritaristic: 0.5,
@@ -118,7 +118,7 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 					if trait == nil {
 						continue
 					}
-					if trait.Name == "commandments" {
+					if trait.Name == CommandmentsHolyScriptureTrait {
 						coef, err := pm.RandFloat64InRange(0.05, 0.1)
 						if err != nil {
 							return false, err
@@ -130,7 +130,7 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 			},
 		},
 		{
-			Name: "magic_books",
+			Name: MagicBooksHolyScriptureTrait,
 			_religionMetadata: &religionMetadata{
 				Naturalistic: 0.5,
 				Chthonic:     1,
@@ -141,7 +141,7 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 			},
 		},
 		{
-			Name: "runes",
+			Name: RunesHolyScriptureTrait,
 			_religionMetadata: &religionMetadata{
 				Educational: 0.5,
 			},
@@ -151,7 +151,7 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 			},
 		},
 		{
-			Name: "marching_hymns",
+			Name: MarchingHymnsHolyScriptureTrait,
 			_religionMetadata: &religionMetadata{
 				Aggressive:     0.75,
 				Collectivistic: 0.75,
@@ -162,7 +162,7 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 			},
 		},
 		{
-			Name: "theogony",
+			Name: TheogonyHolyScriptureTrait,
 			_religionMetadata: &religionMetadata{
 				Lawful:      0.25,
 				Educational: 0.25,

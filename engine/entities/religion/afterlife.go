@@ -102,7 +102,7 @@ func (al *Afterlife) generateIsExistsAfterlife() (bool, error) {
 	}
 
 	for _, trait := range al.doctrine.Human.Nature.Traits {
-		if trait.Name == "has_soul" {
+		if trait.Name == HasSoulHumanTrait {
 			p, err := pm.RandFloat64InRange(0.25, 0.75)
 			if err != nil {
 				return false, err
@@ -329,7 +329,7 @@ func (al *Afterlife) generateTraits(min, max int) ([]*trait, error) {
 func (al *Afterlife) getAllAfterlifeTraits() []*trait {
 	return []*trait{
 		{
-			Name: "heavenly_palace",
+			Name: HeavenlyPalaceAfterlife,
 			_religionMetadata: &religionMetadata{
 				Simple: 0.5,
 			},
@@ -348,7 +348,7 @@ func (al *Afterlife) getAllAfterlifeTraits() []*trait {
 			},
 		},
 		{
-			Name: "psychopomp",
+			Name: PsychopompAfterlife,
 			_religionMetadata: &religionMetadata{
 				Chthonic: 0.5,
 			},
