@@ -8,12 +8,12 @@ import (
 )
 
 type Attributes struct {
-	religion *Religion
+	religion *Religion `json:"-"`
 
-	Traits        []*trait
-	Clerics       *Clerics
-	HolyScripture *HolyScripture
-	Temples       *Temples
+	Traits        []*trait       `json:"traits"`
+	Clerics       *Clerics       `json:"clerics"`
+	HolyScripture *HolyScripture `json:"holy_scripture"`
+	Temples       *Temples       `json:"temples"`
 }
 
 func NewAttributes(r *Religion, c *culture.Culture) (*Attributes, error) {
@@ -63,93 +63,93 @@ func (as *Attributes) getAllAttributeTraits() []*trait {
 	return []*trait{
 		{
 			Name: AmuletsAttribute,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Chthonic:     0.1,
 				Simple:       0.25,
 			},
-			baseCoef: as.religion.M.BaseCoef,
+			BaseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: ReligionMusicAttribute,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Simple:       0.25,
 			},
-			baseCoef: as.religion.M.BaseCoef,
+			BaseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				if r.Type.IsAtheism() {
 					return false, nil
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: ReligionTheatreAttribute,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic:   0.75,
 				Collectivistic: 0.75,
 				Simple:         0.25,
 			},
-			baseCoef: as.religion.M.BaseCoef,
+			BaseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				if r.Type.IsAtheism() {
 					return false, nil
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: ReligionPoetryAttribute,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Simple:       0.25,
 			},
-			baseCoef: as.religion.M.BaseCoef,
+			BaseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				if r.Type.IsAtheism() {
 					return false, nil
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: ReligionTapestryAttribute,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Simple:       0.25,
 			},
-			baseCoef: as.religion.M.BaseCoef,
+			BaseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				if r.Type.IsAtheism() {
 					return false, nil
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: CalligraphyAttribute,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Individualistic: 0.5,
 			},
-			baseCoef: as.religion.M.BaseCoef,
+			BaseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: IdolsAttribute,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic: 0.5,
 			},
-			baseCoef: as.religion.M.BaseCoef,
+			BaseCoef: as.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				switch {
@@ -169,7 +169,7 @@ func (as *Attributes) getAllAttributeTraits() []*trait {
 					return false, nil
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef+addCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 	}

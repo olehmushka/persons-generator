@@ -1,7 +1,10 @@
 package json_storage
 
 import (
+	"fmt"
 	"io/ioutil"
+	"net/http"
+	"persons_generator/core/wrapped_error"
 	"strings"
 
 	"go.uber.org/fx"
@@ -22,11 +25,20 @@ var Module = fx.Options(
 )
 
 func (s *storage) Get(filename string) ([]byte, error) {
-	return ioutil.ReadFile(s.getFullFilename(filename))
+	b, err := ioutil.ReadFile(s.getFullFilename(filename))
+	if err != nil {
+		return nil, wrapped_error.New(http.StatusInternalServerError, err, fmt.Sprintf("can not get file by filename (filename=%s)", filename))
+	}
+
+	return b, nil
 }
 
 func (s *storage) Store(filename string, file []byte) error {
-	return ioutil.WriteFile(s.getFullFilename(filename), file, 0o644)
+	if err := ioutil.WriteFile(s.getFullFilename(filename), file, 0o644); err != nil {
+		return wrapped_error.New(http.StatusInternalServerError, err, fmt.Sprintf("can not save file (filename=%s)", filename))
+	}
+
+	return nil
 }
 
 func (s *storage) getFullFilename(filename string) string {

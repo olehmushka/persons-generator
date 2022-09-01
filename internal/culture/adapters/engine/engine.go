@@ -2,7 +2,6 @@ package engine
 
 import (
 	"context"
-	"fmt"
 
 	"persons_generator/config"
 	"persons_generator/core/tools"
@@ -19,7 +18,6 @@ type adapter struct {
 }
 
 func New(cfg *config.Config) (Adapter, error) {
-	fmt.Printf("FOLDER: %s\n\n\n", cfg.JSONStorage.StorageFolder)
 	e, err := orchestrator.New(orchestrator.Config{
 		StorageFolderName: cfg.JSONStorage.StorageFolder,
 	})

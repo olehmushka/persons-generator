@@ -136,6 +136,28 @@ func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
 	return c, nil
 }
 
+func NewHybrid(cfg Config, amount int, parent []*Culture) (*Culture, error) {
+	if len(parent) > amount {
+		return nil, we.New(http.StatusBadRequest, nil, fmt.Sprintf("preferred parent cultures number (%d) can not be greater than required amount for hybrid culture (%d)", len(parent), amount))
+	}
+	cultures := make([]*Culture, amount)
+	for i := range cultures {
+		var c *Culture
+		if i < len(parent) {
+			c = parent[i]
+		} else {
+			generated, err := New(cfg, nil)
+			if err != nil {
+				return nil, err
+			}
+			c = generated
+		}
+		cultures[i] = c
+	}
+
+	return NewWithProto(cfg, cultures)
+}
+
 func NewMany(cfg Config, amount int, preferred []*Preference) ([]*Culture, error) {
 	cultures := make([]*Culture, amount)
 	if amount < len(preferred) {

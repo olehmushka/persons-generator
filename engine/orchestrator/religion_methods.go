@@ -20,15 +20,6 @@ func (o *Orchestrator) CreateReligion(c *culture.Culture) (*religion.Religion, e
 	return religion.New(religion.Config{StorageFolderName: o.storageFolderName}, c)
 }
 
-func (o *Orchestrator) CreateReligions(c []*culture.Culture) ([]*religion.Religion, error) {
-	out := make([]*religion.Religion, len(c))
-	for i := range out {
-		r, err := o.CreateReligion(c[i])
-		if err != nil {
-			return nil, err
-		}
-		out[i] = r
-	}
-
-	return out, nil
+func (o *Orchestrator) CreateReligions(amount int, preferred []*religion.Preference) ([]*religion.Religion, error) {
+	return religion.NewManyByPreferred(religion.Config{StorageFolderName: o.storageFolderName}, amount, preferred)
 }

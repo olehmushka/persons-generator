@@ -8,8 +8,8 @@ import (
 )
 
 type Dominance struct {
-	Dominance GenderDominance
-	Influence influence.Influence
+	Dominance GenderDominance     `json:"dominance"`
+	Influence influence.Influence `json:"influence"`
 }
 
 func NewDominance() (*Dominance, error) {
@@ -93,6 +93,10 @@ func generateInfluence() influence.Influence {
 }
 
 type GenderDominance string
+
+func (gd GenderDominance) String() string {
+	return string(gd)
+}
 
 const (
 	MaleDominance     GenderDominance = "male"

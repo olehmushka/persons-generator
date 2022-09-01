@@ -3,10 +3,10 @@ package engine
 import (
 	"context"
 
-	cultureEntities "persons_generator/internal/culture/entities"
+	"persons_generator/engine/entities/religion"
 	"persons_generator/internal/religion/entities"
 )
 
 type Adapter interface {
-	CreateReligions(ctx context.Context, cultures []*cultureEntities.Culture) ([]*entities.Religion, error)
+	CreateReligions(ctx context.Context, amount int, preferred []*entities.Preference) ([]*religion.Religion, error)
 }

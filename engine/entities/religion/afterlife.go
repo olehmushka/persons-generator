@@ -7,12 +7,12 @@ import (
 )
 
 type Afterlife struct {
-	religion *Religion
-	doctrine *Doctrine
+	religion *Religion `json:"-"`
+	doctrine *Doctrine `json:"-"`
 
-	IsExists     bool
-	Participants *AfterlifeParticipants
-	Traits       []*trait
+	IsExists     bool                   `json:"is_exists"`
+	Participants *AfterlifeParticipants `json:"participants"`
+	Traits       []*trait               `json:"traits"`
 }
 
 func (al *Afterlife) Print() {
@@ -115,13 +115,13 @@ func (al *Afterlife) generateIsExistsAfterlife() (bool, error) {
 }
 
 type AfterlifeParticipants struct {
-	religion  *Religion
-	afterlife *Afterlife
+	religion  *Religion  `json:"-"`
+	afterlife *Afterlife `json:"-"`
 
-	ForTopBelievers    AfterlifeOption
-	ForBelievers       AfterlifeOption
-	ForUntrueBelievers AfterlifeOption
-	ForAtheists        AfterlifeOption
+	ForTopBelievers    AfterlifeOption `json:"for_top_belivers"`
+	ForBelievers       AfterlifeOption `json:"for_belivers"`
+	ForUntrueBelievers AfterlifeOption `json:"for_untrue_belivers"`
+	ForAtheists        AfterlifeOption `json:"for_atheists"`
 }
 
 func (al *Afterlife) generateAfterlifeParticipants() (*AfterlifeParticipants, error) {
@@ -291,6 +291,10 @@ func (al *Afterlife) updateAfterlife(isExists bool) {
 
 type AfterlifeOption string
 
+func (alo AfterlifeOption) String() string {
+	return string(alo)
+}
+
 const (
 	GoodAfterlife    AfterlifeOption = "good"
 	DependsAfterlife AfterlifeOption = "depends"
@@ -330,10 +334,10 @@ func (al *Afterlife) getAllAfterlifeTraits() []*trait {
 	return []*trait{
 		{
 			Name: HeavenlyPalaceAfterlife,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Simple: 0.5,
 			},
-			baseCoef: al.religion.M.BaseCoef,
+			BaseCoef: al.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				if r.Type.IsPolytheism() {
@@ -344,15 +348,15 @@ func (al *Afterlife) getAllAfterlifeTraits() []*trait {
 					addCoef += c
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef+addCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: PsychopompAfterlife,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic: 0.5,
 			},
-			baseCoef: al.religion.M.BaseCoef,
+			BaseCoef: al.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				if r.Type.IsPolytheism() {
@@ -363,7 +367,7 @@ func (al *Afterlife) getAllAfterlifeTraits() []*trait {
 					addCoef += c
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef+addCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 	}

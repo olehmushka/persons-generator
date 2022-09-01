@@ -10,6 +10,10 @@ const (
 	Disallowed     Permission = "disallowed"
 )
 
+func (p Permission) String() string {
+	return string(p)
+}
+
 func getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed float64) Permission {
 	return Permission(pm.GetRandomFromSeveral(map[string]float64{
 		string(AlwaysAllowed):  pm.PrepareProbability(alwaysAllowed),

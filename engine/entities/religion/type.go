@@ -7,10 +7,10 @@ import (
 )
 
 type Type struct {
-	religion *Religion
+	religion *Religion `json:"-"`
 
-	Type    TypeName
-	Subtype SubtypeName
+	Type    TypeName    `json:"type"`
+	Subtype SubtypeName `json:"subtype"`
 }
 
 func NewType(r *Religion) *Type {
@@ -51,6 +51,10 @@ func (t *Type) IsAtheism() bool {
 
 type TypeName string
 
+func (t TypeName) String() string {
+	return string(t)
+}
+
 const (
 	MonotheismType   TypeName = "monotheism"
 	PolytheismType   TypeName = "polytheism"
@@ -78,6 +82,10 @@ func (t *Type) GenerateTypeName() TypeName {
 }
 
 type SubtypeName string
+
+func (st SubtypeName) String() string {
+	return string(st)
+}
 
 const (
 	ClassicPolytheismSubtype   SubtypeName = "classic"

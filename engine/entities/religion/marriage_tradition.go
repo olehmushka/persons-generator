@@ -8,12 +8,12 @@ import (
 )
 
 type MarriageTradition struct {
-	religion *Religion
+	religion *Religion `json:"-"`
 
-	Kind          MarriageKind
-	Bastardry     Bastardry
-	Consanguinity Consanguinity
-	Divorce       Permission
+	Kind          MarriageKind  `json:"kind"`
+	Bastardry     Bastardry     `json:"bastardy"`
+	Consanguinity Consanguinity `json:"consanguinity"`
+	Divorce       Permission    `json:"divorce"`
 }
 
 func (t *Theology) generateMarriageTradition(c *culture.Culture) (*MarriageTradition, error) {
@@ -48,6 +48,10 @@ func (mt *MarriageTradition) Print() {
 }
 
 type MarriageKind string
+
+func (mk MarriageKind) String() string {
+	return string(mk)
+}
 
 const (
 	Monogamy              MarriageKind = "monogamy"
@@ -99,7 +103,7 @@ func (mt *MarriageTradition) generateKind(c *culture.Culture) (MarriageKind, err
 		monogamy += monogamyP
 	}
 
-	if mt.religion.metadata.IsSexualActive() {
+	if mt.religion.Metadata.IsSexualActive() {
 		consortsAndConcubinesP, err := pm.RandFloat64InRange(0.01, 0.1)
 		if err != nil {
 			return "", err
@@ -111,14 +115,14 @@ func (mt *MarriageTradition) generateKind(c *culture.Culture) (MarriageKind, err
 		}
 		polygamy += polygamyP
 	}
-	if mt.religion.metadata.IsSexualStrictness() {
+	if mt.religion.Metadata.IsSexualStrictness() {
 		monogamyP, err := pm.RandFloat64InRange(0.1, 0.2)
 		if err != nil {
 			return "", err
 		}
 		monogamy += monogamyP
 	}
-	if mt.religion.metadata.IsHedonistic() {
+	if mt.religion.Metadata.IsHedonistic() {
 		consortsAndConcubinesP, err := pm.RandFloat64InRange(0.01, 0.05)
 		if err != nil {
 			return "", err
@@ -162,6 +166,10 @@ func getMarriageKindByCulture(c *culture.Culture) MarriageKind {
 }
 
 type Bastardry string
+
+func (b Bastardry) String() string {
+	return string(b)
+}
 
 const (
 	NoBastards       Bastardry = "no_bastards"
@@ -224,14 +232,14 @@ func (mt *MarriageTradition) generateBastardry() (Bastardry, error) {
 		legitimization += legitimizationP
 	}
 
-	if mt.religion.metadata.IsLawful() {
+	if mt.religion.Metadata.IsLawful() {
 		legitimizationP, err := pm.RandFloat64InRange(0.05, 0.1)
 		if err != nil {
 			return "", err
 		}
 		legitimization += legitimizationP
 	}
-	if mt.religion.metadata.IsAltruistic() {
+	if mt.religion.Metadata.IsAltruistic() {
 		noBastardsP, err := pm.RandFloat64InRange(0.04, 0.09)
 		if err != nil {
 			return "", err
@@ -252,6 +260,10 @@ func (mt *MarriageTradition) generateBastardry() (Bastardry, error) {
 }
 
 type Consanguinity string
+
+func (c Consanguinity) String() string {
+	return string(c)
+}
 
 const (
 	CloseKinTaboo        Consanguinity = "close_kin_taboo"       // people can not marry family members
@@ -344,21 +356,21 @@ func (mt *MarriageTradition) generateConsanguinity() (Consanguinity, error) {
 		unrestrictedMarriage += unrestrictedMarriageP
 	}
 
-	if mt.religion.metadata.IsSexualActive() {
+	if mt.religion.Metadata.IsSexualActive() {
 		unrestrictedMarriageP, err := pm.RandFloat64InRange(0.01, 0.03)
 		if err != nil {
 			return "", err
 		}
 		unrestrictedMarriage += unrestrictedMarriageP
 	}
-	if mt.religion.metadata.IsPacifistic() {
+	if mt.religion.Metadata.IsPacifistic() {
 		avunculateMarriageP, err := pm.RandFloat64InRange(0.01, 0.03)
 		if err != nil {
 			return "", err
 		}
 		avunculateMarriage += avunculateMarriageP
 	}
-	if mt.religion.metadata.IsLawful() {
+	if mt.religion.Metadata.IsLawful() {
 		closeKinTabooP, err := pm.RandFloat64InRange(0.01, 0.05)
 		if err != nil {
 			return "", err
@@ -370,7 +382,7 @@ func (mt *MarriageTradition) generateConsanguinity() (Consanguinity, error) {
 		}
 		cousinMarriage += cousinMarriageP
 	}
-	if mt.religion.metadata.IsLiberal() {
+	if mt.religion.Metadata.IsLiberal() {
 		unrestrictedMarriageP, err := pm.RandFloat64InRange(0.01, 0.03)
 		if err != nil {
 			return "", err
@@ -451,35 +463,35 @@ func (mt *MarriageTradition) generateDivorce() (Permission, error) {
 		disallowed += disallowedP
 	}
 
-	if mt.religion.metadata.IsSexualActive() {
+	if mt.religion.Metadata.IsSexualActive() {
 		alwaysAllowedP, err := pm.RandFloat64InRange(0.01, 0.03)
 		if err != nil {
 			return "", err
 		}
 		alwaysAllowed += alwaysAllowedP
 	}
-	if mt.religion.metadata.IsSexualStrictness() {
+	if mt.religion.Metadata.IsSexualStrictness() {
 		disallowedP, err := pm.RandFloat64InRange(0.01, 0.03)
 		if err != nil {
 			return "", err
 		}
 		disallowed += disallowedP
 	}
-	if mt.religion.metadata.IsLawful() {
+	if mt.religion.Metadata.IsLawful() {
 		mustBeApprovedP, err := pm.RandFloat64InRange(0.01, 0.03)
 		if err != nil {
 			return "", err
 		}
 		mustBeApproved += mustBeApprovedP
 	}
-	if mt.religion.metadata.IsAuthoritaristic() {
+	if mt.religion.Metadata.IsAuthoritaristic() {
 		disallowedP, err := pm.RandFloat64InRange(0.01, 0.03)
 		if err != nil {
 			return "", err
 		}
 		disallowed += disallowedP
 	}
-	if mt.religion.metadata.IsLiberal() {
+	if mt.religion.Metadata.IsLiberal() {
 		alwaysAllowedP, err := pm.RandFloat64InRange(0.01, 0.03)
 		if err != nil {
 			return "", err

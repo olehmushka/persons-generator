@@ -1,6 +1,14 @@
 package http
 
-import "persons_generator/internal/culture/entities"
+import (
+	"fmt"
+	"net/http"
+	"persons_generator/core/wrapped_error"
+	"persons_generator/internal/culture/entities"
+	religionEntities "persons_generator/internal/religion/entities"
+
+	"github.com/google/uuid"
+)
 
 func deserializeCulturePreferred(in *CulturePreferred) *entities.CulturePreference {
 	if in == nil {
@@ -21,4 +29,36 @@ func deserializeCulturePreferences(in []*CulturePreferred) []*entities.CulturePr
 	}
 
 	return out
+}
+
+func deserializeReligionPreferred(in *ReligionPreferred) (*religionEntities.Preference, error) {
+	if in == nil {
+		return nil, nil
+	}
+	cultureIDs := make([]uuid.UUID, 0, len(in.CultureIDs))
+	for _, id := range in.CultureIDs {
+		cultureID, err := uuid.Parse(id)
+		if err != nil {
+			return nil, wrapped_error.New(http.StatusBadRequest, err, fmt.Sprintf("can not parse culture_id (input=%s)", id))
+		}
+		cultureIDs = append(cultureIDs, cultureID)
+	}
+
+	return &religionEntities.Preference{
+		CultureIDs: cultureIDs,
+		Amount:     in.Amount,
+	}, nil
+}
+
+func deserializeReligionPreferences(in []*ReligionPreferred) ([]*religionEntities.Preference, error) {
+	out := make([]*religionEntities.Preference, 0, len(in))
+	for _, i := range in {
+		o, err := deserializeReligionPreferred(i)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, o)
+	}
+
+	return out, nil
 }

@@ -2,12 +2,13 @@ package religion
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 
 	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/tools"
+	we "persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	g "persons_generator/engine/entities/gender"
 	pm "persons_generator/engine/probability_machine"
@@ -16,16 +17,16 @@ import (
 )
 
 type Religion struct {
-	M        Metadata
-	metadata *religionMetadata
+	M        Metadata          `json:"m"`
+	Metadata *religionMetadata `json:"metadata"`
 
-	ID              uuid.UUID
-	Name            string
-	Type            *Type
-	GenderDominance *g.Dominance
-	Doctrine        *Doctrine
-	Attributes      *Attributes
-	Theology        *Theology
+	ID              uuid.UUID    `json:"id"`
+	Name            string       `json:"name"`
+	Type            *Type        `json:"type"`
+	GenderDominance *g.Dominance `json:"gender_dominance"`
+	Doctrine        *Doctrine    `json:"doctrine"`
+	Attributes      *Attributes  `json:"attributes"`
+	Theology        *Theology    `json:"theology"`
 
 	storageFolderName string
 }
@@ -72,7 +73,7 @@ func New(cfg Config, c *culture.Culture) (*Religion, error) {
 	if err != nil {
 		return nil, err
 	}
-	r.metadata = metadata
+	r.Metadata = metadata
 	doctrine, err := NewDoctrine(r)
 	if err != nil {
 		return nil, err
@@ -92,6 +93,32 @@ func New(cfg Config, c *culture.Culture) (*Religion, error) {
 	return r, nil
 }
 
+func NewByPreferred(cfg Config, preferred *Preference) (*Religion, error) {
+	c, err := getCulture(cfg, preferred)
+	if err != nil {
+		return nil, err
+	}
+
+	return New(cfg, c)
+}
+
+func getCulture(cfg Config, preferred *Preference) (*culture.Culture, error) {
+	var (
+		amount       int = 1
+		prefCultures []*culture.Culture
+	)
+	if preferred != nil {
+		amount = preferred.Amount
+		prefCultures = preferred.Cultures
+	}
+
+	return culture.NewHybrid(
+		culture.Config{StorageFolderName: cfg.StorageFolderName},
+		amount,
+		prefCultures,
+	)
+}
+
 func NewMany(cfg Config, cultures []*culture.Culture) ([]*Religion, error) {
 	religions := make([]*Religion, len(cultures))
 	for i := range religions {
@@ -105,8 +132,29 @@ func NewMany(cfg Config, cultures []*culture.Culture) ([]*Religion, error) {
 	return religions, nil
 }
 
+func NewManyByPreferred(cfg Config, amount int, preferred []*Preference) ([]*Religion, error) {
+	if amount < len(preferred) {
+		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("amount (%d) can not be less than length of preferred (length=%d)", amount, len(preferred)))
+	}
+
+	out := make([]*Religion, amount)
+	for i := range out {
+		var p *Preference
+		if len(preferred) > i {
+			p = preferred[i]
+		}
+		c, err := NewByPreferred(cfg, p)
+		if err != nil {
+			return nil, err
+		}
+		out[i] = c
+	}
+
+	return out, nil
+}
+
 func (r *Religion) UpdateMetadata(rm *religionMetadata) {
-	r.metadata = rm
+	r.Metadata = rm
 }
 
 func (r *Religion) Print() {
@@ -117,7 +165,7 @@ func (r *Religion) Print() {
 	r.Attributes.Print()
 	r.Theology.Print()
 
-	fmt.Printf("\n\nMetadata:\n%+v\n", r.metadata)
+	fmt.Printf("\n\nMetadata:\n%+v\n", r.Metadata)
 	fmt.Printf("=====================\n\n")
 }
 
@@ -164,12 +212,32 @@ func MapReligionNames(religions []*Religion) []string {
 
 func (r *Religion) Save() error {
 	if r == nil {
-		return errors.New("can not save nil religion")
+		return we.New(http.StatusInternalServerError, nil, "can not save nil culture")
 	}
+
 	b, err := json.MarshalIndent(r, "", " ")
 	if err != nil {
 		return err
 	}
 
-	return js.New(js.Config{StorageFolderName: r.storageFolderName}).Store(strings.Join([]string{"religion", r.ID.String()}, "_")+".json", b)
+	return js.
+		New(js.Config{StorageFolderName: r.storageFolderName}).
+		Store(strings.Join([]string{"religion", r.ID.String()}, "_")+".json", b)
+}
+
+func ReadByID(storageFolderName string, id uuid.UUID) (*Religion, error) {
+	filename := strings.Join([]string{"religion", id.String()}, "_") + ".json"
+	b, err := js.
+		New(js.Config{StorageFolderName: storageFolderName}).
+		Get(filename)
+	if err != nil {
+		return nil, err
+	}
+
+	var out Religion
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, err
+	}
+
+	return &out, nil
 }

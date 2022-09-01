@@ -7,11 +7,11 @@ import (
 )
 
 type trait struct {
-	_religionMetadata *religionMetadata
-	baseCoef          float64
+	ReligionMetadata *religionMetadata `json:"religion_metadata"`
+	BaseCoef         float64           `json:"base_coef"`
 
-	Name string
-	Calc func(r *Religion, self *trait, selectedTraits []*trait) (bool, error)
+	Name string                                                                `json:"name"`
+	Calc func(r *Religion, self *trait, selectedTraits []*trait) (bool, error) `json:"-"`
 }
 
 type generateTraitsOpts struct {
@@ -37,9 +37,9 @@ func generateTraits(r *Religion, traitsToSelect []*trait, opts generateTraitsOpt
 			}
 			if isTrue {
 				traits = append(traits, &trait{
-					_religionMetadata: t._religionMetadata,
-					Name:              t.Name,
-					Calc:              t.Calc,
+					ReligionMetadata: t.ReligionMetadata,
+					Name:             t.Name,
+					Calc:             t.Calc,
 				})
 			}
 			if len(traits) == opts.Max {
@@ -55,7 +55,7 @@ func generateTraits(r *Religion, traitsToSelect []*trait, opts generateTraitsOpt
 	}
 
 	for _, t := range traits {
-		md, err := UpdateReligionMetadata(r, *r.metadata, *t._religionMetadata)
+		md, err := UpdateReligionMetadata(r, *r.Metadata, *t.ReligionMetadata)
 		if err != nil {
 			return nil, err
 		}

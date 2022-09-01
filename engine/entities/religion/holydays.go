@@ -7,10 +7,10 @@ import (
 )
 
 type Holydays struct {
-	religion *Religion
-	theology *Theology
+	religion *Religion `json:"-"`
+	theology *Theology `json:"-"`
 
-	Holydays []*trait
+	Holydays []*trait `json:"holydays"`
 }
 
 func (t *Theology) generateHolydays() (*Holydays, error) {
@@ -41,33 +41,33 @@ func (hs *Holydays) getAllHolydays() []*trait {
 	return []*trait{
 		{
 			Name: SamhainHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Chthonic:     0.1,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: MysteriesHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Hedonistic:     0.1,
 				Collectivistic: 0.25,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: SummerSolsticeHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Educational:  0.1,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, selectedHolydays []*trait) (bool, error) {
 				var addCoef float64
 				if len(hs.theology.Cults) > 0 {
@@ -110,16 +110,16 @@ func (hs *Holydays) getAllHolydays() []*trait {
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef+addCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: WinterSolsticeHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.75,
 				Educational:  0.1,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, selectedHolydays []*trait) (bool, error) {
 				var addCoef float64
 				if len(hs.theology.Cults) > 0 {
@@ -162,69 +162,69 @@ func (hs *Holydays) getAllHolydays() []*trait {
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef+addCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: CalendarOfFeastsHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Educational:  0.5,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: NewYearHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.5,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: DancePartyHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Simple:         0.75,
 				Collectivistic: 0.5,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: DrumPartyHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Simple:         0.75,
 				Collectivistic: 0.5,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: SocialFestivalsHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Collectivistic: 1,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: TreeCelebrationHolyday,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Simple:       0.75,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				if len(hs.theology.Traits) > 0 {
@@ -239,7 +239,7 @@ func (hs *Holydays) getAllHolydays() []*trait {
 					}
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef+addCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 	}

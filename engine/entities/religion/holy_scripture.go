@@ -7,11 +7,11 @@ import (
 )
 
 type HolyScripture struct {
-	religion *Religion
-	attrs    *Attributes
+	religion *Religion   `json:"-"`
+	attrs    *Attributes `json:"-"`
 
-	HasHolyScripture bool
-	Traits           []*trait
+	HasHolyScripture bool     `json:"has_holy_scripture"`
+	Traits           []*trait `json:"traits"`
 }
 
 func (as *Attributes) generateHolyScripture() (*HolyScripture, error) {
@@ -41,7 +41,7 @@ func (hs *HolyScripture) generateHasHolyScripture() (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	if hs.religion.metadata.IsLawful() {
+	if hs.religion.Metadata.IsLawful() {
 		p, err := pm.RandFloat64InRange(0.05, 0.1)
 		if err != nil {
 			return false, err
@@ -71,10 +71,10 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 	return []*trait{
 		{
 			Name: CommandmentsHolyScriptureTrait,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Lawful: 1,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
 				var addCoef float64
 				switch {
@@ -92,26 +92,26 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 					addCoef += coef
 				}
 
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef+addCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: DevotionalCodeHolyScriptureTrait,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Individualistic: 0.25,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: DivineLawHolyScriptureTrait,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Lawful:          1,
 				Authoritaristic: 0.5,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, selectedTraits []*trait) (bool, error) {
 				var addCoef float64
 				for _, trait := range selectedTraits {
@@ -126,51 +126,51 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 						addCoef += coef
 					}
 				}
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef+addCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef+addCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: MagicBooksHolyScriptureTrait,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.5,
 				Chthonic:     1,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: RunesHolyScriptureTrait,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Educational: 0.5,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: MarchingHymnsHolyScriptureTrait,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Aggressive:     0.75,
 				Collectivistic: 0.75,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: TheogonyHolyScriptureTrait,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Lawful:      0.25,
 				Educational: 0.25,
 				Complicated: 0.5,
 			},
-			baseCoef: hs.religion.M.BaseCoef,
+			BaseCoef: hs.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *trait, _ []*trait) (bool, error) {
-				return CalculateProbabilityFromReligionMetadata(self.baseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateProbabilityFromReligionMetadata(self.BaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 	}

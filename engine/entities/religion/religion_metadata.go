@@ -7,39 +7,39 @@ import (
 )
 
 type Metadata struct {
-	BaseCoef     float64
-	LowBaseCoef  float64
-	HighBaseCoef float64
+	BaseCoef     float64 `json:"base_coef"`
+	LowBaseCoef  float64 `json:"low_base_coef"`
+	HighBaseCoef float64 `json:"high_base_coef"`
 
-	MaxMetadataValue float64
+	MaxMetadataValue float64 `json:"max_metadata_value"`
 }
 
 type religionMetadata struct {
-	Naturalistic float64
+	Naturalistic float64 `json:"naturalistic"`
 
-	SexualActive     float64
-	SexualStrictness float64
+	SexualActive     float64 `json:"sexual_active"`
+	SexualStrictness float64 `json:"sexual_strictness"`
 
-	Chthonic    float64
-	Plutocratic float64
-	Altruistic  float64
-	Lawful      float64
-	Educational float64
+	Chthonic    float64 `json:"chtonic"`
+	Plutocratic float64 `json:"plutocratic"`
+	Altruistic  float64 `json:"altruaistic"`
+	Lawful      float64 `json:"lawful"`
+	Educational float64 `json:"educational"`
 
-	Aggressive float64
-	Pacifistic float64
+	Aggressive float64 `json:"aggressive"`
+	Pacifistic float64 `json:"pacifistic"`
 
-	Hedonistic float64
-	Ascetic    float64
+	Hedonistic float64 `json:"hedonistic"`
+	Ascetic    float64 `json:"ascetic"`
 
-	Authoritaristic float64
-	Liberal         float64
+	Authoritaristic float64 `json:"authoritaristic"`
+	Liberal         float64 `json:"liberal"`
 
-	Individualistic float64
-	Collectivistic  float64
+	Individualistic float64 `json:"individualistic"`
+	Collectivistic  float64 `json:"collectivistic"`
 
-	Simple      float64
-	Complicated float64
+	Simple      float64 `json:"simple"`
+	Complicated float64 `json:"complicated"`
 }
 
 func (rm *religionMetadata) IsNaturalistic() bool {
@@ -450,7 +450,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	}
 
 	if u.Naturalistic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsNaturalistic(), false)
+		p, err := getRMProbability(randCoef, r.Metadata.IsNaturalistic(), false)
 		if err != nil {
 			return false, err
 		}
@@ -459,7 +459,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	}
 
 	if u.SexualActive > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsSexualActive(), r.metadata.IsSexualStrictness())
+		p, err := getRMProbability(randCoef, r.Metadata.IsSexualActive(), r.Metadata.IsSexualStrictness())
 		if err != nil {
 			return false, err
 		}
@@ -467,7 +467,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.SexualStrictness > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsSexualStrictness(), r.metadata.IsSexualActive())
+		p, err := getRMProbability(randCoef, r.Metadata.IsSexualStrictness(), r.Metadata.IsSexualActive())
 		if err != nil {
 			return false, err
 		}
@@ -476,7 +476,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	}
 
 	if u.Chthonic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsChthonic(), false)
+		p, err := getRMProbability(randCoef, r.Metadata.IsChthonic(), false)
 		if err != nil {
 			return false, err
 		}
@@ -484,7 +484,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.Plutocratic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsPlutocratic(), r.metadata.IsAltruistic())
+		p, err := getRMProbability(randCoef, r.Metadata.IsPlutocratic(), r.Metadata.IsAltruistic())
 		if err != nil {
 			return false, err
 		}
@@ -492,7 +492,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.Altruistic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsAltruistic(), r.metadata.IsPlutocratic())
+		p, err := getRMProbability(randCoef, r.Metadata.IsAltruistic(), r.Metadata.IsPlutocratic())
 		if err != nil {
 			return false, err
 		}
@@ -500,7 +500,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.Lawful > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsLawful(), false)
+		p, err := getRMProbability(randCoef, r.Metadata.IsLawful(), false)
 		if err != nil {
 			return false, err
 		}
@@ -508,7 +508,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.Educational > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsEducational(), false)
+		p, err := getRMProbability(randCoef, r.Metadata.IsEducational(), false)
 		if err != nil {
 			return false, err
 		}
@@ -517,7 +517,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	}
 
 	if u.Aggressive > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsAggressive(), r.metadata.IsPacifistic())
+		p, err := getRMProbability(randCoef, r.Metadata.IsAggressive(), r.Metadata.IsPacifistic())
 		if err != nil {
 			return false, err
 		}
@@ -525,7 +525,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.Pacifistic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsPacifistic(), r.metadata.IsAggressive())
+		p, err := getRMProbability(randCoef, r.Metadata.IsPacifistic(), r.Metadata.IsAggressive())
 		if err != nil {
 			return false, err
 		}
@@ -534,7 +534,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	}
 
 	if u.Hedonistic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsHedonistic(), r.metadata.IsAscetic())
+		p, err := getRMProbability(randCoef, r.Metadata.IsHedonistic(), r.Metadata.IsAscetic())
 		if err != nil {
 			return false, err
 		}
@@ -542,7 +542,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsAscetic(), r.metadata.IsHedonistic())
+		p, err := getRMProbability(randCoef, r.Metadata.IsAscetic(), r.Metadata.IsHedonistic())
 		if err != nil {
 			return false, err
 		}
@@ -551,7 +551,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	}
 
 	if u.Authoritaristic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsAuthoritaristic(), r.metadata.IsLiberal())
+		p, err := getRMProbability(randCoef, r.Metadata.IsAuthoritaristic(), r.Metadata.IsLiberal())
 		if err != nil {
 			return false, err
 		}
@@ -559,7 +559,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsLiberal(), r.metadata.IsAuthoritaristic())
+		p, err := getRMProbability(randCoef, r.Metadata.IsLiberal(), r.Metadata.IsAuthoritaristic())
 		if err != nil {
 			return false, err
 		}
@@ -568,7 +568,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	}
 
 	if u.Individualistic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsIndividualistic(), r.metadata.IsCollectivistic())
+		p, err := getRMProbability(randCoef, r.Metadata.IsIndividualistic(), r.Metadata.IsCollectivistic())
 		if err != nil {
 			return false, err
 		}
@@ -576,7 +576,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsCollectivistic(), r.metadata.IsIndividualistic())
+		p, err := getRMProbability(randCoef, r.Metadata.IsCollectivistic(), r.Metadata.IsIndividualistic())
 		if err != nil {
 			return false, err
 		}
@@ -585,7 +585,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 	}
 
 	if u.Simple > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsSimple(), r.metadata.IsComplicated())
+		p, err := getRMProbability(randCoef, r.Metadata.IsSimple(), r.Metadata.IsComplicated())
 		if err != nil {
 			return false, err
 		}
@@ -593,7 +593,7 @@ func CalculateProbabilityFromReligionMetadata(baseCoef float64, r *Religion, u *
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		p, err := getRMProbability(randCoef, r.metadata.IsComplicated(), r.metadata.IsSimple())
+		p, err := getRMProbability(randCoef, r.Metadata.IsComplicated(), r.Metadata.IsSimple())
 		if err != nil {
 			return false, err
 		}
@@ -658,7 +658,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Naturalistic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsNaturalistic(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsNaturalistic(), false)
 		if err != nil {
 			return "", err
 		}
@@ -668,7 +668,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.SexualActive > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsSexualActive(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsSexualActive(), false)
 		if err != nil {
 			return "", err
 		}
@@ -678,7 +678,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Chthonic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsChthonic(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsChthonic(), false)
 		if err != nil {
 			return "", err
 		}
@@ -688,7 +688,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Plutocratic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsPlutocratic(), r.metadata.IsAltruistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsPlutocratic(), r.Metadata.IsAltruistic())
 		if err != nil {
 			return "", err
 		}
@@ -698,7 +698,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Altruistic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsAltruistic(), r.metadata.IsPlutocratic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsAltruistic(), r.Metadata.IsPlutocratic())
 		if err != nil {
 			return "", err
 		}
@@ -708,7 +708,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Lawful > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsLawful(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsLawful(), false)
 		if err != nil {
 			return "", err
 		}
@@ -718,7 +718,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Educational > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsEducational(), false)
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsEducational(), false)
 		if err != nil {
 			return "", err
 		}
@@ -729,7 +729,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Aggressive > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsAggressive(), r.metadata.IsPacifistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsAggressive(), r.Metadata.IsPacifistic())
 		if err != nil {
 			return "", err
 		}
@@ -739,7 +739,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Pacifistic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsPacifistic(), r.metadata.IsAggressive())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsPacifistic(), r.Metadata.IsAggressive())
 		if err != nil {
 			return "", err
 		}
@@ -750,7 +750,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Hedonistic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsHedonistic(), r.metadata.IsAscetic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsHedonistic(), r.Metadata.IsAscetic())
 		if err != nil {
 			return "", err
 		}
@@ -760,7 +760,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsAscetic(), r.metadata.IsHedonistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsAscetic(), r.Metadata.IsHedonistic())
 		if err != nil {
 			return "", err
 		}
@@ -771,7 +771,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Authoritaristic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsAuthoritaristic(), r.metadata.IsLiberal())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsAuthoritaristic(), r.Metadata.IsLiberal())
 		if err != nil {
 			return "", err
 		}
@@ -781,7 +781,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsLiberal(), r.metadata.IsAuthoritaristic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsLiberal(), r.Metadata.IsAuthoritaristic())
 		if err != nil {
 			return "", err
 		}
@@ -792,7 +792,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Individualistic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsIndividualistic(), r.metadata.IsCollectivistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsIndividualistic(), r.Metadata.IsCollectivistic())
 		if err != nil {
 			return "", err
 		}
@@ -802,7 +802,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsCollectivistic(), r.metadata.IsIndividualistic())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsCollectivistic(), r.Metadata.IsIndividualistic())
 		if err != nil {
 			return "", err
 		}
@@ -813,7 +813,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 	}
 
 	if u.Simple > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsSimple(), r.metadata.IsComplicated())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsSimple(), r.Metadata.IsComplicated())
 		if err != nil {
 			return "", err
 		}
@@ -823,7 +823,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		ideasCount++
 	}
 	if u.Ascetic > 0 {
-		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.metadata.IsComplicated(), r.metadata.IsSimple())
+		acc, shun, crim, err := getRMAcceptanceProbability(randCoef, r.Metadata.IsComplicated(), r.Metadata.IsSimple())
 		if err != nil {
 			return "", err
 		}

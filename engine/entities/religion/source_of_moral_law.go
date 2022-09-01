@@ -8,6 +8,10 @@ import (
 
 type SourceOfMoralLaw string
 
+func (soml SourceOfMoralLaw) String() string {
+	return string(soml)
+}
+
 const (
 	DeitySourceOfMoralLaw  SourceOfMoralLaw = "deity"
 	NoneSourceOfMoralLaw   SourceOfMoralLaw = "none"
@@ -60,7 +64,7 @@ func (d *Doctrine) generateSourceOfMoralLaw() (SourceOfMoralLaw, error) {
 		}
 		deity += deityP
 	}
-	if d.religion.metadata.IsHedonistic() {
+	if d.religion.Metadata.IsHedonistic() {
 		humanP, err := pm.RandFloat64InRange(0.05, 0.15)
 		if err != nil {
 			return "", err

@@ -4,6 +4,10 @@ import pm "persons_generator/engine/probability_machine"
 
 type Acceptance string
 
+func (a Acceptance) String() string {
+	return string(a)
+}
+
 const (
 	OnlyMen     Acceptance = "only_men"
 	MenAndWomen Acceptance = "men_and_women"

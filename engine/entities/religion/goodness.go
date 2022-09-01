@@ -4,6 +4,10 @@ import pm "persons_generator/engine/probability_machine"
 
 type Goodness string
 
+func (g Goodness) String() string {
+	return string(g)
+}
+
 const (
 	Good    Goodness = "good"
 	Neutral Goodness = "neutral"

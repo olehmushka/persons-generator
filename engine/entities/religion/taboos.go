@@ -8,10 +8,10 @@ import (
 )
 
 type Taboos struct {
-	religion *Religion
-	theology *Theology
+	religion *Religion `json:"-"`
+	theology *Theology `json:"-"`
 
-	Taboos []*Taboo
+	Taboos []*Taboo `json:"taboos"`
 }
 
 func (t *Theology) generateTaboos(c *culture.Culture) (*Taboos, error) {
@@ -33,12 +33,14 @@ func (ts *Taboos) Print() {
 }
 
 type Taboo struct {
-	_religionMetadata                                   *religionMetadata
-	acceptedBaseCoef, shunnedBaseCoef, criminalBaseCoef float64
+	ReligionMetadata *religionMetadata `json:"religion_metadata"`
+	AcceptedBaseCoef float64           `json:"accepted_base_coef"`
+	ShunnedBaseCoef  float64           `json:"shunned_base_coef"`
+	CriminalBaseCoef float64           `json:"criminal_base_coef"`
 
-	Name       string
-	Acceptance Acceptance
-	Calc       func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error)
+	Name       string                                                                      `json:"name"`
+	Acceptance Acceptance                                                                  `json:"acceptance"`
+	Calc       func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) `json:"-"`
 }
 
 func (ts *Taboos) generateTaboos(c *culture.Culture) ([]*Taboo, error) {
@@ -50,16 +52,16 @@ func (ts *Taboos) generateTaboos(c *culture.Culture) ([]*Taboo, error) {
 			return nil, err
 		}
 		taboos[i] = &Taboo{
-			_religionMetadata: taboo._religionMetadata,
-			acceptedBaseCoef:  taboo.acceptedBaseCoef,
-			shunnedBaseCoef:   taboo.shunnedBaseCoef,
-			criminalBaseCoef:  taboo.criminalBaseCoef,
-			Name:              taboo.Name,
-			Acceptance:        a,
-			Calc:              taboo.Calc,
+			ReligionMetadata: taboo.ReligionMetadata,
+			AcceptedBaseCoef: taboo.AcceptedBaseCoef,
+			ShunnedBaseCoef:  taboo.ShunnedBaseCoef,
+			CriminalBaseCoef: taboo.CriminalBaseCoef,
+			Name:             taboo.Name,
+			Acceptance:       a,
+			Calc:             taboo.Calc,
 		}
 
-		md, err := UpdateReligionMetadataWithAcceptance(ts.religion, *ts.religion.metadata, *taboos[i]._religionMetadata, taboos[i].Acceptance)
+		md, err := UpdateReligionMetadataWithAcceptance(ts.religion, *ts.religion.Metadata, *taboos[i].ReligionMetadata, taboos[i].Acceptance)
 		if err != nil {
 			return nil, err
 		}
@@ -73,68 +75,68 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 	return []*Taboo{
 		{
 			Name: RaisingAnimalsTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Plutocratic:  0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.HighBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.LowBaseCoef,
-			criminalBaseCoef: ts.religion.M.LowBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.HighBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.LowBaseCoef,
+			CriminalBaseCoef: ts.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: RaisingPlantsTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Altruistic:   0.5,
 				Plutocratic:  0.25,
 			},
-			acceptedBaseCoef: ts.religion.M.HighBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.LowBaseCoef,
-			criminalBaseCoef: ts.religion.M.LowBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.HighBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.LowBaseCoef,
+			CriminalBaseCoef: ts.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: RaisingFungusTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				Chthonic:     0.1,
 				Plutocratic:  0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.HighBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.LowBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.HighBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: EatAnimalsTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Chthonic:     0.1,
 				Hedonistic:   0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.HighBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.LowBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.HighBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: EatSomeAnimalsTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Lawful:       0.25,
 			},
-			acceptedBaseCoef: ts.religion.M.HighBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.HighBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) {
 				var shunnedAddCoef, criminalAddCoef float64
 				for _, taboo := range selectedTaboos {
@@ -159,85 +161,85 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 						}
 					}
 				}
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef+shunnedAddCoef, self.criminalBaseCoef+criminalAddCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef+shunnedAddCoef, self.CriminalBaseCoef+criminalAddCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: EatInsectsTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Chthonic:     0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: EatFungusTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.HighBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.LowBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.HighBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: CannibalismTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic:   1,
 				Aggressive: 0.25,
 			},
-			acceptedBaseCoef: ts.religion.M.LowBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.HighBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.LowBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.HighBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: DrinkingBloodTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic:   1,
 				Aggressive: 0.25,
 			},
-			acceptedBaseCoef: ts.religion.M.LowBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.LowBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: DrinkingStrongAlcoholTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				SexualActive: 0.1,
 				Chthonic:     0.25,
 				Aggressive:   0.1,
 				Hedonistic:   1,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: DrinkingNotStrongAlcoholTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				SexualActive: 0.25,
 				Chthonic:     0.1,
 				Hedonistic:   1,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.LowBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.LowBaseCoef,
 			Calc: func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) {
 				var acceptedAddCoef, shunnedAddCoef, criminalAddCoef float64
 				for _, taboo := range selectedTaboos {
@@ -277,99 +279,99 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 						}
 					}
 				}
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef+acceptedAddCoef, self.shunnedBaseCoef+shunnedAddCoef, self.criminalBaseCoef+criminalAddCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef+acceptedAddCoef, self.ShunnedBaseCoef+shunnedAddCoef, self.CriminalBaseCoef+criminalAddCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: UseNicotineTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic: 0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: UseCannabisTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.25,
 				Pacifistic:   0.1,
 				Hedonistic:   1,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: UseHallucinogensTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 0.1,
 				Educational:  0.1,
 				Pacifistic:   0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: UseCMSStimulantsTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic:   0.1,
 				Aggressive: 0.25,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: UseOpiumTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic:   0.25,
 				Hedonistic: 0.75,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: SameSexRelationsTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Chthonic:     0.1,
 				Hedonistic:   0.5,
 				Liberal:      0.5,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.HighBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.HighBaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: MaleAdulteryTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Hedonistic:   0.5,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.HighBaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.HighBaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
 				var acceptedAddCoef, shunnedAddCoef, criminalAddCoef float64
 				switch {
@@ -396,18 +398,18 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					}
 					criminalAddCoef += criminalAddCoefP
 				}
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef+acceptedAddCoef, self.shunnedBaseCoef+shunnedAddCoef, self.criminalBaseCoef+criminalAddCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef+acceptedAddCoef, self.ShunnedBaseCoef+shunnedAddCoef, self.CriminalBaseCoef+criminalAddCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: FemaleAdulteryTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Hedonistic:   0.5,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.HighBaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.HighBaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
 				var acceptedAddCoef, shunnedAddCoef, criminalAddCoef float64
 				switch {
@@ -434,46 +436,46 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					}
 					shunnedAddCoef += shunnedAddCoefP
 				}
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef+acceptedAddCoef, self.shunnedBaseCoef+shunnedAddCoef, self.criminalBaseCoef+criminalAddCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef+acceptedAddCoef, self.ShunnedBaseCoef+shunnedAddCoef, self.CriminalBaseCoef+criminalAddCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: SexualDeviancyTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Chthonic:     0.25,
 				Hedonistic:   0.25,
 			},
-			acceptedBaseCoef: ts.religion.M.LowBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.LowBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: ProstitutionTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				SexualActive: 1,
 				Plutocratic:  0.5,
 				Hedonistic:   0.25,
 			},
-			acceptedBaseCoef: ts.religion.M.LowBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.LowBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: KillAnyoneTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic:   0.1,
 				Aggressive: 1,
 			},
-			acceptedBaseCoef: ts.religion.M.LowBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.LowBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
 				var shunnedAddCoef, criminalAddCoef float64
 				if len(ts.theology.Traits) > 0 {
@@ -496,18 +498,18 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					}
 				}
 
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: KillAnimalsTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic:   0.1,
 				Aggressive: 0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) {
 				var acceptedAddCoef, shunnedAddCoef, criminalAddCoef float64
 				for _, taboo := range selectedTaboos {
@@ -532,18 +534,18 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 						}
 					}
 				}
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef+acceptedAddCoef, self.shunnedBaseCoef+shunnedAddCoef, self.criminalBaseCoef+criminalAddCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef+acceptedAddCoef, self.ShunnedBaseCoef+shunnedAddCoef, self.CriminalBaseCoef+criminalAddCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: KillHollyAnimalsTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic:   0.1,
 				Aggressive: 0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.LowBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.HighBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.LowBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.HighBaseCoef,
 			Calc: func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) {
 				var acceptedAddCoef, shunnedAddCoef, criminalAddCoef float64
 				for _, taboo := range selectedTaboos {
@@ -585,18 +587,18 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 						}
 					}
 				}
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef+acceptedAddCoef, self.shunnedBaseCoef+shunnedAddCoef, self.criminalBaseCoef+criminalAddCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef+acceptedAddCoef, self.ShunnedBaseCoef+shunnedAddCoef, self.CriminalBaseCoef+criminalAddCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: KillHumansTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic:   0.25,
 				Aggressive: 0.75,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) {
 				var acceptedAddCoef, shunnedAddCoef, criminalAddCoef float64
 				for _, taboo := range selectedTaboos {
@@ -621,18 +623,18 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 						}
 					}
 				}
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef+acceptedAddCoef, self.shunnedBaseCoef+shunnedAddCoef, self.criminalBaseCoef+criminalAddCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef+acceptedAddCoef, self.ShunnedBaseCoef+shunnedAddCoef, self.CriminalBaseCoef+criminalAddCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: KinslayingTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic:   0.75,
 				Aggressive: 1,
 			},
-			acceptedBaseCoef: ts.religion.M.LowBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.HighBaseCoef,
+			AcceptedBaseCoef: ts.religion.M.LowBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.HighBaseCoef,
 			Calc: func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) {
 				var acceptedAddCoef, shunnedAddCoef, criminalAddCoef float64
 				for _, taboo := range selectedTaboos {
@@ -674,17 +676,17 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 						}
 					}
 				}
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef+acceptedAddCoef, self.shunnedBaseCoef+shunnedAddCoef, self.criminalBaseCoef+criminalAddCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef+acceptedAddCoef, self.ShunnedBaseCoef+shunnedAddCoef, self.CriminalBaseCoef+criminalAddCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: SuicideTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
-			acceptedBaseCoef: ts.religion.M.LowBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.LowBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) {
 				var acceptedAddCoef, shunnedAddCoef, criminalAddCoef float64
 				for _, taboo := range selectedTaboos {
@@ -726,29 +728,29 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 						}
 					}
 				}
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef+acceptedAddCoef, self.shunnedBaseCoef+shunnedAddCoef, self.criminalBaseCoef+criminalAddCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef+acceptedAddCoef, self.ShunnedBaseCoef+shunnedAddCoef, self.CriminalBaseCoef+criminalAddCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: TattoosTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic: 0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.BaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.BaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: WitchcraftTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Chthonic: 1,
 			},
-			acceptedBaseCoef: ts.religion.M.BaseCoef,
-			shunnedBaseCoef:  ts.religion.M.HighBaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.BaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.HighBaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
 				if c != nil && len(c.Traditions) > 0 {
 					for _, t := range c.Traditions {
@@ -761,20 +763,20 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 					}
 				}
 
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 		{
 			Name: NudismTabooName,
-			_religionMetadata: &religionMetadata{
+			ReligionMetadata: &religionMetadata{
 				Naturalistic: 1,
 				SexualActive: 0.1,
 			},
-			acceptedBaseCoef: ts.religion.M.LowBaseCoef,
-			shunnedBaseCoef:  ts.religion.M.HighBaseCoef,
-			criminalBaseCoef: ts.religion.M.BaseCoef,
+			AcceptedBaseCoef: ts.religion.M.LowBaseCoef,
+			ShunnedBaseCoef:  ts.religion.M.HighBaseCoef,
+			CriminalBaseCoef: ts.religion.M.BaseCoef,
 			Calc: func(r *Religion, self *Taboo, _ []*Taboo) (Acceptance, error) {
-				return CalculateAcceptanceFromReligionMetadata(self.acceptedBaseCoef, self.shunnedBaseCoef, self.criminalBaseCoef, r, self._religionMetadata, CalcProbOpts{})
+				return CalculateAcceptanceFromReligionMetadata(self.AcceptedBaseCoef, self.ShunnedBaseCoef, self.CriminalBaseCoef, r, self.ReligionMetadata, CalcProbOpts{})
 			},
 		},
 	}

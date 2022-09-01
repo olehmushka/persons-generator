@@ -10,6 +10,10 @@ const (
 	Criminal Acceptance = "criminal"
 )
 
+func (a Acceptance) String() string {
+	return string(a)
+}
+
 func (a Acceptance) IsAccepted() bool {
 	return a == Accepted
 }

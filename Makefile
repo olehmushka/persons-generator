@@ -5,10 +5,7 @@ default: run
 install:
 	go mod download
 
-just_run:
-	go run main.go
-
-run: install just-run
+run: install run_http_server
 
 run_http_server:
 	go run main.go http_server_run
