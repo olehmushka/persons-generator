@@ -1,36 +1,151 @@
 package world
 
 import (
-	"errors"
+	"encoding/json"
 	"fmt"
+	"math"
+	"net/http"
+	"strings"
 
-	"persons_generator/core/tools"
+	js "persons_generator/core/storage/json_storage"
+	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/coordinate"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/human/human"
 	"persons_generator/engine/entities/location"
 	"persons_generator/engine/entities/religion"
-	pm "persons_generator/engine/probability_machine"
+
+	"github.com/google/uuid"
 )
 
 type World struct {
-	Size      int
-	Locations [][]*location.Location
-	Cultures  []*culture.Culture
-	Religions []*religion.Religion
+	ID                        uuid.UUID
+	Size                      int
+	Locations                 [][]*location.Location
+	Cultures                  []*culture.Culture
+	Religions                 []*religion.Religion
+	CultureReligionReferences []*religion.CultureReference
 
-	storageFolderName string
+	storageFolderName       string
+	defaultHumanAmount      int
+	defaultMalePercentage   float64
+	defaultFemalePercentage float64
 }
 
 func New(cfg Config, s int) *World {
 	return &World{
+		ID:   uuid.New(),
 		Size: s,
 
 		storageFolderName: cfg.StorageFolderName,
 	}
 }
 
-func (w *World) Fill() *World {
+func NewByPreferred(cfg Config, preferred *Preference) (*World, error) {
+	w := &World{
+		ID: uuid.New(),
+
+		storageFolderName:       cfg.StorageFolderName,
+		defaultHumanAmount:      cfg.DefaultHumanAmount,
+		defaultMalePercentage:   cfg.DefaultMalePercentage,
+		defaultFemalePercentage: cfg.DefaultFemalePercentage,
+	}
+	p, err := w.preparePreference(preferred)
+	if err != nil {
+		return nil, err
+	}
+
+	size, err := getSizeByPreference(p)
+	if err != nil {
+		return nil, err
+	}
+	w.Size = size
+	w.CultureReligionReferences = p.ReligionCultures
+	w.Cultures = religion.ExtractCulturesFromCultureReferences(p.ReligionCultures)
+	w.Religions = religion.ExtractReligionsFromCultureReferences(p.ReligionCultures)
+	w.seedLocations()
+	if err := w.seedCultures(); err != nil {
+		return nil, err
+	}
+	if err := w.seedReligions(); err != nil {
+		return nil, err
+	}
+
+	return w, nil
+}
+
+func (w *World) preparePreference(in *Preference) (*Preference, error) {
+	if in == nil {
+		hp := HumanPreference{
+			Amount:       w.defaultHumanAmount,
+			MaleAmount:   int(float64(w.defaultHumanAmount) * w.defaultMalePercentage),
+			FemaleAmount: int(float64(w.defaultHumanAmount) * w.defaultFemalePercentage),
+		}
+		var culturesAmount, religionsAmount int
+		switch {
+		case hp.Amount < 10:
+			culturesAmount = 1
+			religionsAmount = 1
+		case hp.Amount >= 10 && hp.Amount < 25:
+			culturesAmount = 2
+			religionsAmount = 2
+		case hp.Amount >= 25 && hp.Amount < 50:
+			culturesAmount = 3
+			religionsAmount = 3
+		case hp.Amount >= 50 && hp.Amount < 75:
+			culturesAmount = 5
+			religionsAmount = 4
+		case hp.Amount >= 75 && hp.Amount < 100:
+			culturesAmount = 8
+			religionsAmount = 5
+		case hp.Amount >= 100 && hp.Amount < 250:
+			culturesAmount = 13
+			religionsAmount = 6
+		case hp.Amount >= 250 && hp.Amount < 500:
+			culturesAmount = 21
+			religionsAmount = 7
+		case hp.Amount >= 500 && hp.Amount < 750:
+			culturesAmount = 34
+			religionsAmount = 8
+		case hp.Amount >= 750 && hp.Amount < 1000:
+			culturesAmount = 55
+			religionsAmount = 9
+		case hp.Amount > 1000:
+			culturesAmount = 89
+			religionsAmount = 10
+		}
+		cultures, err := culture.NewMany(culture.Config{StorageFolderName: w.storageFolderName}, culturesAmount, nil)
+		if err != nil {
+			return nil, err
+		}
+		references, err := religion.NewReferences(
+			religion.Config{StorageFolderName: w.storageFolderName},
+			religionsAmount,
+			cultures,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		return &Preference{
+			Human:            hp,
+			ReligionCultures: references,
+		}, nil
+	}
+
+	return in, nil
+}
+
+func getSizeByPreference(pref *Preference) (int, error) {
+	if pref == nil {
+		return 0, wrapped_error.New(http.StatusInternalServerError, nil, "can not get size of world without preference")
+	}
+	squareSide := math.Sqrt(float64(pref.Human.Amount)) * 1.5
+
+	return int(math.Ceil(squareSide)), nil
+}
+
+func (w *World) seedLocations() {
 	size := w.Size
 	w.Locations = make([][]*location.Location, 0, size)
 	for y := 0; y < size; y++ {
@@ -42,29 +157,14 @@ func (w *World) Fill() *World {
 			})
 		}
 	}
-
-	return w
 }
 
-func (w *World) CulturesPropagate(amount int, preferred []*culture.Preference) (*World, error) {
-	if amount == 0 {
-		return nil, errors.New("[World.CulturesPropagate] culture amount can not be zero")
-	}
-
+func (w *World) seedCultures() error {
 	totalLocs := w.Size * w.Size
-	if totalLocs < amount {
-		return nil, fmt.Errorf("[World.CulturesPropagate] incorrect cultures number (max culture_number=%d, actual culture_number=%d)", totalLocs, amount)
-	}
-	cultures, err := culture.NewMany(culture.Config{StorageFolderName: w.storageFolderName}, amount, preferred)
-	if err != nil {
-		return nil, err
-	}
-	w.Cultures = cultures
-
 	var (
-		locsPerCulture = totalLocs / amount
-		reminder       = totalLocs - (locsPerCulture * amount)
-		toFillCultures = make(map[string]int, amount)
+		locsPerCulture = totalLocs / len(w.Cultures)
+		reminder       = totalLocs - (locsPerCulture * len(w.Cultures))
+		toFillCultures = make(map[string]int, len(w.Cultures))
 	)
 	for i, c := range w.Cultures {
 		toFillCultures[c.Name] = locsPerCulture
@@ -79,7 +179,7 @@ func (w *World) CulturesPropagate(amount int, preferred []*culture.Preference) (
 			for {
 				randCultureName, err := culture.GetRandomCultureName(w.Cultures)
 				if err != nil {
-					return nil, fmt.Errorf("[World.CulturesPropagate] can not generate random culture_name(error=%s)", err.Error())
+					return wrapped_error.New(http.StatusInternalServerError, err, "can not generate random culture_name")
 				}
 				if rem, ok := toFillCultures[randCultureName]; ok && rem > 0 {
 					cultureName = randCultureName
@@ -91,7 +191,22 @@ func (w *World) CulturesPropagate(amount int, preferred []*culture.Preference) (
 		}
 	}
 
-	return w, nil
+	return nil
+}
+
+func (w *World) seedReligions() error {
+	for y := 0; y < w.Size; y++ {
+		for x := 0; x < w.Size; x++ {
+			if w.Locations[y][x] == nil || w.Locations[y][x].InitCulture == nil {
+				return wrapped_error.New(http.StatusInternalServerError, nil, fmt.Sprintf("location is nil or its culture is nil (x: %d, y: %d)", x, y))
+			}
+
+			cultureName := w.Locations[y][x].InitCulture.Name
+			w.Locations[y][x].InitReligion = religion.GetReligionByCultureNameFromCultureReferences(w.CultureReligionReferences, cultureName)
+		}
+	}
+
+	return nil
 }
 
 func (w *World) PrintLocationCultures() {
@@ -106,154 +221,6 @@ func (w *World) PrintLocationCultures() {
 	}
 }
 
-func (w *World) ReligionsPropagate(amount int) (*World, error) {
-	if amount == 0 {
-		return nil, errors.New("[World.ReligionsPropagate] religion amount can not be zero")
-	}
-	totalLocs := w.Size * w.Size
-	if totalLocs < amount {
-		return nil, fmt.Errorf("[World.ReligionsPropagate] incorrect religion number (max religion_number=%d, actual religion_number=%d)", totalLocs, amount)
-	}
-
-	if amount > len(w.Cultures) {
-		return w.religionsPropagateForCultureNumberLess(amount)
-	}
-	if amount == len(w.Cultures) {
-		return w.religionsPropagateForCultureNumberEqual(amount)
-	}
-	if amount < len(w.Cultures) {
-		return w.religionsPropagateForCultureNumberGreater(amount)
-	}
-
-	return w, nil
-}
-
-func (w *World) religionsPropagateForCultureNumberLess(amount int) (*World, error) {
-	var (
-		sampleReligions      = make([]*religion.Religion, amount)
-		religions            = make([]*religion.Religion, 0, amount)
-		chunkSampleReligions = tools.ChunkFor(sampleReligions, len(w.Cultures))
-		cultureReligionMap   = make(map[string][]string, amount)
-	)
-
-	for i := range chunkSampleReligions {
-		for range chunkSampleReligions[i] {
-			c := w.Cultures[i]
-			r, err := religion.New(religion.Config{StorageFolderName: w.storageFolderName}, c)
-			if err != nil {
-				return nil, err
-			}
-			religions = append(religions, r)
-			val, ok := cultureReligionMap[c.Name]
-			if !ok || len(val) == 0 {
-				cultureReligionMap[c.Name] = []string{r.Name}
-			} else {
-				cultureReligionMap[c.Name] = append(cultureReligionMap[c.Name], r.Name)
-			}
-		}
-	}
-	w.Religions = religions
-
-	for y := 0; y < w.Size; y++ {
-		for x := 0; x < w.Size; x++ {
-			if w.Locations[y][x] == nil || w.Locations[y][x].InitCulture == nil {
-				return nil, fmt.Errorf("[World.religionsPropagateForCultureNumberLess] location is nil or its culture is nil (x: %d, y: %d)", x, y)
-			}
-
-			cultureName := w.Locations[y][x].InitCulture.Name
-			religionNames, ok := cultureReligionMap[cultureName]
-			if !ok {
-				return nil, fmt.Errorf("[World.religionsPropagateForCultureNumberLess] can not get culture by name (list=%+v, name=%s)", culture.MapCultureNames(w.Cultures), cultureName)
-			}
-			if len(religionNames) == 0 {
-				return nil, fmt.Errorf("[World.religionsPropagateForCultureNumberLess] can not get religion names from empty list (culture_religion_map=%+v, name=%s)", cultureReligionMap, cultureName)
-			}
-			religionName, err := tools.RandomValueOfSlice(pm.RandFloat64, religionNames)
-			if err != nil {
-				return nil, err
-			}
-			w.Locations[y][x].InitReligion = religion.GetReligionByName(religionName, religions)
-		}
-	}
-
-	return w, nil
-}
-
-func (w *World) religionsPropagateForCultureNumberEqual(amount int) (*World, error) {
-	var (
-		religions          = make([]*religion.Religion, 0, amount)
-		cultureReligionMap = make(map[string]string, amount)
-	)
-
-	for _, c := range w.Cultures {
-		r, err := religion.New(religion.Config{StorageFolderName: w.storageFolderName}, c)
-		if err != nil {
-			return nil, err
-		}
-		religions = append(religions, r)
-		cultureReligionMap[c.Name] = r.Name
-	}
-	w.Religions = religions
-
-	for y := 0; y < w.Size; y++ {
-		for x := 0; x < w.Size; x++ {
-			if w.Locations[y][x] == nil || w.Locations[y][x].InitCulture == nil {
-				return nil, fmt.Errorf("[World.religionsPropagateForCultureNumberEqual] location is nil or its culture is nil (x: %d, y: %d)", x, y)
-			}
-
-			cultureName := w.Locations[y][x].InitCulture.Name
-			religionName, ok := cultureReligionMap[cultureName]
-			if !ok {
-				return nil, fmt.Errorf("[World.religionsPropagateForCultureNumberEqual] can not get culture by name (list=%+v, name=%s)", culture.MapCultureNames(w.Cultures), cultureName)
-			}
-			w.Locations[y][x].InitReligion = religion.GetReligionByName(religionName, religions)
-		}
-	}
-
-	return w, nil
-}
-
-func (w *World) religionsPropagateForCultureNumberGreater(amount int) (*World, error) {
-	var (
-		religions          = make([]*religion.Religion, 0, amount)
-		culturesChunks     = tools.ChunkFor(w.Cultures, amount)
-		cultureReligionMap = make(map[string]string, amount)
-	)
-
-	for _, chunk := range culturesChunks {
-		hybridCulture, err := culture.NewWithProto(culture.Config{StorageFolderName: w.storageFolderName}, chunk)
-		if err != nil {
-			return nil, err
-		}
-		r, err := religion.New(religion.Config{StorageFolderName: w.storageFolderName}, hybridCulture)
-		if err != nil {
-			return nil, err
-		}
-		religions = append(religions, r)
-		for _, c := range chunk {
-			cultureReligionMap[c.Name] = r.Name
-		}
-	}
-	w.Religions = religions
-
-	for y := 0; y < w.Size; y++ {
-		for x := 0; x < w.Size; x++ {
-			if w.Locations[y][x] == nil || w.Locations[y][x].InitCulture == nil {
-				return nil, fmt.Errorf("[World.religionsPropagateForCultureNumberGreater] location is nil or its culture is nil (x: %d, y: %d)", x, y)
-			}
-
-			cultureName := w.Locations[y][x].InitCulture.Name
-			religionName, ok := cultureReligionMap[cultureName]
-			if !ok {
-				return nil, fmt.Errorf("[World.religionsPropagateForCultureNumberGreater] can not get culture by name (list=%+v, name=%s)", culture.MapCultureNames(w.Cultures), cultureName)
-			}
-			w.Locations[y][x].InitReligion = religion.GetReligionByName(religionName, religions)
-		}
-	}
-
-	return w, nil
-}
-
 func (w *World) PrintLocationReligions() {
 	for y := 0; y < w.Size; y++ {
 		for x := 0; x < w.Size; x++ {
@@ -264,4 +231,49 @@ func (w *World) PrintLocationReligions() {
 		}
 		fmt.Printf("\n")
 	}
+}
+
+func (w *World) GetHumans(params GetHumansParams) ([]*human.Human, error) {
+	out := make([]*human.Human, 0, w.Size*w.Size)
+	for y := 0; y < w.Size; y++ {
+		for x := 0; x < w.Size; x++ {
+			if w.Locations[y][x] != nil || len(w.Locations[y][x].Population) > 0 {
+				out = append(out, w.Locations[y][x].Population...)
+			}
+		}
+	}
+
+	return out, nil
+}
+
+func (w *World) Save() error {
+	if w == nil {
+		return wrapped_error.New(http.StatusInternalServerError, nil, "can not save nil world")
+	}
+
+	b, err := json.MarshalIndent(w, "", " ")
+	if err != nil {
+		return err
+	}
+
+	return js.
+		New(js.Config{StorageFolderName: w.storageFolderName}).
+		Store(strings.Join([]string{"world", w.ID.String()}, "_")+".json", b)
+}
+
+func ReadByID(storageFolderName string, id uuid.UUID) (*World, error) {
+	filename := strings.Join([]string{"world", id.String()}, "_") + ".json"
+	b, err := js.
+		New(js.Config{StorageFolderName: storageFolderName}).
+		Get(filename)
+	if err != nil {
+		return nil, err
+	}
+
+	var out World
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, err
+	}
+
+	return &out, nil
 }

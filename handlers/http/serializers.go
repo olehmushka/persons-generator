@@ -2,6 +2,7 @@ package http
 
 import (
 	"persons_generator/internal/culture/entities"
+	personsEntities "persons_generator/internal/persons/entities"
 	religionEntities "persons_generator/internal/religion/entities"
 )
 
@@ -152,4 +153,17 @@ func serializeMarriageTradition(in religionEntities.MarriageTradition) MarriageT
 		Consanguinity: in.Consanguinity,
 		Divorce:       in.Divorce,
 	}
+}
+
+func serializePersons(in []*personsEntities.Person) []*Person {
+	out := make([]*Person, len(in))
+	for i := range out {
+		out[i] = serializePerson(in[i])
+	}
+
+	return out
+}
+
+func serializePerson(in *personsEntities.Person) *Person {
+	return &Person{}
 }

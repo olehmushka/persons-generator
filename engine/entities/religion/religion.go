@@ -102,6 +102,141 @@ func NewByPreferred(cfg Config, preferred *Preference) (*Religion, error) {
 	return New(cfg, c)
 }
 
+func NewReferences(cfg Config, amount int, cultures []*culture.Culture) ([]*CultureReference, error) {
+	if amount > len(cultures) {
+		return newRefForCultureNumberLess(cfg, amount, cultures)
+	}
+	if amount == len(cultures) {
+		return newRefForCultureNumberEqual(cfg, amount, cultures)
+	}
+	if amount < len(cultures) {
+		return newRefForCultureNumberGreater(cfg, amount, cultures)
+	}
+
+	return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("can not create religion_culture reference for amount=%d, cultures length=%d", amount, len(cultures)))
+}
+
+func newRefForCultureNumberLess(cfg Config, amount int, cultures []*culture.Culture) ([]*CultureReference, error) {
+	var (
+		sampleReligions      = make([]*Religion, amount)
+		religions            = make([]*Religion, 0, amount)
+		chunkSampleReligions = tools.ChunkFor(sampleReligions, len(cultures))
+		cultureReligionMap   = make(map[string][]string, amount)
+	)
+
+	for i := range chunkSampleReligions {
+		for range chunkSampleReligions[i] {
+			c := cultures[i]
+			r, err := New(cfg, c)
+			if err != nil {
+				return nil, err
+			}
+			religions = append(religions, r)
+			val, ok := cultureReligionMap[c.Name]
+			if !ok || len(val) == 0 {
+				cultureReligionMap[c.Name] = []string{r.Name}
+			} else {
+				cultureReligionMap[c.Name] = append(cultureReligionMap[c.Name], r.Name)
+			}
+		}
+	}
+
+	refs := make([]*CultureReference, 0, amount)
+	for cultureName, religionNames := range cultureReligionMap {
+		c := culture.GetCultureByName(cultureName, cultures)
+		if c == nil {
+			continue
+		}
+		for _, religionName := range religionNames {
+			r := GetReligionByName(religionName, religions)
+			if r == nil {
+				continue
+			}
+			refs = append(refs, &CultureReference{
+				Culture:  c,
+				Religion: r,
+			})
+		}
+	}
+
+	return refs, nil
+}
+
+func newRefForCultureNumberEqual(cfg Config, amount int, cultures []*culture.Culture) ([]*CultureReference, error) {
+	var (
+		religions          = make([]*Religion, 0, amount)
+		cultureReligionMap = make(map[string]string, amount)
+	)
+
+	for _, c := range cultures {
+		r, err := New(cfg, c)
+		if err != nil {
+			return nil, err
+		}
+		religions = append(religions, r)
+		cultureReligionMap[c.Name] = r.Name
+	}
+
+	refs := make([]*CultureReference, 0, amount)
+	for cultureName, religionName := range cultureReligionMap {
+		c := culture.GetCultureByName(cultureName, cultures)
+		if c == nil {
+			continue
+		}
+		r := GetReligionByName(religionName, religions)
+		if r == nil {
+			continue
+		}
+		refs = append(refs, &CultureReference{
+			Culture:  c,
+			Religion: r,
+		})
+	}
+
+	return refs, nil
+}
+
+func newRefForCultureNumberGreater(cfg Config, amount int, cultures []*culture.Culture) ([]*CultureReference, error) {
+	var (
+		religions          = make([]*Religion, 0, amount)
+		culturesChunks     = tools.ChunkFor(cultures, amount)
+		cultureReligionMap = make(map[string]string, amount)
+	)
+
+	for _, chunk := range culturesChunks {
+		hybridCulture, err := culture.NewWithProto(culture.Config{StorageFolderName: cfg.StorageFolderName}, chunk)
+		if err != nil {
+			return nil, err
+		}
+		r, err := New(cfg, hybridCulture)
+		if err != nil {
+			return nil, err
+		}
+		religions = append(religions, r)
+		for _, c := range chunk {
+			cultureReligionMap[c.Name] = r.Name
+		}
+	}
+
+	refs := make([]*CultureReference, 0, amount)
+	for cultureName, religionName := range cultureReligionMap {
+		c := culture.GetCultureByName(cultureName, cultures)
+		if c == nil {
+			continue
+		}
+		r := GetReligionByName(religionName, religions)
+		if r == nil {
+			continue
+		}
+		refs = append(refs, &CultureReference{
+			Culture:  c,
+			Religion: r,
+		})
+	}
+
+	return refs, nil
+}
+
 func getCulture(cfg Config, preferred *Preference) (*culture.Culture, error) {
 	var (
 		amount       int = 1
@@ -240,4 +375,22 @@ func ReadByID(storageFolderName string, id uuid.UUID) (*Religion, error) {
 	}
 
 	return &out, nil
+}
+
+func UniqueReligions(religions []*Religion) []*Religion {
+	if len(religions) <= 1 {
+		return religions
+	}
+
+	preOut := make(map[string]*Religion)
+	for _, c := range religions {
+		preOut[c.Name] = c
+	}
+
+	out := make([]*Religion, 0, len(preOut))
+	for _, c := range preOut {
+		out = append(out, c)
+	}
+
+	return out
 }

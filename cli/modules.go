@@ -5,8 +5,10 @@ import (
 	js "persons_generator/core/storage/json_storage"
 	cultureEngineAdp "persons_generator/internal/culture/adapters/engine"
 	cultureServices "persons_generator/internal/culture/services"
+	personsServices "persons_generator/internal/persons/services"
 	religionEngineAdp "persons_generator/internal/religion/adapters/engine"
 	religionServices "persons_generator/internal/religion/services"
+	worldServices "persons_generator/internal/world/services"
 
 	"go.uber.org/fx"
 )
@@ -17,5 +19,7 @@ var Modules = fx.Options(
 	cultureEngineAdp.Module,
 	religionEngineAdp.Module,
 	cultureServices.Module,
+	personsServices.Module,
 	religionServices.Module,
+	worldServices.Module,
 )

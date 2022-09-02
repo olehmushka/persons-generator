@@ -134,3 +134,21 @@ type ReligionType struct {
 	Name        string `json:"name"`
 	SubtypeName string `json:"subtype_name"`
 }
+
+type CreateWorldPersonsRequest struct {
+	PersonsAmount           *int     `json:"persons_amount"`
+	MalePersonsAmount       *int     `json:"male_persons_amount"`
+	FemalePersonsAmount     *int     `json:"female_persons_amount"`
+	CultureReligionIDsPairs []string `json:"culture_religion_ids_pairs"`
+}
+
+type CreateWorldPersonsResponse struct {
+	WorldID uuid.UUID `json:"world_id"`
+}
+
+type GetWorldPersonsResponse struct {
+	Data  []*Person `json:"data"`
+	Total int       `json:"total"`
+}
+
+type Person struct{}
