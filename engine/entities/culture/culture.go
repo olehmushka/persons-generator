@@ -3,7 +3,6 @@ package culture
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"strings"
 
 	js "persons_generator/core/storage/json_storage"
@@ -38,7 +37,7 @@ func New(cfg Config, preferred *Preference) (*Culture, error) {
 		return nil, err
 	}
 	if len(proto) == 0 {
-		return nil, we.New(http.StatusInternalServerError, nil, "proto cultures can not be zero")
+		return nil, we.NewBadRequestError(nil, "proto cultures can not be zero")
 	}
 
 	return NewWithProto(cfg, proto)
@@ -55,16 +54,16 @@ func getProtoCultures(preferred *Preference) ([]*Culture, error) {
 	case HybridPrefKind:
 		return getProtoCulturesForHybridKind(preferred)
 	default:
-		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("unexpected preference kind (kind_name=%s)", preferred.Kind))
+		return nil, we.NewBadRequestError(nil, fmt.Sprintf("unexpected preference kind (kind_name=%s)", preferred.Kind))
 	}
 }
 
 func getProtoCulturesForStrictKind(preferred *Preference) ([]*Culture, error) {
 	if preferred == nil {
-		return nil, we.New(http.StatusInternalServerError, nil, "preferred can not be nil")
+		return nil, we.NewBadRequestError(nil, "preferred can not be nil")
 	}
 	if preferred.Kind == StrictPrefKind && len(preferred.Names) != preferred.Amount {
-		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("for strict kind of preference number preferred names (%d) can not be not equal to amount (%d)", len(preferred.Names), preferred.Amount))
+		return nil, we.NewBadRequestError(nil, fmt.Sprintf("for strict kind of preference number preferred names (%d) can not be not equal to amount (%d)", len(preferred.Names), preferred.Amount))
 	}
 
 	out, err := GetProtoCulturesByPreferred(preferred.Names)
@@ -77,7 +76,7 @@ func getProtoCulturesForStrictKind(preferred *Preference) ([]*Culture, error) {
 
 func getProtoCulturesForHybridKind(preferred *Preference) ([]*Culture, error) {
 	if preferred == nil {
-		return nil, we.New(http.StatusInternalServerError, nil, "preferred can not be nil")
+		return nil, we.NewBadRequestError(nil, "preferred can not be nil")
 	}
 
 	out, err := GetProtoCulturesByPreferred(preferred.Names)
@@ -138,7 +137,7 @@ func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
 
 func NewHybrid(cfg Config, amount int, parent []*Culture) (*Culture, error) {
 	if len(parent) > amount {
-		return nil, we.New(http.StatusBadRequest, nil, fmt.Sprintf("preferred parent cultures number (%d) can not be greater than required amount for hybrid culture (%d)", len(parent), amount))
+		return nil, we.NewBadRequestError(nil, fmt.Sprintf("preferred parent cultures number (%d) can not be greater than required amount for hybrid culture (%d)", len(parent), amount))
 	}
 	cultures := make([]*Culture, amount)
 	for i := range cultures {
@@ -161,7 +160,7 @@ func NewHybrid(cfg Config, amount int, parent []*Culture) (*Culture, error) {
 func NewMany(cfg Config, amount int, preferred []*Preference) ([]*Culture, error) {
 	cultures := make([]*Culture, amount)
 	if amount < len(preferred) {
-		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("amount (%d) can not be less than length of preferred (length=%d)", amount, len(preferred)))
+		return nil, we.NewBadRequestError(nil, fmt.Sprintf("amount (%d) can not be less than length of preferred (length=%d)", amount, len(preferred)))
 	}
 	for i := range cultures {
 		var p *Preference
@@ -221,7 +220,7 @@ func GetProtoCulturesByPreferred(names []string) ([]*Culture, error) {
 	for i := range out {
 		found := GetProtoCultureByPreferredName(names[i])
 		if found == nil {
-			return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("can not found proto culture by name (name=%s)", names[i]))
+			return nil, we.NewBadRequestError(nil, fmt.Sprintf("can not found proto culture by name (name=%s)", names[i]))
 		}
 		out[i] = found
 	}
@@ -259,7 +258,7 @@ func UniqueCultures(cultures []*Culture) []*Culture {
 
 func GetRandomProtoCultures(min, max int) ([]*Culture, error) {
 	if max > len(AllCultures) {
-		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("number of all cultures can not be less than max for random generation (%d)", max))
+		return nil, we.NewBadRequestError(nil, fmt.Sprintf("number of all cultures can not be less than max for random generation (%d)", max))
 	}
 	amount, err := pm.RandIntInRange(min, max)
 	if err != nil {
@@ -312,7 +311,7 @@ func MapCultureNames(cultures []*Culture) []string {
 
 func (c *Culture) Save() error {
 	if c == nil {
-		return we.New(http.StatusInternalServerError, nil, "can not save nil culture")
+		return we.NewBadRequestError(nil, "can not save nil culture")
 	}
 
 	b, err := json.MarshalIndent(c, "", " ")

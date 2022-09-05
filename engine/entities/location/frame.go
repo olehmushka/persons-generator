@@ -2,7 +2,6 @@ package location
 
 import (
 	"fmt"
-	"net/http"
 	"persons_generator/core/wrapped_error"
 )
 
@@ -18,7 +17,7 @@ func GetLocationsInFrame(frame [][]*Location) int {
 func SplitLocationsIntoFrames(framesAmount int, locations [][]*Location) ([][]*Location, error) {
 	locNumber := GetLocationsInFrame(locations)
 	if framesAmount > locNumber {
-		return nil, wrapped_error.New(http.StatusInternalServerError, nil, fmt.Sprintf("[SplitLocationsIntoFrames] location entities (%d) more than frame_amount (%d)", locNumber, framesAmount))
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("[SplitLocationsIntoFrames] location entities (%d) more than frame_amount (%d)", locNumber, framesAmount))
 	}
 	locPerFrame := locNumber / framesAmount
 	reminder := locNumber - (locPerFrame * framesAmount)

@@ -3,7 +3,6 @@ package probability_machine
 import (
 	"crypto/rand"
 	"math/big"
-	"net/http"
 	"persons_generator/core/wrapped_error"
 
 	expRand "golang.org/x/exp/rand"
@@ -19,7 +18,7 @@ func GetRandomBool(trueProb float64) (bool, error) {
 
 func RandIntInRange(min int, max int) (int, error) {
 	if min >= max {
-		return 0, wrapped_error.New(http.StatusInternalServerError, nil, "[RandIntInRange] min >= max")
+		return 0, wrapped_error.NewInternalServerError(nil, "[RandIntInRange] min >= max")
 	}
 
 	n, _ := rand.Int(rand.Reader, big.NewInt(int64(max-min)))
@@ -32,7 +31,7 @@ func RandInt(max int) (int, error) {
 
 func RandFloat64InRange(min, max float64) (float64, error) {
 	if min >= max {
-		return 0, wrapped_error.New(http.StatusInternalServerError, nil, "[RandFloat64InRange] min >= max")
+		return 0, wrapped_error.NewInternalServerError(nil, "[RandFloat64InRange] min >= max")
 	}
 
 	rInt, err := RandIntInRange(0, 100)

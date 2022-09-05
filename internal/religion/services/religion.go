@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"persons_generator/core/wrapped_error"
 	"persons_generator/internal/religion/adapters/engine"
 	"persons_generator/internal/religion/entities"
 
@@ -26,7 +27,7 @@ var Module = fx.Options(
 
 func (s *religion) CreateReligions(ctx context.Context, amount int, preferences []*entities.Preference) ([]*entities.Religion, error) {
 	if amount < len(preferences) {
-		return nil, fmt.Errorf("amount (%d) can not be less than preferences number (%d)", amount, len(preferences))
+		return nil, wrapped_error.NewBadRequestError(nil, fmt.Sprintf("amount (%d) can not be less than preferences number (%d)", amount, len(preferences)))
 	}
 
 	rs, err := s.engineAdp.CreateReligions(ctx, amount, preferences)

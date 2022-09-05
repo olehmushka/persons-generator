@@ -4,15 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"net/http"
 	"strings"
 
 	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/coordinate"
 	"persons_generator/engine/entities/culture"
-	"persons_generator/engine/entities/human/human"
 	"persons_generator/engine/entities/location"
+	"persons_generator/engine/entities/person"
 	"persons_generator/engine/entities/religion"
 
 	"github.com/google/uuid"
@@ -138,7 +137,7 @@ func (w *World) preparePreference(in *Preference) (*Preference, error) {
 
 func getSizeByPreference(pref *Preference) (int, error) {
 	if pref == nil {
-		return 0, wrapped_error.New(http.StatusInternalServerError, nil, "can not get size of world without preference")
+		return 0, wrapped_error.NewInternalServerError(nil, "can not get size of world without preference")
 	}
 	squareSide := math.Sqrt(float64(pref.Human.Amount)) * 1.5
 
@@ -153,7 +152,7 @@ func (w *World) seedLocations() {
 		for x := 0; x < size; x++ {
 			w.Locations[y] = append(w.Locations[y], &location.Location{
 				Coordinate: &coordinate.Coordinate{X: x, Y: y},
-				Population: make([]*human.Human, 0),
+				Population: make([]*person.Person, 0),
 			})
 		}
 	}
@@ -179,7 +178,7 @@ func (w *World) seedCultures() error {
 			for {
 				randCultureName, err := culture.GetRandomCultureName(w.Cultures)
 				if err != nil {
-					return wrapped_error.New(http.StatusInternalServerError, err, "can not generate random culture_name")
+					return wrapped_error.NewInternalServerError(err, "can not generate random culture_name")
 				}
 				if rem, ok := toFillCultures[randCultureName]; ok && rem > 0 {
 					cultureName = randCultureName
@@ -198,7 +197,7 @@ func (w *World) seedReligions() error {
 	for y := 0; y < w.Size; y++ {
 		for x := 0; x < w.Size; x++ {
 			if w.Locations[y][x] == nil || w.Locations[y][x].InitCulture == nil {
-				return wrapped_error.New(http.StatusInternalServerError, nil, fmt.Sprintf("location is nil or its culture is nil (x: %d, y: %d)", x, y))
+				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("location is nil or its culture is nil (x: %d, y: %d)", x, y))
 			}
 
 			cultureName := w.Locations[y][x].InitCulture.Name
@@ -233,8 +232,8 @@ func (w *World) PrintLocationReligions() {
 	}
 }
 
-func (w *World) GetHumans(params GetHumansParams) ([]*human.Human, error) {
-	out := make([]*human.Human, 0, w.Size*w.Size)
+func (w *World) GetPersons(params GetHumansParams) ([]*person.Person, error) {
+	out := make([]*person.Person, 0, w.Size*w.Size)
 	for y := 0; y < w.Size; y++ {
 		for x := 0; x < w.Size; x++ {
 			if w.Locations[y][x] != nil || len(w.Locations[y][x].Population) > 0 {
@@ -246,9 +245,13 @@ func (w *World) GetHumans(params GetHumansParams) ([]*human.Human, error) {
 	return out, nil
 }
 
+func (w *World) Populate() error {
+	return nil
+}
+
 func (w *World) Save() error {
 	if w == nil {
-		return wrapped_error.New(http.StatusInternalServerError, nil, "can not save nil world")
+		return wrapped_error.NewInternalServerError(nil, "can not save nil world")
 	}
 
 	b, err := json.MarshalIndent(w, "", " ")

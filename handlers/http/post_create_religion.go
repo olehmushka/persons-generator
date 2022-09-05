@@ -15,7 +15,7 @@ func (h *handlers) CreateReligions(w http.ResponseWriter, r *http.Request) {
 
 	req := PostCreateReligionsRequest{}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http_server_tools.SendErrorResp(ctx, w, wrapped_error.New(http.StatusBadRequest, err, "can not decode request"))
+		http_server_tools.SendErrorResp(ctx, w, wrapped_error.NewBadRequestError(err, "can not decode request"))
 		return
 	}
 

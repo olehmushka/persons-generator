@@ -2,7 +2,6 @@ package language
 
 import (
 	"fmt"
-	"net/http"
 
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
@@ -59,7 +58,7 @@ func (l *Language) GetWord() (string, error) {
 		return "", err
 	}
 	if wb == nil {
-		return "", wrapped_error.New(http.StatusInternalServerError, nil, fmt.Sprintf("can not get word base (language=%s)", l.Name))
+		return "", wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not get word base (language=%s)", l.Name))
 	}
 
 	return wg.GetWord(wb.Name, ExtractWords(AllWordBases), wb.Min, wb.Max, wb.Dupl)

@@ -2,7 +2,7 @@ package services
 
 import (
 	"context"
-	"persons_generator/internal/world/adapter/engine"
+	"persons_generator/internal/world/adapters/engine"
 	"persons_generator/internal/world/entities"
 
 	"github.com/google/uuid"

@@ -2,6 +2,7 @@ package tools
 
 import (
 	"math"
+	"persons_generator/core/wrapped_error"
 )
 
 func RandomValueOfSlice[T interface{}](randSrc func(float64) (float64, error), sl []T) (T, error) {
@@ -11,7 +12,7 @@ func RandomValueOfSlice[T interface{}](randSrc func(float64) (float64, error), s
 	}
 	r, err := randSrc(1)
 	if err != nil {
-		return zero, err
+		return zero, wrapped_error.NewInternalServerError(err, "can not get random value from slice")
 	}
 
 	return sl[int(math.Floor(r*float64(len(sl))))], nil
@@ -29,7 +30,7 @@ func RandomValuesOfSlice[T interface{}](randSrc func(float64) (float64, error), 
 	for {
 		r, err := randSrc(1)
 		if err != nil {
-			return nil, err
+			return nil, wrapped_error.NewInternalServerError(err, "can not get random value from slice")
 		}
 		index := int(math.Floor(r * float64(len(sl))))
 		preOut[index] = sl[index]

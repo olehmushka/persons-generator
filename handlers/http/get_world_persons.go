@@ -21,7 +21,7 @@ func (h *handlers) GetWorldPersons(w http.ResponseWriter, r *http.Request) {
 	)
 	worldID, err := uuid.Parse(qWorldID)
 	if err != nil {
-		http_server_tools.SendErrorResp(ctx, w, wrapped_error.New(http.StatusBadRequest, err, fmt.Sprintf("can not parse world_id (world_id=%v)", qWorldID)))
+		http_server_tools.SendErrorResp(ctx, w, wrapped_error.NewBadRequestError(err, fmt.Sprintf("can not parse world_id (world_id=%v)", qWorldID)))
 		return
 	}
 

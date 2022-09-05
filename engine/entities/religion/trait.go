@@ -2,7 +2,6 @@ package religion
 
 import (
 	"fmt"
-	"net/http"
 	"persons_generator/core/wrapped_error"
 )
 
@@ -22,10 +21,10 @@ type generateTraitsOpts struct {
 
 func generateTraits(r *Religion, traitsToSelect []*trait, opts generateTraitsOpts) ([]*trait, error) {
 	if opts.Min < 0 {
-		return nil, wrapped_error.New(http.StatusInternalServerError, nil, fmt.Sprintf("[%s] min can not be less than 0", opts.Label))
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("[%s] min can not be less than 0", opts.Label))
 	}
 	if opts.Max > len(traitsToSelect) {
-		return nil, wrapped_error.New(http.StatusInternalServerError, nil, fmt.Sprintf("[%s] max can not be greater than traitsToSelect length", opts.Label))
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("[%s] max can not be greater than traitsToSelect length", opts.Label))
 	}
 
 	traits := make([]*trait, 0, len(traitsToSelect))

@@ -2,7 +2,6 @@ package word_generator
 
 import (
 	"fmt"
-	"net/http"
 	"regexp"
 	"strings"
 
@@ -32,7 +31,7 @@ func CalculateChain(nameBases []string) (Chain, error) {
 		name := strings.ToLower(strings.TrimSpace(n))
 		isMatch, err := regexp.MatchString("[^\u0000-\u007f]", name)
 		if err != nil {
-			return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("[CalculateChain] can not match basic chars and en rules can be applied (err = %+v)", err))
+			return nil, we.NewBadRequestError(nil, fmt.Sprintf("[CalculateChain] can not match basic chars and en rules can be applied (err = %+v)", err))
 		}
 		basic := !isMatch // basic chars and English rules can be applied
 
@@ -112,7 +111,7 @@ func CalculateChain(nameBases []string) (Chain, error) {
 func UpdateChain(base string, nameBases map[string][]string, chains map[string]Chain) (map[string]Chain, error) {
 	if chain, ok := nameBases[base]; ok {
 		if len(chain) == 0 {
-			return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("word base is empty (base=%s)", base))
+			return nil, we.NewBadRequestError(nil, fmt.Sprintf("word base is empty (base=%s)", base))
 		}
 		c, err := CalculateChain(chain)
 		if err != nil {

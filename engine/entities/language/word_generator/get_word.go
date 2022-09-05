@@ -2,7 +2,6 @@ package word_generator
 
 import (
 	"fmt"
-	"net/http"
 	"strings"
 
 	"persons_generator/core/tools"
@@ -12,7 +11,7 @@ import (
 
 func GetWord(base string, nameBases map[string][]string, min, max int, dupl string) (string, error) {
 	if base == "" {
-		return "", we.New(http.StatusInternalServerError, nil, "Please define a base")
+		return "", we.NewBadRequestError(nil, "Please define a base")
 	}
 
 	var err error
@@ -29,12 +28,12 @@ func GetWord(base string, nameBases map[string][]string, min, max int, dupl stri
 	}
 
 	if len(data) == 0 {
-		return "", we.New(http.StatusInternalServerError, nil, fmt.Sprintf("name_base %s is incorrect! [1]", base))
+		return "", we.NewBadRequestError(nil, fmt.Sprintf("name_base %s is incorrect! [1]", base))
 	}
 
 	val, ok := data[""]
 	if !ok {
-		return "", we.New(http.StatusInternalServerError, nil, fmt.Sprintf("name_base %s is incorrect! [2]", base))
+		return "", we.NewBadRequestError(nil, fmt.Sprintf("name_base %s is incorrect! [2]", base))
 	}
 
 	v := val

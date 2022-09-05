@@ -3,7 +3,6 @@ package religion
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"strings"
 
 	js "persons_generator/core/storage/json_storage"
@@ -113,7 +112,7 @@ func NewReferences(cfg Config, amount int, cultures []*culture.Culture) ([]*Cult
 		return newRefForCultureNumberGreater(cfg, amount, cultures)
 	}
 
-	return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("can not create religion_culture reference for amount=%d, cultures length=%d", amount, len(cultures)))
+	return nil, we.NewBadRequestError(nil, fmt.Sprintf("can not create religion_culture reference for amount=%d, cultures length=%d", amount, len(cultures)))
 }
 
 func newRefForCultureNumberLess(cfg Config, amount int, cultures []*culture.Culture) ([]*CultureReference, error) {
@@ -269,7 +268,7 @@ func NewMany(cfg Config, cultures []*culture.Culture) ([]*Religion, error) {
 
 func NewManyByPreferred(cfg Config, amount int, preferred []*Preference) ([]*Religion, error) {
 	if amount < len(preferred) {
-		return nil, we.New(http.StatusInternalServerError, nil, fmt.Sprintf("amount (%d) can not be less than length of preferred (length=%d)", amount, len(preferred)))
+		return nil, we.NewBadRequestError(nil, fmt.Sprintf("amount (%d) can not be less than length of preferred (length=%d)", amount, len(preferred)))
 	}
 
 	out := make([]*Religion, amount)
@@ -347,7 +346,7 @@ func MapReligionNames(religions []*Religion) []string {
 
 func (r *Religion) Save() error {
 	if r == nil {
-		return we.New(http.StatusInternalServerError, nil, "can not save nil culture")
+		return we.NewBadRequestError(nil, "can not save nil culture")
 	}
 
 	b, err := json.MarshalIndent(r, "", " ")

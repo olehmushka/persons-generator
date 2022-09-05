@@ -16,10 +16,13 @@ func SendErrorResp(ctx context.Context, w http.ResponseWriter, err error) {
 
 	wErr := wrapped_error.Cast(err)
 	resp := ErrorResp{
-		Error:        wErr.Err.Error(),
 		ErrorMessage: wErr.Msg,
 		TraceID:      cont.GetTraceID(ctx),
 	}
+	if wErr.ExtendedErr != nil {
+		resp.Error = wErr.ExtendedErr.ErrorMap()
+	}
+
 	respJSON, err := json.Marshal(resp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

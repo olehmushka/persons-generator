@@ -2,7 +2,6 @@ package http
 
 import (
 	"fmt"
-	"net/http"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/internal/culture/entities"
 	religionEntities "persons_generator/internal/religion/entities"
@@ -39,7 +38,7 @@ func deserializeReligionPreferred(in *ReligionPreferred) (*religionEntities.Pref
 	for _, id := range in.CultureIDs {
 		cultureID, err := uuid.Parse(id)
 		if err != nil {
-			return nil, wrapped_error.New(http.StatusBadRequest, err, fmt.Sprintf("can not parse culture_id (input=%s)", id))
+			return nil, wrapped_error.NewBadRequestError(err, fmt.Sprintf("can not parse culture_id (input=%s)", id))
 		}
 		cultureIDs = append(cultureIDs, cultureID)
 	}
