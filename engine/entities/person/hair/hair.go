@@ -17,6 +17,7 @@ type Hair struct {
 	Pubic           *PubicHair           `json:"pubic"`
 	Legs            *LegsHair            `json:"legs"`
 	Feet            *FeetHair            `json:"feet"`
+	Color           *HairColor           `json:"color"`
 }
 
 func (h Hair) Zero() bool {
@@ -45,6 +46,7 @@ type HairGene struct {
 	PubicHairGene           gene.Gene `json:"pubic_hair_gene"`
 	LegsHairGene            gene.Gene `json:"legs_hair_gene"`
 	FeetHairGene            gene.Gene `json:"feet_hair_gene"`
+	HairColorGene           gene.Gene `json:"hair_color_gene"`
 }
 
 func NewHairGene(
@@ -56,6 +58,7 @@ func NewHairGene(
 	pubicHairGene gene.Gene,
 	legsHairGene gene.Gene,
 	feetHairGene gene.Gene,
+	hairColorGene gene.Gene,
 ) gene.Gene {
 	return &HairGene{
 		T: "hair_gene",
@@ -68,6 +71,7 @@ func NewHairGene(
 		PubicHairGene:           pubicHairGene,
 		LegsHairGene:            legsHairGene,
 		FeetHairGene:            feetHairGene,
+		HairColorGene:           hairColorGene,
 	}
 }
 
@@ -156,6 +160,15 @@ func (g *HairGene) Produce(sex g.Sex) (gene.Byteble, error) {
 		return Hair{}, wrapped_error.NewInternalServerError(err, "can not unmarshal feet_hair produced from gene")
 	}
 
+	color, err := g.HairColorGene.Produce(sex)
+	if err != nil {
+		return LegsHair{}, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not produce hair_color from gene by sex (sex=%s)", sex))
+	}
+	var colorVal HairColor
+	if err := json.Unmarshal(color.Bytes(), &colorVal); err != nil {
+		return LegsHair{}, wrapped_error.NewInternalServerError(err, "can not unmarshal hair_color produced from gene")
+	}
+
 	return Hair{
 		Scapl:           &scaplVal,
 		Face:            &faceVal,
@@ -165,12 +178,21 @@ func (g *HairGene) Produce(sex g.Sex) (gene.Byteble, error) {
 		Pubic:           &pubicVal,
 		Legs:            &legsVal,
 		Feet:            &feetVal,
+		Color:           &colorVal,
 	}, nil
 }
 
 func (g *HairGene) Children() []gene.Gene {
 	return []gene.Gene{
 		g.ScaplHairGene,
+		g.FaceHairGene,
+		g.AxillaryHairGene,
+		g.ChestAndAbdomenHairGene,
+		g.ArmsHairGene,
+		g.PubicHairGene,
+		g.LegsHairGene,
+		g.FeetHairGene,
+		g.HairColorGene,
 	}
 }
 

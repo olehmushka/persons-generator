@@ -9,8 +9,7 @@ import (
 )
 
 type AxillaryHair struct {
-	Color   *HairColor   `json:"color"`
-	Texture *HairTexture `json:"texture"`
+	Density *HairDensity `json:"density"`
 }
 
 func (ah AxillaryHair) Zero() bool {
@@ -32,19 +31,16 @@ func (ah AxillaryHair) Bytes() []byte {
 type AxillaryHairGene struct {
 	T string `json:"t"`
 
-	HairColorGene   gene.Gene `json:"hair_color_gene"`
-	HairTextureGene gene.Gene `json:"hair_texture_gene"`
+	HairDensityGene gene.Gene `json:"hair_density_gene"`
 }
 
 func NewAxillaryHairGene(
-	axillaryHairColorGene gene.Gene,
-	axillaryHairTextureGene gene.Gene,
+	axillaryHairDensityGene gene.Gene,
 ) gene.Gene {
 	return &AxillaryHairGene{
 		T: "axillary_hair_gene",
 
-		HairColorGene:   axillaryHairColorGene,
-		HairTextureGene: axillaryHairTextureGene,
+		HairDensityGene: axillaryHairDensityGene,
 	}
 }
 
@@ -53,34 +49,23 @@ func (g *AxillaryHairGene) Type() string {
 }
 
 func (g *AxillaryHairGene) Produce(sex g.Sex) (gene.Byteble, error) {
-	color, err := g.HairColorGene.Produce(sex)
+	density, err := g.HairDensityGene.Produce(sex)
 	if err != nil {
-		return AxillaryHair{}, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not produce axillary_hair_color from gene by sex (sex=%s)", sex))
+		return AxillaryHair{}, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not produce axillary_hair_density from gene by sex (sex=%s)", sex))
 	}
-	var colorVal HairColor
-	if err := json.Unmarshal(color.Bytes(), &colorVal); err != nil {
-		return AxillaryHair{}, wrapped_error.NewInternalServerError(err, "can not unmarshal axillary_hair_color produced from gene")
-	}
-
-	texture, err := g.HairTextureGene.Produce(sex)
-	if err != nil {
-		return AxillaryHair{}, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not produce axillary_hair_texture from gene by sex (sex=%s)", sex))
-	}
-	var textureVal HairTexture
-	if err := json.Unmarshal(texture.Bytes(), &textureVal); err != nil {
-		return AxillaryHair{}, wrapped_error.NewInternalServerError(err, "can not unmarshal axillary_hair_texture produced from gene")
+	var densityVal HairDensity
+	if err := json.Unmarshal(density.Bytes(), &densityVal); err != nil {
+		return AxillaryHair{}, wrapped_error.NewInternalServerError(err, "can not unmarshal axillary_hair_density produced from gene")
 	}
 
 	return AxillaryHair{
-		Texture: &textureVal,
-		Color:   &colorVal,
+		Density: &densityVal,
 	}, nil
 }
 
 func (g *AxillaryHairGene) Children() []gene.Gene {
 	return []gene.Gene{
-		g.HairColorGene,
-		g.HairTextureGene,
+		g.HairDensityGene,
 	}
 }
 
