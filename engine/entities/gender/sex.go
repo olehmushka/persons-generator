@@ -13,6 +13,14 @@ func (s Sex) String() string {
 	return string(s)
 }
 
+func (s Sex) IsMale() bool {
+	return s == MaleSex
+}
+
+func (s Sex) IsFemale() bool {
+	return s == FemaleSex
+}
+
 func GetRandomSex() (Sex, error) {
 	list := []Sex{MaleSex, FemaleSex}
 	i, err := pm.RandInt(len(list) - 1)

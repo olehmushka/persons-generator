@@ -9,6 +9,7 @@ import (
 	"persons_generator/engine/entities/person/face"
 	"persons_generator/engine/entities/person/gene"
 	"persons_generator/engine/entities/person/hair"
+	"persons_generator/engine/entities/person/size"
 )
 
 type BodyGene struct {
@@ -16,17 +17,20 @@ type BodyGene struct {
 
 	FaceGene gene.Gene `json:"face_gene"`
 	HairGene gene.Gene `json:"hair_gene"`
+	SizeGene gene.Gene `json:"size_gene"`
 }
 
 func NewBodyGene(
 	faceGene gene.Gene,
 	hairGene gene.Gene,
+	sizeGene gene.Gene,
 ) gene.Gene {
 	return &BodyGene{
 		T: "body_gene",
 
 		FaceGene: faceGene,
 		HairGene: hairGene,
+		SizeGene: sizeGene,
 	}
 }
 
@@ -46,16 +50,26 @@ func (g *BodyGene) Produce(sex g.Sex) (gene.Byteble, error) {
 
 	h, err := g.HairGene.Produce(sex)
 	if err != nil {
-		return Body{}, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not produce head_hair from gene by sex (sex=%s)", sex))
+		return Body{}, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not produce body_hair from gene by sex (sex=%s)", sex))
 	}
 	var hairVal hair.Hair
 	if err := json.Unmarshal(h.Bytes(), &hairVal); err != nil {
-		return Body{}, wrapped_error.NewInternalServerError(err, "can not unmarshal head_hair produced from gene")
+		return Body{}, wrapped_error.NewInternalServerError(err, "can not unmarshal body_hair produced from gene")
+	}
+
+	s, err := g.SizeGene.Produce(sex)
+	if err != nil {
+		return Body{}, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not produce body_size from gene by sex (sex=%s)", sex))
+	}
+	var sizeVal size.Size
+	if err := json.Unmarshal(s.Bytes(), &sizeVal); err != nil {
+		return Body{}, wrapped_error.NewInternalServerError(err, "can not unmarshal body_size produced from gene")
 	}
 
 	return Body{
 		Face: faceVal,
 		Hair: hairVal,
+		Size: sizeVal,
 	}, nil
 }
 
@@ -63,6 +77,7 @@ func (g *BodyGene) Children() []gene.Gene {
 	return []gene.Gene{
 		g.FaceGene,
 		g.HairGene,
+		g.SizeGene,
 	}
 }
 

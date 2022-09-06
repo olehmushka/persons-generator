@@ -1,6 +1,9 @@
 package probability_machine
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestGetRandomBool(t *testing.T) {
 	tCases := []struct {
@@ -55,4 +58,24 @@ func TestRandFloat64InRange(t *testing.T) {
 	)
 
 	t.Log(RandFloat64InRange(min, max))
+}
+
+func TestRandFloat64Norm(t *testing.T) {
+	for i := 0; i < 10; i++ {
+		val, err := RandFloat64Norm(1, 0)
+		if err != nil {
+			t.Fatal(err)
+		}
+		fmt.Printf("%f\n", val)
+	}
+}
+
+func TestRandFloat64NormInRange(t *testing.T) {
+	for i := 0; i < 100; i++ {
+		val, err := RandFloat64NormInRange(0, 1, 1, 0.25)
+		if err != nil {
+			t.Fatal(err)
+		}
+		fmt.Printf("%f\n", val)
+	}
 }
