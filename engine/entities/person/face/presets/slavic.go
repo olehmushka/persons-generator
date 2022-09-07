@@ -1,6 +1,9 @@
 package presets
 
-import "persons_generator/engine/entities/person/face"
+import (
+	"persons_generator/engine/entities/person/color"
+	"persons_generator/engine/entities/person/face"
+)
 
 var SlavicFacePreset = face.NewFaceGene(
 	face.NewFaceShapeGene(map[string]float64{
@@ -26,25 +29,14 @@ var SlavicFacePreset = face.NewFaceGene(
 			string(face.ChildishRoundAsianEyesType): 0.01,
 		}),
 		face.NewEyesColorGene(map[string]float64{
-			face.BrownEyesColor.Name: 0.25,
-			face.AmberEyesColor.Name: 0.25,
-			face.HazelEyesColor.Name: 0.25,
-			// Green
-			face.GreenEyesColor.Name:        0.25,
-			face.GreenScreenColor.Name:      0.25,
-			face.FluorescentGreenColor.Name: 0.25,
-			face.PastelGreenColor.Name:      0.25,
-			face.PineGreenColor.Name:        0.25,
-			// Blue
-			face.DownriverBlueEyesColor.Name: 0.25,
-			face.BlumineBlueEyesColor.Name:   0.25,
-			face.CalypsoBlueEyesColor.Name:   0.25,
-			face.WedgewoodBlueEyesColor.Name: 0.25,
-			face.NeptuneBlueEyesColor.Name:   0.25,
-			face.ZigguratBlueEyesColor.Name:  0.25,
-			face.GrayColor.Name:              0.25,
-			face.RedColor.Name:               0.25,
-			face.VioletColor.Name:            0.25,
+			color.BrownEyesColorPalette:    0.1,
+			color.HazelEyesColorPalette:    0.25,
+			color.AmberEyesColorPalette:    0.25,
+			color.GreenEyesColorPalette:    0.15,
+			color.GreyEyesColorPalette:     0.15,
+			color.TealBlueEyesColorPalette: 0.15,
+			color.CyanEyesColorPalette:     0.1,
+			color.IndigoEyesColorPalette:   0.1,
 		}),
 	),
 	face.NewEarsGene(map[string]float64{

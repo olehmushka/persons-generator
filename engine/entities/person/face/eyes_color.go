@@ -2,8 +2,10 @@ package face
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"persons_generator/core/tools"
+	"persons_generator/core/wrapped_error"
 	g "persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/person/color"
 	"persons_generator/engine/entities/person/gene"
@@ -34,7 +36,7 @@ func (n EyesColor) Print() {
 type EyesColorGene struct {
 	T string `json:"t"`
 
-	Stats map[string]float64 `json:"stats"`
+	Stats map[string]float64 `json:"stats"` // map[palette_name]probability
 }
 
 func NewEyesColorGene(stats map[string]float64) gene.Gene {
@@ -50,11 +52,21 @@ func (g *EyesColorGene) Type() string {
 }
 
 func (g *EyesColorGene) Produce(sex g.Sex) (gene.Byteble, error) {
-	return tools.Search(
-		AllEyesColors,
-		func(e EyesColor) string { return e.Name },
+	palette := tools.Search(
+		color.AllEyesColorPalettes,
+		func(e string) string { return e },
 		pm.GetRandomFromSeveral(g.Stats),
-	), nil
+	)
+	colors := color.GetEyesColorsByPalette(palette)
+	if len(colors) == 0 {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not get colors by palette (palette=%s)", palette))
+	}
+	out, err := tools.RandomValueOfSlice(pm.RandFloat64, colors)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not get random color")
+	}
+
+	return EyesColor(out), nil
 }
 
 func (g *EyesColorGene) Children() []gene.Gene {

@@ -72,7 +72,7 @@ func TestRandFloat64Norm(t *testing.T) {
 
 func TestRandFloat64NormInRange(t *testing.T) {
 	for i := 0; i < 100; i++ {
-		val, err := RandFloat64NormInRange(0, 1, 1, 0.25)
+		val, err := RandFloat64NormInRange(0, 1, 1, 0.1)
 		if err != nil {
 			t.Fatal(err)
 		}

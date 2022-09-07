@@ -14,7 +14,7 @@ const (
 	Oblong Shape = "oblong"
 
 	VTriangle Shape = "v_triangle"
-	Square    Shape = "Square"
+	Square    Shape = "square"
 	Diamond   Shape = "diamond"
 
 	Rectangle Shape = "rectangle"

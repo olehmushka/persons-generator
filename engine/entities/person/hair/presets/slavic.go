@@ -1,6 +1,9 @@
 package presets
 
-import "persons_generator/engine/entities/person/hair"
+import (
+	"persons_generator/engine/entities/person/color"
+	"persons_generator/engine/entities/person/hair"
+)
 
 var SlavicHairPreset = hair.NewHairGene(
 	hair.NewScalpHairGene(
@@ -85,23 +88,11 @@ var SlavicHairPreset = hair.NewHairGene(
 		),
 	),
 	hair.NewHairColorGene(map[string]float64{
-		hair.LightAshBlondeHairColor.Name:    0.25,
-		hair.LightBlondeHairColor.Name:       0.25,
-		hair.LightGoldenBlondeHairColor.Name: 0.25,
-		hair.BeelineHoneyHairColor.Name:      0.25,
-		hair.MediumChampagneHairColor.Name:   0.25,
-		hair.ButterscotchHairColor.Name:      0.25,
-		hair.LightCoolBrownHairColor.Name:    0.25,
-		hair.LightBrownHairColor.Name:        0.25,
-		hair.LightGoldenBrownHairColor.Name:  0.25,
-		hair.ChocolateBrownHairColor.Name:    0.25,
-		hair.DarkGoldenBrownHairColor.Name:   0.25,
-		hair.MediumAshBrownHairColor.Name:    0.25,
-		hair.ReddishBlondeHairColor.Name:     0.1,
-		hair.LightAuburnHairColor.Name:       0.1,
-		hair.MediumAuburnHairColor.Name:      0.1,
-		hair.RedHotCinnamonHairColor.Name:    0.1,
-		hair.ExpressoHairColor.Name:          0,
-		hair.JetBlackHairColor.Name:          0,
+		color.BlackHairColorPalette:            0.1,
+		color.MediumBrownHairColorPalette:      0.2,
+		color.LightBrownHairColorPalette:       0.2,
+		color.BlondeHairColorPalette:           0.15,
+		color.DarkRedHairColorPalette:          0.1,
+		color.StrawberryBlondeHairColorPalette: 0.2,
 	}),
 )

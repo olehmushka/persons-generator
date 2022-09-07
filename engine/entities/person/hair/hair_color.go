@@ -2,7 +2,9 @@ package hair
 
 import (
 	"encoding/json"
+	"fmt"
 	"persons_generator/core/tools"
+	"persons_generator/core/wrapped_error"
 	g "persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/person/color"
 	"persons_generator/engine/entities/person/gene"
@@ -49,11 +51,21 @@ func (g *HairColorGene) Type() string {
 }
 
 func (g *HairColorGene) Produce(sex g.Sex) (gene.Byteble, error) {
-	return tools.Search(
-		AllHairColors,
-		func(e HairColor) string { return e.Name },
+	palette := tools.Search(
+		color.AllHairColorPalettes,
+		func(e string) string { return e },
 		pm.GetRandomFromSeveral(g.Stats),
-	), nil
+	)
+	colors := color.GetHairColorsByPalette(palette)
+	if len(colors) == 0 {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not get hair_colors by palette (palette=%s)", palette))
+	}
+	out, err := tools.RandomValueOfSlice(pm.RandFloat64, colors)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not get random hair_color")
+	}
+
+	return HairColor(out), nil
 }
 
 func (g *HairColorGene) Children() []gene.Gene {
