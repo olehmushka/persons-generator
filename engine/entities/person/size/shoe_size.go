@@ -72,3 +72,7 @@ func (g *ShoeSizeGene) Children() []gene.Gene {
 func (g *ShoeSizeGene) Bytes() []byte {
 	return nil
 }
+
+func (g *ShoeSizeGene) Pair(in gene.Gene) (gene.Gene, error) {
+	return in, nil
+}

@@ -2,6 +2,7 @@ package probability_machine
 
 import (
 	"crypto/rand"
+	"fmt"
 	"math/big"
 	"persons_generator/core/wrapped_error"
 
@@ -100,4 +101,18 @@ func randFloat64NormInRange(min, max, stdDev, mean float64, count int) (float64,
 	}
 
 	return r / multiplier, nil
+}
+
+func RandomValueOfSliceNorm[T interface{}](meanIndex int, sl []T) (T, error) {
+	var zero T
+
+	if meanIndex >= len(sl) {
+		return zero, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not get random value with norm (mean_index=%d, slice length=%d)", meanIndex, len(sl)))
+	}
+	indexF, err := RandFloat64NormInRange(0, float64(len(sl)-1), 1, float64(meanIndex))
+	if err != nil {
+		return zero, wrapped_error.NewInternalServerError(err, "can not generate random index with norm")
+	}
+
+	return sl[int(indexF)], nil
 }

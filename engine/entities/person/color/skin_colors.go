@@ -1,5 +1,9 @@
 package color
 
+import (
+	pm "persons_generator/engine/probability_machine"
+)
+
 var AllSkinColors = []Color{
 	// Olive
 	RustyNailSkinColor,
@@ -168,4 +172,8 @@ var (
 
 func GetSkinColorsByPalette(palette string) []Color {
 	return getColorsByPalette(palette, AllSkinColors)
+}
+
+func GetRandomColorByPaletteNorm(palette string, meanIndex int) (Color, error) {
+	return pm.RandomValueOfSliceNorm(meanIndex, GetSkinColorsByPalette(palette))
 }

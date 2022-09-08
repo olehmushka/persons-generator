@@ -7,8 +7,5 @@ type Gene interface {
 	Type() string
 	Produce(sex gender.Sex) (Byteble, error)
 	Children() []Gene
-}
-
-func Merge(g1, g2 Gene) Gene {
-	return nil
+	Pair(g Gene) (Gene, error)
 }

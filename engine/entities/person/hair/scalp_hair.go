@@ -87,3 +87,7 @@ func (g *ScaplHairGene) Children() []gene.Gene {
 func (g *ScaplHairGene) Bytes() []byte {
 	return nil
 }
+
+func (g *ScaplHairGene) Pair(in gene.Gene) (gene.Gene, error) {
+	return in, nil
+}

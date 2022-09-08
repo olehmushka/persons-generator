@@ -70,3 +70,7 @@ func (g *EyesTypeGene) Children() []gene.Gene {
 func (g *EyesTypeGene) Bytes() []byte {
 	return nil
 }
+
+func (g *EyesTypeGene) Pair(in gene.Gene) (gene.Gene, error) {
+	return in, nil
+}

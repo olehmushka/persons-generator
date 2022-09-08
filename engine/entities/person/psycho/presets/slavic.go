@@ -1,5 +1,10 @@
 package presets
 
-import "persons_generator/engine/entities/person/psycho"
+import (
+	"persons_generator/engine/entities/person/psycho"
+	temperamentPresets "persons_generator/engine/entities/person/temperament/presets"
+)
 
-var SlavicPsychoPreset = psycho.NewPsychoGene()
+var SlavicPsychoPreset = psycho.NewPsychoGene(
+	temperamentPresets.SlavicTemperamentPreset,
+)

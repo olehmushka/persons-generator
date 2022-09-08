@@ -128,3 +128,7 @@ func (g *FaceGene) Children() []gene.Gene {
 func (g *FaceGene) Bytes() []byte {
 	return nil
 }
+
+func (g *FaceGene) Pair(in gene.Gene) (gene.Gene, error) {
+	return in, nil
+}

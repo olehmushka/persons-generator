@@ -162,11 +162,11 @@ func (g *HairGene) Produce(sex g.Sex) (gene.Byteble, error) {
 
 	color, err := g.HairColorGene.Produce(sex)
 	if err != nil {
-		return LegsHair{}, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not produce hair_color from gene by sex (sex=%s)", sex))
+		return Hair{}, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not produce hair_color from gene by sex (sex=%s)", sex))
 	}
 	var colorVal HairColor
 	if err := json.Unmarshal(color.Bytes(), &colorVal); err != nil {
-		return LegsHair{}, wrapped_error.NewInternalServerError(err, "can not unmarshal hair_color produced from gene")
+		return Hair{}, wrapped_error.NewInternalServerError(err, "can not unmarshal hair_color produced from gene")
 	}
 
 	return Hair{
@@ -198,4 +198,8 @@ func (g *HairGene) Children() []gene.Gene {
 
 func (g *HairGene) Bytes() []byte {
 	return nil
+}
+
+func (g *HairGene) Pair(in gene.Gene) (gene.Gene, error) {
+	return in, nil
 }

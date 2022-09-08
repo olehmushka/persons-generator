@@ -1,8 +1,13 @@
 package psycho
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"persons_generator/engine/entities/person/temperament"
+)
 
-type Psycho struct{}
+type Psycho struct {
+	Temperament temperament.Temperament
+}
 
 func (b Psycho) Zero() bool {
 	return b == Psycho{}

@@ -5,6 +5,7 @@ import (
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/person/human"
+	"persons_generator/engine/entities/person/traits"
 	"persons_generator/engine/entities/religion"
 )
 
@@ -13,6 +14,8 @@ type Person struct {
 	Culture  *culture.Culture   `json:"culture,omitempty"`
 	Religion *religion.Religion `json:"religion,omitempty"`
 	Human    *human.Human       `json:"human"`
+
+	Traits []*traits.Trait `json:"traits"`
 }
 
 func New(h *human.Human, c *culture.Culture, r *religion.Religion) (*Person, error) {
@@ -37,8 +40,4 @@ func New(h *human.Human, c *culture.Culture, r *religion.Religion) (*Person, err
 	p.OwnName = ownName
 
 	return p, nil
-}
-
-func (p *Person) HaveSex(other *Person) error {
-	return nil
 }
