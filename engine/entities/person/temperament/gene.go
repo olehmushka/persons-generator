@@ -1,7 +1,9 @@
 package temperament
 
 import (
+	"fmt"
 	"persons_generator/core/tools"
+	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/person/gene"
 	pm "persons_generator/engine/probability_machine"
@@ -40,5 +42,17 @@ func (g *TemperamentGene) Bytes() []byte {
 }
 
 func (g *TemperamentGene) Pair(in gene.Gene) (gene.Gene, error) {
-	return in, nil
+	if in == nil || g == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not pair <nil> temperament genes")
+	}
+	if g.Type() != in.Type() {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same types (first_type=%s, second_type=%s)", g.Type(), in.Type()))
+	}
+
+	inStr, ok := in.(*TemperamentGene)
+	if !ok {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not case input gene to TemperamentGene")
+	}
+
+	return NewTemperamentGene(tools.MergeMaps(g.Stats, inStr.Stats)), nil
 }

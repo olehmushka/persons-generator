@@ -178,3 +178,17 @@ func (h *Human) GiveBirth() []*Human {
 
 	return children
 }
+
+func (h *Human) IncreaseAge(years int) {
+	if h == nil {
+		return
+	}
+	h.Age += years
+}
+
+func (h *Human) IncrementAge(years int) {
+	if h == nil {
+		return
+	}
+	h.Age++
+}

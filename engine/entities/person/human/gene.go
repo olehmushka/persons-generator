@@ -2,6 +2,7 @@ package human
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"persons_generator/core/wrapped_error"
 	g "persons_generator/engine/entities/gender"
@@ -60,6 +61,7 @@ func (g *HumanGene) Produce(sex g.Sex) (gene.Byteble, error) {
 func (g *HumanGene) Children() []gene.Gene {
 	return []gene.Gene{
 		g.BodyGene,
+		g.PsychoGene,
 	}
 }
 
@@ -68,5 +70,28 @@ func (g *HumanGene) Bytes() []byte {
 }
 
 func (g *HumanGene) Pair(in gene.Gene) (gene.Gene, error) {
-	return in, nil
+	if in == nil || g == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not pair <nil> human genes")
+	}
+	if g.Type() != in.Type() {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same types (first_type=%s, second_type=%s)", g.Type(), in.Type()))
+	}
+	var (
+		hostChildren  = g.Children()
+		guestChildren = in.Children()
+	)
+	if len(g.Children()) != len(in.Children()) {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same number of children for human gene (host_children_number=%d, guest_children_number=%d)", len(hostChildren), len(guestChildren)))
+	}
+
+	args := make([]gene.Gene, 0, len(hostChildren))
+	for i, child := range hostChildren {
+		arg, err := child.Pair(guestChildren[i])
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can not pair children for psycho gene")
+		}
+		args = append(args, arg)
+	}
+
+	return NewGene(args[0], args[1]), nil
 }

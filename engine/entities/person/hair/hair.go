@@ -201,5 +201,28 @@ func (g *HairGene) Bytes() []byte {
 }
 
 func (g *HairGene) Pair(in gene.Gene) (gene.Gene, error) {
-	return in, nil
+	if in == nil || g == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not pair <nil> hair genes")
+	}
+	if g.Type() != in.Type() {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same types (first_type=%s, second_type=%s)", g.Type(), in.Type()))
+	}
+	var (
+		hostChildren  = g.Children()
+		guestChildren = in.Children()
+	)
+	if len(g.Children()) != len(in.Children()) {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same number of children for hair gene (host_children_number=%d, guest_children_number=%d)", len(hostChildren), len(guestChildren)))
+	}
+
+	args := make([]gene.Gene, 0, len(hostChildren))
+	for i, child := range hostChildren {
+		arg, err := child.Pair(guestChildren[i])
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can not pair children for hair gene")
+		}
+		args = append(args, arg)
+	}
+
+	return NewHairGene(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]), nil
 }

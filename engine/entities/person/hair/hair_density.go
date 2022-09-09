@@ -2,7 +2,9 @@ package hair
 
 import (
 	"encoding/json"
+	"fmt"
 	"persons_generator/core/tools"
+	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/person/gene"
 	pm "persons_generator/engine/probability_machine"
@@ -66,5 +68,17 @@ func (g *HairDensityGene) Bytes() []byte {
 }
 
 func (g *HairDensityGene) Pair(in gene.Gene) (gene.Gene, error) {
-	return in, nil
+	if in == nil || g == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not pair <nil> hair_density genes")
+	}
+	if g.Type() != in.Type() {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same types (first_type=%s, second_type=%s)", g.Type(), in.Type()))
+	}
+
+	inStr, ok := in.(*HairDensityGene)
+	if !ok {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not case input gene to HairDensityGene")
+	}
+
+	return NewHairDensityGene(tools.MergeMaps(g.Stats, inStr.Stats)), nil
 }

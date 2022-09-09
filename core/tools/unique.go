@@ -1,6 +1,6 @@
 package tools
 
-func Unique[T int | float64 | string](sl []T) []T {
+func Unique[T int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64 | float32 | float64 | string](sl []T) []T {
 	if len(sl) <= 1 {
 		return sl
 	}

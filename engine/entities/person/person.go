@@ -7,18 +7,22 @@ import (
 	"persons_generator/engine/entities/person/human"
 	"persons_generator/engine/entities/person/traits"
 	"persons_generator/engine/entities/religion"
+
+	"github.com/google/uuid"
 )
 
 type Person struct {
+	ID       uuid.UUID          `json:"id"`
 	OwnName  string             `json:"own_name"`
 	Culture  *culture.Culture   `json:"culture,omitempty"`
 	Religion *religion.Religion `json:"religion,omitempty"`
 	Human    *human.Human       `json:"human"`
 
-	Traits []*traits.Trait `json:"traits"`
+	Traits     []*traits.Trait `json:"traits"`
+	Chronology Chronology      `json:"chronology"`
 }
 
-func New(h *human.Human, c *culture.Culture, r *religion.Religion) (*Person, error) {
+func New(h *human.Human, c *culture.Culture, r *religion.Religion, year int) (*Person, error) {
 	if h == nil {
 		return nil, wrapped_error.NewInternalServerError(nil, "person can not be generated without human inside")
 	}
@@ -29,9 +33,15 @@ func New(h *human.Human, c *culture.Culture, r *religion.Religion) (*Person, err
 		return nil, wrapped_error.NewInternalServerError(nil, "person can not be generated without religion inside")
 	}
 	p := &Person{
+		ID:       uuid.New(),
 		Human:    h,
 		Culture:  c,
 		Religion: r,
+		Chronology: Chronology{
+			BirthYear: year,
+			DeathYear: -1,
+			Events:    []Event{},
+		},
 	}
 	ownName, err := c.Language.GetOwnName(h.Sex)
 	if err != nil {

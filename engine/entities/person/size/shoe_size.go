@@ -42,12 +42,13 @@ type ShoeSizeGene struct {
 }
 
 func NewShoeSizeGene(min, medium, max float64) gene.Gene {
+	minSizeInCm, mediumSizeInCm, maxSizeInCm := normalizeShoeSizeStats(min, medium, max)
 	return &ShoeSizeGene{
 		T: "shoe_size_gene",
 
-		MinSizeInCm:    min,
-		MediumSizeInCm: medium,
-		MaxSizeInCm:    max,
+		MinSizeInCm:    minSizeInCm,
+		MediumSizeInCm: mediumSizeInCm,
+		MaxSizeInCm:    maxSizeInCm,
 	}
 }
 
@@ -74,5 +75,44 @@ func (g *ShoeSizeGene) Bytes() []byte {
 }
 
 func (g *ShoeSizeGene) Pair(in gene.Gene) (gene.Gene, error) {
-	return in, nil
+	if in == nil || g == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not pair <nil> shoe_size genes")
+	}
+	if g.Type() != in.Type() {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same types (first_type=%s, second_type=%s)", g.Type(), in.Type()))
+	}
+
+	inStr, ok := in.(*ShoeSizeGene)
+	if !ok {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not case input gene to ShoeSizeGene")
+	}
+	var (
+		min    = (inStr.MinSizeInCm + g.MinSizeInCm) / 2
+		medium = (inStr.MediumSizeInCm + g.MediumSizeInCm) / 2
+		max    = (inStr.MaxSizeInCm + g.MaxSizeInCm) / 2
+	)
+	min, medium, max = normalizeShoeSizeStats(min, medium, max)
+
+	return NewShoeSizeGene(min, medium, max), nil
+}
+
+func normalizeShoeSizeStats(min, medium, max float64) (float64, float64, float64) {
+	var (
+		outMin    = min
+		outMedium = medium
+		outMax    = max
+		absMin    = GetMinShoeSizeInCm(gender.FemaleSex)
+		absMax    = GetMaxShoeSizeInCm(gender.MaleSex)
+	)
+	if outMin > absMin {
+		outMin = absMin
+	}
+	if outMax > absMax {
+		outMax = absMax
+	}
+	if absMin < outMedium || outMedium > absMax {
+		outMedium = (outMin + outMax) / 2
+	}
+
+	return outMin, outMedium, outMax
 }

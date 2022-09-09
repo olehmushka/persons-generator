@@ -38,22 +38,14 @@ type HeightGene struct {
 }
 
 func NewHeightGene(min, medium, max float64) gene.Gene {
-	if min < MinPossibleHeight {
-		min = MinPossibleHeight
-	}
-	if max > MaxPossibleHeight {
-		max = MaxPossibleHeight
-	}
-	if MinPossibleHeight < medium && medium > MaxPossibleHeight {
-		medium = (min + max) / 2
-	}
+	minHeight, mediumHeight, maxHeight := normalizeHeightStats(min, medium, max)
 
 	return &HeightGene{
 		T: "height_gene",
 
-		MinHeight:    min,
-		MediumHeight: medium,
-		MaxHeight:    max,
+		MinHeight:    minHeight,
+		MediumHeight: mediumHeight,
+		MaxHeight:    maxHeight,
 	}
 }
 
@@ -79,7 +71,7 @@ func (g *HeightGene) Produce(sex gender.Sex) (gene.Byteble, error) {
 }
 
 func (g *HeightGene) Children() []gene.Gene {
-	return []gene.Gene{}
+	return nil
 }
 
 func (g *HeightGene) Bytes() []byte {
@@ -87,5 +79,42 @@ func (g *HeightGene) Bytes() []byte {
 }
 
 func (g *HeightGene) Pair(in gene.Gene) (gene.Gene, error) {
-	return in, nil
+	if in == nil || g == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not pair <nil> height genes")
+	}
+	if g.Type() != in.Type() {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same types (first_type=%s, second_type=%s)", g.Type(), in.Type()))
+	}
+
+	inStr, ok := in.(*HeightGene)
+	if !ok {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not case input gene to HeightGene")
+	}
+	var (
+		min    = (inStr.MinHeight + g.MinHeight) / 2
+		medium = (inStr.MediumHeight + g.MediumHeight) / 2
+		max    = (inStr.MaxHeight + g.MaxHeight) / 2
+	)
+	min, medium, max = normalizeHeightStats(min, medium, max)
+
+	return NewHeightGene(min, medium, max), nil
+}
+
+func normalizeHeightStats(min, medium, max float64) (float64, float64, float64) {
+	var (
+		outMin    = min
+		outMedium = medium
+		outMax    = max
+	)
+	if outMin < MinPossibleHeight {
+		outMin = MinPossibleHeight
+	}
+	if outMax > MaxPossibleHeight {
+		outMax = MaxPossibleHeight
+	}
+	if MinPossibleHeight < outMedium || outMedium > MaxPossibleHeight {
+		outMedium = (outMin + outMax) / 2
+	}
+
+	return outMin, outMedium, outMax
 }

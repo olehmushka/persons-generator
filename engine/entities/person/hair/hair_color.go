@@ -77,5 +77,17 @@ func (g *HairColorGene) Bytes() []byte {
 }
 
 func (g *HairColorGene) Pair(in gene.Gene) (gene.Gene, error) {
-	return in, nil
+	if in == nil || g == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not pair <nil> hair_color genes")
+	}
+	if g.Type() != in.Type() {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same types (first_type=%s, second_type=%s)", g.Type(), in.Type()))
+	}
+
+	inStr, ok := in.(*HairColorGene)
+	if !ok {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not case input gene to HairColorGene")
+	}
+
+	return NewHairColorGene(tools.MergeMaps(g.Stats, inStr.Stats)), nil
 }

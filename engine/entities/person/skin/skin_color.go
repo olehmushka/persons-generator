@@ -2,6 +2,7 @@ package skin
 
 import (
 	"encoding/json"
+	"fmt"
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/gender"
@@ -74,5 +75,18 @@ func (g *SkinColorGene) Bytes() []byte {
 }
 
 func (g *SkinColorGene) Pair(in gene.Gene) (gene.Gene, error) {
-	return in, nil
+	if in == nil || g == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not pair <nil> skin_color genes")
+	}
+	if g.Type() != in.Type() {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not pair genes with not the same types (first_type=%s, second_type=%s)", g.Type(), in.Type()))
+	}
+
+	inStr, ok := in.(*SkinColorGene)
+	if !ok {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not case input gene to SkinColorGene")
+	}
+	meanIndex := (inStr.MeanIndex + g.MeanIndex) / 2
+
+	return NewSkinColorGene(tools.MergeMaps(g.Stats, inStr.Stats), meanIndex), nil
 }

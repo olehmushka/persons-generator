@@ -30,3 +30,45 @@ func TestNew(t *testing.T) {
 	}
 	fmt.Println(string(b))
 }
+
+func TestProduceChildren(t *testing.T) {
+	father, err := New(gender.MaleSex, NewGene(
+		bodyPresets.SlavicBodyPreset,
+		psychoPresets.SlavicPsychoPreset,
+	), nil, nil)
+	if err != nil {
+		t.Errorf("can not create father (err=%+v)", err)
+		return
+	}
+	father.IncreaseAge(18)
+	mother, err := New(gender.FemaleSex, NewGene(
+		bodyPresets.SlavicBodyPreset,
+		psychoPresets.SlavicPsychoPreset,
+	), nil, nil)
+	if err != nil {
+		t.Errorf("can not create mother (err=%+v)", err)
+		return
+	}
+	mother.IncreaseAge(18)
+	var (
+		i      int
+		result []*Human
+	)
+	for ; i < 100; i++ {
+		children, err := mother.ProduceChildren(father)
+		if err != nil {
+			t.Errorf("can not create mother (err=%+v)", err)
+			return
+		}
+		if len(children) != 0 {
+			result = children
+			break
+		}
+	}
+	b, err := json.Marshal(result)
+	if err != nil {
+		t.Fatal(err)
+		return
+	}
+	fmt.Println("Count::", i, "\n\n\n", string(b))
+}
