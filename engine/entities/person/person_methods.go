@@ -1,84 +1,382 @@
 package person
 
 import (
+	"fmt"
 	"persons_generator/core/wrapped_error"
+	"persons_generator/engine/entities/culture"
+	"persons_generator/engine/entities/person/human"
 	"persons_generator/engine/entities/person/traits"
+	"persons_generator/engine/entities/religion"
 )
 
-func (p *Person) HaveSex(other *Person, year int) error {
+// Action methods
+func (p *Person) HaveSex(partner *Person, year int) error {
 	if p == nil {
 		return wrapped_error.NewInternalServerError(nil, "can not <nil> have sex with someone else")
 	}
-	if other == nil {
+	if partner == nil {
 		return wrapped_error.NewInternalServerError(nil, "can not person have sex with <nil>")
 	}
-	if p.Human.Sex == other.Human.Sex {
-		p.AppendTrait(traits.HomosexualistTrait)
-		other.AppendTrait(traits.HomosexualistTrait)
+
+	// check if it is homosexual sex
+	if p.Human.Sex == partner.Human.Sex {
+		if err := p.AppendTrait(traits.HomosexualistTrait); err != nil {
+			return wrapped_error.NewInternalServerError(nil, "can not append homosexualist trait into curr person")
+		}
+		if err := partner.AppendTrait(traits.HomosexualistTrait); err != nil {
+			return wrapped_error.NewInternalServerError(nil, "can not append homosexualist trait into partner")
+		}
 	}
-	if err := p.Human.HaveSex(other.Human); err != nil {
-		return wrapped_error.NewInternalServerError(err, "can not have sex")
+
+	// process human side sex for curr person
+	if err := p.Human.HaveSex(partner.Human); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not have sex for curr person")
 	}
-	p.AppendHaveSexEvent(year)
-	if err := other.Human.HaveSex(p.Human); err != nil {
-		return wrapped_error.NewInternalServerError(err, "can not have sex")
+	if err := p.AppendHaveSexEvent(year, partner); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not append have_sex event for curr person")
 	}
-	other.AppendHaveSexEvent(year)
+	// process human side sex for partner
+	if err := partner.Human.HaveSex(p.Human); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not have sex for partner")
+	}
+	if err := partner.AppendHaveSexEvent(year, p); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not append have_sex event for patner")
+	}
+
+	// process traits
+	if err := p.ProcessLustfulTrait(); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not process lustful trait for curr person")
+	}
+	if err := partner.ProcessLustfulTrait(); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not process lustful trait for partner")
+	}
 
 	return nil
 }
 
-func (p *Person) AppendTrait(t *traits.Trait) {
+func (p *Person) GetMarried(partner *Person, year int) error {
 	if p == nil {
-		return
+		return wrapped_error.NewInternalServerError(nil, "<nil> can not get married with person")
+	}
+	if partner == nil {
+		return wrapped_error.NewInternalServerError(nil, "can not get married for <nil> partner")
 	}
 
-	p.Traits = append(p.Traits, t)
-	p.Traits = traits.Unique(p.Traits)
-}
-
-func (p *Person) appendEvent(e Event) {
-	if p == nil {
-		return
+	// process marriage for curr person
+	p.Spouces = UniquePersons(append(p.Spouces, partner))
+	if err := p.AppendGetMarriedEvent(year, partner); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not append get_married event for curr person")
+	}
+	if err := p.AppendTrait(traits.MarriedTrait); err != nil {
+		return wrapped_error.NewInternalServerError(nil, "can not append married trait into curr person")
 	}
 
-	p.Chronology.Events = append(p.Chronology.Events, e)
-}
-
-func (p *Person) AppendHaveSexEvent(year int) {
-	if p == nil {
-		return
+	// process marriage for partner
+	partner.Spouces = UniquePersons(append(partner.Spouces, p))
+	if err := partner.AppendGetMarriedEvent(year, p); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not append get_married event for partner")
+	}
+	if err := partner.AppendTrait(traits.MarriedTrait); err != nil {
+		return wrapped_error.NewInternalServerError(nil, "can not append married trait into partner")
 	}
 
-	p.appendEvent(Event{Year: year, Name: HaveSexEventName})
+	return nil
 }
 
-func (p *Person) IsDead() bool {
+func (p *Person) Divorce(partner *Person, year int) error {
 	if p == nil {
-		return false
+		return wrapped_error.NewInternalServerError(nil, "<nil> can not divorce with person")
+	}
+	if partner == nil {
+		return wrapped_error.NewInternalServerError(nil, "can not divorce for <nil> partner")
 	}
 
-	return p.Chronology.DeathYear == -1
-}
-
-func (p *Person) Die(year int) {
-	if p == nil {
-		return
+	// check if perople are married
+	areMarried, err := p.AreMarried(partner)
+	if err != nil {
+		return wrapped_error.NewInternalServerError(nil, "can not check if people are married for divorce")
+	}
+	if !areMarried {
+		return wrapped_error.NewInternalServerError(nil, "can not divorce curr person & partner if they are not married")
 	}
 
-	p.Chronology.DeathYear = year
+	// process divorce for curr person
+	p.Spouces = RemovePersonFromSliceByID(p.Spouces, partner.ID)
+	if err := p.AppendDivorcedEvent(year, partner); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not append divorced event for curr person")
+	}
+	if err := p.AppendTrait(traits.DivorcedTrait); err != nil {
+		return wrapped_error.NewInternalServerError(nil, "can not append divorced trait into curr person")
+	}
+
+	// process divorce for partner
+	partner.Spouces = RemovePersonFromSliceByID(partner.Spouces, p.ID)
+	if err := partner.AppendDivorcedEvent(year, p); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not append divorced event for partner")
+	}
+	if err := partner.AppendTrait(traits.DivorcedTrait); err != nil {
+		return wrapped_error.NewInternalServerError(nil, "can not append divorced trait into partner")
+	}
+
+	return nil
 }
 
-func (p *Person) HadSex(year int) bool {
+// Checker methods
+
+func (p *Person) GetSympathicCoef(partner *Person) (float64, error) {
 	if p == nil {
-		return false
+		return 0, wrapped_error.NewInternalServerError(nil, "<nil> can not check if someone is sympathic for person")
+	}
+	if partner == nil {
+		return 0, wrapped_error.NewInternalServerError(nil, "can not check if <nil> peron is sympathic")
+	}
+
+	religionSimilarityCoef, err := religion.GetReligionSimilarityCoef(p.Religion, partner.Religion)
+	if err != nil {
+		return 0, wrapped_error.NewInternalServerError(err, "can not get religion similarity coef")
+	}
+	cultureSimilarityCoef, err := culture.GetCultureSimilarityCoef(p.Culture, partner.Culture)
+	if err != nil {
+		return 0, wrapped_error.NewInternalServerError(err, "can not get culture similarity coef")
+	}
+
+	coefs := []struct {
+		coef  float64
+		value float64
+	}{
+		{
+			coef:  1,
+			value: human.GetSimilarityCoef(p.Human, partner.Human),
+		},
+		{
+			coef:  1.5,
+			value: cultureSimilarityCoef,
+		},
+		{
+			coef:  2,
+			value: religionSimilarityCoef,
+		},
+	}
+	var sum float64
+	for _, coef := range coefs {
+		sum += coef.coef * coef.value
+	}
+
+	return sum / float64(len(coefs)), nil
+}
+
+func (p *Person) IsMarried() (bool, error) {
+	if p == nil {
+		return false, wrapped_error.NewInternalServerError(nil, "<nil> can not check if person is married")
+	}
+
+	return len(p.Spouces) > 0, nil
+}
+
+func (p *Person) AreMarried(partner *Person) (bool, error) {
+	if p == nil {
+		return false, wrapped_error.NewInternalServerError(nil, "<nil> can not check if someone is married with person")
+	}
+	if partner == nil {
+		return false, wrapped_error.NewInternalServerError(nil, "can not check if peron is married with <nil>")
+	}
+
+	if len(p.Spouces) == 0 || len(partner.Spouces) == 0 {
+		return false, nil
+	}
+	var isPersonMarriedWithPartner bool
+	for _, spounce := range p.Spouces {
+		if spounce.ID == p.ID {
+			isPersonMarriedWithPartner = true
+		}
+	}
+
+	var isPartnerMarriedWithPerson bool
+	for _, spounce := range partner.Spouces {
+		if spounce.ID == p.ID {
+			isPartnerMarriedWithPerson = true
+		}
+	}
+	if isPersonMarriedWithPartner != isPartnerMarriedWithPerson {
+		return false, wrapped_error.NewInternalServerError(nil, "curr person and partner have dissynchronized spounces")
+	}
+
+	return isPersonMarriedWithPartner, nil
+}
+
+func (p *Person) CanBePartners(partner *Person) (bool, error) {
+	if p == nil {
+		return false, wrapped_error.NewInternalServerError(nil, "<nil> can not check if someone can get married with person")
+	}
+	if partner == nil {
+		return false, wrapped_error.NewInternalServerError(nil, "can not check if <nil> peron is available for getting married")
+	}
+
+	// check if any of curr person or partner is asexual
+	if p.Human.Psycho.SexualOrientation.IsAsexual() || partner.Human.Psycho.SexualOrientation.IsAsexual() {
+		return false, nil
+	}
+	// check if any of curr person or partner is heterosexual
+	if p.Human.Sex != partner.Human.Sex &&
+		(p.Human.Psycho.SexualOrientation.IsHeterosexual() || p.Human.Psycho.SexualOrientation.IsBisexual()) &&
+		(partner.Human.Psycho.SexualOrientation.IsHeterosexual() || partner.Human.Psycho.SexualOrientation.IsBisexual()) {
+		return true, nil
+	}
+	// check if any of curr person or partner is homosexual
+	if p.Human.Sex == partner.Human.Sex &&
+		(p.Human.Psycho.SexualOrientation.IsHomosexual() || p.Human.Psycho.SexualOrientation.IsBisexual()) &&
+		(partner.Human.Psycho.SexualOrientation.IsHomosexual() || partner.Human.Psycho.SexualOrientation.IsBisexual()) {
+		return true, nil
+	}
+
+	return false, nil
+}
+
+// Chronology methods
+
+func (p *Person) HadSex(year int) (bool, error) {
+	if p == nil {
+		return false, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("<nil> can not check if person has sex in %d year", year))
 	}
 
 	for _, r := range p.Chronology.Events {
 		if r.Year == year && r.Name == HaveSexEventName {
-			return true
+			return true, nil
 		}
 	}
 
-	return false
+	return false, nil
+}
+
+func (p *Person) IsDead() (bool, error) {
+	if p == nil {
+		return false, wrapped_error.NewInternalServerError(nil, "<nil> can not check if person is dead")
+	}
+
+	return p.Chronology.DeathYear != -1, nil
+}
+
+func (p *Person) Die(year int) error {
+	if p == nil {
+		return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("<nil> can not die in %d year", year))
+	}
+
+	p.Chronology.DeathYear = year
+
+	return nil
+}
+
+// Traits methods
+
+func (p *Person) AppendTrait(t *traits.Trait) error {
+	if p == nil {
+		return wrapped_error.NewInternalServerError(nil, "can not appent trait into <nil>")
+	}
+
+	p.Traits = append(p.Traits, t)
+	p.Traits = traits.Unique(p.Traits)
+
+	return nil
+}
+
+func (p *Person) IsHomosexualist() (bool, error) {
+	if p == nil {
+		return false, wrapped_error.NewInternalServerError(nil, "<nil> can not check if person is homosexualist")
+	}
+	for _, t := range p.Traits {
+		if t.Name == traits.HomosexualistTrait.Name {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+func (p *Person) IsLustful() (bool, error) {
+	if p == nil {
+		return false, wrapped_error.NewInternalServerError(nil, "<nil> can not check if person is lustful")
+	}
+
+	for _, t := range p.Traits {
+		if t.Name == traits.LustfulTrait.Name {
+			return true, nil
+		}
+	}
+
+	return false, nil
+}
+
+func (p *Person) ProcessLustfulTrait() error {
+	if p == nil {
+		return wrapped_error.NewInternalServerError(nil, "<nil> can not process lustful trait")
+	}
+
+	isLustful, err := p.IsLustful()
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can check if person is lustful by *Person entity")
+	}
+	if isLustful {
+		return nil
+	}
+
+	isLustfulByChron, errByChron := p.Chronology.IsLustful()
+	if errByChron != nil {
+		return wrapped_error.NewInternalServerError(errByChron, "can not chech if person is lustful by chronology")
+	}
+	if !isLustfulByChron {
+		return nil
+	}
+	if err := p.AppendTrait(traits.LustfulTrait); err != nil {
+		return wrapped_error.NewInternalServerError(nil, "can not append lustful trait into person")
+	}
+
+	return nil
+}
+
+// Event methods
+
+func (p *Person) appendEvent(e Event) error {
+	if p == nil {
+		return wrapped_error.NewInternalServerError(nil, "can not append event for <nil> *Person")
+	}
+
+	p.Chronology.Events = append(p.Chronology.Events, e)
+
+	return nil
+}
+
+func (p *Person) AppendHaveSexEvent(year int, partner *Person) error {
+	if err := p.appendEvent(Event{
+		Year:  year,
+		Name:  HaveSexEventName,
+		Value: partner,
+	}); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not append have_sex event")
+	}
+
+	return nil
+}
+
+func (p *Person) AppendGetMarriedEvent(year int, partner *Person) error {
+	if err := p.appendEvent(Event{
+		Year:  year,
+		Name:  GetMarriedEventName,
+		Value: partner,
+	}); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not append get_married event")
+	}
+
+	return nil
+}
+
+func (p *Person) AppendDivorcedEvent(year int, partner *Person) error {
+	if err := p.appendEvent(Event{
+		Year:  year,
+		Name:  DivorcedEventName,
+		Value: partner,
+	}); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not append divorced event")
+	}
+
+	return nil
 }

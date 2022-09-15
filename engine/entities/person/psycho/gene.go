@@ -40,7 +40,8 @@ func (g *PsychoGene) Produce(sex gender.Sex) (gene.Byteble, error) {
 	}
 
 	return Psycho{
-		Temperament: temperamentVal,
+		Temperament:       temperamentVal,
+		SexualOrientation: ProduceSexualOrientation(),
 	}, nil
 }
 

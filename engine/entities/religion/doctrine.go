@@ -58,3 +58,58 @@ func (d *Doctrine) Print() {
 	d.SourceOfMoralLaw.Print()
 	d.Afterlife.Print()
 }
+
+func GetDoctrineSimilarityCoef(d1, d2 *Doctrine) float64 {
+	if d1 == nil && d2 == nil {
+		return 1
+	}
+	if d1 == nil || d2 == nil {
+		return 0
+	}
+
+	similarityTraits := []struct {
+		enable bool
+		value  float64
+		coef   float64
+	}{
+		{
+			enable: true,
+			value:  GetHighGoalSimilarityCoef(d1.HighGoal, d2.HighGoal),
+			coef:   0.1,
+		},
+		{
+			enable: true,
+			value:  GetDeityDoctrineSimilarityCoef(d1.Deity, d2.Deity),
+			coef:   0.2,
+		},
+		{
+			enable: true,
+			value:  GetHumanDoctrineSimilarityCoef(d1.Human, d2.Human),
+			coef:   0.2,
+		},
+		{
+			enable: true,
+			value:  GetSocialDoctrineSimilarityCoef(d1.Social, d2.Social),
+			coef:   0.15,
+		},
+		{
+			enable: d1.SourceOfMoralLaw == d2.SourceOfMoralLaw,
+			value:  1,
+			coef:   0.2,
+		},
+		{
+			enable: true,
+			value:  GetAfterlifeSimilarityCoef(d1.Afterlife, d2.Afterlife),
+			coef:   0.25,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		if t.enable {
+			out += t.value * t.coef
+		}
+	}
+
+	return out
+}

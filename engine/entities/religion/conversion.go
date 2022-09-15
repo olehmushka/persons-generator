@@ -27,6 +27,10 @@ func (t *Theology) generateConversion() (*Conversion, error) {
 	return c, nil
 }
 
+func (c *Conversion) IsZero() bool {
+	return c == nil
+}
+
 func (c *Conversion) Print() {
 	if len(c.Traits) > 0 {
 		fmt.Printf("Conversion (religion_name=%s):\n", c.religion.Name)
@@ -201,4 +205,15 @@ func (c *Conversion) getAllConversionTraits() []*trait {
 			},
 		},
 	}
+}
+
+func GetConversionSimilarityCoef(c1, c2 *Conversion) float64 {
+	if c1.IsZero() && c2.IsZero() {
+		return 1
+	}
+	if c1.IsZero() || c2.IsZero() {
+		return 0
+	}
+
+	return GetTraitsSimilarityCoef(c1.Traits, c2.Traits)
 }

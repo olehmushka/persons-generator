@@ -136,3 +136,21 @@ func (t *Type) IsMonolatryPolytheism() bool {
 func (t *Type) IsOmnismPolytheism() bool {
 	return t.Subtype == OmnismPolytheismSubtype
 }
+
+func IsTypesEqual(t1, t2 *Type) bool {
+	if t1 == nil && t2 == nil {
+		return true
+	}
+	if t1 == nil || t2 == nil {
+		return false
+	}
+
+	if t1.Type != t2.Type {
+		return false
+	}
+	if t1.Subtype != t2.Subtype {
+		return false
+	}
+
+	return true
+}

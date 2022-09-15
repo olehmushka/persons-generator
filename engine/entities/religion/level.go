@@ -18,7 +18,7 @@ func getLevelByProbability(major, middle, minor float64) Level {
 	}))
 }
 
-func (l Level) GetLevelCoef() float64 {
+func (l Level) GetCoef() float64 {
 	switch l {
 	case Major:
 		return 1.25

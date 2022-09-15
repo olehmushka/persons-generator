@@ -78,6 +78,10 @@ func NewTheology(r *Religion, c *culture.Culture) (*Theology, error) {
 	return t, nil
 }
 
+func (t *Theology) IsZero() bool {
+	return t == nil
+}
+
 func (t *Theology) Print() {
 	fmt.Printf("Theology (religion_name=%s):\n", t.religion.Name)
 	fmt.Printf("Theology Traits (religion_name=%s):\n", t.religion.Name)
@@ -504,4 +508,58 @@ func (t *Theology) HasReincarnation() bool {
 	}
 
 	return false
+}
+
+func GetTheologySimilarityCoef(t1, t2 *Theology) float64 {
+	if t1.IsZero() && t2.IsZero() {
+		return 1
+	}
+	if t1.IsZero() || t2.IsZero() {
+		return 0
+	}
+
+	similarityTraits := []struct {
+		value float64
+		coef  float64
+	}{
+		{
+			value: GetTraitsSimilarityCoef(t1.Traits, t2.Traits),
+			coef:  0.05,
+		},
+		{
+			value: GetTraitsSimilarityCoef(t1.Cults, t2.Cults),
+			coef:  0.2,
+		},
+		{
+			value: GetRulesSimilarityCoef(t1.Rules, t2.Rules),
+			coef:  0.1,
+		},
+		{
+			value: GetTaboosSimilarityCoef(t1.Taboos, t2.Taboos),
+			coef:  0.3,
+		},
+		{
+			value: GetRitualsSimilarityCoef(t1.Rituals, t2.Rituals),
+			coef:  0.10,
+		},
+		{
+			value: GetHolydaysSimilarityCoef(t1.Holydays, t2.Holydays),
+			coef:  0.05,
+		},
+		{
+			value: GetConversionSimilarityCoef(t1.Conversion, t2.Conversion),
+			coef:  0.05,
+		},
+		{
+			value: GetMarriageTraditionSimilarityCoef(t1.MarriageTradition, t2.MarriageTradition),
+			coef:  0.15,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		out += t.value * t.coef
+	}
+
+	return out
 }

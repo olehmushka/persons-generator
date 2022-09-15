@@ -397,3 +397,91 @@ func (cs *Clerics) getAllClericsFunctions() []*trait {
 		},
 	}
 }
+
+func GetClericsSimilarityCoef(c1, c2 *Clerics) float64 {
+	if c1 == nil && c2 == nil {
+		return 1
+	}
+	if c1 == nil || c2 == nil {
+		return 0
+	}
+
+	similarityTraits := []struct {
+		enable bool
+		value  float64
+		coef   float64
+	}{
+		{
+			enable: c1.HasClerics == c2.HasClerics,
+			value:  1,
+			coef:   0.3,
+		},
+		{
+			enable: true,
+			value:  GetClericsAppointmentSimilarityCoef(c1.Appointment, c2.Appointment),
+			coef:   0.15,
+		},
+		{
+			enable: true,
+			value:  GetClericsLimitationsSimilarityCoef(c1.Limitations, c2.Limitations),
+			coef:   0.15,
+		},
+		{
+			enable: true,
+			value:  GetTraitsSimilarityCoef(c1.Traits, c2.Traits),
+			coef:   0.2,
+		},
+		{
+			enable: true,
+			value:  GetTraitsSimilarityCoef(c1.Functions, c2.Functions),
+			coef:   0.2,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		if t.enable {
+			out += t.value * t.coef
+		}
+	}
+
+	return out
+}
+
+func GetClericsAppointmentSimilarityCoef(c1, c2 *ClericsAppointment) float64 {
+	if c1 == nil && c2 == nil {
+		return 1
+	}
+	if c1 == nil || c2 == nil {
+		return 0
+	}
+
+	var out float64
+	if c1.IsCivil == c2.IsCivil {
+		out += 0.5
+	}
+	if c1.IsRevocable == c2.IsRevocable {
+		out += 0.5
+	}
+
+	return out
+}
+
+func GetClericsLimitationsSimilarityCoef(c1, c2 *ClericsLimitations) float64 {
+	if c1 == nil && c2 == nil {
+		return 1
+	}
+	if c1 == nil || c2 == nil {
+		return 0
+	}
+
+	var out float64
+	if c1.AcceptableGender == c2.AcceptableGender {
+		out += 0.5
+	}
+	if c1.Marriage == c2.Marriage {
+		out += 0.5
+	}
+
+	return out
+}

@@ -2,6 +2,7 @@ package religion
 
 import (
 	"fmt"
+	"math"
 
 	"persons_generator/engine/entities/culture"
 	pm "persons_generator/engine/probability_machine"
@@ -23,6 +24,10 @@ func (t *Theology) generateTaboos(c *culture.Culture) (*Taboos, error) {
 	ts.Taboos = taboos
 
 	return ts, nil
+}
+
+func (ts *Taboos) IsZero() bool {
+	return ts == nil
 }
 
 func (ts *Taboos) Print() {
@@ -69,6 +74,10 @@ func (ts *Taboos) generateTaboos(c *culture.Culture) ([]*Taboo, error) {
 	}
 
 	return taboos, nil
+}
+
+func (t *Taboo) IsZero() bool {
+	return t == nil
 }
 
 func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
@@ -780,4 +789,36 @@ func (ts *Taboos) getAllTaboos(c *culture.Culture) []*Taboo {
 			},
 		},
 	}
+}
+
+func GetTabooSimilarityCoef(t1, t2 *Taboo) float64 {
+	if t1.IsZero() && t2.IsZero() {
+		return 1
+	}
+	if t1.IsZero() || t2.IsZero() {
+		return 0
+	}
+
+	return 1 - math.Abs(t1.Acceptance.Value()-t2.Acceptance.Value())
+}
+
+func GetTaboosSimilarityCoef(t1, t2 *Taboos) float64 {
+	if t1.IsZero() && t2.IsZero() {
+		return 1
+	}
+	if t1.IsZero() || t2.IsZero() {
+		return 0
+	}
+	if len(t1.Taboos) != len(t2.Taboos) {
+		return 0
+	}
+	var (
+		out      float64
+		unitCoef = 1 / float64(len(t1.Taboos))
+	)
+	for i, coef := range t1.Taboos {
+		out += GetTabooSimilarityCoef(coef, t2.Taboos[i]) * unitCoef
+	}
+
+	return out
 }

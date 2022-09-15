@@ -8,6 +8,20 @@ func (g Goodness) String() string {
 	return string(g)
 }
 
+func (g Goodness) Value() float64 {
+	if g == Good {
+		return 1
+	}
+	if g == Neutral {
+		return 0.5
+	}
+	if g == Evil {
+		return 0
+	}
+
+	return 0
+}
+
 const (
 	Good    Goodness = "good"
 	Neutral Goodness = "neutral"

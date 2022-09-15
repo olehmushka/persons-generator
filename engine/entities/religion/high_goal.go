@@ -298,3 +298,14 @@ func (hg *HighGoal) getAllGoals() []*trait {
 		},
 	}
 }
+
+func GetHighGoalSimilarityCoef(h1, h2 *HighGoal) float64 {
+	if h1 == nil && h2 == nil {
+		return 1
+	}
+	if h1 == nil || h2 == nil {
+		return 0
+	}
+
+	return GetTraitsSimilarityCoef(h1.Goals, h2.Goals)
+}

@@ -315,3 +315,14 @@ func (sd *SocialDoctrine) getAllSocialTraits() []*trait {
 		},
 	}
 }
+
+func GetSocialDoctrineSimilarityCoef(d1, d2 *SocialDoctrine) float64 {
+	if d1 == nil && d2 == nil {
+		return 1
+	}
+	if d1 == nil || d2 == nil {
+		return 0
+	}
+
+	return GetTraitsSimilarityCoef(d1.Traits, d2.Traits)
+}

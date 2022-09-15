@@ -58,6 +58,10 @@ func (t *Theology) generateRituals() (*Rituals, error) {
 	return rs, nil
 }
 
+func (rs *Rituals) IsZero() bool {
+	return rs == nil
+}
+
 func (rs *Rituals) Print() {
 	fmt.Printf("Rituals (religion_name=%s):\n", rs.religion.Name)
 	if len(rs.Initiation) > 0 {
@@ -558,4 +562,42 @@ func (rs *Rituals) getAllHolydayRituals() []*trait {
 			},
 		},
 	}
+}
+
+func GetRitualsSimilarityCoef(r1, r2 *Rituals) float64 {
+	if r1.IsZero() && r2.IsZero() {
+		return 1
+	}
+	if r1.IsZero() || r2.IsZero() {
+		return 0
+	}
+
+	similarityTraits := []struct {
+		value float64
+		coef  float64
+	}{
+		{
+			value: GetTraitsSimilarityCoef(r1.Initiation, r2.Initiation),
+			coef:  0.25,
+		},
+		{
+			value: GetTraitsSimilarityCoef(r1.Funeral, r2.Funeral),
+			coef:  0.25,
+		},
+		{
+			value: GetTraitsSimilarityCoef(r1.Sacrifice, r2.Sacrifice),
+			coef:  0.25,
+		},
+		{
+			value: GetTraitsSimilarityCoef(r1.Holyday, r2.Holyday),
+			coef:  0.25,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		out += t.value * t.coef
+	}
+
+	return out
 }

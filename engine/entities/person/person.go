@@ -19,6 +19,7 @@ type Person struct {
 	Human    *human.Human       `json:"human"`
 
 	Traits     []*traits.Trait `json:"traits"`
+	Spouces    []*Person       `json:"spouces"`
 	Chronology Chronology      `json:"chronology"`
 }
 
@@ -50,4 +51,37 @@ func New(h *human.Human, c *culture.Culture, r *religion.Religion, year int) (*P
 	p.OwnName = ownName
 
 	return p, nil
+}
+
+func UniquePersons(persons []*Person) []*Person {
+	if len(persons) <= 1 {
+		return persons
+	}
+
+	preOut := make(map[uuid.UUID]*Person)
+	for _, c := range persons {
+		preOut[c.ID] = c
+	}
+
+	out := make([]*Person, 0, len(preOut))
+	for _, c := range preOut {
+		out = append(out, c)
+	}
+
+	return out
+}
+
+func RemovePersonFromSliceByID(persons []*Person, id uuid.UUID) []*Person {
+	if len(persons) == 0 {
+		return persons
+	}
+	out := make([]*Person, 0, len(persons))
+	for _, p := range persons {
+		if p.ID == id {
+			continue
+		}
+		out = append(out, p)
+	}
+
+	return out
 }

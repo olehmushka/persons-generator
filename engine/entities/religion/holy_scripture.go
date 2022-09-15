@@ -175,3 +175,21 @@ func (hs *HolyScripture) getAllHolyScriptureTraits() []*trait {
 		},
 	}
 }
+
+func GetHolyScriptureSimilarityCoef(hs1, hs2 *HolyScripture) float64 {
+	if hs1 == nil && hs2 == nil {
+		return 1
+	}
+	if hs1 == nil || hs2 == nil {
+		return 0
+	}
+
+	if hs1.HasHolyScripture != hs2.HasHolyScripture {
+		return 0
+	}
+	if !hs1.HasHolyScripture {
+		return 1
+	}
+
+	return (GetTraitsSimilarityCoef(hs1.Traits, hs2.Traits) + 1) / 2
+}

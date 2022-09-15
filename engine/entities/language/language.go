@@ -64,6 +64,10 @@ func (l *Language) GetWord() (string, error) {
 	return wg.GetWord(wb.Name, ExtractWords(AllWordBases), wb.Min, wb.Max, wb.Dupl)
 }
 
+func (l *Language) IsZero() bool {
+	return l == nil
+}
+
 func (l *Language) Print() {
 	if l == nil {
 		return
@@ -205,4 +209,24 @@ func GetLanguagesBySubfamilyName(name string) []*Language {
 	}
 
 	return out
+}
+
+func GetLanguageSimilarityCoef(l1, l2 *Language) (float64, error) {
+	if l1.IsZero() && l2.IsZero() {
+		return 1, nil
+	}
+	if l1.IsZero() || l2.IsZero() {
+		return 0, wrapped_error.NewInternalServerError(nil, "can not compare languages if one of it is <nil>")
+	}
+
+	switch kinship := GetLanguageKinship(l1, l2); kinship {
+	case -1:
+		return 0, nil
+	case 0:
+		return 1, nil
+	case 1:
+		return 0.75, nil
+	default:
+		return 1 / float64(kinship), nil
+	}
 }

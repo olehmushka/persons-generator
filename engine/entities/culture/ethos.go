@@ -16,6 +16,10 @@ type Ethos struct {
 	IsScholarly      bool `json:"is_scholarly"`
 }
 
+func (e *Ethos) IsZero() bool {
+	return e == nil
+}
+
 func (e *Ethos) Print() {
 	if e == nil {
 		return
@@ -23,7 +27,7 @@ func (e *Ethos) Print() {
 	fmt.Printf("Ethos: %s\n", e.Name)
 }
 
-func getEthos(proto []*Culture) *Ethos {
+func getRandomEthosFromCultures(proto []*Culture) *Ethos {
 	ethoses := UniqueEthoses(ExtractEthoses(proto))
 	m := make(map[string]int)
 	for _, c := range proto {
@@ -78,6 +82,54 @@ func UniqueEthoses(ethoses []*Ethos) []*Ethos {
 	out := make([]*Ethos, 0, len(preOut))
 	for _, e := range preOut {
 		out = append(out, e)
+	}
+
+	return out
+}
+
+func GetEthosSimilarityCoef(e1, e2 *Ethos) float64 {
+	if e1.IsZero() && e2.IsZero() {
+		return 1
+	}
+	if e1.IsZero() || e2.IsZero() {
+		return 0
+	}
+
+	if e1.Name == e2.Name {
+		return 1
+	}
+
+	similarityTraits := []struct {
+		enable bool
+		coef   float64
+	}{
+		{
+			enable: e1.IsDiplomatic == e2.IsDiplomatic,
+			coef:   0.2,
+		},
+		{
+			enable: e1.IsWarlike == e2.IsWarlike,
+			coef:   0.2,
+		},
+		{
+			enable: e1.IsAdministrative == e2.IsAdministrative,
+			coef:   0.2,
+		},
+		{
+			enable: e1.IsIntrigue == e2.IsIntrigue,
+			coef:   0.2,
+		},
+		{
+			enable: e1.IsScholarly == e2.IsScholarly,
+			coef:   0.2,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		if t.enable {
+			out += t.coef
+		}
 	}
 
 	return out

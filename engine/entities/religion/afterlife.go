@@ -15,6 +15,10 @@ type Afterlife struct {
 	Traits       []*trait               `json:"traits"`
 }
 
+func (al *Afterlife) IsZero() bool {
+	return al == nil
+}
+
 func (al *Afterlife) Print() {
 	if !al.IsExists {
 		fmt.Printf("Afterlife does not exists (religion=%s)\n", al.religion.Name)
@@ -371,4 +375,81 @@ func (al *Afterlife) getAllAfterlifeTraits() []*trait {
 			},
 		},
 	}
+}
+
+func GetAfterlifeParticipantsSimilarityCoef(p1, p2 *AfterlifeParticipants) float64 {
+	if p1 == nil && p2 == nil {
+		return 1
+	}
+	if p1 == nil || p2 == nil {
+		return 0
+	}
+
+	similarityTraits := []struct {
+		enable bool
+		coef   float64
+	}{
+		{
+			enable: p1.ForTopBelievers == p2.ForTopBelievers,
+			coef:   0.25,
+		},
+		{
+			enable: p1.ForBelievers == p2.ForBelievers,
+			coef:   0.25,
+		},
+		{
+			enable: p1.ForUntrueBelievers == p2.ForUntrueBelievers,
+			coef:   0.25,
+		},
+		{
+			enable: p1.ForAtheists == p2.ForAtheists,
+			coef:   0.25,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		if t.enable {
+			out += t.coef
+		}
+	}
+
+	return out
+}
+
+func GetAfterlifeSimilarityCoef(al1, al2 *Afterlife) float64 {
+	if al1.IsZero() && al2.IsZero() {
+		return 1
+	}
+	if al1.IsZero() || al2.IsZero() {
+		return 0
+	}
+
+	if al1.IsExists != al2.IsExists {
+		return 0
+	}
+	if !al1.IsExists {
+		return 1
+	}
+
+	similarityTraits := []struct {
+		value float64
+		coef  float64
+	}{
+		{
+			value: GetAfterlifeParticipantsSimilarityCoef(al1.Participants, al2.Participants),
+			coef:  0.6,
+		},
+		{
+			value: GetTraitsSimilarityCoef(al1.Traits, al2.Traits),
+			coef:  0.4,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		out += t.value * t.coef
+	}
+
+	return out
 }

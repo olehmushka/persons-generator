@@ -1,6 +1,8 @@
 package tools
 
-func Unique[T int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64 | float32 | float64 | string](sl []T) []T {
+import "github.com/google/uuid"
+
+func Unique[T uuid.UUID | int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64 | float32 | float64 | string](sl []T) []T {
 	if len(sl) <= 1 {
 		return sl
 	}

@@ -406,3 +406,21 @@ func (ts *Temples) getAllTemplesTraits() []*trait {
 		},
 	}
 }
+
+func GetTemplesSimilarityCoef(t1, t2 *Temples) float64 {
+	if t1 == nil && t2 == nil {
+		return 1
+	}
+	if t1 == nil || t2 == nil {
+		return 0
+	}
+
+	if t1.HasTemples != t2.HasTemples && t1.HasSacredPlaces != t2.HasSacredPlaces {
+		return 0
+	}
+	if !t1.HasTemples && !t1.HasSacredPlaces {
+		return 1
+	}
+
+	return (GetTraitsSimilarityCoef(t1.Traits, t2.Traits) + 1) / 2
+}

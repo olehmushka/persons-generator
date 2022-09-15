@@ -28,6 +28,10 @@ func (t *Theology) generateHolydays() (*Holydays, error) {
 	return hs, nil
 }
 
+func (hs *Holydays) IsZero() bool {
+	return hs == nil
+}
+
 func (hs *Holydays) Print() {
 	if len(hs.Holydays) > 0 {
 		fmt.Printf("Holydays (religion_name=%s):\n", hs.religion.Name)
@@ -243,4 +247,15 @@ func (hs *Holydays) getAllHolydays() []*trait {
 			},
 		},
 	}
+}
+
+func GetHolydaysSimilarityCoef(h1, h2 *Holydays) float64 {
+	if h1.IsZero() && h2.IsZero() {
+		return 1
+	}
+	if h1.IsZero() || h2.IsZero() {
+		return 0
+	}
+
+	return GetTraitsSimilarityCoef(h1.Holydays, h2.Holydays)
 }

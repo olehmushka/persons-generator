@@ -6,7 +6,8 @@ import (
 )
 
 type Psycho struct {
-	Temperament temperament.Temperament
+	Temperament       temperament.Temperament
+	SexualOrientation SexualOrientation
 }
 
 func (b Psycho) Zero() bool {

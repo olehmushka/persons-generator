@@ -24,6 +24,10 @@ const (
 	RegionalTraditionType TraditionType = "regional_tradition_type"
 )
 
+func (t *Tradition) IsZero() bool {
+	return t == nil
+}
+
 func (c *Culture) PrintTraditions() {
 	if c == nil {
 		return
@@ -65,4 +69,10 @@ func UniqueTraditions(ts []*Tradition) []*Tradition {
 	}
 
 	return out
+}
+
+func GetTraditionsSimilarityCoef(t1, t2 []*Tradition) float64 {
+	// @TODO finish it
+
+	return 0
 }

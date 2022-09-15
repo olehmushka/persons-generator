@@ -49,3 +49,14 @@ func UniqueRoot(rs []*Root) []*Root {
 
 	return out
 }
+
+func IsRootEqual(r1, r2 *Root) bool {
+	if r1 == nil && r2 == nil {
+		return true
+	}
+	if r1 == nil || r2 == nil {
+		return false
+	}
+
+	return r1.Name == r2.Name
+}

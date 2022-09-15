@@ -2,6 +2,7 @@ package religion
 
 import (
 	"fmt"
+	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 )
 
@@ -62,4 +63,27 @@ func generateTraits(r *Religion, traitsToSelect []*trait, opts generateTraitsOpt
 	}
 
 	return traits, nil
+}
+
+func GetTraitsSimilarityCoef(t1, t2 []*trait) float64 {
+	if len(t1) == 0 && len(t2) == 0 {
+		return 1
+	}
+	if len(t1) == 0 || len(t2) == 0 {
+		return 0
+	}
+
+	sameTraits := tools.GetCrossOfSlices(t1, t1, func(t1, t2 *trait) bool {
+		if t1 == nil && t2 == nil {
+			return true
+		}
+		if t1 == nil || t2 == nil {
+			return false
+		}
+
+		return t1.Name == t2.Name
+	})
+	averageTraitsLength := float64(len(t1)+len(t2)) / 2
+
+	return float64(len(sameTraits)) / averageTraitsLength
 }

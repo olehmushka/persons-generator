@@ -333,3 +333,38 @@ func (dd *DeityNature) getAllDeityNatureTraits() []*trait {
 		},
 	}
 }
+
+func GetDeityDoctrineSimilarityCoef(d1, d2 *DeityDoctrine) float64 {
+	if d1 == nil && d2 == nil {
+		return 1
+	}
+	if d1 == nil || d2 == nil {
+		return 0
+	}
+
+	similarityTraits := []struct {
+		enable bool
+		value  float64
+		coef   float64
+	}{
+		{
+			enable: true,
+			value:  GetGoodnessNatureSimilarityCoef(d1.Nature.Goodness, d2.Nature.Goodness),
+			coef:   0.5,
+		},
+		{
+			enable: true,
+			value:  GetTraitsSimilarityCoef(d1.Nature.Traits, d2.Nature.Traits),
+			coef:   0.5,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		if t.enable {
+			out += t.value * t.coef
+		}
+	}
+
+	return out
+}

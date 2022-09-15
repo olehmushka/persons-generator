@@ -77,7 +77,7 @@ func (d *Doctrine) generateSourceOfMoralLaw() (SourceOfMoralLaw, error) {
 		if err != nil {
 			return "", err
 		}
-		deity += deityP * d.Deity.Nature.Goodness.Level.GetLevelCoef()
+		deity += deityP * d.Deity.Nature.Goodness.Level.GetCoef()
 	}
 	for _, trait := range d.Deity.Nature.Traits {
 		if trait.Name == IsJustDeityTrait {
@@ -94,7 +94,7 @@ func (d *Doctrine) generateSourceOfMoralLaw() (SourceOfMoralLaw, error) {
 		if err != nil {
 			return "", err
 		}
-		human += humanP * d.Human.Nature.Goodness.Level.GetLevelCoef()
+		human += humanP * d.Human.Nature.Goodness.Level.GetCoef()
 	}
 
 	return getSourceOfMoralLawByProbability(deity, none, human, nature), nil

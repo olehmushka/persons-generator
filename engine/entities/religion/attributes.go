@@ -174,3 +174,41 @@ func (as *Attributes) getAllAttributeTraits() []*trait {
 		},
 	}
 }
+
+func GetAttributesSimilarityCoef(a1, a2 *Attributes) float64 {
+	if a1 == nil && a2 == nil {
+		return 1
+	}
+	if a1 == nil || a2 == nil {
+		return 0
+	}
+
+	similarityTraits := []struct {
+		value float64
+		coef  float64
+	}{
+		{
+			value: GetTraitsSimilarityCoef(a1.Traits, a2.Traits),
+			coef:  0.25,
+		},
+		{
+			value: GetClericsSimilarityCoef(a1.Clerics, a2.Clerics),
+			coef:  0.25,
+		},
+		{
+			value: GetHolyScriptureSimilarityCoef(a1.HolyScripture, a2.HolyScripture),
+			coef:  0.25,
+		},
+		{
+			value: GetTemplesSimilarityCoef(a1.Temples, a2.Temples),
+			coef:  0.25,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		out += t.value * t.coef
+	}
+
+	return out
+}

@@ -7,8 +7,10 @@ import (
 
 	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/tools"
+	"persons_generator/core/wrapped_error"
 	we "persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
+	"persons_generator/engine/entities/gender"
 	g "persons_generator/engine/entities/gender"
 	pm "persons_generator/engine/probability_machine"
 
@@ -291,6 +293,10 @@ func (r *Religion) UpdateMetadata(rm *religionMetadata) {
 	r.Metadata = rm
 }
 
+func (r *Religion) IsZero() bool {
+	return r == nil
+}
+
 func (r *Religion) Print() {
 	fmt.Printf("Religion (name=%s)\n", r.Name)
 	r.Type.Print()
@@ -322,6 +328,50 @@ func (r *Religion) HasReincarnation() bool {
 
 	return false
 }
+
+func (r *Religion) GetAdulteryAcceptance(sex gender.Sex) Acceptance {
+	if r == nil {
+		return ""
+	}
+
+	for _, t := range r.Theology.Taboos.Taboos {
+		if sex.IsMale() && t.Name == MaleAdulteryTabooName {
+			return t.Acceptance
+		}
+		if sex.IsFemale() && t.Name == FemaleAdulteryTabooName {
+			return t.Acceptance
+		}
+	}
+
+	return ""
+}
+
+func (r *Religion) GetDivorceAcceptance() Acceptance {
+	if r == nil {
+		return ""
+	}
+
+	switch r.Theology.MarriageTradition.Divorce {
+	case AlwaysAllowed:
+		return Accepted
+	case MustBeApproved:
+		return Shunned
+	case Disallowed:
+		return Criminal
+	}
+
+	return ""
+}
+
+func (r *Religion) GetAcceptedNumberSpounces(sex gender.Sex) int {
+	if r == nil {
+		return 0
+	}
+
+	return r.Theology.MarriageTradition.GetAcceptedNumberSpounces(sex)
+}
+
+/* ********************************************************************************************************** */
 
 func GetReligionByName(name string, list []*Religion) *Religion {
 	if name == "" || len(list) == 0 {
@@ -392,4 +442,57 @@ func UniqueReligions(religions []*Religion) []*Religion {
 	}
 
 	return out
+}
+
+func GetReligionSimilarityCoef(r1, r2 *Religion) (float64, error) {
+	if r1.IsZero() && r2.IsZero() {
+		return 1, nil
+	}
+	if r1.IsZero() || r2.IsZero() {
+		return 0, wrapped_error.NewInternalServerError(nil, "can not compare religions if one of it is <nil>")
+	}
+	if r1.ID == r2.ID {
+		return 1, nil
+	}
+
+	similarityTraits := []struct {
+		enable bool
+		value  float64
+		coef   float64
+	}{
+		{
+			enable: IsTypesEqual(r1.Type, r2.Type),
+			value:  1,
+			coef:   0.3,
+		},
+		{
+			enable: true,
+			value:  1 - g.GetDelta(r1.GenderDominance, r2.GenderDominance),
+			coef:   0.1,
+		},
+		{
+			enable: true,
+			value:  GetDoctrineSimilarityCoef(r1.Doctrine, r2.Doctrine),
+			coef:   0.15,
+		},
+		{
+			enable: true,
+			value:  GetAttributesSimilarityCoef(r1.Attributes, r2.Attributes),
+			coef:   0.15,
+		},
+		{
+			enable: true,
+			value:  GetTheologySimilarityCoef(r1.Theology, r2.Theology),
+			coef:   0.5,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		if t.enable {
+			out += t.value * t.coef
+		}
+	}
+
+	return out, nil
 }

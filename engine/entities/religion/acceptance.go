@@ -26,6 +26,20 @@ func (a Acceptance) IsCriminal() bool {
 	return a == Criminal
 }
 
+func (a Acceptance) Value() float64 {
+	if a.IsAccepted() {
+		return 1
+	}
+	if a.IsShunned() {
+		return 0.5
+	}
+	if a.IsCriminal() {
+		return 0
+	}
+
+	return 0
+}
+
 func getAcceptanceByProbability(accepted, shunned, criminal float64) Acceptance {
 	return Acceptance(pm.GetRandomFromSeveral(map[string]float64{
 		string(Accepted): pm.PrepareProbability(accepted),

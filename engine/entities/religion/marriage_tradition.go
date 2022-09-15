@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"persons_generator/engine/entities/culture"
+	"persons_generator/engine/entities/gender"
 	pm "persons_generator/engine/probability_machine"
 )
 
@@ -40,6 +41,10 @@ func (t *Theology) generateMarriageTradition(c *culture.Culture) (*MarriageTradi
 	mt.Divorce = d
 
 	return mt, nil
+}
+
+func (mt *MarriageTradition) IsZero() bool {
+	return mt == nil
 }
 
 func (mt *MarriageTradition) Print() {
@@ -500,4 +505,74 @@ func (mt *MarriageTradition) generateDivorce() (Permission, error) {
 	}
 
 	return getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed), nil
+}
+
+func (mt *MarriageTradition) GetAcceptedNumberSpounces(sex gender.Sex) int {
+	if mt == nil {
+		return 0
+	}
+
+	switch mt.Kind {
+	case Monogamy:
+		return 1
+	case ConsortsAndConcubines:
+		return 1
+	case Polygamy:
+		if sex.IsMale() &&
+			(mt.religion.GenderDominance.Dominance.IsMaleDominance() || mt.religion.GenderDominance.Dominance.IsEqualityDominance()) {
+			return 4
+		}
+		if sex.IsMale() && mt.religion.GenderDominance.Dominance.IsFemaleDominance() {
+			return 1
+		}
+		if sex.IsFemale() &&
+			(mt.religion.GenderDominance.Dominance.IsFemaleDominance() || mt.religion.GenderDominance.Dominance.IsEqualityDominance()) {
+			return 4
+		}
+		if sex.IsFemale() && mt.religion.GenderDominance.Dominance.IsMaleDominance() {
+			return 1
+		}
+	}
+
+	return 0
+}
+
+func GetMarriageTraditionSimilarityCoef(mt1, mt2 *MarriageTradition) float64 {
+	if mt1.IsZero() && mt2.IsZero() {
+		return 1
+	}
+	if mt1.IsZero() || mt2.IsZero() {
+		return 0
+	}
+
+	similarityTraits := []struct {
+		enable bool
+		coef   float64
+	}{
+		{
+			enable: mt1.Kind == mt2.Kind,
+			coef:   0.45,
+		},
+		{
+			enable: mt1.Bastardry == mt2.Bastardry,
+			coef:   0.15,
+		},
+		{
+			enable: mt1.Consanguinity == mt2.Consanguinity,
+			coef:   0.2,
+		},
+		{
+			enable: mt1.Divorce == mt2.Divorce,
+			coef:   0.2,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		if t.enable {
+			out += t.coef
+		}
+	}
+
+	return out
 }

@@ -23,6 +23,10 @@ func (t *Theology) generateRules() (*Rules, error) {
 	return rs, nil
 }
 
+func (rs *Rules) IsZero() bool {
+	return rs == nil
+}
+
 func (rs *Rules) Print() {
 	if len(rs.Rules) > 0 {
 		fmt.Printf("Rules (religion_name=%s):\n", rs.religion.Name)
@@ -129,4 +133,15 @@ func (rs *Rules) getAllRules() []*trait {
 			},
 		},
 	}
+}
+
+func GetRulesSimilarityCoef(r1, r2 *Rules) float64 {
+	if r1.IsZero() && r2.IsZero() {
+		return 1
+	}
+	if r1.IsZero() || r2.IsZero() {
+		return 0
+	}
+
+	return GetTraitsSimilarityCoef(r1.Rules, r2.Rules)
 }

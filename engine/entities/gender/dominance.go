@@ -2,6 +2,7 @@ package gender
 
 import (
 	"fmt"
+	"math"
 
 	"persons_generator/engine/entities/influence"
 	pm "persons_generator/engine/probability_machine"
@@ -82,6 +83,20 @@ func generateDominance() (GenderDominance, error) {
 	return GetGenderDominanceByProbability(maleDominance, equalityDominance, femaleDominance), nil
 }
 
+func (gd GenderDominance) Value() float64 {
+	if gd.IsMaleDominance() {
+		return 1
+	}
+	if gd.IsEqualityDominance() {
+		return 0.5
+	}
+	if gd.IsFemaleDominance() {
+		return 0
+	}
+
+	return 0
+}
+
 func generateInfluence() influence.Influence {
 	var (
 		strong   = 0.15
@@ -98,6 +113,18 @@ func (gd GenderDominance) String() string {
 	return string(gd)
 }
 
+func (gd GenderDominance) IsMaleDominance() bool {
+	return gd == MaleDominance
+}
+
+func (gd GenderDominance) IsEqualityDominance() bool {
+	return gd == EqualityDominance
+}
+
+func (gd GenderDominance) IsFemaleDominance() bool {
+	return gd == FemaleDominance
+}
+
 const (
 	MaleDominance     GenderDominance = "male"
 	EqualityDominance GenderDominance = "equality"
@@ -110,4 +137,15 @@ func GetGenderDominanceByProbability(male, equality, female float64) GenderDomin
 		string(EqualityDominance): equality,
 		string(FemaleDominance):   female,
 	}))
+}
+
+func GetDelta(d1, d2 *Dominance) float64 {
+	if d1 == nil && d2 == nil {
+		return 1
+	}
+	if d1 == nil || d2 == nil {
+		return 0
+	}
+
+	return math.Abs(d1.Dominance.Value()*d1.GetCoef() - d2.Dominance.Value()*d2.GetCoef())
 }

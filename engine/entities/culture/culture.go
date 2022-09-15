@@ -7,6 +7,7 @@ import (
 
 	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/tools"
+	"persons_generator/core/wrapped_error"
 	we "persons_generator/core/wrapped_error"
 	g "persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/language"
@@ -120,7 +121,7 @@ func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
 		return nil, err
 	}
 	c.Name = name
-	c.Ethos = getEthos(c.Proto)
+	c.Ethos = getRandomEthosFromCultures(c.Proto)
 	t, err := getTraditions(c.Proto)
 	if err != nil {
 		return nil, err
@@ -175,6 +176,10 @@ func NewMany(cfg Config, amount int, preferred []*Preference) ([]*Culture, error
 	}
 
 	return cultures, nil
+}
+
+func (c *Culture) IsZero() bool {
+	return c == nil
 }
 
 func (c *Culture) Print() {
@@ -339,4 +344,100 @@ func ReadByID(storageFolderName string, id uuid.UUID) (*Culture, error) {
 	}
 
 	return &out, nil
+}
+
+func GetProtosSimilarityCoef(c1, c2 []*Culture) float64 {
+	if len(c1) == 0 && len(c2) == 0 {
+		return 1
+	}
+	if len(c1) == 0 || len(c2) == 0 {
+		return 0
+	}
+
+	sameProtoCultures := tools.GetCrossOfSlices(c1, c1, func(c1, c2 *Culture) bool {
+		if c1 == nil && c2 == nil {
+			return true
+		}
+		if c1 == nil || c2 == nil {
+			return false
+		}
+
+		return c1.Name == c2.Name
+	})
+	averageProtoCulturesLength := float64(len(c1)+len(c2)) / 2
+
+	return float64(len(sameProtoCultures)) / averageProtoCulturesLength
+}
+
+func GetCultureSimilarityCoef(c1, c2 *Culture) (float64, error) {
+	if c1.IsZero() && c2.IsZero() {
+		return 1, nil
+	}
+	if c1.IsZero() || c2.IsZero() {
+		return 0, wrapped_error.NewInternalServerError(nil, "can not compare cultures if one of it is <nil>")
+	}
+	if c1.ID == c2.ID {
+		return 1, nil
+	}
+
+	languageSimilarityCoef, err := language.GetLanguageSimilarityCoef(c1.Language, c2.Language)
+	if err != nil {
+		return 0, wrapped_error.NewInternalServerError(err, "can not get language similarity coef")
+	}
+
+	similarityTraits := []struct {
+		enable bool
+		value  float64
+		coef   float64
+	}{
+		{
+			enable: true,
+			value:  GetProtosSimilarityCoef(c1.Proto, c2.Proto),
+			coef:   0.1,
+		},
+		{
+			enable: true,
+			value:  GetAbstructCultureSimilarityCoef(c1.Abstuct, c2.Abstuct),
+			coef:   0.1,
+		},
+		{
+			enable: IsRootEqual(c1.Root, c2.Root),
+			value:  1,
+			coef:   0.1,
+		},
+		{
+			enable: true,
+			value:  languageSimilarityCoef,
+			coef:   0.3,
+		},
+		{
+			enable: true,
+			value:  GetEthosSimilarityCoef(c1.Ethos, c2.Ethos),
+			coef:   0.15,
+		},
+		{
+			enable: true,
+			value:  GetTraditionsSimilarityCoef(c1.Traditions, c2.Traditions),
+			coef:   0.25,
+		},
+		{
+			enable: true,
+			value:  1 - g.GetDelta(c1.GenderDominance, c2.GenderDominance),
+			coef:   0.05,
+		},
+		{
+			enable: c1.MartialCustom == c2.MartialCustom,
+			value:  1,
+			coef:   0.05,
+		},
+	}
+
+	var out float64
+	for _, t := range similarityTraits {
+		if t.enable {
+			out += t.value * t.coef
+		}
+	}
+
+	return out, nil
 }
