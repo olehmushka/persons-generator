@@ -1,3 +1,10 @@
 package presets
 
-// Negroid
+import (
+	"persons_generator/engine/entities/person/psycho"
+	temperamentPresets "persons_generator/engine/entities/person/temperament/presets"
+)
+
+var NegritoPsychoPreset = psycho.NewPsychoGene(
+	temperamentPresets.NegritoTemperamentPreset,
+)
