@@ -21,6 +21,7 @@ type Person struct {
 	Traits     []*traits.Trait `json:"traits"`
 	Spouces    []*Person       `json:"spouces"`
 	Chronology Chronology      `json:"chronology"`
+	Metadata   Metadata        `json:"metadata"`
 }
 
 func New(h *human.Human, c *culture.Culture, r *religion.Religion, year int) (*Person, error) {
@@ -43,6 +44,7 @@ func New(h *human.Human, c *culture.Culture, r *religion.Religion, year int) (*P
 			DeathYear: -1,
 			Events:    []Event{},
 		},
+		Metadata: Metadata{},
 	}
 	ownName, err := c.Language.GetOwnName(h.Sex)
 	if err != nil {

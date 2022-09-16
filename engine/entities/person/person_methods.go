@@ -3,10 +3,12 @@ package person
 import (
 	"fmt"
 	"persons_generator/core/wrapped_error"
+	"persons_generator/engine/entities/coordinate"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/person/human"
 	"persons_generator/engine/entities/person/traits"
 	"persons_generator/engine/entities/religion"
+	pm "persons_generator/engine/probability_machine"
 )
 
 // Action methods
@@ -121,6 +123,17 @@ func (p *Person) Divorce(partner *Person, year int) error {
 	return nil
 }
 
+func (p *Person) IncreaseAge(year int) error {
+	if p == nil {
+		return wrapped_error.NewInternalServerError(nil, "<nil> can not increase age")
+	}
+	age := p.Human.IncrementAge()
+	p.Metadata.WishGetMarriedCoef = GetWishGetMarriedCoef(p.Human.Sex, age)
+	p.Metadata.DeathCoef = GetDeathCoef(age)
+
+	return nil
+}
+
 // Checker methods
 
 func (p *Person) GetSympathicCoef(partner *Person) (float64, error) {
@@ -230,6 +243,69 @@ func (p *Person) CanBePartners(partner *Person) (bool, error) {
 	}
 
 	return false, nil
+}
+
+func (p *Person) DoesWantBeMarried(partner *Person, distance coordinate.ComplexDistance) (bool, error) {
+	canBePartners, err := p.CanBePartners(partner)
+	if err != nil {
+		return false, wrapped_error.NewInternalServerError(err, "can not check if can be partners for does_want_be_married method")
+	}
+	if !canBePartners {
+		return false, nil
+	}
+
+	sympathicCoef, err := p.GetSympathicCoef(partner)
+	if err != nil {
+		return false, wrapped_error.NewInternalServerError(err, "can not get sympathic coef for does_want_be_married method")
+	}
+
+	var prob float64
+	coefs := []struct {
+		coef  float64
+		value float64
+	}{
+		{
+			coef:  0.2,
+			value: sympathicCoef,
+		},
+		{
+			coef:  0.6,
+			value: GetMarriageDistanceCoef(distance),
+		},
+		{
+			coef:  0.2,
+			value: p.Metadata.WishGetMarriedCoef,
+		},
+	}
+	for _, coef := range coefs {
+		prob += coef.coef * coef.value
+	}
+
+	want, err := pm.GetRandomBool(prob)
+	if err != nil {
+		return false, wrapped_error.NewInternalServerError(err, "can not get random bool for does_want_be_married method")
+	}
+
+	return want, nil
+}
+
+func (p *Person) TryDie(year int) error {
+	if p == nil {
+		return wrapped_error.NewInternalServerError(nil, "<nil> can not die")
+	}
+
+	doesDie, err := pm.GetRandomBool(p.Metadata.DeathCoef)
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not get random bool for try_die method")
+	}
+	if !doesDie {
+		return nil
+	}
+	if err := p.Die(year); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not die in try_die method")
+	}
+
+	return nil
 }
 
 // Chronology methods

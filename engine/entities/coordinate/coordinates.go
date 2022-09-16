@@ -7,7 +7,14 @@ type Coordinate struct {
 	Y int
 }
 
-func CalcDistance(p1, p2 *Coordinate) int {
+func CalcComplexDistance(p1, p2 *Coordinate, maxValue float64) ComplexDistance {
+	return ComplexDistance{
+		Value:    CalcDistanceValue(p1, p2),
+		MaxValue: maxValue,
+	}
+}
+
+func CalcDistanceValue(p1, p2 *Coordinate) float64 {
 	var (
 		xCalc    = p2.X - p1.X
 		yCalc    = p2.Y - p1.Y
@@ -15,5 +22,5 @@ func CalcDistance(p1, p2 *Coordinate) int {
 		distance = math.Sqrt(sum)
 	)
 
-	return int(math.Round(distance))
+	return distance
 }

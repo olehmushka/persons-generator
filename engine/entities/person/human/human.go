@@ -84,5 +84,5 @@ func (h Human) Bytes() []byte {
 }
 
 func GetSimilarityCoef(h1, h2 *Human) float64 {
-	return 0
+	return 1
 }

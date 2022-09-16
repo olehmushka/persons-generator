@@ -2,11 +2,11 @@ package coordinate
 
 import "testing"
 
-func TestCalcDistance(t *testing.T) {
+func TestCalcDistanceValue(t *testing.T) {
 	tCases := []struct {
 		name             string
 		p1, p2           *Coordinate
-		expectedDistance int
+		expectedDistance float64
 	}{
 		{
 			p1: &Coordinate{
@@ -18,6 +18,28 @@ func TestCalcDistance(t *testing.T) {
 				Y: 0,
 			},
 			expectedDistance: 10,
+		},
+		{
+			p1: &Coordinate{
+				X: 0,
+				Y: 0,
+			},
+			p2: &Coordinate{
+				X: 1,
+				Y: 1,
+			},
+			expectedDistance: 1,
+		},
+		{
+			p1: &Coordinate{
+				X: 0,
+				Y: 0,
+			},
+			p2: &Coordinate{
+				X: 10,
+				Y: 10,
+			},
+			expectedDistance: 15,
 		},
 		{
 			p1: &Coordinate{
@@ -34,9 +56,9 @@ func TestCalcDistance(t *testing.T) {
 
 	for _, tc := range tCases {
 		t.Run(tc.name, func(tt *testing.T) {
-			distance := CalcDistance(tc.p1, tc.p2)
+			distance := CalcDistanceValue(tc.p1, tc.p2)
 			if distance != tc.expectedDistance {
-				t.Logf("expected distance = %d but actual distance = %d", tc.expectedDistance, distance)
+				t.Logf("expected distance = %f but actual distance = %f", tc.expectedDistance, distance)
 				t.Failed()
 			}
 		})
