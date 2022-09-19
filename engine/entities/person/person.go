@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
+	"persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/person/human"
+	"persons_generator/engine/entities/person/human/presets"
 	"persons_generator/engine/entities/person/traits"
 	"persons_generator/engine/entities/religion"
 
@@ -53,6 +55,32 @@ func New(h *human.Human, c *culture.Culture, r *religion.Religion, year int) (*P
 	p.OwnName = ownName
 
 	return p, nil
+}
+
+func NewBase(c *culture.Culture, r *religion.Religion) (*Person, error) {
+	if c == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "person can not be generated without culture inside")
+	}
+	if r == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "person can not be generated without religion inside")
+	}
+
+	sex, err := gender.GetRandomSex()
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate sex for new base person")
+	}
+
+	gene, err := presets.GetPresetByCulture(c)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate gene by culture for new base person")
+	}
+
+	h, err := human.New(sex, gene, nil, nil)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate human from gene for new base person")
+	}
+
+	return New(h, c, r, 0)
 }
 
 func UniquePersons(persons []*Person) []*Person {

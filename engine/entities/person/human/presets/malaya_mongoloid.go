@@ -1,3 +1,12 @@
 package presets
 
-// Mongoloid
+import (
+	bodyPresets "persons_generator/engine/entities/person/body/presets"
+	"persons_generator/engine/entities/person/human"
+	psychoPresets "persons_generator/engine/entities/person/psycho/presets"
+)
+
+var MalayaMongoloidHumanPreset = human.NewGene(
+	bodyPresets.MalayaMongoloidBodyPreset,
+	psychoPresets.MalayaMongoloidPsychoPreset,
+)

@@ -1,3 +1,12 @@
 package presets
 
-// CaucosoidWhite
+import (
+	bodyPresets "persons_generator/engine/entities/person/body/presets"
+	"persons_generator/engine/entities/person/human"
+	psychoPresets "persons_generator/engine/entities/person/psycho/presets"
+)
+
+var NordicAlpineHumanPreset = human.NewGene(
+	bodyPresets.NordicAlpineBodyPreset,
+	psychoPresets.NordicAlpinePsychoPreset,
+)

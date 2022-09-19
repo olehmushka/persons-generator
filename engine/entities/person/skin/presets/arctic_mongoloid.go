@@ -1,3 +1,9 @@
 package presets
 
-// Mongoloid
+import (
+	"persons_generator/engine/entities/person/skin"
+)
+
+var ArcticMongoloidSkinPreset = skin.NewSkinGene(
+	skin.NewSkinColorGene(map[string]float64{}, 1),
+)

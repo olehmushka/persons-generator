@@ -132,6 +132,11 @@ func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
 		return nil, err
 	}
 	c.Root = r
+	acs, err := getAbstractCulture(c.Root, c.Proto)
+	if err != nil {
+		return nil, err
+	}
+	c.Abstuct = acs
 
 	return c, nil
 }
