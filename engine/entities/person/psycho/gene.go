@@ -39,9 +39,14 @@ func (g *PsychoGene) Produce(sex gender.Sex) (gene.Byteble, error) {
 		return Psycho{}, wrapped_error.NewInternalServerError(err, "can not unmarshal temperament produced from gene")
 	}
 
+	so, err := ProduceSexualOrientation()
+	if err != nil {
+		return Psycho{}, err
+	}
+
 	return Psycho{
 		Temperament:       temperamentVal,
-		SexualOrientation: ProduceSexualOrientation(),
+		SexualOrientation: so,
 	}, nil
 }
 

@@ -844,7 +844,7 @@ func CalculateAcceptanceFromReligionMetadata(acceptedBaseCoef, stunnedBaseCoef, 
 		fmt.Printf("\n>>>>>>>>>>\nLabel: %s\naccepted: %f, shunned: %f, criminal: %f\n<<<<<<<<<<<<\n", opts.Label, accepted, shunned, criminal)
 	}
 
-	return getAcceptanceByProbability(accepted, shunned, criminal), nil
+	return getAcceptanceByProbability(accepted, shunned, criminal)
 }
 
 func prepareMetadataValueForUpdate(r *Religion, v float64) (float64, error) {

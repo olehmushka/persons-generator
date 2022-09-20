@@ -1,6 +1,9 @@
 package religion
 
-import pm "persons_generator/engine/probability_machine"
+import (
+	"persons_generator/core/wrapped_error"
+	pm "persons_generator/engine/probability_machine"
+)
 
 type Goodness string
 
@@ -28,10 +31,15 @@ const (
 	Evil    Goodness = "evil"
 )
 
-func getGoodnessByProbability(good, neutral, evil float64) Goodness {
-	return Goodness(pm.GetRandomFromSeveral(map[string]float64{
+func getGoodnessByProbability(good, neutral, evil float64) (Goodness, error) {
+	g, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(Good):    pm.PrepareProbability(good),
 		string(Neutral): pm.PrepareProbability(neutral),
 		string(Evil):    pm.PrepareProbability(evil),
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate goodness")
+	}
+
+	return Goodness(g), nil
 }

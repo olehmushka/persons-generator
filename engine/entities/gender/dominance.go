@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 
+	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/influence"
 	pm "persons_generator/engine/probability_machine"
 )
@@ -18,9 +19,14 @@ func NewDominance() (*Dominance, error) {
 	if err != nil {
 		return nil, err
 	}
+	i, err := generateInfluence()
+	if err != nil {
+		return nil, err
+	}
+
 	return &Dominance{
 		Dominance: d,
-		Influence: generateInfluence(),
+		Influence: i,
 	}, nil
 }
 
@@ -79,8 +85,12 @@ func generateDominance() (GenderDominance, error) {
 	if err != nil {
 		return "", err
 	}
+	gd, err := GetGenderDominanceByProbability(maleDominance, equalityDominance, femaleDominance)
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate gender dominance")
+	}
 
-	return GetGenderDominanceByProbability(maleDominance, equalityDominance, femaleDominance), nil
+	return gd, nil
 }
 
 func (gd GenderDominance) Value() float64 {
@@ -97,7 +107,7 @@ func (gd GenderDominance) Value() float64 {
 	return 0
 }
 
-func generateInfluence() influence.Influence {
+func generateInfluence() (influence.Influence, error) {
 	var (
 		strong   = 0.15
 		moderate = 0.15
@@ -131,12 +141,17 @@ const (
 	FemaleDominance   GenderDominance = "female"
 )
 
-func GetGenderDominanceByProbability(male, equality, female float64) GenderDominance {
-	return GenderDominance(pm.GetRandomFromSeveral(map[string]float64{
+func GetGenderDominanceByProbability(male, equality, female float64) (GenderDominance, error) {
+	gd, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(MaleDominance):     male,
 		string(EqualityDominance): equality,
 		string(FemaleDominance):   female,
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate gender dominance")
+	}
+
+	return GenderDominance(gd), nil
 }
 
 func GetDelta(d1, d2 *Dominance) float64 {

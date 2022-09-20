@@ -52,10 +52,15 @@ func (g *HairDensityGene) Type() string {
 }
 
 func (g *HairDensityGene) Produce(sex gender.Sex) (gene.Byteble, error) {
+	hd, err := pm.GetRandomFromSeveral(g.Stats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate hair density")
+	}
+
 	return tools.Search(
 		AllHairDensities,
 		func(e HairDensity) string { return e.Type },
-		pm.GetRandomFromSeveral(g.Stats),
+		hd,
 	), nil
 }
 

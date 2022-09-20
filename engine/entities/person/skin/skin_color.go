@@ -53,10 +53,15 @@ func (g *SkinColorGene) Type() string {
 }
 
 func (g *SkinColorGene) Produce(sex gender.Sex) (gene.Byteble, error) {
+	p, err := pm.GetRandomFromSeveral(g.Stats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate skin color")
+	}
+
 	palette := tools.Search(
 		color.AllSkinColorPalettes,
 		func(e string) string { return e },
-		pm.GetRandomFromSeveral(g.Stats),
+		p,
 	)
 	out, err := color.GetRandomColorByPaletteNorm(palette, g.MeanIndex)
 	if err != nil {

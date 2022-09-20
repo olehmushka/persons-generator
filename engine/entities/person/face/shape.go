@@ -56,7 +56,12 @@ func (g *FaceShapeGene) Type() string {
 }
 
 func (g *FaceShapeGene) Produce(sex g.Sex) (gene.Byteble, error) {
-	return Shape(pm.GetRandomFromSeveral(g.Stats)), nil
+	sh, err := pm.GetRandomFromSeveral(g.Stats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate face shape")
+	}
+
+	return Shape(sh), nil
 }
 
 func (g *FaceShapeGene) Children() []gene.Gene {

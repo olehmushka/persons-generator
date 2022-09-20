@@ -1,9 +1,14 @@
 package probability_machine
 
-func GetRandomSeveralFromSeveral[T string](values map[T]float64, l int) []T {
+import "persons_generator/core/wrapped_error"
+
+func GetRandomSeveralFromSeveral[T string](values map[T]float64, l int) ([]T, error) {
 	result := make([]T, 0, l)
 	for {
-		val := GetRandomFromSeveral(values)
+		val, err := GetRandomFromSeveral(values)
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can not pick several random from input")
+		}
 		if includes(result, val) {
 			continue
 		}
@@ -13,7 +18,7 @@ func GetRandomSeveralFromSeveral[T string](values map[T]float64, l int) []T {
 		}
 	}
 
-	return result
+	return result, nil
 }
 
 func includes[T string](values []T, v T) bool {

@@ -109,8 +109,16 @@ func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
 
 		storageFolderName: cfg.StorageFolderName,
 	}
-	c.GenderDominance = getGenderDominance(c.Proto)
-	c.MartialCustom = getMartialCustom(c.Proto)
+	gd, err := getGenderDominance(c.Proto)
+	if err != nil {
+		return nil, err
+	}
+	c.GenderDominance = gd
+	mc, err := getMartialCustom(c.Proto)
+	if err != nil {
+		return nil, err
+	}
+	c.MartialCustom = mc
 	l, err := language.New(getLanguageNamesFromProto(c.Proto))
 	if err != nil {
 		return nil, err
@@ -121,7 +129,11 @@ func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
 		return nil, err
 	}
 	c.Name = name
-	c.Ethos = getRandomEthosFromCultures(c.Proto)
+	e, err := getRandomEthosFromCultures(c.Proto)
+	if err != nil {
+		return nil, err
+	}
+	c.Ethos = e
 	t, err := getTraditions(c.Proto)
 	if err != nil {
 		return nil, err

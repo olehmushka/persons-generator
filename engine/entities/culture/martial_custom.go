@@ -13,7 +13,7 @@ func (c *Culture) PrintMartialCustom() {
 	fmt.Printf("MartialCustom: %s (culture_name: %s)\n", c.MartialCustom, c.Name)
 }
 
-func getMartialCustom(proto []*Culture) g.Acceptance {
+func getMartialCustom(proto []*Culture) (g.Acceptance, error) {
 	var (
 		onlyMen     float64
 		menAndWomen float64

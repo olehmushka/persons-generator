@@ -63,7 +63,11 @@ func (g *EyesTypeGene) Type() string {
 }
 
 func (g *EyesTypeGene) Produce(sex g.Sex) (gene.Byteble, error) {
-	return EyesType(pm.GetRandomFromSeveral(g.Stats)), nil
+	et, err := pm.GetRandomFromSeveral(g.Stats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate eyes type")
+	}
+	return EyesType(et), nil
 }
 
 func (g *EyesTypeGene) Children() []gene.Gene {

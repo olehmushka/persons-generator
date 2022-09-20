@@ -1,6 +1,10 @@
 package gender
 
-import pm "persons_generator/engine/probability_machine"
+import (
+	"fmt"
+	"persons_generator/core/wrapped_error"
+	pm "persons_generator/engine/probability_machine"
+)
 
 type Acceptance string
 
@@ -14,10 +18,15 @@ const (
 	OnlyWomen   Acceptance = "only_women"
 )
 
-func GetAcceptanceByProbability(onlyMen, menAndWomen, onlyWomen float64) Acceptance {
-	return Acceptance(pm.GetRandomFromSeveral(map[string]float64{
+func GetAcceptanceByProbability(onlyMen, menAndWomen, onlyWomen float64) (Acceptance, error) {
+	out, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(OnlyMen):     pm.PrepareProbability(onlyMen),
 		string(MenAndWomen): pm.PrepareProbability(menAndWomen),
 		string(OnlyWomen):   pm.PrepareProbability(onlyWomen),
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not generate acceptance (only_men=%f, men_and_woman=%f, only_women=%f)", onlyMen, menAndWomen, onlyWomen))
+	}
+
+	return Acceptance(out), nil
 }

@@ -1,10 +1,13 @@
 package probability_machine
 
-import "fmt"
+import (
+	"persons_generator/core/wrapped_error"
+)
 
-func GetRandomFromSeveral[T string](values map[T]float64) T {
+func GetRandomFromSeveral[T string](values map[T]float64) (T, error) {
+	var zero T
 	if len(values) == 0 {
-		fmt.Printf("[GetRandomFromSeveral] Values count is zero!!!\n\n\n")
+		return zero, wrapped_error.NewInternalServerError(nil, "[GetRandomFromSeveral] Values count is zero")
 	}
 
 	var (
@@ -20,10 +23,10 @@ func GetRandomFromSeveral[T string](values map[T]float64) T {
 		}
 	}
 	if valuesWithZeroCount == len(values) {
-		fmt.Printf("[GetRandomFromSeveral] All values are zero!!!\n\n\n")
+		return zero, wrapped_error.NewInternalServerError(nil, "[GetRandomFromSeveral] All values are zero")
 	}
 	if valuesWith1Count > 1 {
-		fmt.Printf("[GetRandomFromSeveral] Several values are 1!!!\n\n\n")
+		return zero, wrapped_error.NewInternalServerError(nil, "[GetRandomFromSeveral] Several values are 1")
 	}
 
 	preparedValues := cloneStringProbabilityMap(values)
@@ -50,7 +53,7 @@ func GetRandomFromSeveral[T string](values map[T]float64) T {
 
 		if len(tempValues) == 1 {
 			for value := range tempValues {
-				return value
+				return value, nil
 			}
 		}
 	}

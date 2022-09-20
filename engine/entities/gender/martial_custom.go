@@ -1,6 +1,9 @@
 package gender
 
-import pm "persons_generator/engine/probability_machine"
+import (
+	"persons_generator/core/wrapped_error"
+	pm "persons_generator/engine/probability_machine"
+)
 
 func GetMartialCustom(baseCoef float64, dom *Dominance) (Acceptance, error) {
 	men, err := pm.RandFloat64InRange(0.25, 0.5)
@@ -36,6 +39,10 @@ func GetMartialCustom(baseCoef float64, dom *Dominance) (Acceptance, error) {
 		}
 		women += baseCoef * randCoef * dom.GetCoef()
 	}
+	acceptance, err := GetAcceptanceByProbability(baseCoef*men, baseCoef*menAndWomen, baseCoef*women)
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate martial custom")
+	}
 
-	return GetAcceptanceByProbability(baseCoef*men, baseCoef*menAndWomen, baseCoef*women), nil
+	return acceptance, nil
 }

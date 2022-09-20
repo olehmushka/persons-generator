@@ -50,7 +50,12 @@ func (g *MouthGene) Type() string {
 }
 
 func (g *MouthGene) Produce(sex g.Sex) (gene.Byteble, error) {
-	return Mouth{LipsType: LipsType(pm.GetRandomFromSeveral(g.LipsTypeStats))}, nil
+	lt, err := pm.GetRandomFromSeveral(g.LipsTypeStats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate lips type")
+	}
+
+	return Mouth{LipsType: LipsType(lt)}, nil
 }
 
 func (g *MouthGene) Children() []gene.Gene {

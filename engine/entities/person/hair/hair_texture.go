@@ -52,10 +52,15 @@ func (g *HairTextureGene) Type() string {
 }
 
 func (g *HairTextureGene) Produce(sex gender.Sex) (gene.Byteble, error) {
+	ht, err := pm.GetRandomFromSeveral(g.Stats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate hair texture")
+	}
+
 	return tools.Search(
 		AllHairTextures,
 		func(e HairTexture) string { return e.Type },
-		pm.GetRandomFromSeveral(g.Stats),
+		ht,
 	), nil
 }
 

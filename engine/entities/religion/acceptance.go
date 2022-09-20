@@ -1,6 +1,9 @@
 package religion
 
-import pm "persons_generator/engine/probability_machine"
+import (
+	"persons_generator/core/wrapped_error"
+	pm "persons_generator/engine/probability_machine"
+)
 
 type Acceptance string
 
@@ -40,10 +43,15 @@ func (a Acceptance) Value() float64 {
 	return 0
 }
 
-func getAcceptanceByProbability(accepted, shunned, criminal float64) Acceptance {
-	return Acceptance(pm.GetRandomFromSeveral(map[string]float64{
+func getAcceptanceByProbability(accepted, shunned, criminal float64) (Acceptance, error) {
+	acceptance, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(Accepted): pm.PrepareProbability(accepted),
 		string(Shunned):  pm.PrepareProbability(shunned),
 		string(Criminal): pm.PrepareProbability(criminal),
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generace acceptance for religion")
+	}
+
+	return Acceptance(acceptance), nil
 }

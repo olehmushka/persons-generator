@@ -11,5 +11,10 @@ func TestGetRandomFromSeveral(t *testing.T) {
 		"five":  0.1,
 		"six":   1,
 	}
-	t.Logf("map: %+v | chosen: %s\n", m1, GetRandomFromSeveral(m1))
+	result, err := GetRandomFromSeveral(m1)
+	if err != nil {
+		t.Fatalf("unexpected error = %+v", err)
+		return
+	}
+	t.Logf("map: %+v | chosen: %s\n", m1, result)
 }

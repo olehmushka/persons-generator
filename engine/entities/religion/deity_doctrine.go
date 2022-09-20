@@ -145,7 +145,7 @@ func (dn *DeityNature) getGoodnessByReligionMetadata() (Goodness, error) {
 		}
 	}
 
-	return getGoodnessByProbability(good, neutral, evil), nil
+	return getGoodnessByProbability(good, neutral, evil)
 }
 
 func (dn *DeityNature) getGoodnessLevelByReligionMetadata() (Level, error) {
@@ -181,7 +181,7 @@ func (dn *DeityNature) getGoodnessLevelByReligionMetadata() (Level, error) {
 		minor += p * rmCoef
 	}
 
-	return getLevelByProbability(major, middle, minor), nil
+	return getLevelByProbability(major, middle, minor)
 }
 
 func (dd *DeityNature) getAllDeityNatureTraits() []*trait {

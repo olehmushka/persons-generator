@@ -131,7 +131,7 @@ func (hn *HumanNature) getGoodnessByReligionMetadata() (Goodness, error) {
 		}
 	}
 
-	return getGoodnessByProbability(good, neutral, evil), nil
+	return getGoodnessByProbability(good, neutral, evil)
 }
 
 func (hn *HumanNature) getGoodnessLevelByReligionMetadata() (Level, error) {
@@ -159,7 +159,7 @@ func (hn *HumanNature) getGoodnessLevelByReligionMetadata() (Level, error) {
 		minor += minorP * rmCoef
 	}
 
-	return getLevelByProbability(major, middle, minor), nil
+	return getLevelByProbability(major, middle, minor)
 }
 
 func (hn *HumanNature) getAllHumanNatureTraits() []*trait {

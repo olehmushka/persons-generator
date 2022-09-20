@@ -28,8 +28,13 @@ func (g *TemperamentGene) Type() string {
 }
 
 func (g *TemperamentGene) Produce(sex gender.Sex) (gene.Byteble, error) {
+	t, err := pm.GetRandomFromSeveral(g.Stats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate temperament")
+	}
+
 	return Temperament{
-		Name: tools.Search(AllTemperamentTypes, func(e string) string { return e }, pm.GetRandomFromSeveral(g.Stats)),
+		Name: tools.Search(AllTemperamentTypes, func(e string) string { return e }, t),
 	}, nil
 }
 

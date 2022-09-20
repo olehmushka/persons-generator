@@ -52,10 +52,14 @@ func (g *EyesColorGene) Type() string {
 }
 
 func (g *EyesColorGene) Produce(sex g.Sex) (gene.Byteble, error) {
+	cp, err := pm.GetRandomFromSeveral(g.Stats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate eyes color")
+	}
 	palette := tools.Search(
 		color.AllEyesColorPalettes,
 		func(e string) string { return e },
-		pm.GetRandomFromSeveral(g.Stats),
+		cp,
 	)
 	colors := color.GetEyesColorsByPalette(palette)
 	if len(colors) == 0 {

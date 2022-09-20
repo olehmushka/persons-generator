@@ -16,8 +16,8 @@ func TestNew(t *testing.T) {
 		return
 	}
 	h, err := New(sex, NewGene(
-		bodyPresets.SlavicBodyPreset,
-		psychoPresets.SlavicPsychoPreset,
+		bodyPresets.NordicBodyPreset,
+		psychoPresets.NordicPsychoPreset,
 	), nil, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -33,8 +33,8 @@ func TestNew(t *testing.T) {
 
 func TestProduceChildren(t *testing.T) {
 	father, err := New(gender.MaleSex, NewGene(
-		bodyPresets.SlavicBodyPreset,
-		psychoPresets.SlavicPsychoPreset,
+		bodyPresets.NordicBodyPreset,
+		psychoPresets.NordicPsychoPreset,
 	), nil, nil)
 	if err != nil {
 		t.Errorf("can not create father (err=%+v)", err)
@@ -42,8 +42,8 @@ func TestProduceChildren(t *testing.T) {
 	}
 	father.IncreaseAge(18)
 	mother, err := New(gender.FemaleSex, NewGene(
-		bodyPresets.SlavicBodyPreset,
-		psychoPresets.SlavicPsychoPreset,
+		bodyPresets.NordicBodyPreset,
+		psychoPresets.NordicPsychoPreset,
 	), nil, nil)
 	if err != nil {
 		t.Errorf("can not create mother (err=%+v)", err)

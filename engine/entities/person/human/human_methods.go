@@ -92,7 +92,10 @@ func (h *Human) ProduceChildren(partner *Human) ([]*Human, error) {
 	if !isPregnant {
 		return nil, nil
 	}
-	childrenMultipleBirthName := pm.GetRandomFromSeveral(childrenMultipleBirth)
+	childrenMultipleBirthName, err := pm.GetRandomFromSeveral(childrenMultipleBirth)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate children multiple birth")
+	}
 	count, ok := childrenMultipleBirthSet[childrenMultipleBirthName]
 	if !ok {
 		return nil, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not get children count of one pregnance (name=%s)", childrenMultipleBirthName))

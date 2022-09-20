@@ -68,7 +68,11 @@ func New(cfg Config, c *culture.Culture) (*Religion, error) {
 		return nil, err
 	}
 	r.Name = name
-	r.Type = NewType(r)
+	t, err := NewType(r)
+	if err != nil {
+		return nil, err
+	}
+	r.Type = t
 	r.GenderDominance = c.GenderDominance
 	metadata, err := r.generateMetadata()
 	if err != nil {

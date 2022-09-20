@@ -1,6 +1,9 @@
 package psycho
 
-import pm "persons_generator/engine/probability_machine"
+import (
+	"persons_generator/core/wrapped_error"
+	pm "persons_generator/engine/probability_machine"
+)
 
 type SexualOrientation string
 
@@ -20,18 +23,22 @@ func (so SexualOrientation) IsAsexual() bool {
 	return so == Asexual
 }
 
-func ProduceSexualOrientation() SexualOrientation {
+func ProduceSexualOrientation() (SexualOrientation, error) {
 	var (
 		heterosexual = 0.95
 		homosexual   = 0.01
 		bisexual     = 0.01
 		asexual      = 0.01
 	)
-
-	return SexualOrientation(pm.GetRandomFromSeveral(map[string]float64{
+	so, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(Heterosexual): pm.PrepareProbability(heterosexual),
 		string(Homosexual):   pm.PrepareProbability(homosexual),
 		string(Bisexual):     pm.PrepareProbability(bisexual),
 		string(Asexual):      pm.PrepareProbability(asexual),
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate sexual orientation")
+	}
+
+	return SexualOrientation(so), nil
 }

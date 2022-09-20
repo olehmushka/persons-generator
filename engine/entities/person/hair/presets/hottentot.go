@@ -8,7 +8,7 @@ import (
 var HottentotHairPreset = hair.NewHairGene(
 	hair.NewScalpHairGene(
 		hair.NewHairTextureGene(map[string]float64{
-			string(hair.BlackHairTexture.Type):    0,
+			string(hair.BlackHairTexture.Type):    1,
 			string(hair.CurlyHairTexture.Type):    0,
 			string(hair.FineHairTexture.Type):     0,
 			string(hair.StraightHairTexture.Type): 0,
@@ -18,17 +18,17 @@ var HottentotHairPreset = hair.NewHairGene(
 		}),
 		hair.NewHairDensityGene(
 			map[string]float64{
-				hair.LowHairDensity.Type:    0,
-				hair.MediumHairDensity.Type: 0,
-				hair.HighHairDensity.Type:   0,
+				hair.LowHairDensity.Type:    0.3,
+				hair.MediumHairDensity.Type: 0.3,
+				hair.HighHairDensity.Type:   0.2,
 			},
 		),
 	),
 	hair.NewFaceHairGene(
 		hair.NewHairDensityGene(
 			map[string]float64{
-				hair.LowHairDensity.Type:    0,
-				hair.MediumHairDensity.Type: 0,
+				hair.LowHairDensity.Type:    0.8,
+				hair.MediumHairDensity.Type: 0.1,
 				hair.HighHairDensity.Type:   0,
 			},
 		),
@@ -36,8 +36,8 @@ var HottentotHairPreset = hair.NewHairGene(
 	hair.NewAxillaryHairGene(
 		hair.NewHairDensityGene(
 			map[string]float64{
-				hair.LowHairDensity.Type:    0,
-				hair.MediumHairDensity.Type: 0,
+				hair.LowHairDensity.Type:    0.8,
+				hair.MediumHairDensity.Type: 0.1,
 				hair.HighHairDensity.Type:   0,
 			},
 		),
@@ -45,8 +45,8 @@ var HottentotHairPreset = hair.NewHairGene(
 	hair.NewChestAndAbdomenHairGene(
 		hair.NewHairDensityGene(
 			map[string]float64{
-				hair.LowHairDensity.Type:    0,
-				hair.MediumHairDensity.Type: 0,
+				hair.LowHairDensity.Type:    0.8,
+				hair.MediumHairDensity.Type: 0.1,
 				hair.HighHairDensity.Type:   0,
 			},
 		),
@@ -54,8 +54,8 @@ var HottentotHairPreset = hair.NewHairGene(
 	hair.NewArmsHairGene(
 		hair.NewHairDensityGene(
 			map[string]float64{
-				hair.LowHairDensity.Type:    0,
-				hair.MediumHairDensity.Type: 0,
+				hair.LowHairDensity.Type:    0.8,
+				hair.MediumHairDensity.Type: 0.1,
 				hair.HighHairDensity.Type:   0,
 			},
 		),
@@ -63,8 +63,8 @@ var HottentotHairPreset = hair.NewHairGene(
 	hair.NewPubicHairGene(
 		hair.NewHairDensityGene(
 			map[string]float64{
-				hair.LowHairDensity.Type:    0,
-				hair.MediumHairDensity.Type: 0,
+				hair.LowHairDensity.Type:    0.8,
+				hair.MediumHairDensity.Type: 0.1,
 				hair.HighHairDensity.Type:   0,
 			},
 		),
@@ -72,8 +72,8 @@ var HottentotHairPreset = hair.NewHairGene(
 	hair.NewLegsHairGene(
 		hair.NewHairDensityGene(
 			map[string]float64{
-				hair.LowHairDensity.Type:    0,
-				hair.MediumHairDensity.Type: 0,
+				hair.LowHairDensity.Type:    0.8,
+				hair.MediumHairDensity.Type: 0.1,
 				hair.HighHairDensity.Type:   0,
 			},
 		),
@@ -81,14 +81,14 @@ var HottentotHairPreset = hair.NewHairGene(
 	hair.NewFeetHairGene(
 		hair.NewHairDensityGene(
 			map[string]float64{
-				hair.LowHairDensity.Type:    0,
-				hair.MediumHairDensity.Type: 0,
+				hair.LowHairDensity.Type:    0.8,
+				hair.MediumHairDensity.Type: 0.1,
 				hair.HighHairDensity.Type:   0,
 			},
 		),
 	),
 	hair.NewHairColorGene(map[string]float64{
-		color.BlackHairColorPalette:            0,
+		color.BlackHairColorPalette:            1,
 		color.MediumBrownHairColorPalette:      0,
 		color.LightBrownHairColorPalette:       0,
 		color.BlondeHairColorPalette:           0,

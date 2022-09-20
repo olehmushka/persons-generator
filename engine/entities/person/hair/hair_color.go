@@ -51,11 +51,12 @@ func (g *HairColorGene) Type() string {
 }
 
 func (g *HairColorGene) Produce(sex g.Sex) (gene.Byteble, error) {
-	palette := tools.Search(
-		color.AllHairColorPalettes,
-		func(e string) string { return e },
-		pm.GetRandomFromSeveral(g.Stats),
-	)
+	p, err := pm.GetRandomFromSeveral(g.Stats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate hair color palette")
+	}
+
+	palette := tools.Search(color.AllHairColorPalettes, func(e string) string { return e }, p)
 	colors := color.GetHairColorsByPalette(palette)
 	if len(colors) == 0 {
 		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not get hair_colors by palette (palette=%s)", palette))

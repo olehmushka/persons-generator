@@ -3,6 +3,7 @@ package culture
 import (
 	"fmt"
 
+	"persons_generator/core/wrapped_error"
 	pm "persons_generator/engine/probability_machine"
 )
 
@@ -27,7 +28,7 @@ func (e *Ethos) Print() {
 	fmt.Printf("Ethos: %s\n", e.Name)
 }
 
-func getRandomEthosFromCultures(proto []*Culture) *Ethos {
+func getRandomEthosFromCultures(proto []*Culture) (*Ethos, error) {
 	ethoses := UniqueEthoses(ExtractEthoses(proto))
 	m := make(map[string]int)
 	for _, c := range proto {
@@ -43,14 +44,17 @@ func getRandomEthosFromCultures(proto []*Culture) *Ethos {
 		mWithProb[name] = float64(amount) / float64(len(proto))
 	}
 
-	chosenEthos := pm.GetRandomFromSeveral(mWithProb)
+	chosenEthos, err := pm.GetRandomFromSeveral(mWithProb)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate ethos")
+	}
 	for _, e := range ethoses {
 		if e.Name == chosenEthos {
-			return e
+			return e, nil
 		}
 	}
 
-	return nil
+	return nil, nil
 }
 
 func ExtractEthoses(cultures []*Culture) []*Ethos {

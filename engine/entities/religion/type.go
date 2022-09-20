@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/core/wrapped_error"
 	pm "persons_generator/engine/probability_machine"
 )
 
@@ -13,12 +14,20 @@ type Type struct {
 	Subtype SubtypeName `json:"subtype"`
 }
 
-func NewType(r *Religion) *Type {
+func NewType(r *Religion) (*Type, error) {
 	t := &Type{religion: r}
-	t.Type = t.GenerateTypeName()
-	t.Subtype = t.GenerateSubtypeName()
+	tp, err := t.GenerateTypeName()
+	if err != nil {
+		return nil, err
+	}
+	t.Type = tp
+	st, err := t.GenerateSubtypeName()
+	if err != nil {
+		return nil, err
+	}
+	t.Subtype = st
 
-	return t
+	return t, nil
 }
 
 func (t *Type) Print() {
@@ -63,7 +72,7 @@ const (
 	AtheismType      TypeName = "atheism"
 )
 
-func (t *Type) GenerateTypeName() TypeName {
+func (t *Type) GenerateTypeName() (TypeName, error) {
 	var (
 		monotheism   = 0.55
 		polytheism   = 0.61
@@ -71,14 +80,18 @@ func (t *Type) GenerateTypeName() TypeName {
 		deism        = 0.35
 		atheism      = 0.05
 	)
-
-	return TypeName(pm.GetRandomFromSeveral(map[string]float64{
+	tp, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(MonotheismType):   pm.PrepareProbability(monotheism),
 		string(PolytheismType):   pm.PrepareProbability(polytheism),
 		string(DeityDualismType): pm.PrepareProbability(deityDualism),
 		string(DeismType):        pm.PrepareProbability(deism),
 		string(AtheismType):      pm.PrepareProbability(atheism),
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate religion type")
+	}
+
+	return TypeName(tp), nil
 }
 
 type SubtypeName string
@@ -94,14 +107,14 @@ const (
 	OmnismPolytheismSubtype    SubtypeName = "omnism"
 )
 
-func (t *Type) GenerateSubtypeName() SubtypeName {
+func (t *Type) GenerateSubtypeName() (SubtypeName, error) {
 	if t.Type == "" {
 		t.GenerateTypeName()
 	}
 
 	for _, tn := range []TypeName{MonotheismType, DeityDualismType, DeismType, AtheismType} {
 		if tn == t.Type {
-			return ""
+			return "", nil
 		}
 	}
 
@@ -118,7 +131,12 @@ func (t *Type) GenerateSubtypeName() SubtypeName {
 		string(MonolatryPolytheismSubtype): pm.PrepareProbability(monolatry),
 		string(OmnismPolytheismSubtype):    pm.PrepareProbability(omnism),
 	}
-	return SubtypeName(pm.GetRandomFromSeveral(m))
+	st, err := pm.GetRandomFromSeveral(m)
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate religion subtype")
+	}
+
+	return SubtypeName(st), nil
 }
 
 func (t *Type) IsClassicPolytheism() bool {

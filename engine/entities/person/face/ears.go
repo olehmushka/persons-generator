@@ -50,7 +50,12 @@ func (g *EarsGene) Type() string {
 }
 
 func (g *EarsGene) Produce(sex g.Sex) (gene.Byteble, error) {
-	return Ears{Type: EarsType(pm.GetRandomFromSeveral(g.EarsTypeStats))}, nil
+	et, err := pm.GetRandomFromSeveral(g.EarsTypeStats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate ears type")
+	}
+
+	return Ears{Type: EarsType(et)}, nil
 }
 
 func (g *EarsGene) Children() []gene.Gene {

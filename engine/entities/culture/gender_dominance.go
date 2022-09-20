@@ -5,7 +5,7 @@ import (
 	"persons_generator/engine/entities/influence"
 )
 
-func getGenderDominance(proto []*Culture) *g.Dominance {
+func getGenderDominance(proto []*Culture) (*g.Dominance, error) {
 	var isMatriarchal bool
 	for _, c := range proto {
 		if c == nil || len(c.Traditions) == 0 {
@@ -62,14 +62,20 @@ func getGenderDominance(proto []*Culture) *g.Dominance {
 	)
 
 	if isMatriarchal {
-		return g.NewDominanceWithParams(
-			g.FemaleDominance,
-			influence.GetInfluenceByProbability(strongInfluenceProb, moderateInfluenceProb, weakInfluenceProb),
-		)
+		i, err := influence.GetInfluenceByProbability(strongInfluenceProb, moderateInfluenceProb, weakInfluenceProb)
+		if err != nil {
+			return nil, err
+		}
+		return g.NewDominanceWithParams(g.FemaleDominance, i), nil
+	}
+	dominance, err := g.GetGenderDominanceByProbability(maleDominanceProb, equalDominanceProb, femaleDominanceProb)
+	if err != nil {
+		return nil, err
+	}
+	i, err := influence.GetInfluenceByProbability(strongInfluenceProb, moderateInfluenceProb, weakInfluenceProb)
+	if err != nil {
+		return nil, err
 	}
 
-	return g.NewDominanceWithParams(
-		g.GetGenderDominanceByProbability(maleDominanceProb, equalDominanceProb, femaleDominanceProb),
-		influence.GetInfluenceByProbability(strongInfluenceProb, moderateInfluenceProb, weakInfluenceProb),
-	)
+	return g.NewDominanceWithParams(dominance, i), nil
 }

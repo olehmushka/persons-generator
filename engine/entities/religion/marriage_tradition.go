@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/gender"
 	pm "persons_generator/engine/probability_machine"
@@ -139,12 +140,16 @@ func (mt *MarriageTradition) generateKind(c *culture.Culture) (MarriageKind, err
 		}
 		polygamy += polygamyP
 	}
-
-	return MarriageKind(pm.GetRandomFromSeveral(map[string]float64{
+	mk, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(Monogamy):              pm.PrepareProbability(monogamy),
 		string(ConsortsAndConcubines): pm.PrepareProbability(consortsAndConcubines),
 		string(Polygamy):              pm.PrepareProbability(polygamy),
-	})), nil
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate marriage kind")
+	}
+
+	return MarriageKind(mk), nil
 }
 
 func getMarriageKindByCulture(c *culture.Culture) MarriageKind {
@@ -257,11 +262,16 @@ func (mt *MarriageTradition) generateBastardry() (Bastardry, error) {
 		legitimization += legitimizationP
 	}
 
-	return Bastardry(pm.GetRandomFromSeveral(map[string]float64{
+	b, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(NoBastards):       pm.PrepareProbability(noBastards),
 		string(Legitimization):   pm.PrepareProbability(legitimization),
 		string(NoLegitimization): pm.PrepareProbability(noLegitimization),
-	})), nil
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not gennerate bastardy")
+	}
+
+	return Bastardry(b), nil
 }
 
 type Consanguinity string
@@ -394,13 +404,17 @@ func (mt *MarriageTradition) generateConsanguinity() (Consanguinity, error) {
 		}
 		unrestrictedMarriage += unrestrictedMarriageP
 	}
-
-	return Consanguinity(pm.GetRandomFromSeveral(map[string]float64{
+	c, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(CloseKinTaboo):        pm.PrepareProbability(closeKinTaboo),
 		string(CousinMarriage):       pm.PrepareProbability(cousinMarriage),
 		string(AvunculateMarriage):   pm.PrepareProbability(avunculateMarriage),
 		string(UnrestrictedMarriage): pm.PrepareProbability(unrestrictedMarriage),
-	})), nil
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate consanguinity")
+	}
+
+	return Consanguinity(c), nil
 }
 
 func (mt *MarriageTradition) generateDivorce() (Permission, error) {
@@ -504,7 +518,7 @@ func (mt *MarriageTradition) generateDivorce() (Permission, error) {
 		alwaysAllowed += alwaysAllowedP
 	}
 
-	return getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed), nil
+	return getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed)
 }
 
 func (mt *MarriageTradition) GetAcceptedNumberSpounces(sex gender.Sex) int {

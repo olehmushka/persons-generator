@@ -50,7 +50,12 @@ func (g *NoseGene) Type() string {
 }
 
 func (g *NoseGene) Produce(sex g.Sex) (gene.Byteble, error) {
-	return Nose{Type: NoseType(pm.GetRandomFromSeveral(g.NoseTypeStats))}, nil
+	nt, err := pm.GetRandomFromSeveral(g.NoseTypeStats)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not generate nose type")
+	}
+
+	return Nose{Type: NoseType(nt)}, nil
 }
 
 func (g *NoseGene) Children() []gene.Gene {

@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/core/wrapped_error"
 	pm "persons_generator/engine/probability_machine"
 )
 
@@ -175,7 +176,7 @@ func (al *Afterlife) generateForTopBelieversAfterlife(alp *AfterlifeParticipants
 		return "", err
 	}
 
-	return getAfterlifeOptionByProbability(good, depends, bad), nil
+	return getAfterlifeOptionByProbability(good, depends, bad)
 }
 
 func (al *Afterlife) generateForBelieversAfterlife(alp *AfterlifeParticipants) (AfterlifeOption, error) {
@@ -200,7 +201,7 @@ func (al *Afterlife) generateForBelieversAfterlife(alp *AfterlifeParticipants) (
 		depends = 0
 	}
 
-	return getAfterlifeOptionByProbability(good, depends, bad), nil
+	return getAfterlifeOptionByProbability(good, depends, bad)
 }
 
 func (al *Afterlife) generateForUntrueBelieversAfterlife(alp *AfterlifeParticipants) (AfterlifeOption, error) {
@@ -240,7 +241,7 @@ func (al *Afterlife) generateForUntrueBelieversAfterlife(alp *AfterlifeParticipa
 		depends = 0
 	}
 
-	return getAfterlifeOptionByProbability(good, depends, bad), nil
+	return getAfterlifeOptionByProbability(good, depends, bad)
 }
 
 func (al *Afterlife) generateForAtheistsAfterlife(alp *AfterlifeParticipants) (AfterlifeOption, error) {
@@ -277,7 +278,7 @@ func (al *Afterlife) generateForAtheistsAfterlife(alp *AfterlifeParticipants) (A
 		depends = 0
 	}
 
-	return getAfterlifeOptionByProbability(good, depends, bad), nil
+	return getAfterlifeOptionByProbability(good, depends, bad)
 }
 
 func (al *Afterlife) updateAfterlife(isExists bool) {
@@ -305,12 +306,16 @@ const (
 	BadAfterlife     AfterlifeOption = "bad"
 )
 
-func getAfterlifeOptionByProbability(good, depends, bad float64) AfterlifeOption {
-	return AfterlifeOption(pm.GetRandomFromSeveral(map[string]float64{
+func getAfterlifeOptionByProbability(good, depends, bad float64) (AfterlifeOption, error) {
+	ao, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(GoodAfterlife):    pm.PrepareProbability(good),
 		string(DependsAfterlife): pm.PrepareProbability(depends),
 		string(BadAfterlife):     pm.PrepareProbability(bad),
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate afterlife option")
+	}
+	return AfterlifeOption(ao), nil
 }
 
 func (o AfterlifeOption) GetScore() int {

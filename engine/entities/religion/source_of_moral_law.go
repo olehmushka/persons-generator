@@ -3,6 +3,7 @@ package religion
 import (
 	"fmt"
 
+	"persons_generator/core/wrapped_error"
 	pm "persons_generator/engine/probability_machine"
 )
 
@@ -97,18 +98,23 @@ func (d *Doctrine) generateSourceOfMoralLaw() (SourceOfMoralLaw, error) {
 		human += humanP * d.Human.Nature.Goodness.Level.GetCoef()
 	}
 
-	return getSourceOfMoralLawByProbability(deity, none, human, nature), nil
+	return getSourceOfMoralLawByProbability(deity, none, human, nature)
 }
 
 func (soml SourceOfMoralLaw) Print() {
 	fmt.Printf("Source of moral law is %s\n", soml)
 }
 
-func getSourceOfMoralLawByProbability(deity, none, human, nature float64) SourceOfMoralLaw {
-	return SourceOfMoralLaw(pm.GetRandomFromSeveral(map[string]float64{
+func getSourceOfMoralLawByProbability(deity, none, human, nature float64) (SourceOfMoralLaw, error) {
+	soml, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(DeitySourceOfMoralLaw):  pm.PrepareProbability(deity),
 		string(NoneSourceOfMoralLaw):   pm.PrepareProbability(none),
 		string(HumanSourceOfMoralLaw):  pm.PrepareProbability(human),
 		string(NatureSourceOfMoralLaw): pm.PrepareProbability(nature),
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate source of moral law")
+	}
+
+	return SourceOfMoralLaw(soml), nil
 }

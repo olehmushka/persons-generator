@@ -1,6 +1,9 @@
 package religion
 
-import pm "persons_generator/engine/probability_machine"
+import (
+	"persons_generator/core/wrapped_error"
+	pm "persons_generator/engine/probability_machine"
+)
 
 type Permission string
 
@@ -14,12 +17,17 @@ func (p Permission) String() string {
 	return string(p)
 }
 
-func getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed float64) Permission {
-	return Permission(pm.GetRandomFromSeveral(map[string]float64{
+func getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed float64) (Permission, error) {
+	p, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(AlwaysAllowed):  pm.PrepareProbability(alwaysAllowed),
 		string(MustBeApproved): pm.PrepareProbability(mustBeApproved),
 		string(Disallowed):     pm.PrepareProbability(disallowed),
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate religion permission")
+	}
+
+	return Permission(p), nil
 }
 
 func (p Permission) IsAlwaysAllowed() bool {

@@ -163,7 +163,11 @@ func (cs *Clerics) generateLimitations() (*ClericsLimitations, error) {
 	if err != nil {
 		return nil, err
 	}
-	cls.Marriage = getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed)
+	m, err := getPermissionByProbability(alwaysAllowed, mustBeApproved, disallowed)
+	if err != nil {
+		return nil, err
+	}
+	cls.Marriage = m
 
 	return cls, nil
 }

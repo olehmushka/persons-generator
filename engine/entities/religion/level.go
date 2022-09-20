@@ -1,6 +1,9 @@
 package religion
 
-import pm "persons_generator/engine/probability_machine"
+import (
+	"persons_generator/core/wrapped_error"
+	pm "persons_generator/engine/probability_machine"
+)
 
 type Level string
 
@@ -10,12 +13,16 @@ const (
 	Minor  Level = "minor"
 )
 
-func getLevelByProbability(major, middle, minor float64) Level {
-	return Level(pm.GetRandomFromSeveral(map[string]float64{
+func getLevelByProbability(major, middle, minor float64) (Level, error) {
+	l, err := pm.GetRandomFromSeveral(map[string]float64{
 		string(Major):  pm.PrepareProbability(major),
 		string(Middle): pm.PrepareProbability(middle),
 		string(Minor):  pm.PrepareProbability(minor),
-	}))
+	})
+	if err != nil {
+		return "", wrapped_error.NewInternalServerError(err, "can not generate level")
+	}
+	return Level(l), nil
 }
 
 func (l Level) GetCoef() float64 {
