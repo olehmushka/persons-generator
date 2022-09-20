@@ -127,11 +127,48 @@ func (p *Person) IncreaseAge(year int) error {
 	if p == nil {
 		return wrapped_error.NewInternalServerError(nil, "<nil> can not increase age")
 	}
+
 	age := p.Human.IncrementAge()
 	p.Metadata.WishGetMarriedCoef = GetWishGetMarriedCoef(p.Human.Sex, age)
 	p.Metadata.DeathCoef = GetDeathCoef(age)
 
 	return nil
+}
+
+func (p *Person) TryDie(year int) error {
+	if p == nil {
+		return wrapped_error.NewInternalServerError(nil, "<nil> can not die")
+	}
+
+	doesDie, err := pm.GetRandomBool(p.Metadata.DeathCoef)
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not get random bool for try_die method")
+	}
+	if !doesDie {
+		return nil
+	}
+	if err := p.Die(year); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not die in try_die method")
+	}
+
+	return nil
+}
+
+func (p *Person) GiveBirth(year int) ([]*Person, error) {
+	if p == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "<nil> can not give born")
+	}
+
+	children := make([]*Person, 0, 2)
+	for _, h := range p.Human.GiveBirth() {
+		child, err := New(h, p.Culture, p.Religion, year)
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can not give birth child")
+		}
+		children = append(children, child)
+	}
+
+	return children, nil
 }
 
 // Checker methods
@@ -289,23 +326,12 @@ func (p *Person) DoesWantBeMarried(partner *Person, distance coordinate.ComplexD
 	return want, nil
 }
 
-func (p *Person) TryDie(year int) error {
+func (p *Person) IsPregnant() (bool, error) {
 	if p == nil {
-		return wrapped_error.NewInternalServerError(nil, "<nil> can not die")
+		return false, wrapped_error.NewInternalServerError(nil, "<nil> can not be checked if it is pregnant")
 	}
 
-	doesDie, err := pm.GetRandomBool(p.Metadata.DeathCoef)
-	if err != nil {
-		return wrapped_error.NewInternalServerError(err, "can not get random bool for try_die method")
-	}
-	if !doesDie {
-		return nil
-	}
-	if err := p.Die(year); err != nil {
-		return wrapped_error.NewInternalServerError(err, "can not die in try_die method")
-	}
-
-	return nil
+	return p.Human.IsPregnant(), nil
 }
 
 // Chronology methods
