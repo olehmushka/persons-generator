@@ -47,5 +47,7 @@ func (a *adapter) CreateWorld(ctx context.Context, amount, maleAmount, femaleAmo
 		})
 	}
 
-	return a.engine.CreateWorld(amount, maleAmount, femaleAmount, refs)
+	// (*orchestrator.Orchestrator).CreateWorld(size int, cultures []*culture.Culture, religions []*religion.Religion) (*world.World, error)
+	// return a.engine.CreateWorld(amount, []*culture.Culture{culture}, []*religion.Religion{relig})
+	return nil, nil
 }

@@ -5,6 +5,6 @@ import (
 	temperamentPresets "persons_generator/engine/entities/person/temperament/presets"
 )
 
-var MalanesiansPsychoPreset = psycho.NewPsychoGene(
+var MelanesiansPsychoPreset = psycho.NewPsychoGene(
 	temperamentPresets.MelanesiansTemperamentPreset,
 )

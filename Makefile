@@ -13,6 +13,9 @@ run_http_server:
 run_generate_religion:
 	go run main.go generate_religion
 
+run_generate_world:
+	go run main.go generate_world
+
 test:
 	go test ./...
 

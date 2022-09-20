@@ -7,6 +7,6 @@ import (
 )
 
 var MalanesiansHumanPreset = human.NewGene(
-	bodyPresets.MalanesiansBodyPreset,
-	psychoPresets.MalanesiansPsychoPreset,
+	bodyPresets.MelanesiansBodyPreset,
+	psychoPresets.MelanesiansPsychoPreset,
 )

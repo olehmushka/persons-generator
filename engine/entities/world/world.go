@@ -34,14 +34,16 @@ func New(
 	s int,
 	cultures []*culture.Culture,
 	religions []*religion.Religion,
+	refs []*religion.CultureReference,
 ) (*World, error) {
 	w := &World{
-		ID:               uuid.New(),
-		Size:             s,
-		MaxDistanceValue: GetMaxDistanceValue(s),
-		Year:             0,
-		Cultures:         cultures,
-		Religions:        religions,
+		ID:                        uuid.New(),
+		Size:                      s,
+		MaxDistanceValue:          GetMaxDistanceValue(s),
+		Year:                      0,
+		Cultures:                  cultures,
+		Religions:                 religions,
+		CultureReligionReferences: refs,
 
 		storageFolderName:       cfg.StorageFolderName,
 		defaultHumanAmount:      cfg.DefaultHumanAmount,

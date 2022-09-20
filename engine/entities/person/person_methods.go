@@ -1,6 +1,7 @@
 package person
 
 import (
+	"encoding/json"
 	"fmt"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/coordinate"
@@ -481,4 +482,25 @@ func (p *Person) AppendDivorcedEvent(year int, partner *Person) error {
 	}
 
 	return nil
+}
+
+// Print
+
+func (p *Person) Print() {
+	if p == nil {
+		return
+	}
+
+	body, _ := json.Marshal(p.Human.Body)
+	psycho, _ := json.Marshal(p.Human.Psycho)
+	fmt.Printf(`{
+		"id": "%s",
+		"own_name": "%s",
+		"culture_name": "%s",
+		"religion_name": "%s",
+		"sex": "%s",
+		"age": %d,
+		"body": %s,
+		"psycho": %s
+	}`+"\n", p.ID.String(), p.OwnName, p.Culture.Name, p.Religion.Name, p.Human.Sex.String(), p.Human.Age, body, psycho)
 }

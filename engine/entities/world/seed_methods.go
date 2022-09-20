@@ -90,5 +90,25 @@ func (w *World) seedReligions() error {
 }
 
 func (w *World) seedPopulation() error {
+	for y := 0; y < w.Size; y++ {
+		for x := 0; x < w.Size; x++ {
+			if w.Locations[y][x] == nil || w.Locations[y][x].InitCulture == nil {
+				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("location is nil or its culture is nil (x: %d, y: %d)", x, y))
+			}
+			if w.Locations[y][x].InitReligion == nil {
+				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("location is nil or its religion is nil (x: %d, y: %d)", x, y))
+			}
+
+			w.Locations[y][x].Population = make([]*person.Person, 0, 10)
+			for i := 0; i < 10; i++ {
+				p, err := person.NewBase(w.Locations[y][x].InitCulture, w.Locations[y][x].InitReligion)
+				if err != nil {
+					return wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not generate person for location (x: %d, y: %d)", x, y))
+				}
+				w.Locations[y][x].Population = append(w.Locations[y][x].Population, p)
+			}
+		}
+	}
+
 	return nil
 }

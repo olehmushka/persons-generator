@@ -8,9 +8,9 @@ import (
 	skinPresets "persons_generator/engine/entities/person/skin/presets"
 )
 
-var MalanesiansBodyPreset = body.NewBodyGene(
+var MelanesiansBodyPreset = body.NewBodyGene(
 	facePresets.MelanesiansFacePreset,
-	hairPresets.MalanesiansHairPreset,
-	sizePresets.MalanesiansSizePreset,
-	skinPresets.MalanesiansSkinPreset,
+	hairPresets.MelanesiansHairPreset,
+	sizePresets.MelanesiansSizePreset,
+	skinPresets.MelanesiansSkinPreset,
 )

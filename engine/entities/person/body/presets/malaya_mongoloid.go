@@ -10,7 +10,7 @@ import (
 
 var MalayaMongoloidBodyPreset = body.NewBodyGene(
 	facePresets.MelanesiansFacePreset,
-	hairPresets.MalanesiansHairPreset,
-	sizePresets.MalanesiansSizePreset,
-	skinPresets.MalanesiansSkinPreset,
+	hairPresets.MelanesiansHairPreset,
+	sizePresets.MelanesiansSizePreset,
+	skinPresets.MelanesiansSkinPreset,
 )

@@ -1,7 +1,9 @@
 package presets
 
 import (
+	"fmt"
 	"persons_generator/core/tools"
+	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/person/gene"
 	pm "persons_generator/engine/probability_machine"
@@ -9,7 +11,7 @@ import (
 
 func GetPresetByCulture(c *culture.Culture) (gene.Gene, error) {
 	if c == nil {
-		return nil, nil
+		return nil, wrapped_error.NewInternalServerError(nil, "can not get human gene by culture for <nil>")
 	}
 
 	// For ancient abstract cultures
@@ -336,5 +338,5 @@ func GetPresetByCulture(c *culture.Culture) (gene.Gene, error) {
 		})
 	}
 
-	return nil, nil
+	return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not get human gene preset for culture (culture abstract=%s, culture=%+v)", c.Abstuct.Name, c))
 }

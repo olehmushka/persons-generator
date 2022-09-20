@@ -19,6 +19,3 @@ func New(cfg Config) (*Orchestrator, error) {
 		storageFolderName: cfg.StorageFolderName,
 	}, nil
 }
-
-func (o *Orchestrator) Orchestrate() {
-}

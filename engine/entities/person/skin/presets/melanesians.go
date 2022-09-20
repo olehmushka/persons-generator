@@ -5,7 +5,7 @@ import (
 	"persons_generator/engine/entities/person/skin"
 )
 
-var MalanesiansSkinPreset = skin.NewSkinGene(
+var MelanesiansSkinPreset = skin.NewSkinGene(
 	skin.NewSkinColorGene(map[string]float64{
 		color.BrownSkinColorPalette: 1,
 	}, 3),

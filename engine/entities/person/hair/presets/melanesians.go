@@ -5,7 +5,7 @@ import (
 	"persons_generator/engine/entities/person/hair"
 )
 
-var MalanesiansHairPreset = hair.NewHairGene(
+var MelanesiansHairPreset = hair.NewHairGene(
 	hair.NewScalpHairGene(
 		hair.NewHairTextureGene(map[string]float64{
 			string(hair.BlackHairTexture.Type):    0.1,
