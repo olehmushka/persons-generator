@@ -91,19 +91,19 @@ func GetMarriageDistanceCoef(distance coordinate.ComplexDistance) float64 {
 func GetDeathCoef(age int) float64 {
 	switch {
 	case age < 9:
-		return 0.001
+		return 0.01
 	case 9 < age && age <= 18:
-		return 0.0005
+		return 0.01
 	case 18 < age && age <= 35:
-		return 0.001
-	case 35 < age && age <= 45:
-		return 0.002
-	case 45 < age && age <= 60:
 		return 0.05
-	case 60 < age && age <= 80:
-		return 0.15
-	case 80 < age && age <= 90:
+	case 35 < age && age <= 45:
+		return 0.1
+	case 45 < age && age <= 60:
 		return 0.25
+	case 60 < age && age <= 80:
+		return 0.3
+	case 80 < age && age <= 90:
+		return 0.35
 	case 90 < age && age <= 100:
 		return 0.5
 	case 100 < age && age <= 120:

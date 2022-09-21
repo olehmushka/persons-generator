@@ -84,7 +84,9 @@ func (h *Human) ProduceChildren(partner *Human) ([]*Human, error) {
 		return nil, nil
 	}
 
-	prob := 0.25 * ((h.GetAgeFertility() + partner.GetAgeFertility()) / 2)
+	prob := 0.25 *
+		((h.GetAgeFertility() + partner.GetAgeFertility()) / 2) *
+		h.Metadata.GetFertilityCoef()
 	isPregnant, err := pm.GetRandomBool(prob)
 	if err != nil {
 		return nil, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not get_pregnant by probability (prob=%f)", prob))
@@ -178,6 +180,7 @@ func (h *Human) GiveBirth() []*Human {
 
 	children := h.PreBirthChildren
 	h.PreBirthChildren = nil
+	h.Metadata.ChildrenGivenBirth += len(children)
 
 	return children
 }

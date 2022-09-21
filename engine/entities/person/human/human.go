@@ -10,9 +10,10 @@ import (
 )
 
 type Human struct {
-	Sex  g.Sex     `json:"sex"`
-	Gene gene.Gene `json:"gene"`
-	Age  int       `json:"age"`
+	Sex      g.Sex     `json:"sex"`
+	Gene     gene.Gene `json:"gene"`
+	Age      int       `json:"age"`
+	Metadata Metadata  `json:"metadata"`
 
 	Father           *Human   `json:"father,omitempty"`
 	Mother           *Human   `json:"mother,omitempty"`
@@ -36,6 +37,7 @@ func New(sex g.Sex, g gene.Gene, f, m *Human) (*Human, error) {
 	h.Sex = sex
 	h.Father = f
 	h.Mother = m
+	h.Metadata = Metadata{}
 
 	return &h, nil
 }

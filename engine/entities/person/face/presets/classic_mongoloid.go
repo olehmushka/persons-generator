@@ -47,7 +47,6 @@ var ClassicMongoloidFacePreset = face.NewFaceGene(
 		string(face.FullLipsType):           0.1,
 		string(face.WideLipsType):           0.2,
 		string(face.ThinLipsType):           0.2,
-		string(face.HeardShapedLipsType):    0,
 		string(face.DownwardTurnedLipsType): 0.15,
 	}),
 )

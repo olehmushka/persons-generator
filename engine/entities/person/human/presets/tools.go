@@ -13,6 +13,12 @@ func GetPresetByCulture(c *culture.Culture) (gene.Gene, error) {
 	if c == nil {
 		return nil, wrapped_error.NewInternalServerError(nil, "can not get human gene by culture for <nil>")
 	}
+	if c.Abstuct == nil {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not get human gene by culture for <nil> abstract culture")
+	}
+	if c.Abstuct.Name == "" {
+		return nil, wrapped_error.NewInternalServerError(nil, "can not get human gene by culture for abstract culture empty name")
+	}
 
 	// For ancient abstract cultures
 	switch c.Abstuct {

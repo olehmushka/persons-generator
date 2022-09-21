@@ -3,6 +3,7 @@ package skin
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/gender"
@@ -36,10 +37,10 @@ type SkinColorGene struct {
 	T string `json:"t"`
 
 	Stats     map[string]float64 `json:"stats"`
-	MeanIndex int                `json:"mean_index"`
+	MeanIndex float64            `json:"mean_index"`
 }
 
-func NewSkinColorGene(stats map[string]float64, meanIndex int) gene.Gene {
+func NewSkinColorGene(stats map[string]float64, meanIndex float64) gene.Gene {
 	return &SkinColorGene{
 		T: "skin_color_gene",
 
@@ -91,7 +92,8 @@ func (g *SkinColorGene) Pair(in gene.Gene) (gene.Gene, error) {
 	if !ok {
 		return nil, wrapped_error.NewInternalServerError(nil, "can not case input gene to SkinColorGene")
 	}
-	meanIndex := (inStr.MeanIndex + g.MeanIndex) / 2
+	meanIndex := math.Floor((inStr.MeanIndex + g.MeanIndex) / 2)
+	stats := tools.MergeMaps(g.Stats, inStr.Stats)
 
-	return NewSkinColorGene(tools.MergeMaps(g.Stats, inStr.Stats), meanIndex), nil
+	return NewSkinColorGene(stats, meanIndex), nil
 }

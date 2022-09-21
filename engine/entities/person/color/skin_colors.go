@@ -174,6 +174,14 @@ func GetSkinColorsByPalette(palette string) []Color {
 	return getColorsByPalette(palette, AllSkinColors)
 }
 
-func GetRandomColorByPaletteNorm(palette string, meanIndex int) (Color, error) {
-	return pm.RandomValueOfSliceNorm(meanIndex, GetSkinColorsByPalette(palette))
+func GetRandomColorByPaletteNorm(palette string, meanIndex float64) (Color, error) {
+	colors := GetSkinColorsByPalette(palette)
+	if meanIndex < 0 {
+		meanIndex = 0
+	}
+	if maxMean := float64(len(colors) - 1); meanIndex > maxMean {
+		meanIndex = maxMean
+	}
+
+	return pm.RandomValueOfSliceNorm(meanIndex, colors)
 }

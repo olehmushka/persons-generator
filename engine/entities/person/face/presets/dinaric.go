@@ -53,12 +53,11 @@ var DinaricFacePreset = face.NewFaceGene(
 		string(face.SnubNoseType):     0.05,
 	}),
 	face.NewMouthGene(map[string]float64{
-		string(face.FullLipsType):           0,
-		string(face.HeavyUpperLipsType):     0,
-		string(face.WideLipsType):           0,
-		string(face.HeavyLowerLipsType):     0,
-		string(face.ThinLipsType):           0,
-		string(face.HeardShapedLipsType):    0,
-		string(face.DownwardTurnedLipsType): 0,
+		string(face.HeavyUpperLipsType):     0.05,
+		string(face.WideLipsType):           0.05,
+		string(face.HeavyLowerLipsType):     0.05,
+		string(face.ThinLipsType):           0.15,
+		string(face.HeardShapedLipsType):    0.3,
+		string(face.DownwardTurnedLipsType): 0.25,
 	}),
 )

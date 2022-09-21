@@ -6,6 +6,7 @@ import (
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/coordinate"
 	"persons_generator/engine/entities/culture"
+	"persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/person/human"
 	"persons_generator/engine/entities/person/traits"
 	"persons_generator/engine/entities/religion"
@@ -333,6 +334,28 @@ func (p *Person) IsPregnant() (bool, error) {
 	}
 
 	return p.Human.IsPregnant(), nil
+}
+
+func (p *Person) Age() (int, error) {
+	if p == nil {
+		return 0, wrapped_error.NewInternalServerError(nil, "<nil> can not has age")
+	}
+	if p.Human == nil {
+		return 0, wrapped_error.NewInternalServerError(nil, "person with <nil> human can not has age")
+	}
+
+	return p.Human.Age, nil
+}
+
+func (p *Person) Sex() (gender.Sex, error) {
+	if p == nil {
+		return "", wrapped_error.NewInternalServerError(nil, "<nil> can not has sex")
+	}
+	if p.Human == nil {
+		return "", wrapped_error.NewInternalServerError(nil, "person with <nil> human can not has sex")
+	}
+
+	return p.Human.Sex, nil
 }
 
 // Chronology methods

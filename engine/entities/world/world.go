@@ -27,6 +27,8 @@ type World struct {
 	defaultHumanAmount      int
 	defaultMalePercentage   float64
 	defaultFemalePercentage float64
+
+	populationNumber int
 }
 
 func New(
@@ -53,6 +55,7 @@ func New(
 	if err := w.seed(); err != nil {
 		return nil, wrapped_error.NewInternalServerError(err, "can not seed for (*World).New")
 	}
+	w.populationNumber = len(w.GetPersons())
 
 	return w, nil
 }

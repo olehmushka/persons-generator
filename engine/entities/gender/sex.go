@@ -1,6 +1,9 @@
 package gender
 
-import pm "persons_generator/engine/probability_machine"
+import (
+	"persons_generator/core/wrapped_error"
+	pm "persons_generator/engine/probability_machine"
+)
 
 type Sex string
 
@@ -22,11 +25,13 @@ func (s Sex) IsFemale() bool {
 }
 
 func GetRandomSex() (Sex, error) {
-	list := []Sex{MaleSex, FemaleSex}
-	i, err := pm.RandInt(len(list) - 1)
+	isMale, err := pm.GetRandomBool(0.5)
 	if err != nil {
-		return "", err
+		return "", wrapped_error.NewInternalServerError(err, "can not generate bool for generation random sex")
+	}
+	if isMale {
+		return MaleSex, nil
 	}
 
-	return list[i], nil
+	return FemaleSex, nil
 }
