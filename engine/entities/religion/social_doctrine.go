@@ -28,6 +28,14 @@ func (d *Doctrine) generateSocialDoctrine() (*SocialDoctrine, error) {
 	return sd, nil
 }
 
+func (sd *SocialDoctrine) SerializeTraits() []string {
+	if sd == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(sd.Traits)
+}
+
 func (sd *SocialDoctrine) Print() {
 	if len(sd.Traits) > 0 {
 		fmt.Printf("Social Traits (religion_name=%s):\n", sd.religion.Name)

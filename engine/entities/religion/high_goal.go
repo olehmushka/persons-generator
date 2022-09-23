@@ -25,6 +25,14 @@ func (d *Doctrine) generateHighGoal() (*HighGoal, error) {
 	return hg, nil
 }
 
+func (hg *HighGoal) Serialize() []string {
+	if hg == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(hg.Goals)
+}
+
 func (hg *HighGoal) Print() {
 	if len(hg.Goals) > 0 {
 		fmt.Printf("HighGoals (religion_name=%s):\n", hg.religion.Name)

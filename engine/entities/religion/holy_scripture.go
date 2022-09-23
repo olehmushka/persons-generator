@@ -36,6 +36,14 @@ func (as *Attributes) generateHolyScripture() (*HolyScripture, error) {
 	return hs, nil
 }
 
+func (hs *HolyScripture) SerializeTraits() []string {
+	if hs == nil || !hs.HasHolyScripture {
+		return []string{}
+	}
+
+	return extractTraitNames(hs.Traits)
+}
+
 func (hs *HolyScripture) generateHasHolyScripture() (bool, error) {
 	primaryProbability, err := pm.RandFloat64InRange(0.5, 0.7)
 	if err != nil {

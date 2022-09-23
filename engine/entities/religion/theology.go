@@ -82,6 +82,59 @@ func (t *Theology) IsZero() bool {
 	return t == nil
 }
 
+func (t *Theology) SerializeTraits() []string {
+	if t == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(t.Traits)
+}
+
+func (t *Theology) SerializeCults() []string {
+	if t == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(t.Cults)
+}
+
+func (t *Theology) SerializeRules() []string {
+	if t == nil || t.Rules == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(t.Rules.Rules)
+}
+
+func (t *Theology) SerializeTaboos() []map[string]string {
+	if t == nil || t.Taboos == nil || len(t.Taboos.Taboos) == 0 {
+		return []map[string]string{}
+	}
+
+	out := make([]map[string]string, len(t.Taboos.Taboos))
+	for i := range out {
+		out[i] = map[string]string{
+			t.Taboos.Taboos[i].Name: t.Taboos.Taboos[i].Acceptance.String(),
+		}
+	}
+
+	return out
+}
+
+func (t *Theology) SerializeRituals() []string {
+	if t == nil {
+		return []string{}
+	}
+
+	out := make([]string, 0, len(t.Rituals.Initiation)+len(t.Rituals.Funeral)+len(t.Rituals.Holyday)+len(t.Rituals.Sacrifice))
+	out = append(out, extractTraitNames(t.Rituals.Initiation)...)
+	out = append(out, extractTraitNames(t.Rituals.Funeral)...)
+	out = append(out, extractTraitNames(t.Rituals.Holyday)...)
+	out = append(out, extractTraitNames(t.Rituals.Sacrifice)...)
+
+	return out
+}
+
 func (t *Theology) Print() {
 	fmt.Printf("Theology (religion_name=%s):\n", t.religion.Name)
 	fmt.Printf("Theology Traits (religion_name=%s):\n", t.religion.Name)

@@ -48,6 +48,19 @@ func (mt *MarriageTradition) IsZero() bool {
 	return mt == nil
 }
 
+func (mt *MarriageTradition) Serialize() map[string]string {
+	if mt == nil {
+		return map[string]string{}
+	}
+
+	return map[string]string{
+		"kind":          mt.Kind.String(),
+		"bastardy":      mt.Bastardry.String(),
+		"consanguinity": mt.Consanguinity.String(),
+		"divorce":       mt.Divorce.String(),
+	}
+}
+
 func (mt *MarriageTradition) Print() {
 	fmt.Printf("MarriageTradition (religion_name=%s):\n", mt.religion.Name)
 	fmt.Printf("MarriageKind=%s, Bastardry=%s, Consanguinity=%s, Divorce=%s\n", mt.Kind, mt.Bastardry, mt.Consanguinity, mt.Divorce)

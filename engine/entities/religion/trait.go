@@ -87,3 +87,16 @@ func GetTraitsSimilarityCoef(t1, t2 []*trait) float64 {
 
 	return float64(len(sameTraits)) / averageTraitsLength
 }
+
+func extractTraitNames(ts []*trait) []string {
+	if len(ts) == 0 {
+		return []string{}
+	}
+
+	out := make([]string, len(ts))
+	for i := range out {
+		out[i] = ts[i].Name
+	}
+
+	return out
+}

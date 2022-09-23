@@ -32,6 +32,14 @@ func (hs *Holydays) IsZero() bool {
 	return hs == nil
 }
 
+func (hs *Holydays) Serialize() []string {
+	if hs == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(hs.Holydays)
+}
+
 func (hs *Holydays) Print() {
 	if len(hs.Holydays) > 0 {
 		fmt.Printf("Holydays (religion_name=%s):\n", hs.religion.Name)

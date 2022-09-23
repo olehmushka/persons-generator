@@ -30,6 +30,18 @@ func NewType(r *Religion) (*Type, error) {
 	return t, nil
 }
 
+func (t *Type) String() string {
+	if t == nil {
+		return ""
+	}
+	out := t.Type.String()
+	if st := t.Subtype.String(); st != "" {
+		out = fmt.Sprintf("%s (%s)", out, st)
+	}
+
+	return out
+}
+
 func (t *Type) Print() {
 	var subType string
 	if t.Subtype != "" {

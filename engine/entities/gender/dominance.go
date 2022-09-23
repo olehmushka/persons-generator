@@ -37,6 +37,14 @@ func NewDominanceWithParams(d GenderDominance, i influence.Influence) *Dominance
 	}
 }
 
+func (gd *Dominance) String() string {
+	if gd == nil {
+		return ""
+	}
+
+	return fmt.Sprintf("%s (%s)", gd.Dominance.String(), gd.Influence.String())
+}
+
 func (gd *Dominance) Print() {
 	fmt.Printf("Dominated gender=%s(%s)\n", gd.Dominance, gd.Influence)
 }

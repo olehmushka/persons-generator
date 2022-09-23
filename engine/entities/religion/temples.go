@@ -43,6 +43,14 @@ func (as *Attributes) generateTemples(c *culture.Culture) (*Temples, error) {
 	return ts, nil
 }
 
+func (ts *Temples) SerializeTraits() []string {
+	if ts == nil || !ts.HasSacredPlaces || !ts.HasTemples {
+		return []string{}
+	}
+
+	return extractTraitNames(ts.Traits)
+}
+
 func (ts *Temples) Print() {
 	fmt.Printf("Temples (religion_name=%s):\n", ts.religion.Name)
 

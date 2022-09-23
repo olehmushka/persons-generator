@@ -2,6 +2,7 @@ package religion
 
 import (
 	"fmt"
+	"strings"
 
 	g "persons_generator/engine/entities/gender"
 	pm "persons_generator/engine/probability_machine"
@@ -76,6 +77,69 @@ func (cs *Clerics) Print() {
 	for _, function := range cs.Functions {
 		fmt.Printf(" - %s\n", function.Name)
 	}
+}
+
+func (cs *Clerics) SerializeAppointment() string {
+	if cs == nil || !cs.HasClerics || cs.Appointment == nil {
+		return ""
+	}
+
+	out := make([]string, 0, 2)
+	if cs.Appointment.IsCivil {
+		out = append(out, "clerics are civil.")
+	} else {
+		out = append(out, "clerics are not civil.")
+	}
+	if cs.Appointment.IsRevocable {
+		out = append(out, "cleric position is revocable.")
+	} else {
+		out = append(out, "cleric position is not revocable.")
+	}
+
+	return strings.Join(out, " ")
+}
+
+func (cs *Clerics) SerializeLimitations() string {
+	if cs == nil || !cs.HasClerics || cs.Limitations == nil {
+		return ""
+	}
+
+	out := make([]string, 0, 2)
+	switch cs.Limitations.AcceptableGender {
+	case g.OnlyMen:
+		out = append(out, "only men can be clerics.")
+	case g.MenAndWomen:
+		out = append(out, "men amd women can be clerics.")
+	case g.OnlyWomen:
+		out = append(out, "only women can be clerics.")
+	}
+
+	switch cs.Limitations.Marriage {
+	case AlwaysAllowed:
+		out = append(out, "clerics can get married.")
+	case MustBeApproved:
+		out = append(out, "clerics can get married just after approval.")
+	case Disallowed:
+		out = append(out, "clerics can not get married.")
+	}
+
+	return strings.Join(out, " ")
+}
+
+func (cs *Clerics) SerializeTraits() []string {
+	if cs == nil || !cs.HasClerics {
+		return []string{}
+	}
+
+	return extractTraitNames(cs.Traits)
+}
+
+func (cs *Clerics) SerializeFunctions() []string {
+	if cs == nil || !cs.HasClerics {
+		return []string{}
+	}
+
+	return extractTraitNames(cs.Functions)
 }
 
 func (cs *Clerics) generateHasClerics() (bool, error) {

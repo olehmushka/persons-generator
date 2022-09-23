@@ -34,6 +34,22 @@ func (al *Afterlife) Print() {
 	}
 }
 
+func (al *Afterlife) SerializeParticipant() map[string]string {
+	if al == nil {
+		return map[string]string{}
+	}
+
+	return al.Participants.Serialize()
+}
+
+func (al *Afterlife) SerializeTraits() []string {
+	if al == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(al.Traits)
+}
+
 func (d *Doctrine) generateAfterlife() (*Afterlife, error) {
 	al := &Afterlife{religion: d.religion, doctrine: d}
 	isExists, err := al.generateIsExistsAfterlife()
@@ -160,6 +176,19 @@ func (alp *AfterlifeParticipants) Print() {
 	fmt.Printf("Afterlife for believers is %s\n", alp.ForBelievers)
 	fmt.Printf("Afterlife for untrue believers is %s\n", alp.ForUntrueBelievers)
 	fmt.Printf("Afterlife for atheists is %s\n", alp.ForAtheists)
+}
+
+func (alp *AfterlifeParticipants) Serialize() map[string]string {
+	if alp == nil {
+		return map[string]string{}
+	}
+
+	return map[string]string{
+		"for_top_belivers":    alp.ForTopBelievers.String(),
+		"for_belivers":        alp.ForBelievers.String(),
+		"for_untrue_belivers": alp.ForUntrueBelievers.String(),
+		"for_atheists":        alp.ForAtheists.String(),
+	}
 }
 
 func (al *Afterlife) generateForTopBelieversAfterlife(alp *AfterlifeParticipants) (AfterlifeOption, error) {

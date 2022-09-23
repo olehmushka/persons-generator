@@ -7,6 +7,10 @@ import (
 
 type Influence string
 
+func (i Influence) String() string {
+	return string(i)
+}
+
 const (
 	StrongInfluence   Influence = "strong"
 	ModerateInfluence Influence = "moderate"

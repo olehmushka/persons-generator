@@ -24,6 +24,14 @@ func (d *Doctrine) generateDeityDoctrine() (*DeityDoctrine, error) {
 	return dd, nil
 }
 
+func (dd *DeityDoctrine) SerializeNatureTraits() []string {
+	if dd == nil || dd.Nature == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(dd.Nature.Traits)
+}
+
 func (dd *DeityDoctrine) Print() {
 	dd.Nature.Print()
 }

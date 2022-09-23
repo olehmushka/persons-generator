@@ -24,6 +24,14 @@ func (d *Doctrine) generateHumanDoctrine() (*HumanDoctrine, error) {
 	return hd, nil
 }
 
+func (hd *HumanDoctrine) SerializeNatureTraits() []string {
+	if hd == nil || hd.Nature == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(hd.Nature.Traits)
+}
+
 func (hd *HumanDoctrine) Print() {
 	hd.Nature.Print()
 }

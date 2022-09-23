@@ -59,6 +59,14 @@ func (as *Attributes) Print() {
 	as.Temples.Print()
 }
 
+func (as *Attributes) SerializeTraits() []string {
+	if as == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(as.Traits)
+}
+
 func (as *Attributes) getAllAttributeTraits() []*trait {
 	return []*trait{
 		{

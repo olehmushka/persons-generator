@@ -7,6 +7,10 @@ import (
 
 type Level string
 
+func (l Level) String() string {
+	return string(l)
+}
+
 const (
 	Major  Level = "major"
 	Middle Level = "middle"

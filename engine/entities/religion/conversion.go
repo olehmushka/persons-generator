@@ -31,6 +31,14 @@ func (c *Conversion) IsZero() bool {
 	return c == nil
 }
 
+func (c *Conversion) Serialize() []string {
+	if c == nil {
+		return []string{}
+	}
+
+	return extractTraitNames(c.Traits)
+}
+
 func (c *Conversion) Print() {
 	if len(c.Traits) > 0 {
 		fmt.Printf("Conversion (religion_name=%s):\n", c.religion.Name)
