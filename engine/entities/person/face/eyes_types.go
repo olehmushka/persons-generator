@@ -11,6 +11,10 @@ import (
 
 type EyesType string
 
+func (et EyesType) String() string {
+	return string(et)
+}
+
 const (
 	RoundEyesType              EyesType = "round_eyes"
 	RoundishAlmondEyesType     EyesType = "roundish_almond_eyes"

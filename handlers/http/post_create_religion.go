@@ -30,9 +30,13 @@ func (h *handlers) CreateReligions(w http.ResponseWriter, r *http.Request) {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return
 	}
-
+	data, err := serializeReligions(rs)
+	if err != nil {
+		http_server_tools.SendErrorResp(ctx, w, err)
+		return
+	}
 	respJSON, err := json.Marshal(PostCreateReligionsResponse{
-		Data:  serializeReligions(rs),
+		Data:  data,
 		Total: len(rs),
 	})
 	if err != nil {

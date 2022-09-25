@@ -18,6 +18,10 @@ func (ht HairTexture) Zero() bool {
 	return ht == HairTexture{}
 }
 
+func (ht HairTexture) Serialize() string {
+	return ht.Type
+}
+
 func (ht HairTexture) Bytes() []byte {
 	if ht.Zero() {
 		return nil

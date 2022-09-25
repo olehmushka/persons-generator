@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"persons_generator/core/wrapped_error"
+	r "persons_generator/engine/entities/religion"
 	"persons_generator/internal/religion/adapters/engine"
 	"persons_generator/internal/religion/entities"
 
@@ -25,7 +26,7 @@ var Module = fx.Options(
 	fx.Provide(New),
 )
 
-func (s *religion) CreateReligions(ctx context.Context, amount int, preferences []*entities.Preference) ([]*entities.Religion, error) {
+func (s *religion) CreateReligions(ctx context.Context, amount int, preferences []*entities.Preference) ([]*r.SerializedReligion, error) {
 	if amount < len(preferences) {
 		return nil, wrapped_error.NewBadRequestError(nil, fmt.Sprintf("amount (%d) can not be less than preferences number (%d)", amount, len(preferences)))
 	}
@@ -35,12 +36,12 @@ func (s *religion) CreateReligions(ctx context.Context, amount int, preferences 
 		return nil, err
 	}
 
-	out := make([]*entities.Religion, len(rs))
+	out := make([]*r.SerializedReligion, len(rs))
 	for i, r := range rs {
 		if err := r.Save(); err != nil {
 			return nil, err
 		}
-		out[i] = serializeReligion(r)
+		out[i] = r.Serialize()
 	}
 
 	return out, nil

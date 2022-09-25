@@ -2,6 +2,10 @@ package face
 
 type EarsType string
 
+func (et EarsType) String() string {
+	return string(et)
+}
+
 const (
 	SquareEarType        EarsType = "square_ear"
 	PointedEarType       EarsType = "pointed_ear"

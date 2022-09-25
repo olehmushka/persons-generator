@@ -21,6 +21,14 @@ func (e *Ethos) IsZero() bool {
 	return e == nil
 }
 
+func (e *Ethos) Serialize() string {
+	if e == nil {
+		return ""
+	}
+
+	return e.Name
+}
+
 func (e *Ethos) Print() {
 	if e == nil {
 		return

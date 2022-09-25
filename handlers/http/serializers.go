@@ -1,36 +1,40 @@
 package http
 
 import (
+	"encoding/json"
+	"persons_generator/core/wrapped_error"
+	"persons_generator/engine/entities/culture"
+	"persons_generator/engine/entities/religion"
 	"persons_generator/internal/culture/entities"
 	personsEntities "persons_generator/internal/persons/entities"
 	religionEntities "persons_generator/internal/religion/entities"
 )
 
-func serializeCultures(cultures []*entities.Culture) []*Culture {
-	out := make([]*Culture, len(cultures))
+func serializeCultures(cultures []*culture.SerializedCulture) ([]*SerializedCulture, error) {
+	out := make([]*SerializedCulture, len(cultures))
 	for i := range out {
-		out[i] = serializeCulture(cultures[i])
+		var err error
+		out[i], err = serializeCulture(cultures[i])
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can no serialize cultures")
+		}
 	}
 
-	return out
+	return out, nil
 }
 
-func serializeCulture(in *entities.Culture) *Culture {
-	return &Culture{
-		ID:              in.ID,
-		Name:            in.Name,
-		Proto:           serializeCultures(in.Proto),
-		CultureGroup:    serializeCultureGroup(in.CultureGroup),
-		RootCultureName: in.RootCultureName,
-		Language: &Language{
-			Name:      in.Language.Name,
-			Subfamily: serializeLanguageSubfamily(in.Language.Subfamily),
-		},
-		EthosName:     in.EthosName,
-		Traditions:    in.Traditions,
-		DominantSex:   in.DominantSex,
-		MartialCustom: in.MartialCustom,
+func serializeCulture(in *culture.SerializedCulture) (*SerializedCulture, error) {
+	b, err := json.Marshal(in)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not marshal in serialize culture")
 	}
+
+	var out SerializedCulture
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not unmarshal in serialize culture")
+	}
+
+	return &out, nil
 }
 
 func serializeCultureGroup(in *entities.CultureGroup) *CultureGroup {
@@ -55,42 +59,31 @@ func serializeLanguageSubfamily(in *entities.LanguageSubfamily) *LanguageSubfami
 	}
 }
 
-func serializeReligions(religions []*religionEntities.Religion) []*Religion {
-	out := make([]*Religion, len(religions))
+func serializeReligions(religions []*religion.SerializedReligion) ([]*SerializedReligion, error) {
+	out := make([]*SerializedReligion, len(religions))
 	for i := range out {
-		out[i] = serializeReligion(religions[i])
+		var err error
+		out[i], err = serializeReligion(religions[i])
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can no serialize religions")
+		}
 	}
 
-	return out
+	return out, nil
 }
 
-func serializeReligion(in *religionEntities.Religion) *Religion {
-	return &Religion{
-		ID:                  in.ID,
-		Name:                in.Name,
-		Type:                serializeReligionType(in.Type),
-		DominantSex:         in.DominantSex,
-		HighGoals:           in.HighGoals,
-		DeityGoodness:       in.DeityGoodness,
-		DeityTraits:         in.DeityTraits,
-		HumanGoodness:       in.HumanGoodness,
-		HumanTraits:         in.HumanTraits,
-		SocialTraits:        in.SocialTraits,
-		SourceOfMoralLaw:    in.SourceOfMoralLaw,
-		Afterlife:           serializeAfterlife(in.Afterlife),
-		Attributes:          in.Attributes,
-		Clerics:             serializeClerics(in.Clerics),
-		HolyScriptureTraits: in.HolyScriptureTraits,
-		TempleTraits:        in.TempleTraits,
-		TheologyTraits:      in.TheologyTraits,
-		Cults:               in.Cults,
-		Rules:               in.Rules,
-		Taboos:              serializeTaboos(in.Taboos),
-		Rituals:             in.Rituals,
-		Holydays:            in.Holydays,
-		ConversionTraits:    in.ConversionTraits,
-		MarriageTradition:   serializeMarriageTradition(in.MarriageTradition),
+func serializeReligion(in *religion.SerializedReligion) (*SerializedReligion, error) {
+	b, err := json.Marshal(in)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not marshal in serialize religion")
 	}
+
+	var out SerializedReligion
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not unmarshal in serialize religion")
+	}
+
+	return &out, nil
 }
 
 func serializeReligionType(in religionEntities.Type) ReligionType {

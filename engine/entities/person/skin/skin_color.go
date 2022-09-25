@@ -18,6 +18,10 @@ func (sc SkinColor) Zero() bool {
 	return sc == SkinColor{}
 }
 
+func (sc SkinColor) Value() color.Color {
+	return color.Color(sc)
+}
+
 func (sc SkinColor) Bytes() []byte {
 	if sc.Zero() {
 		return nil

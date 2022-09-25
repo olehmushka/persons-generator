@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 
+	c "persons_generator/engine/entities/culture"
 	"persons_generator/internal/culture/adapters/engine"
 	"persons_generator/internal/culture/entities"
 
@@ -24,51 +25,42 @@ var Module = fx.Options(
 	fx.Provide(New),
 )
 
-func (s *culture) CreateCultures(ctx context.Context, amount int, preferred []*entities.CulturePreference) ([]*entities.Culture, error) {
+func (s *culture) CreateCultures(ctx context.Context, amount int, preferred []*entities.CulturePreference) ([]*c.SerializedCulture, error) {
 	cultures, err := s.engineAdp.CreateCultures(ctx, amount, preferred)
 	if err != nil {
 		return nil, err
 	}
 
-	out := make([]*entities.Culture, len(cultures))
+	out := make([]*c.SerializedCulture, len(cultures))
 	for i, c := range cultures {
 		if err := c.Save(); err != nil {
 			return nil, err
 		}
-		out[i] = serializeCulture(c)
+		out[i] = c.Serialize()
 	}
 
 	return out, nil
 }
 
-func (s *culture) GetProtoCultures(ctx context.Context, q string, limit, offset int) ([]*entities.Culture, int, error) {
+func (s *culture) GetProtoCultures(ctx context.Context, q string, limit, offset int) ([]*c.SerializedCulture, int, error) {
 	protos, total, err := s.engineAdp.GetProtoCultures(ctx, q, limit, offset)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	return serializeCultures(protos), total, nil
+	out := make([]*c.SerializedCulture, len(protos))
+	for i, c := range protos {
+		out[i] = c.Serialize()
+	}
+
+	return out, total, nil
 }
 
-func (s *culture) GetCultureByID(ctx context.Context, id uuid.UUID) (*entities.Culture, error) {
+func (s *culture) GetCultureByID(ctx context.Context, id uuid.UUID) (*c.SerializedCulture, error) {
 	c, err := s.engineAdp.GetCultureByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	return serializeCulture(c), nil
-}
-
-func (s *culture) GetOriginalCultureByID(ctx context.Context, id uuid.UUID) ([]byte, error) {
-	// c, err := s.storageAdp.GetCultureByID(ctx, id)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// return s.engineAdp.GetOriginalCulture(ctx, c)
-	return nil, nil
-}
-
-func (s *culture) HybridCulture(ctx context.Context, cultures []*entities.Culture) (*entities.Culture, error) {
-	return nil, nil
+	return c.Serialize(), nil
 }

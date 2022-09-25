@@ -17,6 +17,10 @@ func (c HairColor) Zero() bool {
 	return c == HairColor{}
 }
 
+func (c HairColor) Value() color.Color {
+	return color.Color(c)
+}
+
 func (n HairColor) Bytes() []byte {
 	if n.Zero() {
 		return nil

@@ -18,6 +18,10 @@ func (n EyesColor) Zero() bool {
 	return n == EyesColor{}
 }
 
+func (n EyesColor) Value() color.Color {
+	return color.Color(n)
+}
+
 func (n EyesColor) Bytes() []byte {
 	if n.Zero() {
 		return nil

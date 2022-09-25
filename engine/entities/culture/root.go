@@ -11,6 +11,14 @@ type Root struct {
 	Name string `json:"name"`
 }
 
+func (r *Root) SerializeName() string {
+	if r == nil {
+		return ""
+	}
+
+	return r.Name
+}
+
 func (r *Root) Print() {
 	if r == nil {
 		return

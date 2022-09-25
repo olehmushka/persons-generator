@@ -18,6 +18,10 @@ func (hd HairDensity) Zero() bool {
 	return hd == HairDensity{}
 }
 
+func (hd HairDensity) Serialize() string {
+	return hd.Type
+}
+
 func (hd HairDensity) Bytes() []byte {
 	if hd.Zero() {
 		return nil

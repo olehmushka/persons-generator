@@ -20,8 +20,13 @@ func (h *handlers) GetCultureByID(w http.ResponseWriter, r *http.Request) {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return
 	}
+	data, err := serializeCulture(culture)
+	if err != nil {
+		http_server_tools.SendErrorResp(ctx, w, err)
+		return
+	}
 	respJSON, err := json.Marshal(GetCultureByIDResponse{
-		Data: serializeCulture(culture),
+		Data: data,
 	})
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)

@@ -14,6 +14,14 @@ func (c *AbstructCulture) IsZero() bool {
 	return c == nil
 }
 
+func (c *AbstructCulture) SerializeName() string {
+	if c == nil {
+		return ""
+	}
+
+	return c.Name
+}
+
 func getAbstractCulture(r *Root, proto []*Culture) (*AbstructCulture, error) {
 	acs := make([]*AbstructCulture, 0, len(proto))
 	for _, p := range proto {

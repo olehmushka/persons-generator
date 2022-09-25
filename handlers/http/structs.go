@@ -14,16 +14,16 @@ type PostCreatCulturesRequest struct {
 }
 
 type PostCreateCulturesResponse struct {
-	Data []*Culture `json:"data"`
+	Data []*SerializedCulture `json:"data"`
 }
 
 type GetProtoCulturesResponse struct {
-	Data  []*Culture `json:"data"`
-	Total int        `json:"total"`
+	Data  []*SerializedCulture `json:"data"`
+	Total int                  `json:"total"`
 }
 
 type GetCultureByIDResponse struct {
-	Data *Culture `json:"data"`
+	Data *SerializedCulture `json:"data"`
 }
 
 type ReligionPreferred struct {
@@ -37,21 +37,32 @@ type PostCreateReligionsRequest struct {
 }
 
 type PostCreateReligionsResponse struct {
-	Data  []*Religion `json:"data"`
-	Total int         `json:"total"`
+	Data  []*SerializedReligion `json:"data"`
+	Total int                   `json:"total"`
 }
 
-type Culture struct {
-	ID              uuid.UUID     `json:"id"`
-	Name            string        `json:"name"`
-	Proto           []*Culture    `json:"proto"`
-	CultureGroup    *CultureGroup `json:"culture_group"`
-	RootCultureName string        `json:"root_culture_name"`
-	Language        *Language     `json:"language"`
-	EthosName       string        `json:"ethos_name"`
-	Traditions      []string      `json:"traditions"`
-	DominantSex     string        `json:"dominant_sex"`
-	MartialCustom   string        `json:"martial_custom"`
+type SerializedCulture struct {
+	ID              uuid.UUID            `json:"id"`
+	Name            string               `json:"name"`
+	ProtoCultures   []*SerializedCulture `json:"proto_cultures"`
+	AbstructCulture string               `json:"abstruct_culture"`
+	Root            string               `json:"root"`
+	Language        *SerializedLanguage  `json:"language"`
+	Ethos           string               `json:"ethos"`
+	Traditions      []string             `json:"traditions"`
+	GenderDominance string               `json:"gender_dominance"`
+	MartialCustom   string               `json:"martial_custom"`
+}
+
+type SerializedLanguage struct {
+	Name      string                       `json:"name"`
+	Subfamily *SerailizedLanguageSubfamily `json:"subfamily"`
+}
+
+type SerailizedLanguageSubfamily struct {
+	Name              string                       `json:"name"`
+	Family            string                       `json:"family"`
+	ExtendedSubfamily *SerailizedLanguageSubfamily `json:"extended_subfamily"`
 }
 
 type LanguageSubfamily struct {
@@ -70,31 +81,35 @@ type CultureGroup struct {
 	RootCultureName string `json:"root_culture_name"`
 }
 
-type Religion struct {
-	ID                  uuid.UUID         `json:"id"`
-	Name                string            `json:"name"`
-	Type                ReligionType      `json:"type"`
-	DominantSex         string            `json:"dominant_sex"`
-	HighGoals           []string          `json:"high_goals"`
-	DeityGoodness       string            `json:"deity_goodness"`
-	DeityTraits         []string          `json:"deity_traits"`
-	HumanGoodness       string            `json:"human_goodness"`
-	HumanTraits         []string          `json:"human_traits"`
-	SocialTraits        []string          `json:"social_traits"`
-	SourceOfMoralLaw    string            `json:"source_of_moral_law"`
-	Afterlife           *Afterlife        `json:"afterlife"`
-	Attributes          []string          `json:"attributes"`
-	Clerics             *Clerics          `json:"clerics"`
-	HolyScriptureTraits []string          `json:"holy_scripture_traits"`
-	TempleTraits        []string          `json:"temple_traits"`
-	TheologyTraits      []string          `json:"theology_traits"`
-	Cults               []string          `json:"cults"`
-	Rules               []string          `json:"rules"`
-	Taboos              []Taboo           `json:"taboos"`
-	Rituals             []string          `json:"rituals"`
-	Holydays            []string          `json:"holydays"`
-	ConversionTraits    []string          `json:"conversion_traits"`
-	MarriageTradition   MarriageTradition `json:"marriage_tradition"`
+type SerializedReligion struct {
+	ID                  uuid.UUID           `json:"id"`
+	Name                string              `json:"name"`
+	Type                string              `json:"type"`
+	GenderDominance     string              `json:"gender_dominance"`
+	HighGoals           []string            `json:"high_goals"`
+	DeityNature         string              `json:"deity_nature"`
+	DeityTraits         []string            `json:"deity_traits"`
+	HumanNature         string              `json:"human_nature"`
+	HumanTraits         []string            `json:"human_traits"`
+	SocialTraits        []string            `json:"social_traits"`
+	SourceOfMoralLaw    string              `json:"source_of_moral_law"`
+	Afterlife           map[string]string   `json:"afterlife"`
+	AfterlifeTraits     []string            `json:"afterlife_traits"`
+	Traits              []string            `json:"traits"`
+	ClericsAppointment  string              `json:"clerics_appointment"`
+	ClericsLimitations  string              `json:"clerics_limitations"`
+	ClericsTraits       []string            `json:"clerics_traits"`
+	ClericsFunctions    []string            `json:"clerics_functions"`
+	HolyScriptureTraits []string            `json:"holy_scripture_traits"`
+	TempleTraits        []string            `json:"temple_traits"`
+	TheologyTraits      []string            `json:"theology_traits"`
+	Cults               []string            `json:"cults"`
+	Rules               []string            `json:"rules"`
+	Taboos              []map[string]string `json:"taboos"`
+	Rituals             []string            `json:"rituals"`
+	Holydays            []string            `json:"holydays"`
+	Conversion          []string            `json:"conversion"`
+	MarriageTradition   map[string]string   `json:"marriage_tradition"`
 }
 
 type Afterlife struct {

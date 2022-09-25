@@ -10,6 +10,10 @@ func (t Temperament) Zero() bool {
 	return t == Temperament{}
 }
 
+func (t Temperament) Serialize() string {
+	return t.Name
+}
+
 func (t Temperament) Bytes() []byte {
 	if t.Zero() {
 		return nil

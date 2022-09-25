@@ -2,6 +2,10 @@ package face
 
 type NoseType string
 
+func (nt NoseType) String() string {
+	return string(nt)
+}
+
 const (
 	// It's the most common nose shape in the world.
 	// About 25% of the population has this type of nose.

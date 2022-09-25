@@ -17,3 +17,16 @@ func Unique(traits []*Trait) []*Trait {
 
 	return out
 }
+
+func ExtractTraitNames(ts []*Trait) []string {
+	if len(ts) == 0 {
+		return []string{}
+	}
+
+	out := make([]string, len(ts))
+	for i := range out {
+		out[i] = ts[i].Name
+	}
+
+	return out
+}

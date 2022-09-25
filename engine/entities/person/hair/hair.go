@@ -9,7 +9,7 @@ import (
 )
 
 type Hair struct {
-	Scapl           *ScaplHair           `json:"scapl"`
+	Scalp           *ScaplHair           `json:"scapl"`
 	Face            *FaceHair            `json:"face"`
 	Axillary        *AxillaryHair        `json:"axillary"`
 	ChestAndAbdomen *ChestAndAbdomenHair `json:"chest_and_abdomen"`
@@ -170,7 +170,7 @@ func (g *HairGene) Produce(sex g.Sex) (gene.Byteble, error) {
 	}
 
 	return Hair{
-		Scapl:           &scaplVal,
+		Scalp:           &scaplVal,
 		Face:            &faceVal,
 		Axillary:        &axillaryVal,
 		ChestAndAbdomen: &chestAndAbdomenVal,

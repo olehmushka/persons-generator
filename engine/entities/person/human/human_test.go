@@ -23,7 +23,7 @@ func TestNew(t *testing.T) {
 		t.Fatal(err)
 		return
 	}
-	b, err := json.Marshal(h)
+	b, err := json.Marshal(h.Serialize())
 	if err != nil {
 		t.Fatal(err)
 		return
@@ -52,7 +52,7 @@ func TestProduceChildren(t *testing.T) {
 	mother.IncreaseAge(18)
 	var (
 		i      int
-		result []*Human
+		result []*SerializedHuman
 	)
 	for ; i < 100; i++ {
 		children, err := mother.ProduceChildren(father)
@@ -61,7 +61,9 @@ func TestProduceChildren(t *testing.T) {
 			return
 		}
 		if len(children) != 0 {
-			result = children
+			for _, child := range children {
+				result = append(result, child.Serialize())
+			}
 			break
 		}
 	}

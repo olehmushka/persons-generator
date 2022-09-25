@@ -7,6 +7,10 @@ import (
 
 type SexualOrientation string
 
+func (so SexualOrientation) String() string {
+	return string(so)
+}
+
 func (so SexualOrientation) IsHeterosexual() bool {
 	return so == Heterosexual
 }

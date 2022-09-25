@@ -29,6 +29,10 @@ func (s Shape) Zero() bool {
 	return s == ""
 }
 
+func (s Shape) String() string {
+	return string(s)
+}
+
 func (s Shape) Bytes() []byte {
 	if s.Zero() {
 		return []byte("")

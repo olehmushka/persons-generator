@@ -2,6 +2,10 @@ package face
 
 type LipsType string
 
+func (lt LipsType) String() string {
+	return string(lt)
+}
+
 const (
 	FullLipsType       LipsType = "full_lips"
 	HeavyUpperLipsType LipsType = "heavy_upper_lips"

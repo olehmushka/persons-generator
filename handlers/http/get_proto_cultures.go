@@ -22,8 +22,13 @@ func (h *handlers) GetProtoCultures(w http.ResponseWriter, r *http.Request) {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return
 	}
+	data, err := serializeCultures(cultures)
+	if err != nil {
+		http_server_tools.SendErrorResp(ctx, w, err)
+		return
+	}
 	respJSON, err := json.Marshal(GetProtoCulturesResponse{
-		Data:  serializeCultures(cultures),
+		Data:  data,
 		Total: total,
 	})
 	if err != nil {

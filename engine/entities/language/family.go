@@ -2,6 +2,10 @@ package language
 
 type Family string
 
+func (f Family) String() string {
+	return string(f)
+}
+
 const (
 	NigerCongoFamily    Family = "niger_congo_lang_family"
 	AustronesianFamily  Family = "austronesian_lang_family"

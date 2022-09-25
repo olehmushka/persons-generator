@@ -28,6 +28,14 @@ func (t *Tradition) IsZero() bool {
 	return t == nil
 }
 
+func (t *Tradition) String() string {
+	if t == nil {
+		return ""
+	}
+
+	return t.Name
+}
+
 func (c *Culture) PrintTraditions() {
 	if c == nil {
 		return
