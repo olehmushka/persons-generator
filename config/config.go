@@ -9,6 +9,7 @@ import (
 type Config struct {
 	HTTPServer  HTTPServer
 	JSONStorage JSONStorage
+	Redis       Redis
 }
 
 func New() (*Config, error) {

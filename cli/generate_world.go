@@ -29,7 +29,7 @@ func runGenerateWorldCommand() error {
 	if err != nil {
 		return err
 	}
-	if err := w.RunWorld(200); err != nil {
+	if err := o.RunAndSaveWorld(w, 200); err != nil {
 		return err
 	}
 	ps, err := w.QueryPerson(world.QueryPersonsOpts{PersonsCount: 10})

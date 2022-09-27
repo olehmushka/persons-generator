@@ -16,7 +16,7 @@ type SerializedPerson struct {
 	Religion *religion.SerializedReligion `json:"religion,omitempty"`
 	Human    *human.SerializedHuman       `json:"human"`
 	Traits   []string                     `json:"traits"`
-	Spouces  []*SerializedPerson          `json:"spouces"`
+	Spouces  []uuid.UUID                  `json:"spouces"`
 	IsAlive  bool                         `json:"is_alive"`
 }
 
@@ -24,9 +24,9 @@ func (p *Person) Serialize() *SerializedPerson {
 	if p == nil {
 		return nil
 	}
-	spouces := make([]*SerializedPerson, len(p.Spouces))
+	spouces := make([]uuid.UUID, len(p.Spouces))
 	for i := range spouces {
-		spouces[i] = p.Spouces[i].Serialize()
+		spouces[i] = p.Spouces[i].ID
 	}
 
 	return &SerializedPerson{

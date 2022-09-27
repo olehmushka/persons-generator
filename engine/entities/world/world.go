@@ -2,7 +2,9 @@ package world
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
+	"sync"
 
 	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/wrapped_error"
@@ -95,14 +97,64 @@ func (w *World) Save() error {
 		return wrapped_error.NewInternalServerError(nil, "can not save nil world")
 	}
 
-	b, err := json.MarshalIndent(w, "", " ")
+	storage := js.New(js.Config{StorageFolderName: w.storageFolderName})
+	dirname := fmt.Sprintf("world_%s", w.ID.String())
+	if err := storage.MkDir(dirname); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not create dir for the world")
+	}
+
+	m, err := newMetadata(w).Marshal()
 	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not marshal metadata for the world")
+	}
+	metadataFilename := fmt.Sprintf("%s/metadata_%s.json", dirname, w.ID.String())
+	if err := storage.Store(metadataFilename, m); err != nil {
 		return err
 	}
 
-	return js.
-		New(js.Config{StorageFolderName: w.storageFolderName}).
-		Store(strings.Join([]string{"world", w.ID.String()}, "_")+".json", b)
+	concurrentJobs := make(chan struct{}, 5)
+	var wg sync.WaitGroup
+	wg.Add(w.Size * w.Size)
+	errCh := make(chan error)
+	for y := 0; y < w.Size; y++ {
+		for x := 0; x < w.Size; x++ {
+			if w.Locations[y][x] == nil {
+				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not save loc for <nil> location (x: %d, y: %d)", x, y))
+			}
+
+			concurrentJobs <- struct{}{}
+			go func(x, y int) {
+				defer wg.Done()
+
+				l, err := w.Locations[y][x].Marshal()
+				if err != nil {
+					errCh <- wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not save loc (x: %d, y: %d)", x, y))
+					return
+				}
+				locFilename := fmt.Sprintf("%s/loc_%s_y%d_x%d.json", dirname, w.ID.String(), y, x)
+				if err := storage.Store(locFilename, l); err != nil {
+					errCh <- err
+					return
+				}
+				<-concurrentJobs
+			}(x, y)
+			select {
+			case err := <-errCh:
+				return err
+			default:
+			}
+		}
+	}
+	select {
+	case err := <-errCh:
+		return err
+	default:
+	}
+	wg.Wait()
+	close(concurrentJobs)
+	close(errCh)
+
+	return nil
 }
 
 func ReadByID(storageFolderName string, id uuid.UUID) (*World, error) {

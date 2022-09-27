@@ -2,7 +2,10 @@ package cli
 
 import (
 	"persons_generator/config"
+	consumerRunAndSaveWorld "persons_generator/core/consumer_run_and_save_world"
+	"persons_generator/core/redis"
 	js "persons_generator/core/storage/json_storage"
+	mqRunAndSaveWorld "persons_generator/handlers/mq/mq_run_and_save_world"
 	cultureEngineAdp "persons_generator/internal/culture/adapters/engine"
 	cultureServices "persons_generator/internal/culture/services"
 	personsEngineAdp "persons_generator/internal/persons/adapters/engine"
@@ -18,12 +21,18 @@ import (
 var Modules = fx.Options(
 	config.Module,
 	js.Module,
+	redis.PublisherModule,
+
 	cultureEngineAdp.Module,
 	religionEngineAdp.Module,
 	personsEngineAdp.Module,
 	worldEngineAdp.Module,
+
 	cultureServices.Module,
 	personsServices.Module,
 	religionServices.Module,
 	worldServices.Module,
+
+	mqRunAndSaveWorld.Module,
+	consumerRunAndSaveWorld.Module,
 )

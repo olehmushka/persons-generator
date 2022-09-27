@@ -3,8 +3,8 @@ package coordinate
 import "math"
 
 type Coordinate struct {
-	X int
-	Y int
+	X int `json:"x"`
+	Y int `json:"y"`
 }
 
 func CalcComplexDistance(p1, p2 *Coordinate, maxValue float64) ComplexDistance {

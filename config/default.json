@@ -4,5 +4,14 @@
   },
   "jsonStorage": {
     "storageFolder": "tmp"
+  },
+  "redis": {
+    "addr": "localhost:6379",
+    "channels": {
+      "runAndSaveWorld": {
+        "name": "run_and_save_world",
+        "consumerConcurrency": 1
+      }
+    }
   }
 }

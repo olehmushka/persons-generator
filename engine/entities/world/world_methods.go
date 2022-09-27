@@ -118,27 +118,33 @@ func (w *World) GetPersons() []*person.Person {
 	return out
 }
 
-func (w *World) RunWorld(stopYear int) error {
+type ProgressRunWorld struct {
+	Year       int
+	Population int
+	Progress   float64
+}
+
+func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh chan error) {
 	if stopYear <= 0 {
-		return wrapped_error.NewInternalServerError(nil, "can not run world for 0 or less stop year")
+		errCh <- wrapped_error.NewInternalServerError(nil, "can not run world for 0 or less stop year")
+		return
 	}
 	for year := 0; year < stopYear; year++ {
-		fmt.Printf(
-			"%f - year: %d - population - %d\n",
-			100*(float64(year)/float64(stopYear)),
-			year,
-			w.populationNumber,
-		)
+		if err := w.RunYear(); err != nil {
+			errCh <- wrapped_error.NewInternalServerError(err, "can not run year in run world")
+			return
+		}
+		progressCh <- ProgressRunWorld{
+			Year:       year,
+			Population: w.populationNumber,
+			Progress:   100 * (float64(year) / float64(stopYear)),
+		}
 		if w.Year == stopYear {
 			break
 		}
-
-		if err := w.RunYear(); err != nil {
-			return wrapped_error.NewInternalServerError(err, "can not run year in run world")
-		}
 	}
 
-	return nil
+	errCh <- nil
 }
 
 func (w *World) RunYear() error {
