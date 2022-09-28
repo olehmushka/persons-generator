@@ -13,6 +13,7 @@ import (
 	religionEngineAdp "persons_generator/internal/religion/adapters/engine"
 	religionServices "persons_generator/internal/religion/services"
 	worldEngineAdp "persons_generator/internal/world/adapters/engine"
+	worldMQAdp "persons_generator/internal/world/adapters/mq"
 	worldServices "persons_generator/internal/world/services"
 
 	"go.uber.org/fx"
@@ -27,6 +28,7 @@ var Modules = fx.Options(
 	religionEngineAdp.Module,
 	personsEngineAdp.Module,
 	worldEngineAdp.Module,
+	worldMQAdp.Module,
 
 	cultureServices.Module,
 	personsServices.Module,

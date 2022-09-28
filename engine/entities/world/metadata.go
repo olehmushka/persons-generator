@@ -2,12 +2,15 @@ package world
 
 import (
 	"encoding/json"
+	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/religion"
+	"time"
 )
 
 type metadata struct {
+	Timestamp        string                         `json:"timestamp"`
 	Size             int                            `json:"size"`
 	Year             int                            `json:"year"`
 	Cultures         []*culture.SerializedCulture   `json:"cultures"`
@@ -30,6 +33,7 @@ func newMetadata(w *World) *metadata {
 	}
 
 	return &metadata{
+		Timestamp:        tools.SerializeTime(time.Now()),
 		Size:             w.Size,
 		Year:             w.Year,
 		Cultures:         cultures,

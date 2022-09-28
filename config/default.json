@@ -6,7 +6,9 @@
     "storageFolder": "tmp"
   },
   "redis": {
-    "addr": "localhost:6379",
+    "url": "redis://localhost:6379",
+    "username": "",
+    "password": "",
     "channels": {
       "runAndSaveWorld": {
         "name": "run_and_save_world",

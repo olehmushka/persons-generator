@@ -167,3 +167,10 @@ type GetWorldPersonsResponse struct {
 }
 
 type Person struct{}
+
+type GetWorldProgressResponse struct {
+	Year           int     `json:"year"`
+	Population     int     `json:"population"`
+	DeadPopulation int     `json:"dead_population"`
+	Progress       float64 `json:"progress"`
+}

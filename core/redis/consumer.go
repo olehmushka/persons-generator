@@ -3,10 +3,12 @@ package redis
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"os/signal"
 	"persons_generator/config"
 	ctxTools "persons_generator/core/context"
+	"persons_generator/core/wrapped_error"
 	"sync"
 	"syscall"
 
@@ -21,10 +23,20 @@ type consumer struct {
 	concurrency int
 }
 
-func NewConsumer(cfg *config.Config, ch string, handler HandlerFunc, concurrency int) Consumer {
-	client := redis.NewClient(&redis.Options{
-		Addr: cfg.Redis.Addr,
-	})
+func NewConsumer(cfg *config.Config, ch string, handler HandlerFunc, concurrency int) (Consumer, error) {
+	opts, err := redis.ParseURL(cfg.Redis.URL)
+	if err != nil {
+		fmt.Printf("\n\nerr:=%+v\n\n\n\n\n\n", err)
+		return nil, wrapped_error.NewInternalServerError(err, "parsing redis url error for consumer")
+	}
+	if username := cfg.Redis.Username; username != "" {
+		opts.Username = username
+	}
+	if password := cfg.Redis.Password; password != "" {
+		opts.Password = password
+	}
+
+	client := redis.NewClient(opts)
 	if concurrency < 1 {
 		concurrency = 1
 	}
@@ -34,7 +46,7 @@ func NewConsumer(cfg *config.Config, ch string, handler HandlerFunc, concurrency
 		ch:          ch,
 		handler:     handler,
 		concurrency: concurrency,
-	}
+	}, nil
 }
 
 func (c *consumer) Consume(ctx context.Context) {
@@ -49,7 +61,7 @@ func (c *consumer) Consume(ctx context.Context) {
 	defer wg.Wait()
 
 	for i := 0; i < c.concurrency; i++ {
-		go c.worker(ctxRedis, wg)
+		go c.worker(ctxRedis, i, wg)
 	}
 	log.Info("consumer up and running...")
 
@@ -69,18 +81,20 @@ func (c *consumer) Consume(ctx context.Context) {
 	}
 }
 
-func (c *consumer) worker(ctx context.Context, wg *sync.WaitGroup) {
+func (c *consumer) worker(ctx context.Context, n int, wg *sync.WaitGroup) {
 	log := logrus.New().WithFields(logrus.Fields{
-		"channel": c.ch,
-		"fn":      "worker",
+		"channel":   c.ch,
+		"fn":        "worker",
+		"worker_no": n,
 	})
-	log.Info("worker was started")
+	log.Info("worker was started...")
 	defer log.Info("worker was stopped")
 	defer wg.Done()
 
 	s := c.client.Subscribe(ctx, c.ch)
 	var errCount int
 	for {
+		log.Info("message received...")
 		msg, err := s.ReceiveMessage(ctx)
 		if err != nil {
 			errCount++
@@ -110,6 +124,7 @@ func (c *consumer) worker(ctx context.Context, wg *sync.WaitGroup) {
 				return
 			}
 		}
+		log.Info("message processed...")
 	}
 }
 

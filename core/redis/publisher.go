@@ -18,14 +18,22 @@ type publisher struct {
 	client *redis.Client
 }
 
-func NewPublisher(cfg *config.Config) Publisher {
-	client := redis.NewClient(&redis.Options{
-		Addr: cfg.Redis.Addr,
-	})
+func NewPublisher(cfg *config.Config) (Publisher, error) {
+	opts, err := redis.ParseURL(cfg.Redis.URL)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "parsing redis url error for publisher")
+	}
+	if username := cfg.Redis.Username; username != "" {
+		opts.Username = username
+	}
+	if password := cfg.Redis.Password; password != "" {
+		opts.Password = password
+	}
 
+	client := redis.NewClient(opts)
 	return &publisher{
 		client: client,
-	}
+	}, nil
 }
 
 var PublisherModule = fx.Options(

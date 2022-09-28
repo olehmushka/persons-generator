@@ -9,4 +9,6 @@ import (
 
 type Adapter interface {
 	CreateWorld(ctx context.Context, amount, maleAmount, femaleAmount int, religionCultureRels map[uuid.UUID]uuid.UUID) (*world.World, error)
+	RunAndSaveWorld(w *world.World, stopYear int) error
+	GetWorldRunningProgress(worldID uuid.UUID) (world.ProgressRunWorld, error)
 }

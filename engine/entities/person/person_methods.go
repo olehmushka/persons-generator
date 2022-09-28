@@ -308,11 +308,11 @@ func (p *Person) DoesWantBeMarried(partner *Person, distance coordinate.ComplexD
 			value: sympathicCoef,
 		},
 		{
-			coef:  0.6,
+			coef:  0.3,
 			value: GetMarriageDistanceCoef(distance),
 		},
 		{
-			coef:  0.2,
+			coef:  0.5,
 			value: p.Metadata.WishGetMarriedCoef,
 		},
 	}

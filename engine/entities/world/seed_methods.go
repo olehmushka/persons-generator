@@ -21,6 +21,7 @@ func (w *World) seed() error {
 	if err := w.seedPopulation(); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not seed population")
 	}
+	w.seedDeathWorldLocations()
 
 	return nil
 }
@@ -32,6 +33,20 @@ func (w *World) seedLocations() {
 		w.Locations = append(w.Locations, make([]*location.Location, 0, size))
 		for x := 0; x < size; x++ {
 			w.Locations[y] = append(w.Locations[y], &location.Location{
+				Coordinate: &coordinate.Coordinate{X: x, Y: y},
+				Population: make([]*person.Person, 0),
+			})
+		}
+	}
+}
+
+func (w *World) seedDeathWorldLocations() {
+	size := w.Size
+	w.DeathWorldLocations = make([][]*location.Location, 0, size)
+	for y := 0; y < size; y++ {
+		w.DeathWorldLocations = append(w.Locations, make([]*location.Location, 0, size))
+		for x := 0; x < size; x++ {
+			w.DeathWorldLocations[y] = append(w.DeathWorldLocations[y], &location.Location{
 				Coordinate: &coordinate.Coordinate{X: x, Y: y},
 				Population: make([]*person.Person, 0),
 			})

@@ -56,6 +56,7 @@ func (s *server) Register() {
 	router.Post("/api/religions", http_server_tools.NewHandlesChain(s.handlers.CreateReligions))
 	router.Post("/api/world", http_server_tools.NewHandlesChain(s.handlers.CreateWorld))
 	router.Get("/api/persons", http_server_tools.NewHandlesChain(s.handlers.GetWorldPersons))
+	router.Get("/api/world/progress", http_server_tools.NewHandlesChain(s.handlers.GetWorldProgress))
 
 	srv := &http.Server{
 		Addr:              s.address,

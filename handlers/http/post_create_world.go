@@ -33,18 +33,14 @@ func (h *handlers) CreateWorld(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	world, err := h.worldSrv.CreateWorld(ctx, amount, maleAmount, femaleAmount, religionCultureRels)
+	worldID, err := h.worldSrv.CreateWorld(ctx, amount, maleAmount, femaleAmount, religionCultureRels)
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return
 	}
-	if world == nil {
-		http_server_tools.SendErrorResp(ctx, w, wrapped_error.NewInternalServerError(nil, "can not create world"))
-		return
-	}
 
 	respJSON, err := json.Marshal(CreateWorldPersonsResponse{
-		WorldID: world.ID,
+		WorldID: worldID,
 	})
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)

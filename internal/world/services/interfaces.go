@@ -2,11 +2,15 @@ package services
 
 import (
 	"context"
-	"persons_generator/internal/world/entities"
+	engineWorld "persons_generator/engine/entities/world"
+	"persons_generator/internal/world/adapters/mq"
 
 	"github.com/google/uuid"
 )
 
 type World interface {
-	CreateWorld(ctx context.Context, amount, maleAmount, femaleAmount int, religionCultureRels map[uuid.UUID]uuid.UUID) (*entities.World, error)
+	CreateWorld(context.Context, int, int, int, map[uuid.UUID]uuid.UUID) (uuid.UUID, error)
+	RunAndSaveWorld(context.Context, []byte) error
+	GetWorldRunningProgress(worldID uuid.UUID) (engineWorld.ProgressRunWorld, error)
+	ParseRunAndSaveWorldMsg(context.Context, []byte) (mq.RunAndSaveWorldPayload, error)
 }

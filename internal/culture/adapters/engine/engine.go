@@ -20,6 +20,9 @@ type adapter struct {
 func New(cfg *config.Config) (Adapter, error) {
 	e, err := orchestrator.New(orchestrator.Config{
 		StorageFolderName: cfg.JSONStorage.StorageFolder,
+		RedisURL:          cfg.Redis.URL,
+		RedisUsername:     cfg.Redis.Username,
+		RedisPassword:     cfg.Redis.Password,
 	})
 	if err != nil {
 		return nil, err

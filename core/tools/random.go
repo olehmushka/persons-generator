@@ -10,6 +10,10 @@ func RandomValueOfSlice[T interface{}](randSrc func(float64) (float64, error), s
 	if len(sl) == 0 {
 		return zero, nil
 	}
+	if len(sl) == 1 {
+		return sl[0], nil
+	}
+
 	r, err := randSrc(1)
 	if err != nil {
 		return zero, wrapped_error.NewInternalServerError(err, "can not get random value from slice")

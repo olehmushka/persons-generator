@@ -9,3 +9,7 @@ func NewInternalServerError(err error, msg string) error {
 func NewBadRequestError(err error, msg string) error {
 	return New(http.StatusBadRequest, err, msg)
 }
+
+func NewNotFoundError(err error, msg string) error {
+	return New(http.StatusNotFound, err, msg)
+}

@@ -9,6 +9,8 @@ import (
 	"persons_generator/engine/entities/person"
 	"persons_generator/engine/entities/religion"
 	pm "persons_generator/engine/probability_machine"
+
+	"github.com/google/uuid"
 )
 
 func (w *World) preparePreference(in *Preference) (*Preference, error) {
@@ -119,9 +121,10 @@ func (w *World) GetPersons() []*person.Person {
 }
 
 type ProgressRunWorld struct {
-	Year       int
-	Population int
-	Progress   float64
+	Year           int     `json:"year"`
+	Population     int     `json:"population"`
+	DeadPopulation int     `json:"dead_population"`
+	Progress       float64 `json:"progress"`
 }
 
 func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh chan error) {
@@ -135,9 +138,10 @@ func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh c
 			return
 		}
 		progressCh <- ProgressRunWorld{
-			Year:       year,
-			Population: w.populationNumber,
-			Progress:   100 * (float64(year) / float64(stopYear)),
+			Year:           year,
+			Population:     w.populationNumber,
+			DeadPopulation: w.deadPopulationNumber,
+			Progress:       100 * (float64(year) / float64(stopYear)),
 		}
 		if w.Year == stopYear {
 			break
@@ -162,6 +166,10 @@ func (w *World) RunYear() error {
 				}
 			}
 		}
+	}
+
+	if err := w.collectDeadPopulation(); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not collect dead population")
 	}
 
 	return nil
@@ -295,4 +303,82 @@ func (w *World) seekPartners(p *person.Person, c *coordinate.Coordinate) ([]*per
 	}
 
 	return partners, nil
+}
+
+func (w *World) moveDeadPersonToDeathWorld(p *person.Person, c *coordinate.Coordinate) error {
+	if p == nil {
+		return wrapped_error.NewInternalServerError(nil, "can not move <nil> person to death world")
+	}
+	w.DeathWorldLocations[c.Y][c.X].Population = append(w.DeathWorldLocations[c.Y][c.X].Population, p)
+	w.populationNumber--
+
+	return nil
+}
+
+func (w *World) removeDeadPersonFromWorld(p *person.Person, c *coordinate.Coordinate) error {
+	if p == nil {
+		return wrapped_error.NewInternalServerError(nil, "can not move <nil> person to death world")
+	}
+
+	populations := make([]*person.Person, 0, len(w.Locations[c.Y][c.X].Population))
+	for i := range w.Locations[c.Y][c.X].Population {
+		if w.Locations[c.Y][c.X].Population[i].ID != p.ID {
+			populations = append(populations, w.Locations[c.Y][c.X].Population[i])
+		}
+	}
+	w.Locations[c.Y][c.X].Population = populations
+
+	return nil
+}
+
+func (w *World) collectDeadPopulation() error {
+	dead := make(map[uuid.UUID]*coordinate.Coordinate, 100)
+	for y := 0; y < w.Size; y++ {
+		for x := 0; x < w.Size; x++ {
+			if w.Locations[y][x] == nil {
+				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not run year for <nil> location (x: %d, y: %d)", x, y))
+			}
+
+			for i := range w.Locations[y][x].Population {
+				p := w.Locations[y][x].Population[i]
+				c := w.Locations[y][x].Coordinate
+				isDead, err := p.IsDead()
+				if err != nil {
+					return wrapped_error.NewInternalServerError(err, "can not check if person is dead")
+				}
+				if isDead {
+					dead[p.ID] = c
+				}
+			}
+		}
+	}
+
+	for pID, c := range dead {
+		if err := w.appendPersonToDeathWorld(pID, c); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (w *World) appendPersonToDeathWorld(pID uuid.UUID, c *coordinate.Coordinate) error {
+	var p *person.Person
+	for i := range w.Locations[c.Y][c.X].Population {
+		p = w.Locations[c.Y][c.X].Population[i]
+	}
+
+	w.DeathWorldLocations[c.Y][c.X].Population = append(w.DeathWorldLocations[c.Y][c.X].Population, p)
+	w.populationNumber--
+	w.deadPopulationNumber++
+
+	populations := make([]*person.Person, 0, len(w.Locations[c.Y][c.X].Population))
+	for i := range w.Locations[c.Y][c.X].Population {
+		if w.Locations[c.Y][c.X].Population[i].ID != pID {
+			populations = append(populations, w.Locations[c.Y][c.X].Population[i])
+		}
+	}
+	w.Locations[c.Y][c.X].Population = populations
+
+	return nil
 }

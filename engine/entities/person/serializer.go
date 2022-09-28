@@ -1,23 +1,21 @@
 package person
 
 import (
-	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/person/human"
 	"persons_generator/engine/entities/person/traits"
-	"persons_generator/engine/entities/religion"
 
 	"github.com/google/uuid"
 )
 
 type SerializedPerson struct {
-	ID       uuid.UUID                    `json:"id"`
-	OwnName  string                       `json:"own_name"`
-	Culture  *culture.SerializedCulture   `json:"culture,omitempty"`
-	Religion *religion.SerializedReligion `json:"religion,omitempty"`
-	Human    *human.SerializedHuman       `json:"human"`
-	Traits   []string                     `json:"traits"`
-	Spouces  []uuid.UUID                  `json:"spouces"`
-	IsAlive  bool                         `json:"is_alive"`
+	ID         uuid.UUID              `json:"id"`
+	OwnName    string                 `json:"own_name"`
+	CultureID  uuid.UUID              `json:"culture_id,omitempty"`
+	ReligionID uuid.UUID              `json:"religion_id,omitempty"`
+	Human      *human.SerializedHuman `json:"human"`
+	Traits     []string               `json:"traits"`
+	Spouces    []uuid.UUID            `json:"spouces"`
+	DeathYear  int                    `json:"death_year"`
 }
 
 func (p *Person) Serialize() *SerializedPerson {
@@ -30,13 +28,13 @@ func (p *Person) Serialize() *SerializedPerson {
 	}
 
 	return &SerializedPerson{
-		ID:       p.ID,
-		OwnName:  p.OwnName,
-		Culture:  p.Culture.Serialize(),
-		Religion: p.Religion.Serialize(),
-		Human:    p.Human.Serialize(),
-		Traits:   traits.ExtractTraitNames(p.Traits),
-		Spouces:  spouces,
-		IsAlive:  p.Chronology.DeathYear == -1,
+		ID:         p.ID,
+		OwnName:    p.OwnName,
+		CultureID:  p.Culture.ID,
+		ReligionID: p.Religion.ID,
+		Human:      p.Human.Serialize(),
+		Traits:     traits.ExtractTraitNames(p.Traits),
+		Spouces:    spouces,
+		DeathYear:  p.Chronology.DeathYear,
 	}
 }

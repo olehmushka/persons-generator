@@ -4,6 +4,7 @@ import (
 	"context"
 	"persons_generator/config"
 	"persons_generator/core/redis"
+	"persons_generator/core/wrapped_error"
 	mqRunAndSaveWorld "persons_generator/handlers/mq/mq_run_and_save_world"
 
 	"go.uber.org/fx"
@@ -17,20 +18,24 @@ func New(
 	lc fx.Lifecycle,
 	cfg *config.Config,
 	handler mqRunAndSaveWorld.RunAndSaveWorld,
-) RunAndSaveWorldConsumer {
+) (RunAndSaveWorldConsumer, error) {
+	driver, err := redis.NewConsumer(
+		cfg,
+		cfg.Redis.Channels.RunAndSaveWorld.Name,
+		handler.ProcessRunAndSaveWorld,
+		cfg.Redis.Channels.RunAndSaveWorld.ConsumerConcurrency,
+	)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not create consumer driver for run_and_save_world")
+	}
 	c := &consumer{
-		driver: redis.NewConsumer(
-			cfg,
-			cfg.Redis.Channels.RunAndSaveWorld.Name,
-			handler.ProcessRunAndSaveWorld,
-			cfg.Redis.Channels.RunAndSaveWorld.ConsumerConcurrency,
-		),
+		driver: driver,
 	}
 	lc.Append(fx.Hook{OnStop: func(context.Context) error {
 		return c.driver.GetClient().Close()
 	}})
 
-	return c
+	return c, nil
 }
 
 var Module = fx.Options(

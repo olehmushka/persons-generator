@@ -2,21 +2,11 @@ package orchestrator
 
 import (
 	"errors"
-	"fmt"
 
 	"persons_generator/engine/entities/culture"
 
 	"github.com/google/uuid"
 )
-
-func (o *Orchestrator) ShowCultures() {
-	fmt.Println()
-	for _, c := range o.cultures {
-		c.Print()
-	}
-	o.w.PrintLocationCultures()
-	fmt.Println()
-}
 
 func (o *Orchestrator) CreateCultures(amount int, preferred []*culture.Preference) ([]*culture.Culture, error) {
 	return culture.NewMany(culture.Config{StorageFolderName: o.storageFolderName}, amount, preferred)

@@ -21,6 +21,7 @@ type World struct {
 	MaxDistanceValue          float64
 	Year                      int
 	Locations                 [][]*location.Location
+	DeathWorldLocations       [][]*location.Location
 	Cultures                  []*culture.Culture
 	Religions                 []*religion.Religion
 	CultureReligionReferences []*religion.CultureReference
@@ -30,7 +31,8 @@ type World struct {
 	defaultMalePercentage   float64
 	defaultFemalePercentage float64
 
-	populationNumber int
+	populationNumber     int
+	deadPopulationNumber int
 }
 
 func New(
@@ -133,6 +135,17 @@ func (w *World) Save() error {
 				}
 				locFilename := fmt.Sprintf("%s/loc_%s_y%d_x%d.json", dirname, w.ID.String(), y, x)
 				if err := storage.Store(locFilename, l); err != nil {
+					errCh <- err
+					return
+				}
+
+				dl, err := w.Locations[y][x].Marshal()
+				if err != nil {
+					errCh <- wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not save loc (x: %d, y: %d)", x, y))
+					return
+				}
+				deadLocFilename := fmt.Sprintf("%s/dloc_%s_y%d_x%d.json", dirname, w.ID.String(), y, x)
+				if err := storage.Store(deadLocFilename, dl); err != nil {
 					errCh <- err
 					return
 				}

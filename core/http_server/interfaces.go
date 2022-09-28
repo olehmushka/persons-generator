@@ -18,4 +18,5 @@ type Handlers interface {
 	GetWorldPersons(w http.ResponseWriter, r *http.Request)
 
 	CreateWorld(w http.ResponseWriter, r *http.Request)
+	GetWorldProgress(w http.ResponseWriter, r *http.Request)
 }
