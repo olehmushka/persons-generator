@@ -19,14 +19,14 @@ type Location struct {
 	InitReligion *religion.Religion
 }
 
-type loc struct {
+type SerializedLocation struct {
 	Coordinate *coordinate.Coordinate     `json:"coordinate"`
 	Population []*person.SerializedPerson `json:"population"`
 	CultureID  uuid.UUID                  `json:"culture_id"`
 	ReligionID uuid.UUID                  `json:"religion_id"`
 }
 
-func newLoc(in *Location) *loc {
+func NewSerializedLocation(in *Location) *SerializedLocation {
 	if in == nil {
 		return nil
 	}
@@ -36,7 +36,7 @@ func newLoc(in *Location) *loc {
 		population[i] = in.Population[i].Serialize()
 	}
 
-	return &loc{
+	return &SerializedLocation{
 		Coordinate: in.Coordinate,
 		Population: population,
 		CultureID:  in.InitCulture.ID,
@@ -44,7 +44,7 @@ func newLoc(in *Location) *loc {
 	}
 }
 
-func (l *loc) Marshal() ([]byte, error) {
+func (l *SerializedLocation) Marshal() ([]byte, error) {
 	if l == nil {
 		return nil, wrapped_error.NewInternalServerError(nil, "can not marshal <nil> loc")
 	}
@@ -62,5 +62,5 @@ func (l *Location) Marshal() ([]byte, error) {
 		return nil, wrapped_error.NewInternalServerError(nil, "can not marshal <nil> location")
 	}
 
-	return newLoc(l).Marshal()
+	return NewSerializedLocation(l).Marshal()
 }

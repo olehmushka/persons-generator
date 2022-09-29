@@ -1,9 +1,9 @@
 package cli
 
 import (
+	"encoding/json"
 	"fmt"
 	"persons_generator/engine/entities/religion"
-	"persons_generator/engine/entities/world"
 	"persons_generator/engine/orchestrator"
 )
 
@@ -25,24 +25,36 @@ func runGenerateWorldCommand() error {
 	if err != nil {
 		return err
 	}
-	w, err := o.CreateWorld(10, c, []*religion.Religion{r}, []*religion.CultureReference{{
+	w, err := o.CreateWorld(5, c, []*religion.Religion{r}, []*religion.CultureReference{{
 		Religion: r,
 		Culture:  c[0],
 	}})
 	if err != nil {
 		return err
 	}
-	if err := o.RunAndSaveWorld(w, 200); err != nil {
+	if err := o.RunAndSaveWorld(w, 150); err != nil {
 		return err
 	}
-	ps, err := w.QueryPerson(world.QueryPersonsOpts{PersonsCount: 10})
+	persons, err := o.QueryPersons(w.ID, orchestrator.PersonsQuery{})
 	if err != nil {
 		return err
 	}
-	fmt.Printf("count = %d\n\n", len(ps))
-	for _, p := range ps {
-		p.Print()
+	for i, p := range persons {
+		b, err := json.Marshal(p)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("#%d\n%s\n\n", i, string(b))
 	}
+	fmt.Printf("count = %d\n\n", len(persons))
+	// ps, err := w.QueryPerson(world.QueryPersonsOpts{PersonsCount: 10})
+	// if err != nil {
+	// 	return err
+	// }
+	// fmt.Printf("count = %d\n\n", len(ps))
+	// for _, p := range ps {
+	// 	p.Print()
+	// }
 
 	return nil
 }

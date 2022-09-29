@@ -105,7 +105,7 @@ func (w *World) Save(duration time.Duration) error {
 	}
 
 	storage := js.New(js.Config{StorageFolderName: w.storageFolderName})
-	dirname := fmt.Sprintf("world_%s", w.ID.String())
+	dirname := GetDirname(w.ID)
 	if err := storage.MkDir(dirname); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not create dir for the world")
 	}
@@ -173,6 +173,10 @@ func (w *World) Save(duration time.Duration) error {
 	close(errCh)
 
 	return nil
+}
+
+func GetDirname(id uuid.UUID) string {
+	return fmt.Sprintf("world_%s", id.String())
 }
 
 func ReadByID(storageFolderName string, id uuid.UUID) (*World, error) {

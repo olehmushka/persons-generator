@@ -26,3 +26,12 @@ func StringToFloat64(in string) (float64, error) {
 
 	return out, nil
 }
+
+func StringToInt(in string) (int, error) {
+	out, err := strconv.Atoi(in)
+	if err != nil {
+		return 0, wrapped_error.NewInternalServerError(err, "can not convert string to int")
+	}
+
+	return out, nil
+}

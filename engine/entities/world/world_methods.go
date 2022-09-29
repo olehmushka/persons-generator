@@ -2,6 +2,7 @@ package world
 
 import (
 	"fmt"
+	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/coordinate"
@@ -9,6 +10,7 @@ import (
 	"persons_generator/engine/entities/person"
 	"persons_generator/engine/entities/religion"
 	pm "persons_generator/engine/probability_machine"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -393,4 +395,70 @@ func (w *World) GetPersonsSlotsPerLoc(c *coordinate.Coordinate) (int, error) {
 	}
 
 	return w.MaxPersonsNumberPerLoc - len(w.Locations[c.Y][c.X].Population), nil
+}
+
+func IsSaved(storageFolderName string, id uuid.UUID) bool {
+	return js.New(js.Config{StorageFolderName: storageFolderName}).IsDirExists(GetDirname(id))
+}
+
+type Filename struct {
+	Filename   string
+	IsAlive    bool
+	Coordinate *coordinate.Coordinate
+}
+
+func GetWorldDirFilenames(storageFolderName string, id uuid.UUID) ([]*Filename, error) {
+	if !IsSaved(storageFolderName, id) {
+		return nil, wrapped_error.NewNotFoundError(nil, "can not get world dir filenames")
+	}
+
+	dirname := GetDirname(id)
+	filenames, err := js.New(js.Config{StorageFolderName: storageFolderName}).GetDirInnerFilenames(dirname)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not get filenames by dirname (dirname=%s)", dirname))
+	}
+	out := make([]*Filename, 0, len(filenames))
+	for _, fn := range filenames {
+		filename, err := parseFilename(tools.RemoveExtensionFromFielname(fn))
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can not parse filename")
+		}
+		if filename == nil {
+			continue
+		}
+		out = append(out, filename)
+	}
+
+	return out, nil
+}
+
+func parseFilename(filename string) (*Filename, error) {
+	parts := strings.Split(filename, "_")
+	if len(parts) == 2 && parts[0] == "metadata" {
+		return nil, nil
+	}
+	if len(parts) != 4 {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("unexpected number of filename parts (filename=%s, parts=%d)", filename, len(parts)))
+	}
+	if len(parts[2]) < 2 {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("unexpected format of y part of filename parts (filename=%s, y-part=%s)", filename, parts[2]))
+	}
+	if len(parts[3]) < 2 {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("unexpected format of x part of filename parts (filename=%s, y-part=%s)", filename, parts[3]))
+	}
+
+	y, err := tools.StringToInt(parts[2][1:])
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not convert y to int (y=%s)", parts[2][1:]))
+	}
+	x, err := tools.StringToInt(parts[3][1:])
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not convert x to int (y=%s)", parts[3][1:]))
+	}
+
+	return &Filename{
+		Filename:   filename,
+		IsAlive:    parts[0] == "loc",
+		Coordinate: &coordinate.Coordinate{Y: y, X: x},
+	}, nil
 }

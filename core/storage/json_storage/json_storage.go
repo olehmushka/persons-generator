@@ -51,3 +51,23 @@ func (s *storage) MkDir(dirname string) error {
 	}
 	return nil
 }
+
+func (s *storage) IsDirExists(dirname string) bool {
+	_, err := os.Stat(s.getFullFilename(dirname))
+
+	return err == nil
+}
+
+func (s *storage) GetDirInnerFilenames(dirname string) ([]string, error) {
+	files, err := ioutil.ReadDir(fmt.Sprintf("%s/", s.getFullFilename(dirname)))
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not read from dir (dirname=%s)", dirname))
+	}
+
+	out := make([]string, len(files))
+	for i, file := range files {
+		out[i] = file.Name()
+	}
+
+	return out, nil
+}
