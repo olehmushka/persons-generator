@@ -40,14 +40,15 @@ func (o *Orchestrator) RunAndSaveWorld(w *world.World, stopYear int) error {
 		select {
 		case err := <-errCh:
 			if err != nil {
+				close(progressCh)
 				return err
 			}
 			isFinished = true
-			close(errCh)
 			break
 		case progress := <-progressCh:
 			bProgres, err := json.Marshal(progress)
 			if err != nil {
+				close(progressCh)
 				return wrapped_error.NewInternalServerError(err, "can not marshal progress before setting to redis")
 			}
 			if err := o.storage.Set(
@@ -56,12 +57,13 @@ func (o *Orchestrator) RunAndSaveWorld(w *world.World, stopYear int) error {
 				string(bProgres),
 				time.Hour,
 			); err != nil {
+				close(progressCh)
 				return wrapped_error.NewInternalServerError(err, "can not set world running progress")
 			}
-			// fmt.Printf("year: %d ; population: %d/%d ; progress: %f\n", progress.Year, progress.Population, progress.DeadPopulation, progress.Progress)
+
 			if progress.Progress == 100 {
 				isFinished = true
-				close(progressCh)
+
 				break
 			}
 		}
@@ -69,6 +71,7 @@ func (o *Orchestrator) RunAndSaveWorld(w *world.World, stopYear int) error {
 			break
 		}
 	}
+	close(progressCh)
 
 	return w.Save(time.Since(startDate))
 }

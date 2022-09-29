@@ -2,6 +2,7 @@ package world
 
 import (
 	"fmt"
+	"math"
 	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
@@ -143,7 +144,7 @@ func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh c
 			Year:           year + 1,
 			Population:     w.populationNumber,
 			DeadPopulation: w.deadPopulationNumber,
-			Progress:       100 * (float64(year) / float64(stopYear)),
+			Progress:       math.Ceil(100 * (float64(year) / float64(stopYear))),
 			Duration:       time.Since(now).String(),
 		}
 		if err := w.RunYear(); err != nil {
