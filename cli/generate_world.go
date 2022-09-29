@@ -10,7 +10,10 @@ import (
 const RunGenerateWorldCommand = "generate_world"
 
 func runGenerateWorldCommand() error {
-	o, err := orchestrator.New(orchestrator.Config{StorageFolderName: "tmp"})
+	o, err := orchestrator.New(orchestrator.Config{
+		StorageFolderName: "tmp",
+		RedisURL:          "redis://localhost:6379",
+	})
 	if err != nil {
 		return err
 	}

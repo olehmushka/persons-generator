@@ -29,13 +29,14 @@ var Module = fx.Options(
 
 func (s *world) CreateWorld(
 	ctx context.Context,
+	stopYear,
 	amount,
 	maleAmount,
 	femaleAmount int,
 	religionCultureRels map[uuid.UUID]uuid.UUID,
 ) (uuid.UUID, error) {
 	id := uuid.New()
-	if err := s.mqAdp.RunAndSaveWorld(ctx, id, amount, maleAmount, femaleAmount, religionCultureRels); err != nil {
+	if err := s.mqAdp.RunAndSaveWorld(ctx, id, stopYear, amount, maleAmount, femaleAmount, religionCultureRels); err != nil {
 		return uuid.UUID{}, err
 	}
 
@@ -52,7 +53,7 @@ func (s *world) RunAndSaveWorld(ctx context.Context, in []byte) error {
 		return wrapped_error.NewInternalServerError(err, "can not create world")
 	}
 	w.ID = payload.WorldID
-	if err := s.engineAdp.RunAndSaveWorld(w, 200); err != nil {
+	if err := s.engineAdp.RunAndSaveWorld(w, payload.StopYear); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not run and save world from the world")
 	}
 

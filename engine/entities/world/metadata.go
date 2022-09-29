@@ -10,15 +10,17 @@ import (
 )
 
 type metadata struct {
-	Timestamp        string                         `json:"timestamp"`
-	Size             int                            `json:"size"`
-	Year             int                            `json:"year"`
-	Cultures         []*culture.SerializedCulture   `json:"cultures"`
-	Religions        []*religion.SerializedReligion `json:"religions"`
-	PopulationNumber int                            `json:"population_number"`
+	Timestamp            string                         `json:"timestamp"`
+	Duration             string                         `json:"duration"`
+	Size                 int                            `json:"size"`
+	Year                 int                            `json:"year"`
+	Cultures             []*culture.SerializedCulture   `json:"cultures"`
+	Religions            []*religion.SerializedReligion `json:"religions"`
+	PopulationNumber     int                            `json:"population_number"`
+	DeadPopulationNumber int                            `json:"dead_population_number"`
 }
 
-func newMetadata(w *World) *metadata {
+func newMetadata(w *World, duration time.Duration) *metadata {
 	if w == nil {
 		return nil
 	}
@@ -33,12 +35,14 @@ func newMetadata(w *World) *metadata {
 	}
 
 	return &metadata{
-		Timestamp:        tools.SerializeTime(time.Now()),
-		Size:             w.Size,
-		Year:             w.Year,
-		Cultures:         cultures,
-		Religions:        religions,
-		PopulationNumber: w.populationNumber,
+		Timestamp:            tools.SerializeTime(time.Now()),
+		Duration:             duration.String(),
+		Size:                 w.Size,
+		Year:                 w.Year,
+		Cultures:             cultures,
+		Religions:            religions,
+		PopulationNumber:     w.populationNumber,
+		DeadPopulationNumber: w.deadPopulationNumber,
 	}
 }
 

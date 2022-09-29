@@ -93,23 +93,23 @@ func GetDeathCoef(age int) float64 {
 	case age < 3:
 		return 0.1
 	case age < 9:
-		return 0.05
+		return 0.01
 	case 9 < age && age <= 18:
 		return 0.001
 	case 18 < age && age <= 35:
-		return 0.005
+		return 0.003
 	case 35 < age && age <= 45:
-		return 0.01
+		return 0.005
 	case 45 < age && age <= 60:
-		return 0.025
+		return 0.01
 	case 60 < age && age <= 80:
-		return 0.03
+		return 0.025
 	case 80 < age && age <= 90:
-		return 0.15
+		return 0.1
 	case 90 < age && age <= 100:
-		return 0.2
+		return 0.15
 	case 100 < age && age <= 120:
-		return 0.5
+		return 0.3
 	case 120 < age:
 		return 0.99
 	}

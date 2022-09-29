@@ -33,7 +33,14 @@ func (h *handlers) CreateWorld(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	worldID, err := h.worldSrv.CreateWorld(ctx, amount, maleAmount, femaleAmount, religionCultureRels)
+	worldID, err := h.worldSrv.CreateWorld(
+		ctx,
+		req.StopYear,
+		amount,
+		maleAmount,
+		femaleAmount,
+		religionCultureRels,
+	)
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return

@@ -9,6 +9,7 @@ import (
 	"persons_generator/engine/entities/person"
 	"persons_generator/engine/entities/religion"
 	pm "persons_generator/engine/probability_machine"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -125,6 +126,7 @@ type ProgressRunWorld struct {
 	Population     int     `json:"population"`
 	DeadPopulation int     `json:"dead_population"`
 	Progress       float64 `json:"progress"`
+	Duration       string  `json:"duration"`
 }
 
 func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh chan error) {
@@ -132,17 +134,21 @@ func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh c
 		errCh <- wrapped_error.NewInternalServerError(nil, "can not run world for 0 or less stop year")
 		return
 	}
+
+	now := time.Now()
 	for year := 0; year < stopYear; year++ {
+		progressCh <- ProgressRunWorld{
+			Year:           year + 1,
+			Population:     w.populationNumber,
+			DeadPopulation: w.deadPopulationNumber,
+			Progress:       100 * (float64(year) / float64(stopYear)),
+			Duration:       time.Since(now).String(),
+		}
 		if err := w.RunYear(); err != nil {
 			errCh <- wrapped_error.NewInternalServerError(err, "can not run year in run world")
 			return
 		}
-		progressCh <- ProgressRunWorld{
-			Year:           year,
-			Population:     w.populationNumber,
-			DeadPopulation: w.deadPopulationNumber,
-			Progress:       100 * (float64(year) / float64(stopYear)),
-		}
+
 		if w.Year == stopYear {
 			break
 		}
@@ -176,16 +182,16 @@ func (w *World) RunYear() error {
 }
 
 func (w *World) AppendNewPopulation(people []*person.Person, c *coordinate.Coordinate) error {
-	for y := 0; y < w.Size; y++ {
-		for x := 0; x < w.Size; x++ {
-			if w.Locations[y][x] == nil {
-				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not append people into <nil> location (x: %d, y: %d)", x, y))
-			}
-
-			w.Locations[y][x].Population = append(w.Locations[y][x].Population, people...)
-			w.populationNumber += len(people)
-		}
+	availableSlots, err := w.GetPersonsSlotsPerLoc(c)
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not get number of available persons slots")
 	}
+	if availableSlots <= 0 {
+		return nil
+	}
+
+	w.Locations[c.Y][c.X].Population = append(w.Locations[c.Y][c.X].Population, people...)
+	w.populationNumber += len(people)
 
 	return nil
 }
@@ -217,6 +223,13 @@ func (w *World) runYearPerPerson(p *person.Person, c *coordinate.Coordinate) err
 	if age < 12 {
 		return p.TryDie(w.Year)
 	}
+	skip, err := pm.GetRandomBool(0.2)
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not generate skip year probability")
+	}
+	if skip {
+		return p.TryDie(w.Year)
+	}
 
 	isPregnant, err := p.IsPregnant()
 	if err != nil {
@@ -238,6 +251,14 @@ func (w *World) runYearPerPerson(p *person.Person, c *coordinate.Coordinate) err
 	}
 	if isMarried {
 		for _, s := range p.Spouces {
+			isSPregnant, err := s.IsPregnant()
+			if err != nil {
+				return wrapped_error.NewInternalServerError(err, "can not check if spounce is pregnant")
+			}
+			if isSPregnant {
+				continue
+			}
+
 			if err := p.HaveSex(s, w.Year); err != nil {
 				return wrapped_error.NewInternalServerError(err, "can not have sex with spounce")
 			}
@@ -245,6 +266,7 @@ func (w *World) runYearPerPerson(p *person.Person, c *coordinate.Coordinate) err
 
 		return p.TryDie(w.Year)
 	}
+
 	availablePartners, err := w.seekPartners(p, c)
 	if err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not get available partners")
@@ -291,7 +313,12 @@ func (w *World) seekPartners(p *person.Person, c *coordinate.Coordinate) ([]*per
 					continue
 				}
 
-				doesWantBeMarried, err := p.DoesWantBeMarried(el, coordinate.CalcComplexDistance(c, &coordinate.Coordinate{X: x, Y: y}, w.MaxDistanceValue))
+				doesWantBeMarried, err := p.DoesWantBeMarried(
+					el,
+					coordinate.CalcComplexDistance(c, &coordinate.Coordinate{X: x, Y: y}, w.MaxDistanceValue),
+					w.religionsSimilarity,
+					w.culturesSimilarity,
+				)
 				if err != nil {
 					return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not check does person can married with other person in <nil> location (x: %d, y: %d)", x, y))
 				}
@@ -303,32 +330,6 @@ func (w *World) seekPartners(p *person.Person, c *coordinate.Coordinate) ([]*per
 	}
 
 	return partners, nil
-}
-
-func (w *World) moveDeadPersonToDeathWorld(p *person.Person, c *coordinate.Coordinate) error {
-	if p == nil {
-		return wrapped_error.NewInternalServerError(nil, "can not move <nil> person to death world")
-	}
-	w.DeathWorldLocations[c.Y][c.X].Population = append(w.DeathWorldLocations[c.Y][c.X].Population, p)
-	w.populationNumber--
-
-	return nil
-}
-
-func (w *World) removeDeadPersonFromWorld(p *person.Person, c *coordinate.Coordinate) error {
-	if p == nil {
-		return wrapped_error.NewInternalServerError(nil, "can not move <nil> person to death world")
-	}
-
-	populations := make([]*person.Person, 0, len(w.Locations[c.Y][c.X].Population))
-	for i := range w.Locations[c.Y][c.X].Population {
-		if w.Locations[c.Y][c.X].Population[i].ID != p.ID {
-			populations = append(populations, w.Locations[c.Y][c.X].Population[i])
-		}
-	}
-	w.Locations[c.Y][c.X].Population = populations
-
-	return nil
 }
 
 func (w *World) collectDeadPopulation() error {
@@ -381,4 +382,15 @@ func (w *World) appendPersonToDeathWorld(pID uuid.UUID, c *coordinate.Coordinate
 	w.Locations[c.Y][c.X].Population = populations
 
 	return nil
+}
+
+func (w *World) GetPersonsSlotsPerLoc(c *coordinate.Coordinate) (int, error) {
+	if c == nil {
+		return 0, wrapped_error.NewInternalServerError(nil, "can not get persons slots per loc for <nil> coordinate")
+	}
+	if w.Locations[c.Y][c.X] == nil {
+		return 0, wrapped_error.NewInternalServerError(nil, "can not get persons slots per loc for <nil> location")
+	}
+
+	return w.MaxPersonsNumberPerLoc - len(w.Locations[c.Y][c.X].Population), nil
 }

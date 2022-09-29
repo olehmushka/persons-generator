@@ -32,6 +32,7 @@ func (o *Orchestrator) RunAndSaveWorld(w *world.World, stopYear int) error {
 	}
 
 	progressCh := make(chan world.ProgressRunWorld)
+	startDate := time.Now()
 	errCh := make(chan error)
 	var isFinished bool
 	go w.RunWorld(stopYear, progressCh, errCh)
@@ -69,7 +70,7 @@ func (o *Orchestrator) RunAndSaveWorld(w *world.World, stopYear int) error {
 		}
 	}
 
-	return w.Save()
+	return w.Save(time.Since(startDate))
 }
 
 func (o *Orchestrator) GetWorldRunningProgress(worldID uuid.UUID) (world.ProgressRunWorld, error) {

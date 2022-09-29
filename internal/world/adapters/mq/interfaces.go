@@ -7,6 +7,6 @@ import (
 )
 
 type Adapter interface {
-	RunAndSaveWorld(context.Context, uuid.UUID, int, int, int, map[uuid.UUID]uuid.UUID) error
+	RunAndSaveWorld(context.Context, uuid.UUID, int, int, int, int, map[uuid.UUID]uuid.UUID) error
 	ParseRunAndSaveWorldMsg(context.Context, []byte) (RunAndSaveWorldPayload, error)
 }

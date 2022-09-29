@@ -3,7 +3,6 @@ package redis
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"os"
 	"os/signal"
 	"persons_generator/config"
@@ -26,7 +25,6 @@ type consumer struct {
 func NewConsumer(cfg *config.Config, ch string, handler HandlerFunc, concurrency int) (Consumer, error) {
 	opts, err := redis.ParseURL(cfg.Redis.URL)
 	if err != nil {
-		fmt.Printf("\n\nerr:=%+v\n\n\n\n\n\n", err)
 		return nil, wrapped_error.NewInternalServerError(err, "parsing redis url error for consumer")
 	}
 	if username := cfg.Redis.Username; username != "" {

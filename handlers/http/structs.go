@@ -155,6 +155,7 @@ type CreateWorldPersonsRequest struct {
 	MalePersonsAmount       *int     `json:"male_persons_amount"`
 	FemalePersonsAmount     *int     `json:"female_persons_amount"`
 	CultureReligionIDsPairs []string `json:"culture_religion_ids_pairs"`
+	StopYear                int      `json:"stop_year" default:"200"`
 }
 
 type CreateWorldPersonsResponse struct {
@@ -173,4 +174,5 @@ type GetWorldProgressResponse struct {
 	Population     int     `json:"population"`
 	DeadPopulation int     `json:"dead_population"`
 	Progress       float64 `json:"progress"`
+	Duration       string  `json:"duration"`
 }

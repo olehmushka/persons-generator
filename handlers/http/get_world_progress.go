@@ -33,6 +33,7 @@ func (h *handlers) GetWorldProgress(w http.ResponseWriter, r *http.Request) {
 		Population:     progress.Population,
 		DeadPopulation: progress.DeadPopulation,
 		Progress:       progress.Progress,
+		Duration:       progress.Duration,
 	})
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)

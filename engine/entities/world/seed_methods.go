@@ -22,6 +22,9 @@ func (w *World) seed() error {
 		return wrapped_error.NewInternalServerError(err, "can not seed population")
 	}
 	w.seedDeathWorldLocations()
+	if err := w.seedSimilarities(); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not seed similarities")
+	}
 
 	return nil
 }
@@ -124,6 +127,41 @@ func (w *World) seedPopulation() error {
 			}
 		}
 	}
+
+	return nil
+}
+
+func (w *World) seedSimilarities() error {
+	if len(w.Cultures) == 0 {
+		return wrapped_error.NewInternalServerError(nil, "can not seed similarities for empty cultures")
+	}
+	if len(w.Religions) == 0 {
+		return wrapped_error.NewInternalServerError(nil, "can not seed similarities for empty religions")
+	}
+
+	religionSimilarities := make(map[string]float64, len(w.Religions)*len(w.Religions))
+	for _, r1 := range w.Religions {
+		for _, r2 := range w.Religions {
+			religionSimilarityCoef, err := religion.GetReligionSimilarityCoef(r1, r2)
+			if err != nil {
+				return wrapped_error.NewInternalServerError(err, "can not get religion similarity coef")
+			}
+			religionSimilarities[fmt.Sprintf("%s:%s", r1.ID.String(), r2.ID.String())] = religionSimilarityCoef
+		}
+	}
+	w.religionsSimilarity = religionSimilarities
+
+	cultureSimilarities := make(map[string]float64, len(w.Cultures)*len(w.Cultures))
+	for _, c1 := range w.Cultures {
+		for _, c2 := range w.Cultures {
+			cultureSimilarityCoef, err := culture.GetCultureSimilarityCoef(c1, c2)
+			if err != nil {
+				return wrapped_error.NewInternalServerError(err, "can not get culture similarity coef")
+			}
+			cultureSimilarities[fmt.Sprintf("%s:%s", c1.ID.String(), c2.ID.String())] = cultureSimilarityCoef
+		}
+	}
+	w.culturesSimilarity = cultureSimilarities
 
 	return nil
 }

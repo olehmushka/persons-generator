@@ -5,11 +5,9 @@ import (
 	"fmt"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/coordinate"
-	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/person/human"
 	"persons_generator/engine/entities/person/traits"
-	"persons_generator/engine/entities/religion"
 	pm "persons_generator/engine/probability_machine"
 )
 
@@ -175,7 +173,7 @@ func (p *Person) GiveBirth(year int) ([]*Person, error) {
 
 // Checker methods
 
-func (p *Person) GetSympathicCoef(partner *Person) (float64, error) {
+func (p *Person) GetSympathicCoef(partner *Person, religionsSimilarity, culturesSimilarity map[string]float64) (float64, error) {
 	if p == nil {
 		return 0, wrapped_error.NewInternalServerError(nil, "<nil> can not check if someone is sympathic for person")
 	}
@@ -183,13 +181,13 @@ func (p *Person) GetSympathicCoef(partner *Person) (float64, error) {
 		return 0, wrapped_error.NewInternalServerError(nil, "can not check if <nil> peron is sympathic")
 	}
 
-	religionSimilarityCoef, err := religion.GetReligionSimilarityCoef(p.Religion, partner.Religion)
-	if err != nil {
-		return 0, wrapped_error.NewInternalServerError(err, "can not get religion similarity coef")
+	religionSimilarityCoef, ok := religionsSimilarity[fmt.Sprintf("%s:%s", p.Religion.ID.String(), partner.Religion.ID.String())]
+	if !ok {
+		return 0, wrapped_error.NewInternalServerError(nil, "can not find religion similarity coef")
 	}
-	cultureSimilarityCoef, err := culture.GetCultureSimilarityCoef(p.Culture, partner.Culture)
-	if err != nil {
-		return 0, wrapped_error.NewInternalServerError(err, "can not get culture similarity coef")
+	cultureSimilarityCoef, ok := culturesSimilarity[fmt.Sprintf("%s:%s", p.Culture.ID.String(), partner.Culture.ID.String())]
+	if !ok {
+		return 0, wrapped_error.NewInternalServerError(nil, "can not find culture similarity coef")
 	}
 
 	coefs := []struct {
@@ -284,16 +282,22 @@ func (p *Person) CanBePartners(partner *Person) (bool, error) {
 	return false, nil
 }
 
-func (p *Person) DoesWantBeMarried(partner *Person, distance coordinate.ComplexDistance) (bool, error) {
+func (p *Person) DoesWantBeMarried(partner *Person, distance coordinate.ComplexDistance, religionsSimilarity, culturesSimilarity map[string]float64) (bool, error) {
 	canBePartners, err := p.CanBePartners(partner)
 	if err != nil {
 		return false, wrapped_error.NewInternalServerError(err, "can not check if can be partners for does_want_be_married method")
+	}
+	if len(religionsSimilarity) == 0 {
+		return false, wrapped_error.NewInternalServerError(err, "can not check if can be partners for religions_similarity is empty")
+	}
+	if len(culturesSimilarity) == 0 {
+		return false, wrapped_error.NewInternalServerError(err, "can not check if can be partners for cultures_similarity is empty")
 	}
 	if !canBePartners {
 		return false, nil
 	}
 
-	sympathicCoef, err := p.GetSympathicCoef(partner)
+	sympathicCoef, err := p.GetSympathicCoef(partner, religionsSimilarity, culturesSimilarity)
 	if err != nil {
 		return false, wrapped_error.NewInternalServerError(err, "can not get sympathic coef for does_want_be_married method")
 	}
@@ -399,8 +403,7 @@ func (p *Person) AppendTrait(t *traits.Trait) error {
 		return wrapped_error.NewInternalServerError(nil, "can not appent trait into <nil>")
 	}
 
-	p.Traits = append(p.Traits, t)
-	p.Traits = traits.Unique(p.Traits)
+	p.Traits = traits.Unique(append(p.Traits, t))
 
 	return nil
 }

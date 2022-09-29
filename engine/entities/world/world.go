@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 	"sync"
+	"time"
 
 	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/wrapped_error"
@@ -18,6 +19,7 @@ import (
 type World struct {
 	ID                        uuid.UUID
 	Size                      int
+	MaxPersonsNumberPerLoc    int
 	MaxDistanceValue          float64
 	Year                      int
 	Locations                 [][]*location.Location
@@ -33,6 +35,8 @@ type World struct {
 
 	populationNumber     int
 	deadPopulationNumber int
+	religionsSimilarity  map[string]float64
+	culturesSimilarity   map[string]float64
 }
 
 func New(
@@ -50,6 +54,7 @@ func New(
 		Cultures:                  cultures,
 		Religions:                 religions,
 		CultureReligionReferences: refs,
+		MaxPersonsNumberPerLoc:    750,
 
 		storageFolderName:       cfg.StorageFolderName,
 		defaultHumanAmount:      cfg.DefaultHumanAmount,
@@ -94,7 +99,7 @@ func NewByPreferred(cfg Config, preferred *Preference) (*World, error) {
 	return w, nil
 }
 
-func (w *World) Save() error {
+func (w *World) Save(duration time.Duration) error {
 	if w == nil {
 		return wrapped_error.NewInternalServerError(nil, "can not save nil world")
 	}
@@ -105,7 +110,7 @@ func (w *World) Save() error {
 		return wrapped_error.NewInternalServerError(err, "can not create dir for the world")
 	}
 
-	m, err := newMetadata(w).Marshal()
+	m, err := newMetadata(w, duration).Marshal()
 	if err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not marshal metadata for the world")
 	}

@@ -9,7 +9,7 @@ import (
 )
 
 type World interface {
-	CreateWorld(context.Context, int, int, int, map[uuid.UUID]uuid.UUID) (uuid.UUID, error)
+	CreateWorld(context.Context, int, int, int, int, map[uuid.UUID]uuid.UUID) (uuid.UUID, error)
 	RunAndSaveWorld(context.Context, []byte) error
 	GetWorldRunningProgress(worldID uuid.UUID) (engineWorld.ProgressRunWorld, error)
 	ParseRunAndSaveWorldMsg(context.Context, []byte) (mq.RunAndSaveWorldPayload, error)

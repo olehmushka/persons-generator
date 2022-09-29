@@ -27,13 +27,15 @@ var Module = fx.Options(
 func (a *adapter) RunAndSaveWorld(
 	ctx context.Context,
 	worldID uuid.UUID,
-	amount int,
-	maleAmount int,
+	stopYear,
+	amount,
+	maleAmount,
 	femaleAmount int,
 	religionCultureRels map[uuid.UUID]uuid.UUID,
 ) error {
 	b, err := json.Marshal(RunAndSaveWorldPayload{
 		WorldID:             worldID,
+		StopYear:            stopYear,
 		Amount:              amount,
 		MaleAmount:          maleAmount,
 		FemaleAmount:        femaleAmount,
