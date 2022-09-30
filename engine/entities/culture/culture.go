@@ -17,17 +17,17 @@ import (
 )
 
 type Culture struct {
-	ID    uuid.UUID  `json:"id"`
-	Proto []*Culture `json:"proto"`
-	Name  string     `json:"name"`
+	ID    uuid.UUID  `json:"id" bson:"id"`
+	Proto []*Culture `json:"proto" bson:"proto,omitempty"`
+	Name  string     `json:"name" bson:"name"`
 
-	Abstuct         *AbstructCulture   `json:"abstract"`
-	Root            *Root              `json:"root"`
-	Language        *language.Language `json:"language"`
-	Ethos           *Ethos             `json:"ethos"`
-	Traditions      []*Tradition       `json:"traditions"`
-	GenderDominance *g.Dominance       `json:"gender_dominance"`
-	MartialCustom   g.Acceptance       `json:"martial_custom"`
+	Abstuct         *AbstructCulture   `json:"abstract" bson:"abstract,omitempty"`
+	Root            *Root              `json:"root" bson:"root,omitempty"`
+	Language        *language.Language `json:"language" bson:"language,omitempty"`
+	Ethos           *Ethos             `json:"ethos" bson:"ethos,omitempty"`
+	Traditions      []*Tradition       `json:"traditions" bson:"traditions"`
+	GenderDominance *g.Dominance       `json:"gender_dominance" bson:"gender_dominance"`
+	MartialCustom   g.Acceptance       `json:"martial_custom" bson:"martial_custom"`
 
 	storageFolderName string
 }

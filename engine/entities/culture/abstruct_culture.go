@@ -6,8 +6,8 @@ import (
 )
 
 type AbstructCulture struct {
-	Name string `json:"name"`
-	Root *Root  `json:"root"`
+	Name string `json:"name" bson:"name"`
+	Root *Root  `json:"root" bson:"root"`
 }
 
 func (c *AbstructCulture) IsZero() bool {

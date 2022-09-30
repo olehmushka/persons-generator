@@ -8,13 +8,13 @@ import (
 )
 
 type Ethos struct {
-	Name string `json:"name"`
+	Name string `json:"name" bson:"name"`
 
-	IsDiplomatic     bool `json:"is_diplomatic"`
-	IsWarlike        bool `json:"is_warlike"`
-	IsAdministrative bool `json:"is_administrative"`
-	IsIntrigue       bool `json:"is_intrigue"`
-	IsScholarly      bool `json:"is_scholarly"`
+	IsDiplomatic     bool `json:"is_diplomatic" bson:"is_diplomatic"`
+	IsWarlike        bool `json:"is_warlike" bson:"is_warlike"`
+	IsAdministrative bool `json:"is_administrative" bson:"is_administrative"`
+	IsIntrigue       bool `json:"is_intrigue" bson:"is_intrigue"`
+	IsScholarly      bool `json:"is_scholarly" bson:"is_scholarly"`
 }
 
 func (e *Ethos) IsZero() bool {

@@ -5,6 +5,13 @@
   "jsonStorage": {
     "storageFolder": "tmp"
   },
+  "mongoDb": {
+    "url": "mongodb://localhost:27017",
+    "dbName": "persons_generator_db",
+    "username": "root",
+    "password": "rootPassword",
+    "maxBulkItemsSize": 500
+  },
   "redis": {
     "url": "redis://localhost:6379",
     "username": "",

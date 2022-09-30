@@ -23,6 +23,12 @@ func New(cfg *config.Config) (Adapter, error) {
 		RedisURL:          cfg.Redis.URL,
 		RedisUsername:     cfg.Redis.Username,
 		RedisPassword:     cfg.Redis.Password,
+
+		MongoDBURL:              cfg.MongoDB.URL,
+		MongoDBUsername:         cfg.MongoDB.Username,
+		MongoDBPassword:         cfg.MongoDB.Password,
+		MongoDBMaxBulkItemsSize: cfg.MongoDB.MaxBulkItemsSize,
+		MongoDBDBName:           cfg.MongoDB.DBName,
 	})
 	if err != nil {
 		return nil, err

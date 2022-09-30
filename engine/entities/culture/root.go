@@ -8,7 +8,7 @@ import (
 )
 
 type Root struct {
-	Name string `json:"name"`
+	Name string `json:"name" bson:"name"`
 }
 
 func (r *Root) SerializeName() string {

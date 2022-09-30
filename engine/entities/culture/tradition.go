@@ -8,10 +8,10 @@ import (
 )
 
 type Tradition struct {
-	Name              string                `json:"name"`
-	PreferredEthoses  []*Ethos              `json:"preferred_ethoses"`
-	Type              TraditionType         `json:"type"`
-	CompatibilityFunc func(c *Culture) bool `json:"-"`
+	Name              string                `json:"name" bson:"name"`
+	PreferredEthoses  []*Ethos              `json:"preferred_ethoses" bson:"preferred_ethoses"`
+	Type              TraditionType         `json:"type" bson:"type"`
+	CompatibilityFunc func(c *Culture) bool `json:"-" bson:"-"`
 }
 
 type TraditionType string

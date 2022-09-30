@@ -11,11 +11,11 @@ import (
 )
 
 type Language struct {
-	Name        string       `json:"name"`
-	Subfamily   *Subfamily   `json:"subfamily"`
-	WordBaseRef *WordBaseRef `json:"word_base_ref"`
-	WordBase    *WordBase    `json:"word_base"`
-	IsLiving    bool         `json:"is_living"`
+	Name        string       `json:"name" bson:"name"`
+	Subfamily   *Subfamily   `json:"subfamily" bson:"subfamily,omitempty"`
+	WordBaseRef *WordBaseRef `json:"word_base_ref" bson:"word_base_ref,omitempty"`
+	WordBase    *WordBase    `json:"word_base" bson:"word_base,omitempty"`
+	IsLiving    bool         `json:"is_living" bson:"is_living"`
 }
 
 func New(preferred []string) (*Language, error) {

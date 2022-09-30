@@ -1,8 +1,10 @@
 package orchestrator
 
 import (
+	"context"
 	"errors"
 
+	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 
 	"github.com/google/uuid"
@@ -30,4 +32,12 @@ func (o *Orchestrator) HybridCultures(cultures []*culture.Culture) (*culture.Cul
 	}
 
 	return culture.NewWithProto(culture.Config{StorageFolderName: o.storageFolderName}, cultures)
+}
+
+func (o *Orchestrator) SaveCulture(ctx context.Context, c *culture.Culture) error {
+	if _, err := o.mongodb.InsertOne(ctx, o.dbName, CulturesCollName, c); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not save culture")
+	}
+
+	return nil
 }

@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  pg-mongo:
+    image: mongo
+    container_name: pg-mongo
+    volumes:
+      - ./local-dbs/mongo:/data/db:rw
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootPassword
