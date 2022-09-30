@@ -9,10 +9,10 @@ import (
 )
 
 type Taboos struct {
-	religion *Religion `json:"-"`
-	theology *Theology `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
+	theology *Theology `json:"-" bson:"-"`
 
-	Taboos []*Taboo `json:"taboos"`
+	Taboos []*Taboo `json:"taboos" bson:"taboos"`
 }
 
 func (t *Theology) generateTaboos(c *culture.Culture) (*Taboos, error) {
@@ -38,14 +38,14 @@ func (ts *Taboos) Print() {
 }
 
 type Taboo struct {
-	ReligionMetadata *religionMetadata `json:"religion_metadata"`
-	AcceptedBaseCoef float64           `json:"accepted_base_coef"`
-	ShunnedBaseCoef  float64           `json:"shunned_base_coef"`
-	CriminalBaseCoef float64           `json:"criminal_base_coef"`
+	ReligionMetadata *religionMetadata `json:"religion_metadata" bson:"religion_metadata"`
+	AcceptedBaseCoef float64           `json:"accepted_base_coef" bson:"accepted_base_coef"`
+	ShunnedBaseCoef  float64           `json:"shunned_base_coef" bson:"shunned_base_coef"`
+	CriminalBaseCoef float64           `json:"criminal_base_coef" bson:"criminal_base_coef"`
 
-	Name       string                                                                      `json:"name"`
-	Acceptance Acceptance                                                                  `json:"acceptance"`
-	Calc       func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) `json:"-"`
+	Name       string                                                                      `json:"name" bson:"name"`
+	Acceptance Acceptance                                                                  `json:"acceptance" bson:"acceptance"`
+	Calc       func(r *Religion, self *Taboo, selectedTaboos []*Taboo) (Acceptance, error) `json:"-" bson:"-"`
 }
 
 func (ts *Taboos) generateTaboos(c *culture.Culture) ([]*Taboo, error) {

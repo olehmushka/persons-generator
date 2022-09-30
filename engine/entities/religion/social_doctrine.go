@@ -7,10 +7,10 @@ import (
 )
 
 type SocialDoctrine struct {
-	religion *Religion `json:"-"`
-	doctrine *Doctrine `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
+	doctrine *Doctrine `json:"-" bson:"-"`
 
-	Traits []*trait `json:"traits"`
+	Traits []*trait `json:"traits" bson:"traits"`
 }
 
 func (d *Doctrine) generateSocialDoctrine() (*SocialDoctrine, error) {

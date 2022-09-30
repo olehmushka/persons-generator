@@ -4,11 +4,13 @@ import (
 	"context"
 
 	"persons_generator/config"
+	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/religion"
 	"persons_generator/engine/orchestrator"
 	"persons_generator/internal/religion/entities"
 
+	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -59,5 +61,20 @@ func (a *adapter) CreateReligions(ctx context.Context, amount int, preferred []*
 		}
 	}
 
-	return a.engine.CreateReligions(amount, preferences)
+	religions, err := a.engine.CreateReligions(amount, preferences)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not create religions")
+	}
+	for _, r := range religions {
+		if err := a.engine.SaveReligion(ctx, r); err != nil {
+			return nil, err
+		}
+	}
+
+	return religions, nil
+}
+
+func (a *adapter) GetReligionByID(ctx context.Context, id uuid.UUID) (*religion.Religion, error) {
+	// return a.engine.GetCultureByID(id)
+	return a.engine.ReadReligionByID(ctx, id)
 }

@@ -7,13 +7,13 @@ import (
 )
 
 type Rituals struct {
-	religion *Religion `json:"-"`
-	theology *Theology `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
+	theology *Theology `json:"-" bson:"-"`
 
-	Initiation []*trait `json:"initiations"`
-	Funeral    []*trait `json:"funeral"`
-	Sacrifice  []*trait `json:"sacrifice"`
-	Holyday    []*trait `json:"holyday"`
+	Initiation []*trait `json:"initiations" bson:"initiations"`
+	Funeral    []*trait `json:"funeral" bson:"funeral"`
+	Sacrifice  []*trait `json:"sacrifice" bson:"sacrifice"`
+	Holyday    []*trait `json:"holyday" bson:"holyday"`
 }
 
 func (t *Theology) generateRituals() (*Rituals, error) {

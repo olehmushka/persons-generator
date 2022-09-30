@@ -7,11 +7,11 @@ import (
 )
 
 type HolyScripture struct {
-	religion *Religion   `json:"-"`
-	attrs    *Attributes `json:"-"`
+	religion *Religion   `json:"-" bson:"-"`
+	attrs    *Attributes `json:"-" bson:"-"`
 
-	HasHolyScripture bool     `json:"has_holy_scripture"`
-	Traits           []*trait `json:"traits"`
+	HasHolyScripture bool     `json:"has_holy_scripture" bson:"has_holy_scripture"`
+	Traits           []*trait `json:"traits" bson:"traits"`
 }
 
 func (as *Attributes) generateHolyScripture() (*HolyScripture, error) {

@@ -8,16 +8,16 @@ import (
 )
 
 type Theology struct {
-	religion *Religion `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
 
-	Traits            []*trait           `json:"traits"`
-	Cults             []*trait           `json:"cults"`
-	Rules             *Rules             `json:"rules"`
-	Taboos            *Taboos            `json:"taboos"`
-	Rituals           *Rituals           `json:"rituals"`
-	Holydays          *Holydays          `json:"holydays"`
-	Conversion        *Conversion        `json:"conversion"`
-	MarriageTradition *MarriageTradition `json:"marriage_tradition"`
+	Traits            []*trait           `json:"traits" bson:"traits"`
+	Cults             []*trait           `json:"cults" bson:"cults"`
+	Rules             *Rules             `json:"rules" bson:"rules"`
+	Taboos            *Taboos            `json:"taboos" bson:"taboos"`
+	Rituals           *Rituals           `json:"rituals" bson:"rituals"`
+	Holydays          *Holydays          `json:"holydays" bson:"holydays"`
+	Conversion        *Conversion        `json:"conversion" bson:"conversion"`
+	MarriageTradition *MarriageTradition `json:"marriage_tradition" bson:"marriage_tradition"`
 }
 
 func NewTheology(r *Religion, c *culture.Culture) (*Theology, error) {

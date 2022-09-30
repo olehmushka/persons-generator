@@ -10,12 +10,12 @@ import (
 )
 
 type MarriageTradition struct {
-	religion *Religion `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
 
-	Kind          MarriageKind  `json:"kind"`
-	Bastardry     Bastardry     `json:"bastardy"`
-	Consanguinity Consanguinity `json:"consanguinity"`
-	Divorce       Permission    `json:"divorce"`
+	Kind          MarriageKind  `json:"kind" bson:"kind"`
+	Bastardry     Bastardry     `json:"bastardy" bson:"bastardy"`
+	Consanguinity Consanguinity `json:"consanguinity" bson:"consanguinity"`
+	Divorce       Permission    `json:"divorce" bson:"divorce"`
 }
 
 func (t *Theology) generateMarriageTradition(c *culture.Culture) (*MarriageTradition, error) {

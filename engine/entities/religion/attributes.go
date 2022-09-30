@@ -8,12 +8,12 @@ import (
 )
 
 type Attributes struct {
-	religion *Religion `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
 
-	Traits        []*trait       `json:"traits"`
-	Clerics       *Clerics       `json:"clerics"`
-	HolyScripture *HolyScripture `json:"holy_scripture"`
-	Temples       *Temples       `json:"temples"`
+	Traits        []*trait       `json:"traits" bson:"traits"`
+	Clerics       *Clerics       `json:"clerics" bson:"clerics"`
+	HolyScripture *HolyScripture `json:"holy_scripture" bson:"holy_scripture"`
+	Temples       *Temples       `json:"temples" bson:"temples"`
 }
 
 func NewAttributes(r *Religion, c *culture.Culture) (*Attributes, error) {

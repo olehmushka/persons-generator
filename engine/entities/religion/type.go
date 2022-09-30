@@ -8,10 +8,10 @@ import (
 )
 
 type Type struct {
-	religion *Religion `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
 
-	Type    TypeName    `json:"type"`
-	Subtype SubtypeName `json:"subtype"`
+	Type    TypeName    `json:"type" bson:"type"`
+	Subtype SubtypeName `json:"subtype" bson:"subtype"`
 }
 
 func NewType(r *Religion) (*Type, error) {

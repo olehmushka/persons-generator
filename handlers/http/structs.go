@@ -41,6 +41,10 @@ type PostCreateReligionsResponse struct {
 	Total int                   `json:"total"`
 }
 
+type GetReligionByIDResponse struct {
+	Data *SerializedReligion `json:"data"`
+}
+
 type SerializedCulture struct {
 	ID              uuid.UUID            `json:"id"`
 	Name            string               `json:"name"`

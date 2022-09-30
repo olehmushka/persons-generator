@@ -7,11 +7,11 @@ import (
 )
 
 type trait struct {
-	ReligionMetadata *religionMetadata `json:"religion_metadata"`
-	BaseCoef         float64           `json:"base_coef"`
+	ReligionMetadata *religionMetadata `json:"religion_metadata" bson:"-"`
+	BaseCoef         float64           `json:"base_coef" bson:"-"`
 
-	Name string                                                                `json:"name"`
-	Calc func(r *Religion, self *trait, selectedTraits []*trait) (bool, error) `json:"-"`
+	Name string                                                                `json:"name" bson:"name"`
+	Calc func(r *Religion, self *trait, selectedTraits []*trait) (bool, error) `json:"-" bson:"-"`
 }
 
 type generateTraitsOpts struct {

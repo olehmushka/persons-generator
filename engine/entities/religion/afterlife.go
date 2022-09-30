@@ -8,12 +8,12 @@ import (
 )
 
 type Afterlife struct {
-	religion *Religion `json:"-"`
-	doctrine *Doctrine `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
+	doctrine *Doctrine `json:"-" bson:"-"`
 
-	IsExists     bool                   `json:"is_exists"`
-	Participants *AfterlifeParticipants `json:"participants"`
-	Traits       []*trait               `json:"traits"`
+	IsExists     bool                   `json:"is_exists" bson:"is_exists"`
+	Participants *AfterlifeParticipants `json:"participants" bson:"participants"`
+	Traits       []*trait               `json:"traits" bson:"traits"`
 }
 
 func (al *Afterlife) IsZero() bool {
@@ -136,13 +136,13 @@ func (al *Afterlife) generateIsExistsAfterlife() (bool, error) {
 }
 
 type AfterlifeParticipants struct {
-	religion  *Religion  `json:"-"`
-	afterlife *Afterlife `json:"-"`
+	religion  *Religion  `json:"-" bson:"-"`
+	afterlife *Afterlife `json:"-" bson:"-"`
 
-	ForTopBelievers    AfterlifeOption `json:"for_top_belivers"`
-	ForBelievers       AfterlifeOption `json:"for_belivers"`
-	ForUntrueBelievers AfterlifeOption `json:"for_untrue_belivers"`
-	ForAtheists        AfterlifeOption `json:"for_atheists"`
+	ForTopBelievers    AfterlifeOption `json:"for_top_belivers" bson:"for_top_belivers"`
+	ForBelievers       AfterlifeOption `json:"for_belivers" bson:"for_belivers"`
+	ForUntrueBelievers AfterlifeOption `json:"for_untrue_belivers" bson:"for_untrue_belivers"`
+	ForAtheists        AfterlifeOption `json:"for_atheists" bson:"for_atheists"`
 }
 
 func (al *Afterlife) generateAfterlifeParticipants() (*AfterlifeParticipants, error) {

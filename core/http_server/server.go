@@ -54,6 +54,7 @@ func (s *server) Register() {
 	router.Get("/api/cultures/{id}", http_server_tools.NewHandlesChain(s.handlers.GetCultureByID))
 	router.Get("/api/cultures/proto", http_server_tools.NewHandlesChain(s.handlers.GetProtoCultures))
 	router.Post("/api/religions", http_server_tools.NewHandlesChain(s.handlers.CreateReligions))
+	router.Get("/api/religions/{id}", http_server_tools.NewHandlesChain(s.handlers.GetReligionByID))
 	router.Post("/api/world", http_server_tools.NewHandlesChain(s.handlers.CreateWorld))
 	router.Get("/api/persons", http_server_tools.NewHandlesChain(s.handlers.GetWorldPersons))
 	router.Get("/api/world/progress", http_server_tools.NewHandlesChain(s.handlers.GetWorldProgress))

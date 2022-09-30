@@ -6,10 +6,10 @@ import (
 )
 
 type Conversion struct {
-	religion *Religion `json:"-"`
-	theology *Theology `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
+	theology *Theology `json:"-" bson:"-"`
 
-	Traits []*trait `json:"traits"`
+	Traits []*trait `json:"traits" bson:"traits"`
 }
 
 func (t *Theology) generateConversion() (*Conversion, error) {

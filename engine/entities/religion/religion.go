@@ -18,18 +18,18 @@ import (
 )
 
 type Religion struct {
-	M        Metadata          `json:"m"`
-	Metadata *religionMetadata `json:"metadata"`
+	M        Metadata          `json:"m" bson:"m"`
+	Metadata *religionMetadata `json:"metadata" bson:"metadata"`
 
-	ID              uuid.UUID    `json:"id"`
-	Name            string       `json:"name"`
-	Type            *Type        `json:"type"`
-	GenderDominance *g.Dominance `json:"gender_dominance"`
-	Doctrine        *Doctrine    `json:"doctrine"`
-	Attributes      *Attributes  `json:"attributes"`
-	Theology        *Theology    `json:"theology"`
+	ID              uuid.UUID    `json:"id" bson:"id"`
+	Name            string       `json:"name" bson:"name"`
+	Type            *Type        `json:"type" bson:"type"`
+	GenderDominance *g.Dominance `json:"gender_dominance" bson:"gender_dominance"`
+	Doctrine        *Doctrine    `json:"doctrine" bson:"doctrine"`
+	Attributes      *Attributes  `json:"attributes" bson:"attributes"`
+	Theology        *Theology    `json:"theology" bson:"theology"`
 
-	storageFolderName string
+	storageFolderName string `json:"-" bson:"-"`
 }
 
 func New(cfg Config, c *culture.Culture) (*Religion, error) {

@@ -8,12 +8,12 @@ import (
 )
 
 type Temples struct {
-	religion *Religion   `json:"-"`
-	attrs    *Attributes `json:"-"`
+	religion *Religion   `json:"-" bson:"-"`
+	attrs    *Attributes `json:"-" bson:"-"`
 
-	HasTemples      bool     `json:"has_temples"`
-	HasSacredPlaces bool     `json:"has_sacred_places"`
-	Traits          []*trait `json:"traits"`
+	HasTemples      bool     `json:"has_temples"  bson:"has_temples"`
+	HasSacredPlaces bool     `json:"has_sacred_places"  bson:"has_sacred_places"`
+	Traits          []*trait `json:"traits"  bson:"traits"`
 }
 
 func (as *Attributes) generateTemples(c *culture.Culture) (*Temples, error) {

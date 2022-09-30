@@ -5,9 +5,9 @@ import (
 )
 
 type HighGoal struct {
-	religion *Religion `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
 
-	Goals []*trait `json:"goals"`
+	Goals []*trait `json:"goals" bson:"goals"`
 }
 
 func (d *Doctrine) generateHighGoal() (*HighGoal, error) {

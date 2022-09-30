@@ -45,7 +45,9 @@ func (o *Orchestrator) SaveCulture(ctx context.Context, c *culture.Culture) erro
 }
 
 func (o *Orchestrator) ReadCultureByID(ctx context.Context, id uuid.UUID) (*culture.Culture, error) {
-	filter := bson.M{}
+	filter := bson.M{
+		"id": id,
+	}
 	result, err := o.mongodb.FindOne(ctx, o.dbName, CulturesCollName, filter)
 	if err != nil {
 		return nil, wrapped_error.NewInternalServerError(err, "can not read culture by id")

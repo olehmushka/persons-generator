@@ -7,10 +7,10 @@ import (
 )
 
 type Holydays struct {
-	religion *Religion `json:"-"`
-	theology *Theology `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
+	theology *Theology `json:"-" bson:"-"`
 
-	Holydays []*trait `json:"holydays"`
+	Holydays []*trait `json:"holydays" bson:"holydays"`
 }
 
 func (t *Theology) generateHolydays() (*Holydays, error) {

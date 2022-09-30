@@ -7,10 +7,10 @@ import (
 )
 
 type HumanDoctrine struct {
-	religion *Religion `json:"-"`
-	doctrine *Doctrine `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
+	doctrine *Doctrine `json:"-" bson:"-"`
 
-	Nature *HumanNature `json:"nature"`
+	Nature *HumanNature `json:"nature" bson:"nature"`
 }
 
 func (d *Doctrine) generateHumanDoctrine() (*HumanDoctrine, error) {

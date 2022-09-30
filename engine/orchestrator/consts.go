@@ -1,5 +1,6 @@
 package orchestrator
 
 const (
-	CulturesCollName = "cultures"
+	CulturesCollName  = "cultures"
+	ReligionsCollName = "religions"
 )

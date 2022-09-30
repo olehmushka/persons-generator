@@ -9,14 +9,14 @@ import (
 )
 
 type Clerics struct {
-	religion *Religion   `json:"-"`
-	attrs    *Attributes `json:"-"`
+	religion *Religion   `json:"-" bson:"-"`
+	attrs    *Attributes `json:"-" bson:"-"`
 
-	HasClerics  bool                `json:"has_clerics"`
-	Appointment *ClericsAppointment `json:"appointment"`
-	Limitations *ClericsLimitations `json:"limitations"`
-	Traits      []*trait            `json:"traits"`
-	Functions   []*trait            `json:"functions"`
+	HasClerics  bool                `json:"has_clerics" bson:"has_clerics"`
+	Appointment *ClericsAppointment `json:"appointment" bson:"appointment"`
+	Limitations *ClericsLimitations `json:"limitations" bson:"limitations"`
+	Traits      []*trait            `json:"traits" bson:"traits"`
+	Functions   []*trait            `json:"functions" bson:"functions"`
 }
 
 func (as *Attributes) generateClerics() (*Clerics, error) {
@@ -159,10 +159,10 @@ func (cs *Clerics) generateHasClerics() (bool, error) {
 }
 
 type ClericsAppointment struct {
-	religion *Religion `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
 
-	IsCivil     bool `json:"is_civil"`
-	IsRevocable bool `json:"is_revocable"`
+	IsCivil     bool `json:"is_civil" bson:"is_civil"`
+	IsRevocable bool `json:"is_revocable" bson:"is_revocable"`
 }
 
 func (cs *Clerics) generateAppointment() (*ClericsAppointment, error) {
@@ -199,10 +199,10 @@ func (cas *ClericsAppointment) Print() {
 }
 
 type ClericsLimitations struct {
-	religion *Religion `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
 
-	AcceptableGender g.Acceptance `json:"acceptable"`
-	Marriage         Permission   `json:"marriage"`
+	AcceptableGender g.Acceptance `json:"acceptable" bson:"acceptable"`
+	Marriage         Permission   `json:"marriage" bson:"marriage"`
 }
 
 func (cs *Clerics) generateLimitations() (*ClericsLimitations, error) {

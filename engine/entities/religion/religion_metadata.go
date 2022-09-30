@@ -7,39 +7,39 @@ import (
 )
 
 type Metadata struct {
-	BaseCoef     float64 `json:"base_coef"`
-	LowBaseCoef  float64 `json:"low_base_coef"`
-	HighBaseCoef float64 `json:"high_base_coef"`
+	BaseCoef     float64 `json:"base_coef" bson:"base_coef"`
+	LowBaseCoef  float64 `json:"low_base_coef" bson:"low_base_coef"`
+	HighBaseCoef float64 `json:"high_base_coef" bson:"high_base_coef"`
 
-	MaxMetadataValue float64 `json:"max_metadata_value"`
+	MaxMetadataValue float64 `json:"max_metadata_value" bson:"max_metadata_value"`
 }
 
 type religionMetadata struct {
-	Naturalistic float64 `json:"naturalistic"`
+	Naturalistic float64 `json:"naturalistic" bson:"naturalistic"`
 
-	SexualActive     float64 `json:"sexual_active"`
-	SexualStrictness float64 `json:"sexual_strictness"`
+	SexualActive     float64 `json:"sexual_active" bson:"sexual_active"`
+	SexualStrictness float64 `json:"sexual_strictness" bson:"sexual_strictness"`
 
-	Chthonic    float64 `json:"chtonic"`
-	Plutocratic float64 `json:"plutocratic"`
-	Altruistic  float64 `json:"altruaistic"`
-	Lawful      float64 `json:"lawful"`
-	Educational float64 `json:"educational"`
+	Chthonic    float64 `json:"chtonic" bson:"chtonic"`
+	Plutocratic float64 `json:"plutocratic" bson:"plutocratic"`
+	Altruistic  float64 `json:"altruaistic" bson:"altruaistic"`
+	Lawful      float64 `json:"lawful" bson:"lawful"`
+	Educational float64 `json:"educational" bson:"educational"`
 
-	Aggressive float64 `json:"aggressive"`
-	Pacifistic float64 `json:"pacifistic"`
+	Aggressive float64 `json:"aggressive" bson:"aggressive"`
+	Pacifistic float64 `json:"pacifistic" bson:"pacifistic"`
 
-	Hedonistic float64 `json:"hedonistic"`
-	Ascetic    float64 `json:"ascetic"`
+	Hedonistic float64 `json:"hedonistic" bson:"hedonistic"`
+	Ascetic    float64 `json:"ascetic" bson:"ascetic"`
 
-	Authoritaristic float64 `json:"authoritaristic"`
-	Liberal         float64 `json:"liberal"`
+	Authoritaristic float64 `json:"authoritaristic" bson:"authoritaristic"`
+	Liberal         float64 `json:"liberal" bson:"liberal"`
 
-	Individualistic float64 `json:"individualistic"`
-	Collectivistic  float64 `json:"collectivistic"`
+	Individualistic float64 `json:"individualistic" bson:"individualistic"`
+	Collectivistic  float64 `json:"collectivistic" bson:"collectivistic"`
 
-	Simple      float64 `json:"simple"`
-	Complicated float64 `json:"complicated"`
+	Simple      float64 `json:"simple" bson:"simple"`
+	Complicated float64 `json:"complicated" bson:"complicated"`
 }
 
 func (rm *religionMetadata) IsNaturalistic() bool {

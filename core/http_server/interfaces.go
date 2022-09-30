@@ -14,6 +14,7 @@ type Handlers interface {
 	GetCultureByID(w http.ResponseWriter, r *http.Request)
 
 	CreateReligions(w http.ResponseWriter, r *http.Request)
+	GetReligionByID(w http.ResponseWriter, r *http.Request)
 
 	GetWorldPersons(w http.ResponseWriter, r *http.Request)
 

@@ -5,7 +5,7 @@ services:
     image: mongo
     container_name: pg-mongo
     volumes:
-      - ./_local-dbs/mongo:/data/db:rw
+      - ./_local-dbs/_mongo:/data/db:rw
     ports:
       - "27017:27017"
     environment:

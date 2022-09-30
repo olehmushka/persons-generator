@@ -3,14 +3,14 @@ package religion
 import "fmt"
 
 type Doctrine struct {
-	religion *Religion `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
 
-	HighGoal         *HighGoal        `json:"high_goal"`
-	Deity            *DeityDoctrine   `json:"deitu"`
-	Human            *HumanDoctrine   `json:"human"`
-	Social           *SocialDoctrine  `json:"social"`
-	SourceOfMoralLaw SourceOfMoralLaw `json:"source_of_moral_law"`
-	Afterlife        *Afterlife       `json:"afterlife"`
+	HighGoal         *HighGoal        `json:"high_goal" bson:"high_goal"`
+	Deity            *DeityDoctrine   `json:"deitu" bson:"deitu"`
+	Human            *HumanDoctrine   `json:"human" bson:"human"`
+	Social           *SocialDoctrine  `json:"social" bson:"social"`
+	SourceOfMoralLaw SourceOfMoralLaw `json:"source_of_moral_law" bson:"source_of_moral_law"`
+	Afterlife        *Afterlife       `json:"afterlife" bson:"afterlife"`
 }
 
 func NewDoctrine(r *Religion) (*Doctrine, error) {

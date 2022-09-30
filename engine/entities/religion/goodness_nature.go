@@ -6,8 +6,8 @@ import (
 )
 
 type GoodnessNature struct {
-	Level    Level    `json:"level"`
-	Goodness Goodness `json:"goodness"`
+	Level    Level    `json:"level" bson:"level"`
+	Goodness Goodness `json:"goodness" bson:"goodness"`
 }
 
 func (gn *GoodnessNature) String() string {

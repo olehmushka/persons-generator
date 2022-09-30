@@ -3,9 +3,9 @@ package religion
 import "fmt"
 
 type Rules struct {
-	religion *Religion `json:"-"`
+	religion *Religion `json:"-" bson:"-"`
 
-	Rules []*trait `json:"rules"`
+	Rules []*trait `json:"rules" bson:"rules"`
 }
 
 func (t *Theology) generateRules() (*Rules, error) {
