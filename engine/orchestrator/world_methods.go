@@ -91,3 +91,11 @@ func (o *Orchestrator) GetWorldRunningProgress(worldID uuid.UUID) (world.Progres
 
 	return progress, nil
 }
+
+func (o *Orchestrator) PresaveWorld(ctx context.Context, w *world.World) error {
+	if _, err := o.mongodb.InsertOne(ctx, o.dbName, WorldsCollName, w.SerializePreworld()); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not save preworld")
+	}
+
+	return nil
+}

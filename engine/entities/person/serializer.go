@@ -8,14 +8,14 @@ import (
 )
 
 type SerializedPerson struct {
-	ID         uuid.UUID              `json:"id"`
-	OwnName    string                 `json:"own_name"`
-	CultureID  uuid.UUID              `json:"culture_id,omitempty"`
-	ReligionID uuid.UUID              `json:"religion_id,omitempty"`
-	Human      *human.SerializedHuman `json:"human"`
-	Traits     []string               `json:"traits"`
-	Spouces    []uuid.UUID            `json:"spouces"`
-	DeathYear  int                    `json:"death_year"`
+	ID         uuid.UUID              `json:"id" bson:"id"`
+	OwnName    string                 `json:"own_name" bson:"own_name"`
+	CultureID  uuid.UUID              `json:"culture_id,omitempty" bson:"culture_id,omitempty"`
+	ReligionID uuid.UUID              `json:"religion_id,omitempty" bson:"religion_id,omitempty"`
+	Human      *human.SerializedHuman `json:"human" bson:"human"`
+	Traits     []string               `json:"traits" bson:"traits"`
+	Spouces    []uuid.UUID            `json:"spouces" bson:"spouces"`
+	DeathYear  int                    `json:"death_year" bson:"death_year"`
 }
 
 func (p *Person) Serialize() *SerializedPerson {

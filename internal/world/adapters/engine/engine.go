@@ -66,13 +66,20 @@ func (a *adapter) CreateWorld(ctx context.Context, amount, maleAmount, femaleAmo
 	cultures = culture.UniqueCultures(cultures)
 	religions = religion.UniqueReligions(religions)
 	size := world.GetSizeByHumanAmount(amount)
-
-	return a.engine.CreateWorld(
+	w, err := a.engine.CreateWorld(
 		size,
 		cultures,
 		religions,
 		refs,
 	)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not create world in adapter")
+	}
+	if err := a.engine.PresaveWorld(ctx, w); err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not presave world")
+	}
+
+	return w, nil
 }
 
 func (a *adapter) RunAndSaveWorld(w *world.World, stopYear int) error {

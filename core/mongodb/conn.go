@@ -74,6 +74,33 @@ func (c *conn) InsertOne(ctx context.Context, dbName, collName string, doc any, 
 	return oid, nil
 }
 
+func (c *conn) InsertMany(
+	ctx context.Context,
+	dbName,
+	collName string,
+	docs []any,
+	opts ...*options.InsertManyOptions,
+) ([]primitive.ObjectID, error) {
+	coll := c.client.Database(dbName).Collection(collName)
+
+	insertResults, err := coll.InsertMany(ctx, docs, opts...)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not insert many docs")
+	}
+
+	var resultIDs []primitive.ObjectID
+	for _, insertedID := range insertResults.InsertedIDs {
+		oid, err := AnyIDToObjectID(insertedID)
+		if err != nil {
+			return nil, err
+		}
+
+		resultIDs = append(resultIDs, oid)
+	}
+
+	return resultIDs, nil
+}
+
 func (c *conn) CountDocuments(ctx context.Context, dbName, collName string, filter any, opts ...*options.CountOptions) (int, error) {
 	coll := c.client.Database(dbName).Collection(collName)
 

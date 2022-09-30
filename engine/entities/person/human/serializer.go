@@ -3,24 +3,24 @@ package human
 import "persons_generator/engine/entities/person/color"
 
 type SerializedHuman struct {
-	Sex string `json:"sex"`
-	Age int    `json:"age"`
+	Sex string `json:"sex" bson:"sex"`
+	Age int    `json:"age" bson:"age"`
 
-	FaceShape         string      `json:"face_shape"`
-	EyesColor         color.Color `json:"eyes_color"`
-	EyesType          string      `json:"eyes_type"`
-	EarsType          string      `json:"ears_type"`
-	NoseType          string      `json:"mose_type"`
-	LipsType          string      `json:"lips_type"`
-	HairColor         color.Color `json:"hair_color"`
-	ScalpHairTexture  string      `json:"scalp_hair_texture"`
-	ScalpHairDensity  string      `json:"scalp_hair_density"`
-	FaceHairDensity   string      `json:"face_hair_density"`
-	HeightInCm        float64     `json:"height_in_cm"`
-	ShoeEUSize        int         `json:"shoe_eu_size"`
-	SkinColor         color.Color `json:"skin_color"`
-	SexualOrientation string      `json:"sexual_orientation"`
-	Temperament       string      `json:"temperament"`
+	FaceShape         string      `json:"face_shape" bson:"face_shape"`
+	EyesColor         color.Color `json:"eyes_color" bson:"eyes_color"`
+	EyesType          string      `json:"eyes_type" bson:"eyes_type"`
+	EarsType          string      `json:"ears_type" bson:"ears_type"`
+	NoseType          string      `json:"mose_type" bson:"mose_type"`
+	LipsType          string      `json:"lips_type" bson:"lips_type"`
+	HairColor         color.Color `json:"hair_color" bson:"hair_color"`
+	ScalpHairTexture  string      `json:"scalp_hair_texture" bson:"scalp_hair_texture"`
+	ScalpHairDensity  string      `json:"scalp_hair_density" bson:"scalp_hair_density"`
+	FaceHairDensity   string      `json:"face_hair_density" bson:"face_hair_density"`
+	HeightInCm        float64     `json:"height_in_cm" bson:"height_in_cm"`
+	ShoeEUSize        int         `json:"shoe_eu_size" bson:"shoe_eu_size"`
+	SkinColor         color.Color `json:"skin_color" bson:"skin_color"`
+	SexualOrientation string      `json:"sexual_orientation" bson:"sexual_orientation"`
+	Temperament       string      `json:"temperament" bson:"temperament"`
 }
 
 func (h *Human) Serialize() *SerializedHuman {

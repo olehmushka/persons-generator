@@ -69,3 +69,15 @@ func (r *Religion) Serialize() *SerializedReligion {
 		MarriageTradition:   r.Theology.MarriageTradition.Serialize(),
 	}
 }
+
+type SerializedCultureReference struct {
+	ReligionID uuid.UUID `json:"religion_id" bson:"religion_id"`
+	CultureID  uuid.UUID `json:"culture_id" bson:"culture_id"`
+}
+
+func (r *CultureReference) Serialize() *SerializedCultureReference {
+	return &SerializedCultureReference{
+		ReligionID: r.Religion.ID,
+		CultureID:  r.Culture.ID,
+	}
+}

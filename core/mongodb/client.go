@@ -39,6 +39,16 @@ func (a *adapter) InsertOne(
 	return a.conn.InsertOne(ctx, dbName, collName, doc, opts...)
 }
 
+func (a *adapter) InsertMany(
+	ctx context.Context,
+	dbName,
+	collName string,
+	docs []any,
+	opts ...*options.InsertManyOptions,
+) ([]primitive.ObjectID, error) {
+	return a.conn.InsertMany(ctx, dbName, collName, docs, opts...)
+}
+
 func (a *adapter) CountDocuments(
 	ctx context.Context,
 	dbName,
