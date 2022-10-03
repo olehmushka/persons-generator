@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"persons_generator/engine/entities/religion"
@@ -38,7 +39,7 @@ func runGenerateWorldCommand() error {
 	if err != nil {
 		return err
 	}
-	if err := o.RunAndSaveWorld(w, 150); err != nil {
+	if err := o.RunAndSaveWorld(context.Background(), w, 150); err != nil {
 		return err
 	}
 	persons, err := o.QueryPersons(w.ID, orchestrator.PersonsQuery{})

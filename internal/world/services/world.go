@@ -53,7 +53,7 @@ func (s *world) RunAndSaveWorld(ctx context.Context, in []byte) error {
 		return wrapped_error.NewInternalServerError(err, "can not create world")
 	}
 	w.ID = payload.WorldID
-	if err := s.engineAdp.RunAndSaveWorld(w, payload.StopYear); err != nil {
+	if err := s.engineAdp.RunAndSaveWorld(ctx, w, payload.StopYear); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not run and save world from the world")
 	}
 

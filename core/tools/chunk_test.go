@@ -17,6 +17,12 @@ func TestChunk(t *testing.T) {
 			inputSlice:     []any{nil, nil, nil, nil, nil},
 			expectedChunks: [][]any{{nil, nil, nil}, {nil, nil}},
 		},
+		{
+			name:           "",
+			inputSize:      2,
+			inputSlice:     []any{nil, nil, nil, nil, nil, nil, nil},
+			expectedChunks: [][]any{{nil, nil}, {nil, nil}, {nil, nil}, {nil}},
+		},
 	}
 
 	for _, tc := range tCases {

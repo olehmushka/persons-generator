@@ -38,3 +38,12 @@ func (p *Person) Serialize() *SerializedPerson {
 		DeathYear:  p.Chronology.DeathYear,
 	}
 }
+
+func SerializePeople(in []*Person) []*SerializedPerson {
+	out := make([]*SerializedPerson, len(in))
+	for i := range out {
+		out[i] = in[i].Serialize()
+	}
+
+	return out
+}

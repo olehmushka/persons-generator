@@ -74,3 +74,8 @@ func (a *adapter) BulkWrite(ctx context.Context, dbName string, collectionName s
 
 	return a.conn.BulkWrite(ctx, dbName, collectionName, operations, opts...)
 }
+
+func (a *adapter) UpdateOne(ctx context.Context, dbName string, collName string,
+	filter, update any, opts ...*options.UpdateOptions) (*UpdateResult, error) {
+	return a.conn.UpdateOne(ctx, dbName, collName, filter, update, opts...)
+}

@@ -12,11 +12,12 @@ type Connection interface {
 	Ping(context.Context) error
 	Disconnect(context.Context) error
 	InsertOne(context.Context, string, string, any, ...*options.InsertOneOptions) (primitive.ObjectID, error)
-	InsertMany(ctx context.Context, dbName string, collName string, docs []interface{}, opts ...*options.InsertManyOptions) ([]primitive.ObjectID, error)
+	InsertMany(ctx context.Context, dbName string, collName string, docs []any, opts ...*options.InsertManyOptions) ([]primitive.ObjectID, error)
 	CountDocuments(context.Context, string, string, any, ...*options.CountOptions) (int, error)
 	Find(context.Context, string, string, any, ...*options.FindOptions) (Cursor, error)
 	FindOne(context.Context, string, string, any, ...*options.FindOneOptions) (SingleResult, error)
 	BulkWrite(context.Context, string, string, []WriteModel, ...*options.BulkWriteOptions) (*BulkWriteResult, error)
+	UpdateOne(context.Context, string, string, any, any, ...*options.UpdateOptions) (*UpdateResult, error)
 }
 
 type Client interface {

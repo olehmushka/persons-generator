@@ -189,3 +189,24 @@ func (c *conn) bulkWrite(
 
 	return result, nil
 }
+func (c *conn) UpdateOne(ctx context.Context, dbName string, collName string,
+	filter, update any, opts ...*options.UpdateOptions) (*UpdateResult, error) {
+	coll := c.client.Database(dbName).Collection(collName)
+
+	updateResult, err := coll.UpdateOne(ctx, filter, update, opts...)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not update one doc")
+	}
+
+	oid, err := AnyIDToObjectID(updateResult.UpsertedID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &UpdateResult{
+		MatchedCount:  updateResult.MatchedCount,
+		ModifiedCount: updateResult.ModifiedCount,
+		UpsertedCount: updateResult.UpsertedCount,
+		UpsertedID:    oid,
+	}, nil
+}

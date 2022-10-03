@@ -41,8 +41,8 @@ func newMetadata(w *World, duration time.Duration) *metadata {
 		Year:                 w.Year,
 		Cultures:             cultures,
 		Religions:            religions,
-		PopulationNumber:     w.populationNumber,
-		DeadPopulationNumber: w.deadPopulationNumber,
+		PopulationNumber:     w.PopulationNumber,
+		DeadPopulationNumber: w.DeadPopulationNumber,
 	}
 }
 

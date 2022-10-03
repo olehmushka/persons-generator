@@ -4,13 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
+	"persons_generator/engine/entities/person"
 	"persons_generator/engine/entities/religion"
 	"persons_generator/engine/entities/world"
 	"time"
 
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 func (o *Orchestrator) CreateWorld(
@@ -26,7 +29,7 @@ func getWorldRunningProgressChannelName(worldID uuid.UUID) string {
 	return fmt.Sprintf("w_%s", worldID.String())
 }
 
-func (o *Orchestrator) RunAndSaveWorld(w *world.World, stopYear int) error {
+func (o *Orchestrator) RunAndSaveWorld(ctx context.Context, w *world.World, stopYear int) error {
 	if w == nil {
 		return nil
 	}
@@ -73,7 +76,8 @@ func (o *Orchestrator) RunAndSaveWorld(w *world.World, stopYear int) error {
 	}
 	close(progressCh)
 
-	return w.Save(time.Since(startDate))
+	// return w.Save(time.Since(startDate))
+	return o.SaveWorld(ctx, w, time.Since(startDate))
 }
 
 func (o *Orchestrator) GetWorldRunningProgress(worldID uuid.UUID) (world.ProgressRunWorld, error) {
@@ -98,4 +102,56 @@ func (o *Orchestrator) PresaveWorld(ctx context.Context, w *world.World) error {
 	}
 
 	return nil
+}
+
+func (o *Orchestrator) SaveWorld(ctx context.Context, w *world.World, duration time.Duration) error {
+	filter := bson.M{
+		"id": w.ID,
+	}
+	update := bson.M{
+		"$set": bson.M{
+			"duration":               duration.String(),
+			"population_number":      w.PopulationNumber,
+			"dead_population_number": w.DeadPopulationNumber,
+		},
+	}
+	if _, err := o.mongodb.UpdateOne(ctx, o.dbName, WorldsCollName, filter, update); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not update world")
+	}
+
+	if err := o.SaveWorldPopulation(ctx, w); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not save world population")
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) SaveWorldPopulation(ctx context.Context, w *world.World) error {
+	for y := 0; y < w.Size; y++ {
+		for x := 0; x < w.Size; x++ {
+			if w.Locations[y][x] == nil {
+				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not run year for <nil> location (x: %d, y: %d)", x, y))
+			}
+
+			chunks := tools.Chunk(100, w.Locations[y][x].Population)
+			for i := 0; i < len(chunks); i++ {
+				if _, err := o.mongodb.InsertMany(ctx, o.dbName, PersonsCollName, PreparePopulationBeforeSaving(chunks[i])); err != nil {
+					return wrapped_error.NewInternalServerError(err, "can not insert sevaral persons to db")
+				}
+			}
+
+			chunksForDead := tools.Chunk(100, w.DeathWorldLocations[y][x].Population)
+			for i := 0; i < len(chunksForDead); i++ {
+				if _, err := o.mongodb.InsertMany(ctx, o.dbName, PersonsCollName, PreparePopulationBeforeSaving(chunksForDead[i])); err != nil {
+					return wrapped_error.NewInternalServerError(err, "can not insert sevaral dead persons to db")
+				}
+			}
+		}
+	}
+
+	return nil
+}
+
+func PreparePopulationBeforeSaving(people []*person.Person) []any {
+	return tools.SliceToAnySlice(person.SerializePeople(people))
 }

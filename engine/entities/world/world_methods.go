@@ -142,8 +142,8 @@ func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh c
 	for year := 0; year < stopYear; year++ {
 		progressCh <- ProgressRunWorld{
 			Year:           year + 1,
-			Population:     w.populationNumber,
-			DeadPopulation: w.deadPopulationNumber,
+			Population:     w.PopulationNumber,
+			DeadPopulation: w.DeadPopulationNumber,
 			Progress:       math.Ceil(100 * (float64(year) / float64(stopYear))),
 			Duration:       time.Since(now).String(),
 		}
@@ -194,7 +194,7 @@ func (w *World) AppendNewPopulation(people []*person.Person, c *coordinate.Coord
 	}
 
 	w.Locations[c.Y][c.X].Population = append(w.Locations[c.Y][c.X].Population, people...)
-	w.populationNumber += len(people)
+	w.PopulationNumber += len(people)
 
 	return nil
 }
@@ -373,8 +373,8 @@ func (w *World) appendPersonToDeathWorld(pID uuid.UUID, c *coordinate.Coordinate
 	}
 
 	w.DeathWorldLocations[c.Y][c.X].Population = append(w.DeathWorldLocations[c.Y][c.X].Population, p)
-	w.populationNumber--
-	w.deadPopulationNumber++
+	w.PopulationNumber--
+	w.DeadPopulationNumber++
 
 	populations := make([]*person.Person, 0, len(w.Locations[c.Y][c.X].Population))
 	for i := range w.Locations[c.Y][c.X].Population {

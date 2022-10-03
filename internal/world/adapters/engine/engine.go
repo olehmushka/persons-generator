@@ -82,8 +82,8 @@ func (a *adapter) CreateWorld(ctx context.Context, amount, maleAmount, femaleAmo
 	return w, nil
 }
 
-func (a *adapter) RunAndSaveWorld(w *world.World, stopYear int) error {
-	if err := a.engine.RunAndSaveWorld(w, stopYear); err != nil {
+func (a *adapter) RunAndSaveWorld(ctx context.Context, w *world.World, stopYear int) error {
+	if err := a.engine.RunAndSaveWorld(ctx, w, stopYear); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not run and save world")
 	}
 

@@ -1,10 +1,12 @@
 package mongodb
 
+import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type UpdateResult struct {
-	MatchedCount  int64  // The number of documents matched by the filter.
-	ModifiedCount int64  // The number of documents modified by the operation.
-	UpsertedCount int64  // The number of documents upserted by the operation.
-	UpsertedID    string // The _id field of the upserted document, or nil if no upsert was done.
+	MatchedCount  int64              // The number of documents matched by the filter.
+	ModifiedCount int64              // The number of documents modified by the operation.
+	UpsertedCount int64              // The number of documents upserted by the operation.
+	UpsertedID    primitive.ObjectID // The _id field of the upserted document, or nil if no upsert was done.
 }
 
 // BulkWriteResult is the result type returned by a BulkWrite operation.
