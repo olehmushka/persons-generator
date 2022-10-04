@@ -44,6 +44,10 @@ func (p *Person) HaveSex(partner *Person, year int) error {
 	if err := partner.AppendHaveSexEvent(year, p); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not append have_sex event for patner")
 	}
+	// process  pregnance after sex
+	if err := p.ProcessPregnanceAfterSex(partner); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not process pregnance after sex")
+	}
 
 	// process traits
 	if err := p.ProcessLustfulTrait(); err != nil {
@@ -127,6 +131,13 @@ func (p *Person) IncreaseAge(year int) error {
 	if p == nil {
 		return wrapped_error.NewInternalServerError(nil, "<nil> can not increase age")
 	}
+	isDead, err := p.IsDead()
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not increase age for dead person")
+	}
+	if isDead {
+		return nil
+	}
 
 	age := p.Human.IncrementAge()
 	p.Metadata.WishGetMarriedCoef = GetWishGetMarriedCoef(p.Human.Sex, age)
@@ -161,14 +172,46 @@ func (p *Person) GiveBirth(year int) ([]*Person, error) {
 
 	children := make([]*Person, 0, 2)
 	for _, h := range p.Human.GiveBirth() {
-		child, err := New(h, p.Culture, p.Religion, year)
+		if p.PrebirthStats == nil {
+			return nil, wrapped_error.NewInternalServerError(nil, fmt.Sprintf("prebirth_stats of mother is <nil> (person_sex=%s, year=%d)", p.Human.Sex.String(), year))
+		}
+
+		child, err := New(h, p.Culture, p.Religion, year, p.PrebirthStats.Father, p.PrebirthStats.Mother, p.Coordinate)
 		if err != nil {
 			return nil, wrapped_error.NewInternalServerError(err, "can not give birth child")
 		}
 		children = append(children, child)
 	}
+	p.PrebirthStats = nil
 
 	return children, nil
+}
+
+func (p *Person) ProcessPregnanceAfterSex(partner *Person) error {
+	isPersonPregnant, err := p.IsPregnant()
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not check if person is pregnant after sex")
+	}
+	if isPersonPregnant {
+		p.PrebirthStats = &PrebirthStats{
+			Father: partner,
+			Mother: p,
+		}
+
+		return nil
+	}
+	isPartnerPregnant, err := partner.IsPregnant()
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not check if partner is pregnant after sex")
+	}
+	if isPartnerPregnant {
+		partner.PrebirthStats = &PrebirthStats{
+			Father: p,
+			Mother: partner,
+		}
+	}
+
+	return nil
 }
 
 // Checker methods

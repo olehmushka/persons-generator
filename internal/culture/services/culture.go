@@ -33,9 +33,6 @@ func (s *culture) CreateCultures(ctx context.Context, amount int, preferred []*e
 
 	out := make([]*c.SerializedCulture, len(cultures))
 	for i, c := range cultures {
-		if err := c.Save(); err != nil {
-			return nil, err
-		}
 		out[i] = c.Serialize()
 	}
 
@@ -63,4 +60,8 @@ func (s *culture) GetCultureByID(ctx context.Context, id uuid.UUID) (*c.Serializ
 	}
 
 	return c.Serialize(), nil
+}
+
+func (s *culture) DeleteAllCultures(ctx context.Context) error {
+	return s.engineAdp.DeleteAllCultures(ctx)
 }

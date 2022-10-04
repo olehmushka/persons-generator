@@ -19,10 +19,6 @@ func (o *Orchestrator) CreateReligions(amount int, preferred []*religion.Prefere
 	return religion.NewManyByPreferred(religion.Config{StorageFolderName: o.storageFolderName}, amount, preferred)
 }
 
-func (o *Orchestrator) GetReligionByID(id uuid.UUID) (*religion.Religion, error) {
-	return religion.ReadByID(o.storageFolderName, id)
-}
-
 func (o *Orchestrator) SaveReligion(ctx context.Context, r *religion.Religion) error {
 	if _, err := o.mongodb.InsertOne(ctx, o.dbName, ReligionsCollName, r); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not save religion")
@@ -49,4 +45,12 @@ func (o *Orchestrator) ReadReligionByID(ctx context.Context, id uuid.UUID) (*rel
 	}
 
 	return &out, nil
+}
+
+func (o *Orchestrator) DeleteAllReligions(ctx context.Context) error {
+	if err := o.mongodb.Truncate(ctx, o.dbName, ReligionsCollName); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete all religions")
+	}
+
+	return nil
 }

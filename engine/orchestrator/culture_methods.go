@@ -16,10 +16,6 @@ func (o *Orchestrator) CreateCultures(amount int, preferred []*culture.Preferenc
 	return culture.NewMany(culture.Config{StorageFolderName: o.storageFolderName}, amount, preferred)
 }
 
-func (o *Orchestrator) GetCultureByID(id uuid.UUID) (*culture.Culture, error) {
-	return culture.ReadByID(o.storageFolderName, id)
-}
-
 func (o *Orchestrator) SearchCultures(search string) ([]*culture.Culture, error) {
 	if search == "" {
 		return culture.AllCultures, nil
@@ -62,4 +58,12 @@ func (o *Orchestrator) ReadCultureByID(ctx context.Context, id uuid.UUID) (*cult
 	}
 
 	return &out, nil
+}
+
+func (o *Orchestrator) DeleteAllCultures(ctx context.Context) error {
+	if err := o.mongodb.Truncate(ctx, o.dbName, CulturesCollName); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete all cultures")
+	}
+
+	return nil
 }

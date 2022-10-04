@@ -73,3 +73,7 @@ func (a *adapter) GetCultureByID(ctx context.Context, id uuid.UUID) (*culture.Cu
 	// return a.engine.GetCultureByID(id)
 	return a.engine.ReadCultureByID(ctx, id)
 }
+
+func (a *adapter) DeleteAllCultures(ctx context.Context) error {
+	return a.engine.DeleteAllCultures(ctx)
+}

@@ -9,4 +9,5 @@ import (
 
 type Persons interface {
 	GetPersonsByWorldID(ctx context.Context, worldID uuid.UUID, offset, limit int) ([]*entities.Person, int, error)
+	DeleteAllPersons(context.Context) error
 }

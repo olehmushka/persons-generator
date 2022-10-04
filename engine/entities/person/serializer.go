@@ -1,6 +1,7 @@
 package person
 
 import (
+	"persons_generator/engine/entities/coordinate"
 	"persons_generator/engine/entities/person/human"
 	"persons_generator/engine/entities/person/traits"
 
@@ -16,6 +17,9 @@ type SerializedPerson struct {
 	Traits     []string               `json:"traits" bson:"traits"`
 	Spouces    []uuid.UUID            `json:"spouces" bson:"spouces"`
 	DeathYear  int                    `json:"death_year" bson:"death_year"`
+	FatherID   uuid.UUID              `json:"father_id" bson:"father_id"`
+	MotherID   uuid.UUID              `json:"mother_id" bson:"mother_id"`
+	Coordinate coordinate.Coordinate  `json:"coordinate" bson:"coordinate"`
 }
 
 func (p *Person) Serialize() *SerializedPerson {
@@ -27,15 +31,35 @@ func (p *Person) Serialize() *SerializedPerson {
 		spouces[i] = p.Spouces[i].ID
 	}
 
+	var cultureID uuid.UUID
+	if p.Culture != nil {
+		cultureID = p.Culture.ID
+	}
+	var religionID uuid.UUID
+	if p.Religion != nil {
+		religionID = p.Religion.ID
+	}
+	var fatherID uuid.UUID
+	if p.Father != nil {
+		fatherID = p.Father.ID
+	}
+	var motherID uuid.UUID
+	if p.Mother != nil {
+		motherID = p.Mother.ID
+	}
+
 	return &SerializedPerson{
 		ID:         p.ID,
 		OwnName:    p.OwnName,
-		CultureID:  p.Culture.ID,
-		ReligionID: p.Religion.ID,
+		CultureID:  cultureID,
+		ReligionID: religionID,
 		Human:      p.Human.Serialize(),
 		Traits:     traits.ExtractTraitNames(p.Traits),
 		Spouces:    spouces,
 		DeathYear:  p.Chronology.DeathYear,
+		FatherID:   fatherID,
+		MotherID:   motherID,
+		Coordinate: *p.Coordinate,
 	}
 }
 

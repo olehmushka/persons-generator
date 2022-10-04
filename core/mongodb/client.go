@@ -79,3 +79,7 @@ func (a *adapter) UpdateOne(ctx context.Context, dbName string, collName string,
 	filter, update any, opts ...*options.UpdateOptions) (*UpdateResult, error) {
 	return a.conn.UpdateOne(ctx, dbName, collName, filter, update, opts...)
 }
+
+func (a *adapter) Truncate(ctx context.Context, dbName, collName string) error {
+	return a.conn.Truncate(ctx, dbName, collName)
+}

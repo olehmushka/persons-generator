@@ -3,6 +3,7 @@ package mongodb
 import (
 	"context"
 	"errors"
+	"fmt"
 	"persons_generator/core/wrapped_error"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -189,6 +190,7 @@ func (c *conn) bulkWrite(
 
 	return result, nil
 }
+
 func (c *conn) UpdateOne(ctx context.Context, dbName string, collName string,
 	filter, update any, opts ...*options.UpdateOptions) (*UpdateResult, error) {
 	coll := c.client.Database(dbName).Collection(collName)
@@ -209,4 +211,13 @@ func (c *conn) UpdateOne(ctx context.Context, dbName string, collName string,
 		UpsertedCount: updateResult.UpsertedCount,
 		UpsertedID:    oid,
 	}, nil
+}
+
+func (c *conn) Truncate(ctx context.Context, dbName, collName string) error {
+	coll := c.client.Database(dbName).Collection(collName)
+	if err := coll.Drop(ctx); err != nil {
+		return wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not trancate collection (db_name=%s, coll_name=%s)", dbName, collName))
+	}
+
+	return nil
 }

@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"context"
 	"persons_generator/config"
 	"persons_generator/engine/orchestrator"
 
@@ -34,3 +35,7 @@ func New(cfg *config.Config) (Adapter, error) {
 var Module = fx.Options(
 	fx.Provide(New),
 )
+
+func (a *adapter) DeleteAllPersons(ctx context.Context) error {
+	return a.engine.DeleteAllPersons(ctx)
+}

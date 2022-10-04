@@ -3,6 +3,7 @@ package person
 import (
 	"fmt"
 	"persons_generator/core/wrapped_error"
+	"persons_generator/engine/entities/coordinate"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/person/human"
@@ -14,19 +15,31 @@ import (
 )
 
 type Person struct {
-	ID       uuid.UUID          `json:"id"`
-	OwnName  string             `json:"own_name"`
-	Culture  *culture.Culture   `json:"culture,omitempty"`
-	Religion *religion.Religion `json:"religion,omitempty"`
-	Human    *human.Human       `json:"human"`
+	ID         uuid.UUID              `json:"id"`
+	OwnName    string                 `json:"own_name"`
+	Culture    *culture.Culture       `json:"culture,omitempty"`
+	Religion   *religion.Religion     `json:"religion,omitempty"`
+	Human      *human.Human           `json:"human"`
+	Father     *Person                `json:"father"`
+	Mother     *Person                `json:"mother"`
+	Coordinate *coordinate.Coordinate `json:"coordinate"`
 
-	Traits     []*traits.Trait `json:"traits"`
-	Spouces    []*Person       `json:"spouces"`
-	Chronology Chronology      `json:"chronology"`
-	Metadata   Metadata        `json:"metadata"`
+	Traits        []*traits.Trait `json:"traits"`
+	Spouces       []*Person       `json:"spouces"`
+	Chronology    Chronology      `json:"chronology"`
+	Metadata      Metadata        `json:"metadata"`
+	PrebirthStats *PrebirthStats  `json:"prebirth_stats"`
 }
 
-func New(h *human.Human, c *culture.Culture, r *religion.Religion, year int) (*Person, error) {
+func New(
+	h *human.Human,
+	c *culture.Culture,
+	r *religion.Religion,
+	year int,
+	father,
+	mother *Person,
+	coor *coordinate.Coordinate,
+) (*Person, error) {
 	if h == nil {
 		return nil, wrapped_error.NewInternalServerError(nil, "person can not be generated without human inside")
 	}
@@ -46,7 +59,10 @@ func New(h *human.Human, c *culture.Culture, r *religion.Religion, year int) (*P
 			DeathYear: -1,
 			Events:    []Event{},
 		},
-		Metadata: Metadata{},
+		Metadata:   Metadata{},
+		Father:     father,
+		Mother:     mother,
+		Coordinate: coor,
 	}
 	ownName, err := c.Language.GetOwnName(h.Sex)
 	if err != nil {
@@ -57,7 +73,7 @@ func New(h *human.Human, c *culture.Culture, r *religion.Religion, year int) (*P
 	return p, nil
 }
 
-func NewBase(c *culture.Culture, r *religion.Religion) (*Person, error) {
+func NewBase(c *culture.Culture, r *religion.Religion, coor *coordinate.Coordinate) (*Person, error) {
 	if c == nil {
 		return nil, wrapped_error.NewInternalServerError(nil, "person can not be generated without culture inside")
 	}
@@ -80,7 +96,7 @@ func NewBase(c *culture.Culture, r *religion.Religion) (*Person, error) {
 		return nil, wrapped_error.NewInternalServerError(err, "can not generate human from gene for new base person")
 	}
 
-	return New(h, c, r, 0)
+	return New(h, c, r, 0, nil, nil, coor)
 }
 
 func UniquePersons(persons []*Person) []*Person {

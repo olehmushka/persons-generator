@@ -119,7 +119,7 @@ func (w *World) seedPopulation() error {
 
 			w.Locations[y][x].Population = make([]*person.Person, 0, 10)
 			for i := 0; i < 10; i++ {
-				p, err := person.NewBase(w.Locations[y][x].InitCulture, w.Locations[y][x].InitReligion)
+				p, err := person.NewBase(w.Locations[y][x].InitCulture, w.Locations[y][x].InitReligion, w.Locations[y][x].Coordinate)
 				if err != nil {
 					return wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not generate person for location (x: %d, y: %d)", x, y))
 				}

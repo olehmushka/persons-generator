@@ -1,11 +1,8 @@
 package culture
 
 import (
-	"encoding/json"
 	"fmt"
-	"strings"
 
-	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	we "persons_generator/core/wrapped_error"
@@ -329,38 +326,6 @@ func MapCultureNames(cultures []*Culture) []string {
 	}
 
 	return out
-}
-
-func (c *Culture) Save() error {
-	if c == nil {
-		return we.NewBadRequestError(nil, "can not save nil culture")
-	}
-
-	b, err := json.MarshalIndent(c, "", " ")
-	if err != nil {
-		return err
-	}
-
-	return js.
-		New(js.Config{StorageFolderName: c.storageFolderName}).
-		Store(strings.Join([]string{"culture", c.ID.String()}, "_")+".json", b)
-}
-
-func ReadByID(storageFolderName string, id uuid.UUID) (*Culture, error) {
-	filename := strings.Join([]string{"culture", id.String()}, "_") + ".json"
-	b, err := js.
-		New(js.Config{StorageFolderName: storageFolderName}).
-		Get(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	var out Culture
-	if err := json.Unmarshal(b, &out); err != nil {
-		return nil, err
-	}
-
-	return &out, nil
 }
 
 func GetProtosSimilarityCoef(c1, c2 []*Culture) float64 {

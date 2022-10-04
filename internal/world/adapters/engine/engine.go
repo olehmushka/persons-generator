@@ -48,12 +48,12 @@ func (a *adapter) CreateWorld(ctx context.Context, amount, maleAmount, femaleAmo
 		refs      = make([]*religion.CultureReference, 0, len(religionCultureRels))
 	)
 	for religionID, cultureID := range religionCultureRels {
-		culture, err := a.engine.GetCultureByID(cultureID)
+		culture, err := a.engine.ReadCultureByID(ctx, cultureID)
 		if err != nil {
 			return nil, err
 		}
 		cultures = append(cultures, culture)
-		relig, err := a.engine.GetReligionByID(religionID)
+		relig, err := a.engine.ReadReligionByID(ctx, religionID)
 		if err != nil {
 			return nil, err
 		}
@@ -92,4 +92,8 @@ func (a *adapter) RunAndSaveWorld(ctx context.Context, w *world.World, stopYear 
 
 func (a *adapter) GetWorldRunningProgress(worldID uuid.UUID) (world.ProgressRunWorld, error) {
 	return a.engine.GetWorldRunningProgress(worldID)
+}
+
+func (a *adapter) DeleteAllWorlds(ctx context.Context) error {
+	return a.engine.DeleteAllWorlds(ctx)
 }

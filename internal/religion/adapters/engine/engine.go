@@ -47,7 +47,7 @@ func (a *adapter) CreateReligions(ctx context.Context, amount int, preferred []*
 	for i := range preferences {
 		cultures := make([]*culture.Culture, 0, len(preferred[i].CultureIDs))
 		for _, cultureID := range preferred[i].CultureIDs {
-			c, err := a.engine.GetCultureByID(cultureID)
+			c, err := a.engine.ReadCultureByID(ctx, cultureID)
 			if err != nil {
 				return nil, err
 			}
@@ -77,4 +77,8 @@ func (a *adapter) CreateReligions(ctx context.Context, amount int, preferred []*
 func (a *adapter) GetReligionByID(ctx context.Context, id uuid.UUID) (*religion.Religion, error) {
 	// return a.engine.GetCultureByID(id)
 	return a.engine.ReadReligionByID(ctx, id)
+}
+
+func (a *adapter) DeleteAllReligions(ctx context.Context) error {
+	return a.engine.DeleteAllReligions(ctx)
 }

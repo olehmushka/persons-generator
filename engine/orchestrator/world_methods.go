@@ -4,10 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
-	"persons_generator/engine/entities/person"
 	"persons_generator/engine/entities/religion"
 	"persons_generator/engine/entities/world"
 	"time"
@@ -133,18 +131,11 @@ func (o *Orchestrator) SaveWorldPopulation(ctx context.Context, w *world.World) 
 				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not run year for <nil> location (x: %d, y: %d)", x, y))
 			}
 
-			chunks := tools.Chunk(100, w.Locations[y][x].Population)
-			for i := 0; i < len(chunks); i++ {
-				if _, err := o.mongodb.InsertMany(ctx, o.dbName, PersonsCollName, PreparePopulationBeforeSaving(chunks[i])); err != nil {
-					return wrapped_error.NewInternalServerError(err, "can not insert sevaral persons to db")
-				}
+			if err := o.SavePersons(ctx, w.Locations[y][x].Population); err != nil {
+				return wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not save population (x: %d, y: %d)", x, y))
 			}
-
-			chunksForDead := tools.Chunk(100, w.DeathWorldLocations[y][x].Population)
-			for i := 0; i < len(chunksForDead); i++ {
-				if _, err := o.mongodb.InsertMany(ctx, o.dbName, PersonsCollName, PreparePopulationBeforeSaving(chunksForDead[i])); err != nil {
-					return wrapped_error.NewInternalServerError(err, "can not insert sevaral dead persons to db")
-				}
+			if err := o.SavePersons(ctx, w.DeathWorldLocations[y][x].Population); err != nil {
+				return wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not save dead population (x: %d, y: %d)", x, y))
 			}
 		}
 	}
@@ -152,6 +143,10 @@ func (o *Orchestrator) SaveWorldPopulation(ctx context.Context, w *world.World) 
 	return nil
 }
 
-func PreparePopulationBeforeSaving(people []*person.Person) []any {
-	return tools.SliceToAnySlice(person.SerializePeople(people))
+func (o *Orchestrator) DeleteAllWorlds(ctx context.Context) error {
+	if err := o.mongodb.Truncate(ctx, o.dbName, WorldsCollName); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete all worlds")
+	}
+
+	return nil
 }

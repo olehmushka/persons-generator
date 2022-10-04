@@ -1,11 +1,8 @@
 package religion
 
 import (
-	"encoding/json"
 	"fmt"
-	"strings"
 
-	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	we "persons_generator/core/wrapped_error"
@@ -396,38 +393,6 @@ func MapReligionNames(religions []*Religion) []string {
 	}
 
 	return out
-}
-
-func (r *Religion) Save() error {
-	if r == nil {
-		return we.NewBadRequestError(nil, "can not save nil culture")
-	}
-
-	b, err := json.MarshalIndent(r, "", " ")
-	if err != nil {
-		return err
-	}
-
-	return js.
-		New(js.Config{StorageFolderName: r.storageFolderName}).
-		Store(strings.Join([]string{"religion", r.ID.String()}, "_")+".json", b)
-}
-
-func ReadByID(storageFolderName string, id uuid.UUID) (*Religion, error) {
-	filename := strings.Join([]string{"religion", id.String()}, "_") + ".json"
-	b, err := js.
-		New(js.Config{StorageFolderName: storageFolderName}).
-		Get(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	var out Religion
-	if err := json.Unmarshal(b, &out); err != nil {
-		return nil, err
-	}
-
-	return &out, nil
 }
 
 func UniqueReligions(religions []*Religion) []*Religion {

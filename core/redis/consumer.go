@@ -117,7 +117,12 @@ func (c *consumer) worker(ctx context.Context, n int, wg *sync.WaitGroup) {
 		ctx = ctxTools.AppendTraceID(ctx, message.TraceID)
 		if err := c.handler(ctx, message.Data); err != nil {
 			errCount++
-			log.Error("handle message error", err)
+			b, err := json.Marshal(err)
+			if err != nil {
+				errCount++
+				continue
+			}
+			log.Error("handle message error", string(b))
 			if errCount > 10 {
 				return
 			}

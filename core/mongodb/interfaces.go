@@ -18,6 +18,7 @@ type Connection interface {
 	FindOne(context.Context, string, string, any, ...*options.FindOneOptions) (SingleResult, error)
 	BulkWrite(context.Context, string, string, []WriteModel, ...*options.BulkWriteOptions) (*BulkWriteResult, error)
 	UpdateOne(context.Context, string, string, any, any, ...*options.UpdateOptions) (*UpdateResult, error)
+	Truncate(ctx context.Context, dbName, collName string) error
 }
 
 type Client interface {

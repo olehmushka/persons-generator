@@ -39,9 +39,6 @@ func (s *religion) CreateReligions(ctx context.Context, amount int, preferences 
 
 	out := make([]*r.SerializedReligion, len(rs))
 	for i, r := range rs {
-		if err := r.Save(); err != nil {
-			return nil, err
-		}
 		out[i] = r.Serialize()
 	}
 
@@ -55,4 +52,8 @@ func (s *religion) GetReligionByID(ctx context.Context, id uuid.UUID) (*r.Serial
 	}
 
 	return relig.Serialize(), nil
+}
+
+func (s *religion) DeleteAllReligions(ctx context.Context) error {
+	return s.engineAdp.DeleteAllReligions(ctx)
 }

@@ -1,13 +1,6 @@
 package world
 
 import (
-	"encoding/json"
-	"fmt"
-	"strings"
-	"sync"
-	"time"
-
-	js "persons_generator/core/storage/json_storage"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/location"
@@ -64,7 +57,7 @@ func New(
 	if err := w.seed(); err != nil {
 		return nil, wrapped_error.NewInternalServerError(err, "can not seed for (*World).New")
 	}
-	w.PopulationNumber = len(w.GetPersons())
+	w.PopulationNumber = w.CalculatePersonsNumber()
 
 	return w, nil
 }
@@ -97,101 +90,4 @@ func NewByPreferred(cfg Config, preferred *Preference) (*World, error) {
 	}
 
 	return w, nil
-}
-
-func (w *World) Save(duration time.Duration) error {
-	if w == nil {
-		return wrapped_error.NewInternalServerError(nil, "can not save nil world")
-	}
-
-	storage := js.New(js.Config{StorageFolderName: w.storageFolderName})
-	dirname := GetDirname(w.ID)
-	if err := storage.MkDir(dirname); err != nil {
-		return wrapped_error.NewInternalServerError(err, "can not create dir for the world")
-	}
-
-	m, err := newMetadata(w, duration).Marshal()
-	if err != nil {
-		return wrapped_error.NewInternalServerError(err, "can not marshal metadata for the world")
-	}
-	metadataFilename := fmt.Sprintf("%s/metadata_%s.json", dirname, w.ID.String())
-	if err := storage.Store(metadataFilename, m); err != nil {
-		return err
-	}
-
-	concurrentJobs := make(chan struct{}, 5)
-	var wg sync.WaitGroup
-	wg.Add(w.Size * w.Size)
-	errCh := make(chan error)
-	for y := 0; y < w.Size; y++ {
-		for x := 0; x < w.Size; x++ {
-			if w.Locations[y][x] == nil {
-				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not save loc for <nil> location (x: %d, y: %d)", x, y))
-			}
-
-			concurrentJobs <- struct{}{}
-			go func(x, y int) {
-				defer wg.Done()
-
-				l, err := w.Locations[y][x].Marshal()
-				if err != nil {
-					errCh <- wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not save loc (x: %d, y: %d)", x, y))
-					return
-				}
-				locFilename := fmt.Sprintf("%s/loc_%s_y%d_x%d.json", dirname, w.ID.String(), y, x)
-				if err := storage.Store(locFilename, l); err != nil {
-					errCh <- err
-					return
-				}
-
-				dl, err := w.Locations[y][x].Marshal()
-				if err != nil {
-					errCh <- wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not save loc (x: %d, y: %d)", x, y))
-					return
-				}
-				deadLocFilename := fmt.Sprintf("%s/dloc_%s_y%d_x%d.json", dirname, w.ID.String(), y, x)
-				if err := storage.Store(deadLocFilename, dl); err != nil {
-					errCh <- err
-					return
-				}
-				<-concurrentJobs
-			}(x, y)
-			select {
-			case err := <-errCh:
-				return err
-			default:
-			}
-		}
-	}
-	select {
-	case err := <-errCh:
-		return err
-	default:
-	}
-	wg.Wait()
-	close(concurrentJobs)
-	close(errCh)
-
-	return nil
-}
-
-func GetDirname(id uuid.UUID) string {
-	return fmt.Sprintf("world_%s", id.String())
-}
-
-func ReadByID(storageFolderName string, id uuid.UUID) (*World, error) {
-	filename := strings.Join([]string{"world", id.String()}, "_") + ".json"
-	b, err := js.
-		New(js.Config{StorageFolderName: storageFolderName}).
-		Get(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	var out World
-	if err := json.Unmarshal(b, &out); err != nil {
-		return nil, err
-	}
-
-	return &out, nil
 }

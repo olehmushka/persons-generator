@@ -67,3 +67,7 @@ func (s *world) GetWorldRunningProgress(worldID uuid.UUID) (engineWorld.Progress
 func (s *world) ParseRunAndSaveWorldMsg(ctx context.Context, in []byte) (mq.RunAndSaveWorldPayload, error) {
 	return s.mqAdp.ParseRunAndSaveWorldMsg(ctx, in)
 }
+
+func (s *world) DeleteAllWorlds(ctx context.Context) error {
+	return s.engineAdp.DeleteAllWorlds(ctx)
+}
