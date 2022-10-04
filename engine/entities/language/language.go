@@ -8,9 +8,12 @@ import (
 	g "persons_generator/engine/entities/gender"
 	wg "persons_generator/engine/entities/language/word_generator"
 	pm "persons_generator/engine/probability_machine"
+
+	"github.com/google/uuid"
 )
 
 type Language struct {
+	ID          uuid.UUID    `json:"id" bson:"id"`
 	Name        string       `json:"name" bson:"name"`
 	Subfamily   *Subfamily   `json:"subfamily" bson:"subfamily,omitempty"`
 	WordBaseRef *WordBaseRef `json:"word_base_ref" bson:"word_base_ref,omitempty"`
@@ -25,7 +28,7 @@ func New(preferred []string) (*Language, error) {
 	langs := make([]*Language, 0, len(preferred))
 	for _, pref := range preferred {
 		if lang := GetLanguageByName(pref); lang != nil {
-			langs = append(langs, lang)
+			langs = append(langs, lang...)
 		}
 	}
 
@@ -76,12 +79,12 @@ func (l *Language) Print() {
 	l.Subfamily.Print()
 }
 
-func GetLanguageByName(name string) *Language {
+func GetLanguageByName(name string) []*Language {
 	if name == "" {
 		return nil
 	}
 
-	return tools.Search(AllLanguages, func(l *Language) string { return l.Name }, name)
+	return tools.SearchMany(AllLanguages, func(l *Language) string { return l.Name }, name)
 }
 
 func (l *Language) GetCultureName() (string, error) {
