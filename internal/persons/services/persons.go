@@ -25,6 +25,10 @@ func (s *persons) GetPersonsByWorldID(ctx context.Context, worldID uuid.UUID, of
 	return nil, 0, nil
 }
 
+func (s *persons) DeletePersonByID(ctx context.Context, id uuid.UUID) error {
+	return s.engineAdp.DeletePersonByID(ctx, id)
+}
+
 func (s *persons) DeleteAllPersons(ctx context.Context) error {
 	return s.engineAdp.DeleteAllPersons(ctx)
 }

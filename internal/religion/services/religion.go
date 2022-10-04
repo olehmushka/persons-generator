@@ -54,6 +54,10 @@ func (s *religion) GetReligionByID(ctx context.Context, id uuid.UUID) (*r.Serial
 	return relig.Serialize(), nil
 }
 
+func (s *religion) DeleteReligionByID(ctx context.Context, id uuid.UUID) error {
+	return s.engineAdp.DeleteReligionByID(ctx, id)
+}
+
 func (s *religion) DeleteAllReligions(ctx context.Context) error {
 	return s.engineAdp.DeleteAllReligions(ctx)
 }

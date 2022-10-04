@@ -53,15 +53,20 @@ func (s *server) Register() {
 	router.Post("/api/cultures", http_server_tools.NewHandlesChain(s.handlers.CreateCultures))
 	router.Get("/api/cultures/{id}", http_server_tools.NewHandlesChain(s.handlers.GetCultureByID))
 	router.Get("/api/cultures/proto", http_server_tools.NewHandlesChain(s.handlers.GetProtoCultures))
+	router.Delete("/api/cultures/{id}", http_server_tools.NewHandlesChain(s.handlers.DeleteCultureByID))
 	router.Delete("/api/cultures", http_server_tools.NewHandlesChain(s.handlers.DeleteAllCultures))
 
 	router.Post("/api/religions", http_server_tools.NewHandlesChain(s.handlers.CreateReligions))
 	router.Get("/api/religions/{id}", http_server_tools.NewHandlesChain(s.handlers.GetReligionByID))
+	router.Delete("/api/religions/{id}", http_server_tools.NewHandlesChain(s.handlers.DeleteReligionByID))
 	router.Delete("/api/religions", http_server_tools.NewHandlesChain(s.handlers.DeleteAllReligions))
 
 	router.Post("/api/worlds", http_server_tools.NewHandlesChain(s.handlers.CreateWorld))
+	router.Delete("/api/worlds/{id}", http_server_tools.NewHandlesChain(s.handlers.DeleteWorldByID))
 	router.Delete("/api/worlds", http_server_tools.NewHandlesChain(s.handlers.DeleteAllWorlds))
+
 	router.Get("/api/persons", http_server_tools.NewHandlesChain(s.handlers.GetWorldPersons))
+	router.Delete("/api/persons/{id}", http_server_tools.NewHandlesChain(s.handlers.DeletePersonByID))
 	router.Delete("/api/persons", http_server_tools.NewHandlesChain(s.handlers.DeleteAllPersons))
 	router.Get("/api/worlds/progress", http_server_tools.NewHandlesChain(s.handlers.GetWorldProgress))
 

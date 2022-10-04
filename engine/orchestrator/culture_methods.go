@@ -60,6 +60,17 @@ func (o *Orchestrator) ReadCultureByID(ctx context.Context, id uuid.UUID) (*cult
 	return &out, nil
 }
 
+func (o *Orchestrator) DeleteCultureByID(ctx context.Context, id uuid.UUID) error {
+	filter := bson.M{
+		"id": id,
+	}
+	if _, err := o.mongodb.DeleteOne(ctx, o.dbName, CulturesCollName, filter); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete culture by id")
+	}
+
+	return nil
+}
+
 func (o *Orchestrator) DeleteAllCultures(ctx context.Context) error {
 	if err := o.mongodb.Truncate(ctx, o.dbName, CulturesCollName); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not delete all cultures")

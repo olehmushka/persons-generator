@@ -13,5 +13,6 @@ type World interface {
 	RunAndSaveWorld(context.Context, []byte) error
 	GetWorldRunningProgress(worldID uuid.UUID) (engineWorld.ProgressRunWorld, error)
 	ParseRunAndSaveWorldMsg(context.Context, []byte) (mq.RunAndSaveWorldPayload, error)
+	DeleteWorldByID(ctx context.Context, id uuid.UUID) error
 	DeleteAllWorlds(context.Context) error
 }

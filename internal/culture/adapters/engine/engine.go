@@ -70,8 +70,11 @@ func (a *adapter) GetProtoCultures(ctx context.Context, q string, limit, offset 
 }
 
 func (a *adapter) GetCultureByID(ctx context.Context, id uuid.UUID) (*culture.Culture, error) {
-	// return a.engine.GetCultureByID(id)
 	return a.engine.ReadCultureByID(ctx, id)
+}
+
+func (a *adapter) DeleteCultureByID(ctx context.Context, id uuid.UUID) error {
+	return a.engine.DeleteCultureByID(ctx, id)
 }
 
 func (a *adapter) DeleteAllCultures(ctx context.Context) error {

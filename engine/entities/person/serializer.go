@@ -20,9 +20,10 @@ type SerializedPerson struct {
 	FatherID   uuid.UUID              `json:"father_id" bson:"father_id"`
 	MotherID   uuid.UUID              `json:"mother_id" bson:"mother_id"`
 	Coordinate coordinate.Coordinate  `json:"coordinate" bson:"coordinate"`
+	WorldID    uuid.UUID              `json:"world_id" bson:"world_id"`
 }
 
-func (p *Person) Serialize() *SerializedPerson {
+func (p *Person) Serialize(wID uuid.UUID) *SerializedPerson {
 	if p == nil {
 		return nil
 	}
@@ -60,13 +61,14 @@ func (p *Person) Serialize() *SerializedPerson {
 		FatherID:   fatherID,
 		MotherID:   motherID,
 		Coordinate: *p.Coordinate,
+		WorldID:    wID,
 	}
 }
 
-func SerializePeople(in []*Person) []*SerializedPerson {
+func SerializePeople(wID uuid.UUID, in []*Person) []*SerializedPerson {
 	out := make([]*SerializedPerson, len(in))
 	for i := range out {
-		out[i] = in[i].Serialize()
+		out[i] = in[i].Serialize(wID)
 	}
 
 	return out

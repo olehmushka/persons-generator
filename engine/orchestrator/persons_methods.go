@@ -5,20 +5,34 @@ import (
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/person"
+
+	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (o *Orchestrator) SavePersons(ctx context.Context, ps []*person.Person) error {
+func (o *Orchestrator) SavePersons(ctx context.Context, wID uuid.UUID, ps []*person.Person) error {
 	chunks := tools.Chunk(100, ps)
 	for i := 0; i < len(chunks); i++ {
-		if _, err := o.mongodb.InsertMany(ctx, o.dbName, PersonsCollName, PreparePopulationBeforeSaving(chunks[i])); err != nil {
+		if _, err := o.mongodb.InsertMany(ctx, o.dbName, PersonsCollName, PreparePopulationBeforeSaving(wID, chunks[i])); err != nil {
 			return wrapped_error.NewInternalServerError(err, "can not insert sevaral persons to db")
 		}
 	}
 	return nil
 }
 
-func PreparePopulationBeforeSaving(people []*person.Person) []any {
-	return tools.SliceToAnySlice(person.SerializePeople(people))
+func PreparePopulationBeforeSaving(wID uuid.UUID, people []*person.Person) []any {
+	return tools.SliceToAnySlice(person.SerializePeople(wID, people))
+}
+
+func (o *Orchestrator) DeletePersonByID(ctx context.Context, id uuid.UUID) error {
+	filter := bson.M{
+		"id": id,
+	}
+	if _, err := o.mongodb.DeleteOne(ctx, o.dbName, PersonsCollName, filter); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete person by id")
+	}
+
+	return nil
 }
 
 func (o *Orchestrator) DeleteAllPersons(ctx context.Context) error {

@@ -9,7 +9,7 @@ import (
 const PrefixWordBasesPath = "engine/entities/language/word_bases/"
 
 type WordBaseRef struct {
-	Filename string `json:"filename"`
+	Filename string `json:"filename" bson:"filename"`
 }
 
 func (wbr *WordBaseRef) LoadWordBase() (*WordBase, error) {

@@ -12,5 +12,6 @@ import (
 type Religion interface {
 	CreateReligions(ctx context.Context, amount int, preferences []*entities.Preference) ([]*r.SerializedReligion, error)
 	GetReligionByID(ctx context.Context, id uuid.UUID) (*r.SerializedReligion, error)
+	DeleteReligionByID(ctx context.Context, id uuid.UUID) error
 	DeleteAllReligions(context.Context) error
 }

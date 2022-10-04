@@ -79,6 +79,10 @@ func (a *adapter) GetReligionByID(ctx context.Context, id uuid.UUID) (*religion.
 	return a.engine.ReadReligionByID(ctx, id)
 }
 
+func (a *adapter) DeleteReligionByID(ctx context.Context, id uuid.UUID) error {
+	return a.engine.DeleteReligionByID(ctx, id)
+}
+
 func (a *adapter) DeleteAllReligions(ctx context.Context) error {
 	return a.engine.DeleteAllReligions(ctx)
 }

@@ -47,6 +47,17 @@ func (o *Orchestrator) ReadReligionByID(ctx context.Context, id uuid.UUID) (*rel
 	return &out, nil
 }
 
+func (o *Orchestrator) DeleteReligionByID(ctx context.Context, id uuid.UUID) error {
+	filter := bson.M{
+		"id": id,
+	}
+	if _, err := o.mongodb.DeleteOne(ctx, o.dbName, ReligionsCollName, filter); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete religion by id")
+	}
+
+	return nil
+}
+
 func (o *Orchestrator) DeleteAllReligions(ctx context.Context) error {
 	if err := o.mongodb.Truncate(ctx, o.dbName, ReligionsCollName); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not delete all religions")

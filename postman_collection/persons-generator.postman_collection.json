@@ -1,0 +1,202 @@
+{
+	"variables": [],
+	"info": {
+		"name": "persons-generator",
+		"_postman_id": "b7eb94ba-793a-a995-796e-e42b183f0fc3",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST/api/cultures",
+			"request": {
+				"url": "http://localhost:8000/api/cultures",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"preferred\": [\n    \t{\n    \t\t\"names\": [\"ruthenian\", \"germanic_english\"],\n    \t\t\"amount\": 2,\n    \t\t\"kind\": \"strict\"\n    \t}\n    ],\n    \"amount\": 1\n}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET/api/cultures/proto",
+			"request": {
+				"url": "",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST/api/religions",
+			"request": {
+				"url": "http://localhost:8000/api/religions",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"preferred\": [\n    \t{\n    \t\t\"culture_ids\": [\"10a5b0d3-ab0b-42e7-bc6c-ecc59ecc9c4d\"],\n    \t\t\"amount\": 1\n    \t}\n    ],\n    \"amount\": 2\n}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET/api/religions/{id}",
+			"request": {
+				"url": "http://localhost:8000/api/religions/06437ddb-4098-4385-bfd1-b63e6651ab86",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST/api/worlds",
+			"request": {
+				"url": "http://localhost:8000/api/worlds",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"stop_year\": 100,\n\t\"persons_amount\": 5,\n\t\"male_persons_amount\": 3,\n\t\"female_persons_amount\": 2,\n\t\"culture_religion_ids_pairs\": [\n\t\"42cbd088-7182-4cd5-9f06-d166dc87e010:57701567-944b-48e3-b750-1cc1e0a156a7\",\n\t\"42cbd088-7182-4cd5-9f06-d166dc87e010:48101e84-37a3-4a0c-9172-803fe8d936c0\"\n\t]\n}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET/api/worlds/progress?world_id={world_id}",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8000/api/worlds/progress?world_id=41db8320-7878-4d16-8e90-41b5b7c4a02a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"worlds",
+						"progress"
+					],
+					"query": [
+						{
+							"key": "world_id",
+							"value": "41db8320-7878-4d16-8e90-41b5b7c4a02a",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET/api/cultures/{id}",
+			"request": {
+				"url": "http://localhost:8000/api/cultures/06437ddb-4098-4385-bfd1-b63e6651ab86",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/api/persons",
+			"request": {
+				"url": "http://localhost:8000/api/persons",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/api/worlds",
+			"request": {
+				"url": "http://localhost:8000/api/worlds",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/api/worlds/{id}",
+			"request": {
+				"url": "http://localhost:8000/api/worlds/41db8320-7878-4d16-8e90-41b5b7c4a02a",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/api/cultures",
+			"request": {
+				"url": "http://localhost:8000/api/cultures",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/api/cultures/{id}",
+			"request": {
+				"url": "http://localhost:8000/api/cultures/8dce1fa5-204f-478e-8f06-2759e787bdc5",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/api/persons/{id}",
+			"request": {
+				"url": "http://localhost:8000/api/persons/8dce1fa5-204f-478e-8f06-2759e787bdc5",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

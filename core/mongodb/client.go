@@ -83,3 +83,8 @@ func (a *adapter) UpdateOne(ctx context.Context, dbName string, collName string,
 func (a *adapter) Truncate(ctx context.Context, dbName, collName string) error {
 	return a.conn.Truncate(ctx, dbName, collName)
 }
+
+func (a *adapter) DeleteOne(ctx context.Context, dbName string, collName string,
+	filter any, opts ...*options.DeleteOptions) (int, error) {
+	return a.conn.DeleteOne(ctx, dbName, collName, filter, opts...)
+}

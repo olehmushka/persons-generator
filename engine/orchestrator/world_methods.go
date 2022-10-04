@@ -131,13 +131,24 @@ func (o *Orchestrator) SaveWorldPopulation(ctx context.Context, w *world.World) 
 				return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not run year for <nil> location (x: %d, y: %d)", x, y))
 			}
 
-			if err := o.SavePersons(ctx, w.Locations[y][x].Population); err != nil {
+			if err := o.SavePersons(ctx, w.ID, w.Locations[y][x].Population); err != nil {
 				return wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not save population (x: %d, y: %d)", x, y))
 			}
-			if err := o.SavePersons(ctx, w.DeathWorldLocations[y][x].Population); err != nil {
+			if err := o.SavePersons(ctx, w.ID, w.DeathWorldLocations[y][x].Population); err != nil {
 				return wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not save dead population (x: %d, y: %d)", x, y))
 			}
 		}
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) DeleteWorldByID(ctx context.Context, id uuid.UUID) error {
+	filter := bson.M{
+		"id": id,
+	}
+	if _, err := o.mongodb.DeleteOne(ctx, o.dbName, WorldsCollName, filter); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete world by id")
 	}
 
 	return nil

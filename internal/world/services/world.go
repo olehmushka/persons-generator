@@ -68,6 +68,10 @@ func (s *world) ParseRunAndSaveWorldMsg(ctx context.Context, in []byte) (mq.RunA
 	return s.mqAdp.ParseRunAndSaveWorldMsg(ctx, in)
 }
 
+func (s *world) DeleteWorldByID(ctx context.Context, id uuid.UUID) error {
+	return s.engineAdp.DeleteWorldByID(ctx, id)
+}
+
 func (s *world) DeleteAllWorlds(ctx context.Context) error {
 	return s.engineAdp.DeleteAllWorlds(ctx)
 }

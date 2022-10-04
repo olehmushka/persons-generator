@@ -221,3 +221,14 @@ func (c *conn) Truncate(ctx context.Context, dbName, collName string) error {
 
 	return nil
 }
+func (c *conn) DeleteOne(ctx context.Context, dbName string, collName string,
+	filter any, opts ...*options.DeleteOptions) (int, error) {
+	coll := c.client.Database(dbName).Collection(collName)
+
+	deleteResult, err := coll.DeleteOne(ctx, filter, opts...)
+	if err != nil {
+		return 0, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not delete one by filter (db_name=%s, coll_name=%s, filter=%+v)", dbName, collName, filter))
+	}
+
+	return int(deleteResult.DeletedCount), nil
+}

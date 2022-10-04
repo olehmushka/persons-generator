@@ -62,6 +62,10 @@ func (s *culture) GetCultureByID(ctx context.Context, id uuid.UUID) (*c.Serializ
 	return c.Serialize(), nil
 }
 
+func (s *culture) DeleteCultureByID(ctx context.Context, id uuid.UUID) error {
+	return s.engineAdp.DeleteCultureByID(ctx, id)
+}
+
 func (s *culture) DeleteAllCultures(ctx context.Context) error {
 	return s.engineAdp.DeleteAllCultures(ctx)
 }

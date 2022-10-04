@@ -19,6 +19,7 @@ type Connection interface {
 	BulkWrite(context.Context, string, string, []WriteModel, ...*options.BulkWriteOptions) (*BulkWriteResult, error)
 	UpdateOne(context.Context, string, string, any, any, ...*options.UpdateOptions) (*UpdateResult, error)
 	Truncate(ctx context.Context, dbName, collName string) error
+	DeleteOne(ctx context.Context, dbName string, collName string, filter any, opts ...*options.DeleteOptions) (int, error)
 }
 
 type Client interface {

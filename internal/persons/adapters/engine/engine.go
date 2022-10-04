@@ -5,6 +5,7 @@ import (
 	"persons_generator/config"
 	"persons_generator/engine/orchestrator"
 
+	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -35,6 +36,10 @@ func New(cfg *config.Config) (Adapter, error) {
 var Module = fx.Options(
 	fx.Provide(New),
 )
+
+func (a *adapter) DeletePersonByID(ctx context.Context, id uuid.UUID) error {
+	return a.engine.DeletePersonByID(ctx, id)
+}
 
 func (a *adapter) DeleteAllPersons(ctx context.Context) error {
 	return a.engine.DeleteAllPersons(ctx)

@@ -94,6 +94,10 @@ func (a *adapter) GetWorldRunningProgress(worldID uuid.UUID) (world.ProgressRunW
 	return a.engine.GetWorldRunningProgress(worldID)
 }
 
+func (a *adapter) DeleteWorldByID(ctx context.Context, id uuid.UUID) error {
+	return a.engine.DeleteWorldByID(ctx, id)
+}
+
 func (a *adapter) DeleteAllWorlds(ctx context.Context) error {
 	return a.engine.DeleteAllWorlds(ctx)
 }
