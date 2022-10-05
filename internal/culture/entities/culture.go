@@ -1,9 +1,7 @@
 package entities
 
-import "github.com/google/uuid"
-
 type Culture struct {
-	ID              uuid.UUID     `json:"id"`
+	ID              string        `json:"id"`
 	Name            string        `json:"name"`
 	Proto           []*Culture    `json:"proto"`
 	CultureGroup    *CultureGroup `json:"culture_group"`

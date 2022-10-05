@@ -1,9 +1,7 @@
 package religion
 
-import "github.com/google/uuid"
-
 type SerializedReligion struct {
-	ID                  uuid.UUID           `json:"id"`
+	ID                  string              `json:"id"`
 	Name                string              `json:"name"`
 	Type                string              `json:"type"`
 	GenderDominance     string              `json:"gender_dominance"`
@@ -71,8 +69,8 @@ func (r *Religion) Serialize() *SerializedReligion {
 }
 
 type SerializedCultureReference struct {
-	ReligionID uuid.UUID `json:"religion_id" bson:"religion_id"`
-	CultureID  uuid.UUID `json:"culture_id" bson:"culture_id"`
+	ReligionID string `json:"religion_id" bson:"religion_id"`
+	CultureID  string `json:"culture_id" bson:"culture_id"`
 }
 
 func (r *CultureReference) Serialize() *SerializedCultureReference {

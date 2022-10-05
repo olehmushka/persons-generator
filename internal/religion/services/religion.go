@@ -9,7 +9,6 @@ import (
 	"persons_generator/internal/religion/adapters/engine"
 	"persons_generator/internal/religion/entities"
 
-	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -45,7 +44,7 @@ func (s *religion) CreateReligions(ctx context.Context, amount int, preferences 
 	return out, nil
 }
 
-func (s *religion) GetReligionByID(ctx context.Context, id uuid.UUID) (*r.SerializedReligion, error) {
+func (s *religion) GetReligionByID(ctx context.Context, id string) (*r.SerializedReligion, error) {
 	relig, err := s.engineAdp.GetReligionByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -54,7 +53,7 @@ func (s *religion) GetReligionByID(ctx context.Context, id uuid.UUID) (*r.Serial
 	return relig.Serialize(), nil
 }
 
-func (s *religion) DeleteReligionByID(ctx context.Context, id uuid.UUID) error {
+func (s *religion) DeleteReligionByID(ctx context.Context, id string) error {
 	return s.engineAdp.DeleteReligionByID(ctx, id)
 }
 

@@ -10,7 +10,6 @@ import (
 	"persons_generator/engine/orchestrator"
 	"persons_generator/internal/religion/entities"
 
-	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -73,12 +72,12 @@ func (a *adapter) CreateReligions(ctx context.Context, amount int, preferred []*
 	return religions, nil
 }
 
-func (a *adapter) GetReligionByID(ctx context.Context, id uuid.UUID) (*religion.Religion, error) {
+func (a *adapter) GetReligionByID(ctx context.Context, id string) (*religion.Religion, error) {
 	// return a.engine.GetCultureByID(id)
 	return a.engine.ReadReligionByID(ctx, id)
 }
 
-func (a *adapter) DeleteReligionByID(ctx context.Context, id uuid.UUID) error {
+func (a *adapter) DeleteReligionByID(ctx context.Context, id string) error {
 	return a.engine.DeleteReligionByID(ctx, id)
 }
 

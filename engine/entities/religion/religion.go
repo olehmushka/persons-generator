@@ -18,7 +18,7 @@ type Religion struct {
 	M        Metadata          `json:"m" bson:"m"`
 	Metadata *religionMetadata `json:"metadata" bson:"metadata"`
 
-	ID              uuid.UUID    `json:"id" bson:"id"`
+	ID              string       `json:"id" bson:"id"`
 	Name            string       `json:"name" bson:"name"`
 	Type            *Type        `json:"type" bson:"type"`
 	GenderDominance *g.Dominance `json:"gender_dominance" bson:"gender_dominance"`
@@ -54,7 +54,7 @@ func New(cfg Config, c *culture.Culture) (*Religion, error) {
 			MaxMetadataValue: maxMetadataValue,
 		},
 
-		ID: uuid.New(),
+		ID: uuid.New().String(),
 	}
 	name, err := c.Language.GetReligionName()
 	if err != nil {

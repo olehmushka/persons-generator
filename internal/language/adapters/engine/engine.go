@@ -10,7 +10,6 @@ import (
 	"persons_generator/engine/orchestrator"
 	"persons_generator/internal/language/entities"
 
-	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -58,7 +57,7 @@ func (a *adapter) CountDefaultLanguages(q string) (int, error) {
 	return a.engine.CountDefaultLanguages(q)
 }
 
-func (a *adapter) CreateLanguage(ctx context.Context, in *entities.Language) (uuid.UUID, error) {
+func (a *adapter) CreateLanguage(ctx context.Context, in *entities.Language) (string, error) {
 	return a.engine.CreateLanguage(ctx, deserializeLanguage(in))
 }
 
@@ -75,7 +74,7 @@ func (a *adapter) CountLanguagesByName(ctx context.Context, name string) (int, e
 	return a.engine.CountLanguagesByName(ctx, name)
 }
 
-func (a *adapter) DeleteLanguageByID(ctx context.Context, id uuid.UUID) error {
+func (a *adapter) DeleteLanguageByID(ctx context.Context, id string) error {
 	return a.engine.DeleteLanguageByID(ctx, id)
 }
 

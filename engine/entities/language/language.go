@@ -8,12 +8,10 @@ import (
 	g "persons_generator/engine/entities/gender"
 	wg "persons_generator/engine/entities/language/word_generator"
 	pm "persons_generator/engine/probability_machine"
-
-	"github.com/google/uuid"
 )
 
 type Language struct {
-	ID          uuid.UUID    `json:"id" bson:"id"`
+	ID          string       `json:"id" bson:"id"`
 	Name        string       `json:"name" bson:"name"`
 	Subfamily   *Subfamily   `json:"subfamily" bson:"subfamily,omitempty"`
 	WordBaseRef *WordBaseRef `json:"word_base_ref" bson:"word_base_ref,omitempty"`

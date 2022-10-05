@@ -9,8 +9,6 @@ import (
 	"persons_generator/core/http_server_tools"
 	"persons_generator/core/wrapped_error"
 	"strings"
-
-	"github.com/google/uuid"
 )
 
 func (h *handlers) CreateWorld(w http.ResponseWriter, r *http.Request) {
@@ -147,21 +145,15 @@ func getAmounts(personsAmount *int, malePersonsAmount *int, femalePersonsAmount 
 	return 0, 0, 0, wrapped_error.NewBadRequestError(nil, fmt.Sprintf("incorrect input (persons_amount=%+v, male_persons_amount=%+v, female_persons_amount=%+v)", personsAmount, malePersonsAmount, femalePersonsAmount))
 }
 
-func parseReligionCultureRelations(in []string) (map[uuid.UUID]uuid.UUID, error) {
-	out := make(map[uuid.UUID]uuid.UUID, len(in))
+func parseReligionCultureRelations(in []string) (map[string]string, error) {
+	out := make(map[string]string, len(in))
 	for _, rel := range in {
 		relParts := strings.Split(rel, ":")
 		if len(relParts) != 2 {
 			return nil, wrapped_error.NewBadRequestError(nil, fmt.Sprintf("invalid religion_culture rel signature (rel=%s)", rel))
 		}
-		cultureID, err := uuid.Parse(relParts[0])
-		if err != nil {
-			return nil, wrapped_error.NewBadRequestError(err, fmt.Sprintf("can not parse culture_id (culture_id=%v)", rel[0]))
-		}
-		religionID, err := uuid.Parse(relParts[1])
-		if err != nil {
-			return nil, wrapped_error.NewBadRequestError(err, fmt.Sprintf("can not parse religion_id (religion_id=%v)", rel[1]))
-		}
+		cultureID := relParts[0]
+		religionID := relParts[1]
 		out[religionID] = cultureID
 	}
 

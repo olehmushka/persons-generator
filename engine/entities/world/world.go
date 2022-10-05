@@ -10,7 +10,7 @@ import (
 )
 
 type World struct {
-	ID                        uuid.UUID
+	ID                        string
 	Size                      int
 	MaxPersonsNumberPerLoc    int
 	MaxDistanceValue          float64
@@ -33,13 +33,14 @@ type World struct {
 
 func New(
 	cfg Config,
+	id string,
 	s int,
 	cultures []*culture.Culture,
 	religions []*religion.Religion,
 	refs []*religion.CultureReference,
 ) (*World, error) {
 	w := &World{
-		ID:                        uuid.New(),
+		ID:                        id,
 		Size:                      s,
 		MaxDistanceValue:          GetMaxDistanceValue(s),
 		Year:                      0,
@@ -62,7 +63,7 @@ func New(
 
 func NewByPreferred(cfg Config, preferred *Preference) (*World, error) {
 	w := &World{
-		ID: uuid.New(),
+		ID: uuid.New().String(),
 
 		defaultHumanAmount:      cfg.DefaultHumanAmount,
 		defaultMalePercentage:   cfg.DefaultMalePercentage,

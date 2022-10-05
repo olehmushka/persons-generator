@@ -14,7 +14,7 @@ import (
 )
 
 type Culture struct {
-	ID    uuid.UUID  `json:"id" bson:"id"`
+	ID    string     `json:"id" bson:"id"`
 	Proto []*Culture `json:"proto" bson:"proto,omitempty"`
 	Name  string     `json:"name" bson:"name"`
 
@@ -99,7 +99,7 @@ func getProtoCulturesForHybridKind(preferred *Preference) ([]*Culture, error) {
 
 func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
 	c := &Culture{
-		ID:    uuid.New(),
+		ID:    uuid.New().String(),
 		Proto: proto,
 	}
 	gd, err := getGenderDominance(c.Proto)

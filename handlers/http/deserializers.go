@@ -1,13 +1,9 @@
 package http
 
 import (
-	"fmt"
-	"persons_generator/core/wrapped_error"
 	"persons_generator/internal/culture/entities"
 	languageEntities "persons_generator/internal/language/entities"
 	religionEntities "persons_generator/internal/religion/entities"
-
-	"github.com/google/uuid"
 )
 
 func deserializeCulturePreferred(in *CulturePreferred) *entities.CulturePreference {
@@ -35,17 +31,9 @@ func deserializeReligionPreferred(in *ReligionPreferred) (*religionEntities.Pref
 	if in == nil {
 		return nil, nil
 	}
-	cultureIDs := make([]uuid.UUID, 0, len(in.CultureIDs))
-	for _, id := range in.CultureIDs {
-		cultureID, err := uuid.Parse(id)
-		if err != nil {
-			return nil, wrapped_error.NewBadRequestError(err, fmt.Sprintf("can not parse culture_id (input=%s)", id))
-		}
-		cultureIDs = append(cultureIDs, cultureID)
-	}
 
 	return &religionEntities.Preference{
-		CultureIDs: cultureIDs,
+		CultureIDs: in.CultureIDs,
 		Amount:     in.Amount,
 	}, nil
 }

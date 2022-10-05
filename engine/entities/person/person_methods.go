@@ -224,11 +224,11 @@ func (p *Person) GetSympathicCoef(partner *Person, religionsSimilarity, cultures
 		return 0, wrapped_error.NewInternalServerError(nil, "can not check if <nil> peron is sympathic")
 	}
 
-	religionSimilarityCoef, ok := religionsSimilarity[fmt.Sprintf("%s:%s", p.Religion.ID.String(), partner.Religion.ID.String())]
+	religionSimilarityCoef, ok := religionsSimilarity[fmt.Sprintf("%s:%s", p.Religion.ID, partner.Religion.ID)]
 	if !ok {
 		return 0, wrapped_error.NewInternalServerError(nil, "can not find religion similarity coef")
 	}
-	cultureSimilarityCoef, ok := culturesSimilarity[fmt.Sprintf("%s:%s", p.Culture.ID.String(), partner.Culture.ID.String())]
+	cultureSimilarityCoef, ok := culturesSimilarity[fmt.Sprintf("%s:%s", p.Culture.ID, partner.Culture.ID)]
 	if !ok {
 		return 0, wrapped_error.NewInternalServerError(nil, "can not find culture similarity coef")
 	}
@@ -571,5 +571,5 @@ func (p *Person) Print() {
 		"age": %d,
 		"body": %s,
 		"psycho": %s
-	}`+"\n", p.ID.String(), p.OwnName, p.Culture.Name, p.Religion.Name, p.Human.Sex.String(), p.Human.Age, body, psycho)
+	}`+"\n", p.ID, p.OwnName, p.Culture.Name, p.Religion.Name, p.Human.Sex.String(), p.Human.Age, body, psycho)
 }

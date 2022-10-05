@@ -1,9 +1,5 @@
 package http
 
-import (
-	"github.com/google/uuid"
-)
-
 type CulturePreferred struct {
 	Names  []string `json:"names"`
 	Amount int      `json:"amount"`
@@ -48,7 +44,7 @@ type GetReligionByIDResponse struct {
 }
 
 type SerializedCulture struct {
-	ID              uuid.UUID            `json:"id"`
+	ID              string               `json:"id"`
 	Name            string               `json:"name"`
 	ProtoCultures   []*SerializedCulture `json:"proto_cultures"`
 	AbstructCulture string               `json:"abstruct_culture"`
@@ -61,7 +57,7 @@ type SerializedCulture struct {
 }
 
 type SerializedLanguage struct {
-	ID        uuid.UUID                    `json:"id"`
+	ID        string                       `json:"id"`
 	Name      string                       `json:"name"`
 	Subfamily *SerailizedLanguageSubfamily `json:"subfamily"`
 }
@@ -81,7 +77,7 @@ type LanguageSubfamily struct {
 }
 
 type Language struct {
-	ID        uuid.UUID          `json:"id"`
+	ID        string             `json:"id"`
 	Name      string             `json:"name"`
 	Subfamily *LanguageSubfamily `json:"subfamily"`
 }
@@ -92,7 +88,7 @@ type CultureGroup struct {
 }
 
 type SerializedReligion struct {
-	ID                  uuid.UUID           `json:"id"`
+	ID                  string              `json:"id"`
 	Name                string              `json:"name"`
 	Type                string              `json:"type"`
 	GenderDominance     string              `json:"gender_dominance"`
@@ -169,7 +165,7 @@ type CreateWorldPersonsRequest struct {
 }
 
 type CreateWorldPersonsResponse struct {
-	WorldID uuid.UUID `json:"world_id"`
+	WorldID string `json:"world_id"`
 }
 
 type GetWorldPersonsResponse struct {
@@ -215,13 +211,13 @@ type WordBase struct {
 }
 
 type World struct {
-	ID                        uuid.UUID           `json:"id"`
+	ID                        string              `json:"id"`
 	Size                      int                 `json:"size"`
 	MaxPersonsNumberPerLoc    int                 `json:"max_persons_number_per_loc"`
 	MaxDistanceValue          float64             `json:"max_distance_value"`
 	Year                      int                 `json:"year"`
-	CulturesIDs               []uuid.UUID         `json:"cultures_ids"`
-	ReligionsIDs              []uuid.UUID         `json:"religions_ids"`
+	CulturesIDs               []string            `json:"cultures_ids"`
+	ReligionsIDs              []string            `json:"religions_ids"`
 	CultureReligionReferences []*CultureReference `json:"culture_religion_references"`
 	PopulationNumber          int                 `json:"population_number"`
 	DeadPopulationNumber      int                 `json:"dead_population_number"`
@@ -229,8 +225,8 @@ type World struct {
 }
 
 type CultureReference struct {
-	ReligionID uuid.UUID `json:"religion_id"`
-	CultureID  uuid.UUID `json:"culture_id"`
+	ReligionID string `json:"religion_id"`
+	CultureID  string `json:"culture_id"`
 }
 
 type GetWorldsResponse struct {

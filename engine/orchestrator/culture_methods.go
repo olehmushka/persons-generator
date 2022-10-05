@@ -8,7 +8,6 @@ import (
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 
-	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -40,7 +39,7 @@ func (o *Orchestrator) SaveCulture(ctx context.Context, c *culture.Culture) erro
 	return nil
 }
 
-func (o *Orchestrator) ReadCultureByID(ctx context.Context, id uuid.UUID) (*culture.Culture, error) {
+func (o *Orchestrator) ReadCultureByID(ctx context.Context, id string) (*culture.Culture, error) {
 	filter := bson.M{
 		"id": id,
 	}
@@ -49,7 +48,7 @@ func (o *Orchestrator) ReadCultureByID(ctx context.Context, id uuid.UUID) (*cult
 		return nil, wrapped_error.NewInternalServerError(err, "can not read culture by id")
 	}
 	if result == nil {
-		return nil, wrapped_error.NewNotFoundError(nil, fmt.Sprintf("can not find culture by id (id=%s)", id.String()))
+		return nil, wrapped_error.NewNotFoundError(nil, fmt.Sprintf("can not find culture by id (id=%s)", id))
 	}
 
 	var out culture.Culture
@@ -60,7 +59,7 @@ func (o *Orchestrator) ReadCultureByID(ctx context.Context, id uuid.UUID) (*cult
 	return &out, nil
 }
 
-func (o *Orchestrator) DeleteCultureByID(ctx context.Context, id uuid.UUID) error {
+func (o *Orchestrator) DeleteCultureByID(ctx context.Context, id string) error {
 	filter := bson.M{
 		"id": id,
 	}

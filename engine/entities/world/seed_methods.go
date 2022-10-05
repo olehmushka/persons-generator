@@ -146,7 +146,7 @@ func (w *World) seedSimilarities() error {
 			if err != nil {
 				return wrapped_error.NewInternalServerError(err, "can not get religion similarity coef")
 			}
-			religionSimilarities[fmt.Sprintf("%s:%s", r1.ID.String(), r2.ID.String())] = religionSimilarityCoef
+			religionSimilarities[fmt.Sprintf("%s:%s", r1.ID, r2.ID)] = religionSimilarityCoef
 		}
 	}
 	w.religionsSimilarity = religionSimilarities
@@ -158,7 +158,7 @@ func (w *World) seedSimilarities() error {
 			if err != nil {
 				return wrapped_error.NewInternalServerError(err, "can not get culture similarity coef")
 			}
-			cultureSimilarities[fmt.Sprintf("%s:%s", c1.ID.String(), c2.ID.String())] = cultureSimilarityCoef
+			cultureSimilarities[fmt.Sprintf("%s:%s", c1.ID, c2.ID)] = cultureSimilarityCoef
 		}
 	}
 	w.culturesSimilarity = cultureSimilarities

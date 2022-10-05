@@ -7,7 +7,6 @@ import (
 	"persons_generator/internal/culture/adapters/engine"
 	"persons_generator/internal/culture/entities"
 
-	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -53,7 +52,7 @@ func (s *culture) GetProtoCultures(ctx context.Context, q string, limit, offset 
 	return out, total, nil
 }
 
-func (s *culture) GetCultureByID(ctx context.Context, id uuid.UUID) (*c.SerializedCulture, error) {
+func (s *culture) GetCultureByID(ctx context.Context, id string) (*c.SerializedCulture, error) {
 	c, err := s.engineAdp.GetCultureByID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -62,7 +61,7 @@ func (s *culture) GetCultureByID(ctx context.Context, id uuid.UUID) (*c.Serializ
 	return c.Serialize(), nil
 }
 
-func (s *culture) DeleteCultureByID(ctx context.Context, id uuid.UUID) error {
+func (s *culture) DeleteCultureByID(ctx context.Context, id string) error {
 	return s.engineAdp.DeleteCultureByID(ctx, id)
 }
 

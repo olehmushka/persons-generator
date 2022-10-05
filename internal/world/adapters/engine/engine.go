@@ -10,7 +10,6 @@ import (
 	"persons_generator/engine/entities/world"
 	"persons_generator/engine/orchestrator"
 
-	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -41,7 +40,7 @@ var Module = fx.Options(
 	fx.Provide(New),
 )
 
-func (a *adapter) CreateWorld(ctx context.Context, amount, maleAmount, femaleAmount int, religionCultureRels map[uuid.UUID]uuid.UUID) (*world.World, error) {
+func (a *adapter) CreateWorld(ctx context.Context, id string, amount, maleAmount, femaleAmount int, religionCultureRels map[string]string) (*world.World, error) {
 	var (
 		religions = make([]*religion.Religion, 0, len(religionCultureRels))
 		cultures  = make([]*culture.Culture, 0, len(religionCultureRels))
@@ -67,6 +66,7 @@ func (a *adapter) CreateWorld(ctx context.Context, amount, maleAmount, femaleAmo
 	religions = religion.UniqueReligions(religions)
 	size := world.GetSizeByHumanAmount(amount)
 	w, err := a.engine.CreateWorld(
+		id,
 		size,
 		cultures,
 		religions,
@@ -90,11 +90,11 @@ func (a *adapter) RunAndSaveWorld(ctx context.Context, w *world.World, stopYear 
 	return nil
 }
 
-func (a *adapter) GetWorldRunningProgress(worldID uuid.UUID) (world.ProgressRunWorld, error) {
+func (a *adapter) GetWorldRunningProgress(worldID string) (world.ProgressRunWorld, error) {
 	return a.engine.GetWorldRunningProgress(worldID)
 }
 
-func (a *adapter) DeleteWorldByID(ctx context.Context, id uuid.UUID) error {
+func (a *adapter) DeleteWorldByID(ctx context.Context, id string) error {
 	return a.engine.DeleteWorldByID(ctx, id)
 }
 

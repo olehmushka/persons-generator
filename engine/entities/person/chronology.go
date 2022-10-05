@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
-
-	"github.com/google/uuid"
 )
 
 type Chronology struct {
@@ -19,7 +17,7 @@ func (c Chronology) IsLustful() (bool, error) {
 		return false, nil
 	}
 
-	sexes := make(map[int][]uuid.UUID, len(c.Events))
+	sexes := make(map[int][]string, len(c.Events))
 	for _, e := range c.Events {
 		if e.Name != HaveSexEventName {
 			continue
@@ -32,7 +30,7 @@ func (c Chronology) IsLustful() (bool, error) {
 		if _, ok := sexes[e.Year]; ok {
 			sexes[e.Year] = append(sexes[e.Year], p.ID)
 		} else {
-			sexes[e.Year] = []uuid.UUID{p.ID}
+			sexes[e.Year] = []string{p.ID}
 		}
 	}
 	if len(sexes) == 0 {
@@ -44,7 +42,7 @@ func (c Chronology) IsLustful() (bool, error) {
 			return true, nil
 		}
 	}
-	allSexPartners := make([]uuid.UUID, 0, len(sexes))
+	allSexPartners := make([]string, 0, len(sexes))
 	for _, partnerIDs := range sexes {
 		allSexPartners = append(allSexPartners, partnerIDs...)
 	}

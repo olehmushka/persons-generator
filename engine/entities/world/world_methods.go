@@ -11,8 +11,6 @@ import (
 	"persons_generator/engine/entities/religion"
 	pm "persons_generator/engine/probability_machine"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 func (w *World) preparePreference(in *Preference) (*Preference, error) {
@@ -347,7 +345,7 @@ func (w *World) seekPartners(p *person.Person, c *coordinate.Coordinate) ([]*per
 }
 
 func (w *World) collectDeadPopulation() error {
-	dead := make(map[uuid.UUID]*coordinate.Coordinate, 100)
+	dead := make(map[string]*coordinate.Coordinate, 100)
 	for y := 0; y < w.Size; y++ {
 		for x := 0; x < w.Size; x++ {
 			if w.Locations[y][x] == nil {
@@ -375,7 +373,7 @@ func (w *World) collectDeadPopulation() error {
 	return nil
 }
 
-func (w *World) appendPersonToDeathWorld(pID uuid.UUID, c *coordinate.Coordinate) error {
+func (w *World) appendPersonToDeathWorld(pID string, c *coordinate.Coordinate) error {
 	var p *person.Person
 	var index int
 	for i := range w.Locations[c.Y][c.X].Population {
@@ -385,14 +383,14 @@ func (w *World) appendPersonToDeathWorld(pID uuid.UUID, c *coordinate.Coordinate
 		}
 	}
 	if p == nil {
-		return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not find person by id (id=%s)", pID.String()))
+		return wrapped_error.NewInternalServerError(nil, fmt.Sprintf("can not find person by id (id=%s)", pID))
 	}
 
 	w.DeathWorldLocations[c.Y][c.X].Population = append(w.DeathWorldLocations[c.Y][c.X].Population, p)
 	w.Locations[c.Y][c.X].Population = tools.Pop(w.Locations[c.Y][c.X].Population, index)
 
-	w.PopulationNumber--
-	w.DeadPopulationNumber++
+	w.PopulationNumber += -1
+	w.DeadPopulationNumber += 1
 
 	return nil
 }

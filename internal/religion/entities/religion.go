@@ -1,9 +1,7 @@
 package entities
 
-import "github.com/google/uuid"
-
 type Religion struct {
-	ID                  uuid.UUID         `json:"id"`
+	ID                  string            `json:"id"`
 	Name                string            `json:"name"`
 	Type                Type              `json:"type"`
 	DominantSex         string            `json:"dominant_sex"`

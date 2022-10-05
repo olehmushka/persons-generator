@@ -11,21 +11,22 @@ import (
 	"persons_generator/engine/entities/world"
 	"time"
 
-	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func (o *Orchestrator) CreateWorld(
+	id string,
 	size int,
 	cultures []*culture.Culture,
 	religions []*religion.Religion,
 	refs []*religion.CultureReference,
 ) (*world.World, error) {
-	return world.New(world.Config{}, size, cultures, religions, refs)
+	return world.New(world.Config{}, id, size, cultures, religions, refs)
 }
 
-func getWorldRunningProgressChannelName(worldID uuid.UUID) string {
-	return fmt.Sprintf("w_%s", worldID.String())
+func getWorldRunningProgressChannelName(worldID string) string {
+	return fmt.Sprintf("w_%s", worldID)
 }
 
 func (o *Orchestrator) RunAndSaveWorld(ctx context.Context, w *world.World, stopYear int) error {
@@ -79,7 +80,7 @@ func (o *Orchestrator) RunAndSaveWorld(ctx context.Context, w *world.World, stop
 	return o.SaveWorld(ctx, w, time.Since(startDate))
 }
 
-func (o *Orchestrator) GetWorldRunningProgress(worldID uuid.UUID) (world.ProgressRunWorld, error) {
+func (o *Orchestrator) GetWorldRunningProgress(worldID string) (world.ProgressRunWorld, error) {
 	val, err := o.storage.Get(context.Background(), getWorldRunningProgressChannelName(worldID))
 	if err != nil {
 		return world.ProgressRunWorld{}, wrapped_error.NewInternalServerError(err, "can not get world running progress")
@@ -114,7 +115,10 @@ func (o *Orchestrator) SaveWorld(ctx context.Context, w *world.World, duration t
 			"dead_population_number": w.DeadPopulationNumber,
 		},
 	}
-	if _, err := o.mongodb.UpdateOne(ctx, o.dbName, WorldsCollName, filter, update); err != nil {
+	falseVal := false
+	opts := options.Update()
+	opts.Upsert = &falseVal
+	if _, err := o.mongodb.UpdateOne(ctx, o.dbName, WorldsCollName, filter, update, opts); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not update world")
 	}
 
@@ -144,7 +148,7 @@ func (o *Orchestrator) SaveWorldPopulation(ctx context.Context, w *world.World) 
 	return nil
 }
 
-func (o *Orchestrator) DeleteWorldByID(ctx context.Context, id uuid.UUID) error {
+func (o *Orchestrator) DeleteWorldByID(ctx context.Context, id string) error {
 	filter := bson.M{
 		"id": id,
 	}

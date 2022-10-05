@@ -4,47 +4,45 @@ import (
 	"persons_generator/engine/entities/coordinate"
 	"persons_generator/engine/entities/person/human"
 	"persons_generator/engine/entities/person/traits"
-
-	"github.com/google/uuid"
 )
 
 type SerializedPerson struct {
-	ID         uuid.UUID              `json:"id" bson:"id"`
+	ID         string                 `json:"id" bson:"id"`
 	OwnName    string                 `json:"own_name" bson:"own_name"`
-	CultureID  uuid.UUID              `json:"culture_id,omitempty" bson:"culture_id,omitempty"`
-	ReligionID uuid.UUID              `json:"religion_id,omitempty" bson:"religion_id,omitempty"`
+	CultureID  string                 `json:"culture_id,omitempty" bson:"culture_id,omitempty"`
+	ReligionID string                 `json:"religion_id,omitempty" bson:"religion_id,omitempty"`
 	Human      *human.SerializedHuman `json:"human" bson:"human"`
 	Traits     []string               `json:"traits" bson:"traits"`
-	Spouces    []uuid.UUID            `json:"spouces" bson:"spouces"`
+	Spouces    []string               `json:"spouces" bson:"spouces"`
 	DeathYear  int                    `json:"death_year" bson:"death_year"`
-	FatherID   uuid.UUID              `json:"father_id" bson:"father_id"`
-	MotherID   uuid.UUID              `json:"mother_id" bson:"mother_id"`
+	FatherID   string                 `json:"father_id" bson:"father_id"`
+	MotherID   string                 `json:"mother_id" bson:"mother_id"`
 	Coordinate coordinate.Coordinate  `json:"coordinate" bson:"coordinate"`
-	WorldID    uuid.UUID              `json:"world_id" bson:"world_id"`
+	WorldID    string                 `json:"world_id" bson:"world_id"`
 }
 
-func (p *Person) Serialize(wID uuid.UUID) *SerializedPerson {
+func (p *Person) Serialize(wID string) *SerializedPerson {
 	if p == nil {
 		return nil
 	}
-	spouces := make([]uuid.UUID, len(p.Spouces))
+	spouces := make([]string, len(p.Spouces))
 	for i := range spouces {
 		spouces[i] = p.Spouces[i].ID
 	}
 
-	var cultureID uuid.UUID
+	var cultureID string
 	if p.Culture != nil {
 		cultureID = p.Culture.ID
 	}
-	var religionID uuid.UUID
+	var religionID string
 	if p.Religion != nil {
 		religionID = p.Religion.ID
 	}
-	var fatherID uuid.UUID
+	var fatherID string
 	if p.Father != nil {
 		fatherID = p.Father.ID
 	}
-	var motherID uuid.UUID
+	var motherID string
 	if p.Mother != nil {
 		motherID = p.Mother.ID
 	}
@@ -65,7 +63,7 @@ func (p *Person) Serialize(wID uuid.UUID) *SerializedPerson {
 	}
 }
 
-func SerializePeople(wID uuid.UUID, in []*Person) []*SerializedPerson {
+func SerializePeople(wID string, in []*Person) []*SerializedPerson {
 	out := make([]*SerializedPerson, len(in))
 	for i := range out {
 		out[i] = in[i].Serialize(wID)

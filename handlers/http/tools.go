@@ -36,14 +36,14 @@ func ExtractOffsetFromReq(r *http.Request) int {
 	return DefaultOffset
 }
 
-func ExtractIDFromPath(r *http.Request, key string) uuid.UUID {
+func ExtractIDFromPath(r *http.Request, key string) string {
 	val := chi.URLParam(r, key)
 	if val == "" {
-		return uuid.Nil
+		return ""
 	}
 	if id, err := uuid.Parse(val); err == nil {
-		return id
+		return id.String()
 	}
 
-	return uuid.Nil
+	return ""
 }

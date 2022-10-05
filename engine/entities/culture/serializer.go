@@ -2,12 +2,10 @@ package culture
 
 import (
 	"persons_generator/engine/entities/language"
-
-	"github.com/google/uuid"
 )
 
 type SerializedCulture struct {
-	ID              uuid.UUID                    `json:"id"`
+	ID              string                       `json:"id"`
 	Name            string                       `json:"name"`
 	ProtoCultures   []*SerializedCulture         `json:"proto_cultures"`
 	AbstructCulture string                       `json:"abstruct_culture"`

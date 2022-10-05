@@ -7,7 +7,6 @@ import (
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/religion"
 
-	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -27,7 +26,7 @@ func (o *Orchestrator) SaveReligion(ctx context.Context, r *religion.Religion) e
 	return nil
 }
 
-func (o *Orchestrator) ReadReligionByID(ctx context.Context, id uuid.UUID) (*religion.Religion, error) {
+func (o *Orchestrator) ReadReligionByID(ctx context.Context, id string) (*religion.Religion, error) {
 	filter := bson.M{
 		"id": id,
 	}
@@ -36,7 +35,7 @@ func (o *Orchestrator) ReadReligionByID(ctx context.Context, id uuid.UUID) (*rel
 		return nil, wrapped_error.NewInternalServerError(err, "can not read religion by id")
 	}
 	if result == nil {
-		return nil, wrapped_error.NewNotFoundError(nil, fmt.Sprintf("can not find religion by id (id=%s)", id.String()))
+		return nil, wrapped_error.NewNotFoundError(nil, fmt.Sprintf("can not find religion by id (id=%s)", id))
 	}
 
 	var out religion.Religion
@@ -47,7 +46,7 @@ func (o *Orchestrator) ReadReligionByID(ctx context.Context, id uuid.UUID) (*rel
 	return &out, nil
 }
 
-func (o *Orchestrator) DeleteReligionByID(ctx context.Context, id uuid.UUID) error {
+func (o *Orchestrator) DeleteReligionByID(ctx context.Context, id string) error {
 	filter := bson.M{
 		"id": id,
 	}

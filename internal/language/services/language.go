@@ -7,7 +7,6 @@ import (
 	"persons_generator/internal/language/adapters/engine"
 	"persons_generator/internal/language/entities"
 
-	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -36,7 +35,7 @@ func (s *persons) QueryDefaultLanguages(q string, opts storage.PaginationSorting
 	return langs, count, nil
 }
 
-func (s *persons) CreateLanguage(ctx context.Context, in *entities.Language) (uuid.UUID, error) {
+func (s *persons) CreateLanguage(ctx context.Context, in *entities.Language) (string, error) {
 	return s.engineAdp.CreateLanguage(ctx, in)
 }
 
@@ -53,7 +52,7 @@ func (s *persons) ReadLanguagesByName(ctx context.Context, name string, opts sto
 	return langs, count, nil
 }
 
-func (s *persons) DeleteLanguageByID(ctx context.Context, id uuid.UUID) error {
+func (s *persons) DeleteLanguageByID(ctx context.Context, id string) error {
 	return s.engineAdp.DeleteLanguageByID(ctx, id)
 }
 

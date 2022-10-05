@@ -1,7 +1,5 @@
 package entities
 
-import "github.com/google/uuid"
-
 type CulturePreference struct {
 	Names  []string `json:"names"`
 	Amount int      `json:"amount"`
@@ -9,5 +7,5 @@ type CulturePreference struct {
 }
 
 type ReligionPreference struct {
-	CultureIDs []uuid.UUID
+	CultureIDs []string
 }

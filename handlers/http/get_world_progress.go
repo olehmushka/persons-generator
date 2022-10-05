@@ -23,7 +23,7 @@ func (h *handlers) GetWorldProgress(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	progress, err := h.worldSrv.GetWorldRunningProgress(worldID)
+	progress, err := h.worldSrv.GetWorldRunningProgress(worldID.String())
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return

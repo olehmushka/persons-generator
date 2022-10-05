@@ -35,11 +35,11 @@ func (s *world) CreateWorld(
 	amount,
 	maleAmount,
 	femaleAmount int,
-	religionCultureRels map[uuid.UUID]uuid.UUID,
-) (uuid.UUID, error) {
-	id := uuid.New()
+	religionCultureRels map[string]string,
+) (string, error) {
+	id := uuid.New().String()
 	if err := s.mqAdp.RunAndSaveWorld(ctx, id, stopYear, amount, maleAmount, femaleAmount, religionCultureRels); err != nil {
-		return uuid.UUID{}, err
+		return "", err
 	}
 
 	return id, nil
@@ -50,7 +50,7 @@ func (s *world) RunAndSaveWorld(ctx context.Context, in []byte) error {
 	if err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not parse message")
 	}
-	w, err := s.engineAdp.CreateWorld(ctx, payload.Amount, payload.MaleAmount, payload.FemaleAmount, payload.ReligionCultureRels)
+	w, err := s.engineAdp.CreateWorld(ctx, payload.WorldID, payload.Amount, payload.MaleAmount, payload.FemaleAmount, payload.ReligionCultureRels)
 	if err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not create world")
 	}
@@ -62,15 +62,15 @@ func (s *world) RunAndSaveWorld(ctx context.Context, in []byte) error {
 	return nil
 }
 
-func (s *world) GetWorldRunningProgress(worldID uuid.UUID) (engineWorld.ProgressRunWorld, error) {
+func (s *world) GetWorldRunningProgress(worldID string) (engineWorld.ProgressRunWorld, error) {
 	return s.engineAdp.GetWorldRunningProgress(worldID)
 }
 
-func (s *world) ParseRunAndSaveWorldMsg(ctx context.Context, in []byte) (mq.RunAndSaveWorldPayload, error) {
+func (s *world) ParseRunAndSaveWorldMsg(ctx context.Context, in []byte) (*mq.RunAndSaveWorldPayload, error) {
 	return s.mqAdp.ParseRunAndSaveWorldMsg(ctx, in)
 }
 
-func (s *world) DeleteWorldByID(ctx context.Context, id uuid.UUID) error {
+func (s *world) DeleteWorldByID(ctx context.Context, id string) error {
 	return s.engineAdp.DeleteWorldByID(ctx, id)
 }
 

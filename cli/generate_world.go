@@ -4,6 +4,8 @@ import (
 	"context"
 	"persons_generator/engine/entities/religion"
 	"persons_generator/engine/orchestrator"
+
+	"github.com/google/uuid"
 )
 
 const RunGenerateWorldCommand = "generate_world"
@@ -29,7 +31,7 @@ func runGenerateWorldCommand() error {
 	if err != nil {
 		return err
 	}
-	w, err := o.CreateWorld(5, c, []*religion.Religion{r}, []*religion.CultureReference{{
+	w, err := o.CreateWorld(uuid.NewString(), 5, c, []*religion.Religion{r}, []*religion.CultureReference{{
 		Religion: r,
 		Culture:  c[0],
 	}})

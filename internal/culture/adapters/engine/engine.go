@@ -10,7 +10,6 @@ import (
 	"persons_generator/engine/orchestrator"
 	"persons_generator/internal/culture/entities"
 
-	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -68,11 +67,11 @@ func (a *adapter) GetProtoCultures(ctx context.Context, q string, limit, offset 
 	return tools.Paginate(c, offset, limit), len(c), nil
 }
 
-func (a *adapter) GetCultureByID(ctx context.Context, id uuid.UUID) (*culture.Culture, error) {
+func (a *adapter) GetCultureByID(ctx context.Context, id string) (*culture.Culture, error) {
 	return a.engine.ReadCultureByID(ctx, id)
 }
 
-func (a *adapter) DeleteCultureByID(ctx context.Context, id uuid.UUID) error {
+func (a *adapter) DeleteCultureByID(ctx context.Context, id string) error {
 	return a.engine.DeleteCultureByID(ctx, id)
 }
 

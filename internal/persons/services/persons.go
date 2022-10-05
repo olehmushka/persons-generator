@@ -5,7 +5,6 @@ import (
 	"persons_generator/internal/persons/adapters/engine"
 	"persons_generator/internal/persons/entities"
 
-	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -21,11 +20,11 @@ var Module = fx.Options(
 	fx.Provide(New),
 )
 
-func (s *persons) GetPersonsByWorldID(ctx context.Context, worldID uuid.UUID, offset, limit int) ([]*entities.Person, int, error) {
+func (s *persons) GetPersonsByWorldID(ctx context.Context, worldID string, offset, limit int) ([]*entities.Person, int, error) {
 	return nil, 0, nil
 }
 
-func (s *persons) DeletePersonByID(ctx context.Context, id uuid.UUID) error {
+func (s *persons) DeletePersonByID(ctx context.Context, id string) error {
 	return s.engineAdp.DeletePersonByID(ctx, id)
 }
 

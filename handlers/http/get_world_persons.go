@@ -25,7 +25,7 @@ func (h *handlers) GetWorldPersons(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	persons, total, err := h.personsSrv.GetPersonsByWorldID(ctx, worldID, offset, limit)
+	persons, total, err := h.personsSrv.GetPersonsByWorldID(ctx, worldID.String(), offset, limit)
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return

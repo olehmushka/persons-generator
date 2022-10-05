@@ -7,7 +7,6 @@ import (
 	"persons_generator/core/redis"
 	"persons_generator/core/wrapped_error"
 
-	"github.com/google/uuid"
 	"go.uber.org/fx"
 )
 
@@ -26,12 +25,12 @@ var Module = fx.Options(
 
 func (a *adapter) RunAndSaveWorld(
 	ctx context.Context,
-	worldID uuid.UUID,
+	worldID string,
 	stopYear,
 	amount,
 	maleAmount,
 	femaleAmount int,
-	religionCultureRels map[uuid.UUID]uuid.UUID,
+	religionCultureRels map[string]string,
 ) error {
 	b, err := json.Marshal(RunAndSaveWorldPayload{
 		WorldID:             worldID,
@@ -52,11 +51,11 @@ func (a *adapter) RunAndSaveWorld(
 	return nil
 }
 
-func (a *adapter) ParseRunAndSaveWorldMsg(ctx context.Context, in []byte) (RunAndSaveWorldPayload, error) {
+func (a *adapter) ParseRunAndSaveWorldMsg(ctx context.Context, in []byte) (*RunAndSaveWorldPayload, error) {
 	var out RunAndSaveWorldPayload
 	if err := json.Unmarshal(in, &out); err != nil {
-		return RunAndSaveWorldPayload{}, wrapped_error.NewInternalServerError(err, "can not unmarshal ParseRunAndSaveWorld msg")
+		return nil, wrapped_error.NewInternalServerError(err, "can not unmarshal ParseRunAndSaveWorld msg")
 	}
 
-	return out, nil
+	return &out, nil
 }

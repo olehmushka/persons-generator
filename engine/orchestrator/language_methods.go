@@ -27,11 +27,11 @@ func (o *Orchestrator) GetDefaultLanguages(opts storage.PaginationSortingOpts) [
 	return tools.Paginate(language.AllLanguages, opts.Pagination.Offset, opts.Pagination.Limit)
 }
 
-func (o *Orchestrator) CreateLanguage(ctx context.Context, in *language.Language) (uuid.UUID, error) {
-	id := uuid.New()
+func (o *Orchestrator) CreateLanguage(ctx context.Context, in *language.Language) (string, error) {
+	id := uuid.New().String()
 	in.ID = id
 	if _, err := o.mongodb.InsertOne(ctx, o.dbName, LanguagesCollName, in); err != nil {
-		return uuid.Nil, wrapped_error.NewInternalServerError(err, "can not insert sevaral persons to db")
+		return "", wrapped_error.NewInternalServerError(err, "can not insert sevaral persons to db")
 	}
 
 	return id, nil
@@ -80,7 +80,7 @@ func (o *Orchestrator) CountLanguagesByName(ctx context.Context, name string) (i
 	return count, nil
 }
 
-func (o *Orchestrator) DeleteLanguageByID(ctx context.Context, id uuid.UUID) error {
+func (o *Orchestrator) DeleteLanguageByID(ctx context.Context, id string) error {
 	filter := bson.M{
 		"id": id,
 	}

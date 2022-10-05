@@ -1,9 +1,7 @@
 package entities
 
-import "github.com/google/uuid"
-
 type Language struct {
-	ID        uuid.UUID  `json:"id" bson:"id"`
+	ID        string     `json:"id" bson:"id"`
 	Name      string     `json:"name" bson:"name"`
 	Subfamily *Subfamily `json:"subfamily" bson:"subfamily,omitempty"`
 	WordBase  *WordBase  `json:"word_base" bson:"word_base,omitempty"`

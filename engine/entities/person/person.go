@@ -15,7 +15,7 @@ import (
 )
 
 type Person struct {
-	ID         uuid.UUID              `json:"id"`
+	ID         string                 `json:"id"`
 	OwnName    string                 `json:"own_name"`
 	Culture    *culture.Culture       `json:"culture,omitempty"`
 	Religion   *religion.Religion     `json:"religion,omitempty"`
@@ -50,7 +50,7 @@ func New(
 		return nil, wrapped_error.NewInternalServerError(nil, "person can not be generated without religion inside")
 	}
 	p := &Person{
-		ID:       uuid.New(),
+		ID:       uuid.New().String(),
 		Human:    h,
 		Culture:  c,
 		Religion: r,
@@ -104,7 +104,7 @@ func UniquePersons(persons []*Person) []*Person {
 		return persons
 	}
 
-	preOut := make(map[uuid.UUID]*Person)
+	preOut := make(map[string]*Person)
 	for _, c := range persons {
 		preOut[c.ID] = c
 	}
@@ -117,7 +117,7 @@ func UniquePersons(persons []*Person) []*Person {
 	return out
 }
 
-func RemovePersonFromSliceByID(persons []*Person, id uuid.UUID) []*Person {
+func RemovePersonFromSliceByID(persons []*Person, id string) []*Person {
 	if len(persons) == 0 {
 		return persons
 	}
