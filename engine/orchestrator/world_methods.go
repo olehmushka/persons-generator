@@ -25,10 +25,6 @@ func (o *Orchestrator) CreateWorld(
 	return world.New(world.Config{}, id, size, cultures, religions, refs)
 }
 
-func getWorldRunningProgressChannelName(worldID string) string {
-	return fmt.Sprintf("w_%s", worldID)
-}
-
 func (o *Orchestrator) RunAndSaveWorld(ctx context.Context, w *world.World, stopYear int) error {
 	if w == nil {
 		return nil
@@ -38,6 +34,7 @@ func (o *Orchestrator) RunAndSaveWorld(ctx context.Context, w *world.World, stop
 	startDate := time.Now()
 	errCh := make(chan error)
 	var isFinished bool
+	var prog world.ProgressRunWorld
 	go w.RunWorld(stopYear, progressCh, errCh)
 	for {
 		select {
@@ -47,19 +44,9 @@ func (o *Orchestrator) RunAndSaveWorld(ctx context.Context, w *world.World, stop
 				return err
 			}
 			isFinished = true
-			break
 		case progress := <-progressCh:
-			bProgres, err := json.Marshal(progress)
-			if err != nil {
-				close(progressCh)
-				return wrapped_error.NewInternalServerError(err, "can not marshal progress before setting to redis")
-			}
-			if err := o.storage.Set(
-				context.Background(),
-				getWorldRunningProgressChannelName(w.ID),
-				string(bProgres),
-				time.Hour,
-			); err != nil {
+			prog = progress
+			if err := o.saveProgress(ctx, prog, w.ID); err != nil {
 				close(progressCh)
 				return wrapped_error.NewInternalServerError(err, "can not set world running progress")
 			}
@@ -75,9 +62,28 @@ func (o *Orchestrator) RunAndSaveWorld(ctx context.Context, w *world.World, stop
 		}
 	}
 	close(progressCh)
+	if err := o.saveProgress(ctx, prog, w.ID); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not set world running progress")
+	}
 
-	// return w.Save(time.Since(startDate))
 	return o.SaveWorld(ctx, w, time.Since(startDate))
+}
+
+func (o *Orchestrator) saveProgress(ctx context.Context, progress world.ProgressRunWorld, worldID string) error {
+	bProgres, err := json.Marshal(progress)
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not marshal progress before setting to redis")
+	}
+	if err := o.storage.Set(
+		context.Background(),
+		getWorldRunningProgressChannelName(worldID),
+		string(bProgres),
+		time.Hour,
+	); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not set world running progress")
+	}
+
+	return nil
 }
 
 func (o *Orchestrator) GetWorldRunningProgress(worldID string) (world.ProgressRunWorld, error) {
@@ -110,6 +116,7 @@ func (o *Orchestrator) SaveWorld(ctx context.Context, w *world.World, duration t
 	}
 	update := bson.M{
 		"$set": bson.M{
+			"year":                   w.Year,
 			"duration":               duration.String(),
 			"population_number":      w.PopulationNumber,
 			"dead_population_number": w.DeadPopulationNumber,

@@ -33,3 +33,6 @@ fmt:
 
 tidy:
 	go mod tidy
+
+lint:
+	golangci-lint run --timeout 60m

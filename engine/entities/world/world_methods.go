@@ -189,6 +189,7 @@ func (w *World) RunYear() error {
 	if err := w.collectDeadPopulation(); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not collect dead population")
 	}
+	w.PopulationNumber = w.CalculatePersonsNumber()
 
 	return nil
 }

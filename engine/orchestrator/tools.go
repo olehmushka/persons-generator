@@ -1,6 +1,7 @@
 package orchestrator
 
 import (
+	"fmt"
 	"persons_generator/core/storage"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -29,4 +30,8 @@ func getSortDESC(isDESC bool) int {
 	}
 
 	return 1
+}
+
+func getWorldRunningProgressChannelName(worldID string) string {
+	return fmt.Sprintf("w_%s", worldID)
 }
