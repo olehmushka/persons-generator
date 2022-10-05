@@ -21,7 +21,6 @@ type World struct {
 	Religions                 []*religion.Religion
 	CultureReligionReferences []*religion.CultureReference
 
-	storageFolderName       string
 	defaultHumanAmount      int
 	defaultMalePercentage   float64
 	defaultFemalePercentage float64
@@ -49,7 +48,6 @@ func New(
 		CultureReligionReferences: refs,
 		MaxPersonsNumberPerLoc:    750,
 
-		storageFolderName:       cfg.StorageFolderName,
 		defaultHumanAmount:      cfg.DefaultHumanAmount,
 		defaultMalePercentage:   cfg.DefaultMalePercentage,
 		defaultFemalePercentage: cfg.DefaultFemalePercentage,
@@ -66,7 +64,6 @@ func NewByPreferred(cfg Config, preferred *Preference) (*World, error) {
 	w := &World{
 		ID: uuid.New(),
 
-		storageFolderName:       cfg.StorageFolderName,
 		defaultHumanAmount:      cfg.DefaultHumanAmount,
 		defaultMalePercentage:   cfg.DefaultMalePercentage,
 		defaultFemalePercentage: cfg.DefaultFemalePercentage,

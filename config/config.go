@@ -7,10 +7,9 @@ import (
 )
 
 type Config struct {
-	HTTPServer  HTTPServer
-	JSONStorage JSONStorage
-	MongoDB     MongoDB
-	Redis       Redis
+	HTTPServer HTTPServer
+	MongoDB    MongoDB
+	Redis      Redis
 }
 
 func New() (*Config, error) {

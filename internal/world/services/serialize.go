@@ -1,39 +1,39 @@
 package services
 
 import (
+	"encoding/json"
+	"persons_generator/core/wrapped_error"
 	engineWorld "persons_generator/engine/entities/world"
 	"persons_generator/internal/world/entities"
-
-	"github.com/google/uuid"
 )
 
-func serializeWorld(in *engineWorld.World) *entities.World {
+func serializeSerializedWorld(in *engineWorld.SerializedWorld) (*entities.World, error) {
 	if in == nil {
-		return nil
+		return nil, nil
 	}
 
-	religions := make([]uuid.UUID, 0, len(in.Religions))
-	for _, r := range in.Religions {
-		if r == nil {
-			continue
+	b, err := json.Marshal(in)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not marshal in serialize world")
+	}
+
+	var out entities.World
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not unmarshal in serialize world")
+	}
+
+	return &out, nil
+}
+
+func serializeSerializedWorlds(in []*engineWorld.SerializedWorld) ([]*entities.World, error) {
+	out := make([]*entities.World, len(in))
+	for i := range out {
+		var err error
+		out[i], err = serializeSerializedWorld(in[i])
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can no serialize worlds")
 		}
-		religions = append(religions, r.ID)
 	}
 
-	cultures := make([]uuid.UUID, 0, len(in.Cultures))
-	for _, c := range in.Cultures {
-		if c == nil {
-			continue
-		}
-		cultures = append(cultures, c.ID)
-	}
-
-	return &entities.World{
-		ID: in.ID,
-		// PersonsAmount       int         `json:"persons_amount"`
-		// MalePersonsAmount   int         `json:"male_persons_amount"`
-		// FemalePersonsAmount int         `json:"female_persons_amount"`
-		ReligionIDs: religions,
-		CultureIDs:  cultures,
-	}
+	return out, nil
 }

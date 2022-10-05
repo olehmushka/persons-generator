@@ -7,7 +7,15 @@ import (
 const RunGenerateReligionCommand = "generate_religion"
 
 func runGenerateReligionCommand() error {
-	o, err := orchestrator.New(orchestrator.Config{StorageFolderName: "tmp"})
+	o, err := orchestrator.New(orchestrator.Config{
+		RedisURL: "redis://localhost:6379",
+
+		MongoDBURL:              "mongodb://localhost:27017",
+		MongoDBUsername:         "root",
+		MongoDBPassword:         "rootPassword",
+		MongoDBMaxBulkItemsSize: 500,
+		MongoDBDBName:           "persons_generator_db",
+	})
 	if err != nil {
 		return err
 	}

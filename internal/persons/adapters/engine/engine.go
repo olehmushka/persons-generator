@@ -15,10 +15,9 @@ type adapter struct {
 
 func New(cfg *config.Config) (Adapter, error) {
 	e, err := orchestrator.New(orchestrator.Config{
-		StorageFolderName: cfg.JSONStorage.StorageFolder,
-		RedisURL:          cfg.Redis.URL,
-		RedisUsername:     cfg.Redis.Username,
-		RedisPassword:     cfg.Redis.Password,
+		RedisURL:      cfg.Redis.URL,
+		RedisUsername: cfg.Redis.Username,
+		RedisPassword: cfg.Redis.Password,
 
 		MongoDBURL:              cfg.MongoDB.URL,
 		MongoDBUsername:         cfg.MongoDB.Username,

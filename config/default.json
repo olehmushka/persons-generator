@@ -2,9 +2,6 @@
   "httpServer": {
     "address": ":8000"
   },
-  "jsonStorage": {
-    "storageFolder": "tmp"
-  },
   "mongoDb": {
     "url": "mongodb://localhost:27017",
     "dbName": "persons_generator_db",

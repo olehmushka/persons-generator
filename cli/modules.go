@@ -7,6 +7,8 @@ import (
 	mqRunAndSaveWorld "persons_generator/handlers/mq/mq_run_and_save_world"
 	cultureEngineAdp "persons_generator/internal/culture/adapters/engine"
 	cultureServices "persons_generator/internal/culture/services"
+	languageEngineAdp "persons_generator/internal/language/adapters/engine"
+	languageServices "persons_generator/internal/language/services"
 	personsEngineAdp "persons_generator/internal/persons/adapters/engine"
 	personsServices "persons_generator/internal/persons/services"
 	religionEngineAdp "persons_generator/internal/religion/adapters/engine"
@@ -23,12 +25,14 @@ var Modules = fx.Options(
 	redis.PublisherModule,
 
 	cultureEngineAdp.Module,
+	languageEngineAdp.Module,
 	religionEngineAdp.Module,
 	personsEngineAdp.Module,
 	worldEngineAdp.Module,
 	worldMQAdp.Module,
 
 	cultureServices.Module,
+	languageServices.Module,
 	personsServices.Module,
 	religionServices.Module,
 	worldServices.Module,

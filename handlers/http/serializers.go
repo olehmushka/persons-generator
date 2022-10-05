@@ -5,7 +5,9 @@ import (
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/religion"
+	languageEntities "persons_generator/internal/language/entities"
 	personsEntities "persons_generator/internal/persons/entities"
+	worldEntities "persons_generator/internal/world/entities"
 )
 
 func serializeCultures(cultures []*culture.SerializedCulture) ([]*SerializedCulture, error) {
@@ -73,4 +75,58 @@ func serializePersons(in []*personsEntities.Person) []*Person {
 
 func serializePerson(in *personsEntities.Person) *Person {
 	return &Person{}
+}
+
+func serializeLanguages(langs []*languageEntities.Language) ([]*Language, error) {
+	out := make([]*Language, len(langs))
+	for i := range out {
+		var err error
+		out[i], err = serializeLanguage(langs[i])
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can no serialize languages")
+		}
+	}
+
+	return out, nil
+}
+
+func serializeLanguage(in *languageEntities.Language) (*Language, error) {
+	b, err := json.Marshal(in)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not marshal in serialize language")
+	}
+
+	var out Language
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not unmarshal in serialize language")
+	}
+
+	return &out, nil
+}
+
+func serializeWorlds(langs []*worldEntities.World) ([]*World, error) {
+	out := make([]*World, len(langs))
+	for i := range out {
+		var err error
+		out[i], err = serializeWorld(langs[i])
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can no serialize worlds")
+		}
+	}
+
+	return out, nil
+}
+
+func serializeWorld(in *worldEntities.World) (*World, error) {
+	b, err := json.Marshal(in)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not marshal in serialize world")
+	}
+
+	var out World
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not unmarshal in serialize world")
+	}
+
+	return &out, nil
 }

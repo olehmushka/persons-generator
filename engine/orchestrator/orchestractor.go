@@ -7,9 +7,8 @@ import (
 )
 
 type Orchestrator struct {
-	storageFolderName string
-	storage           redis.Storage
-	mongodb           mongodb.Client
+	storage redis.Storage
+	mongodb mongodb.Client
 
 	dbName string
 }
@@ -26,9 +25,8 @@ func New(cfg Config) (*Orchestrator, error) {
 	}
 
 	return &Orchestrator{
-		storageFolderName: cfg.StorageFolderName,
-		storage:           storage,
-		mongodb:           mdb,
-		dbName:            cfg.MongoDBDBName,
+		storage: storage,
+		mongodb: mdb,
+		dbName:  cfg.MongoDBDBName,
 	}, nil
 }

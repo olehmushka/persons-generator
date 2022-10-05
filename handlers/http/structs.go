@@ -1,6 +1,8 @@
 package http
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
 
 type CulturePreferred struct {
 	Names  []string `json:"names"`
@@ -59,6 +61,7 @@ type SerializedCulture struct {
 }
 
 type SerializedLanguage struct {
+	ID        uuid.UUID                    `json:"id"`
 	Name      string                       `json:"name"`
 	Subfamily *SerailizedLanguageSubfamily `json:"subfamily"`
 }
@@ -67,15 +70,18 @@ type SerailizedLanguageSubfamily struct {
 	Name              string                       `json:"name"`
 	Family            string                       `json:"family"`
 	ExtendedSubfamily *SerailizedLanguageSubfamily `json:"extended_subfamily"`
+	IsLiving          bool                         `json:"is_living"`
 }
 
 type LanguageSubfamily struct {
 	Name              string             `json:"name"`
 	FamilyName        string             `json:"family_name"`
 	ExtendedSubfamily *LanguageSubfamily `json:"extended_subfamily"`
+	IsLiving          bool               `json:"is_living"`
 }
 
 type Language struct {
+	ID        uuid.UUID          `json:"id"`
 	Name      string             `json:"name"`
 	Subfamily *LanguageSubfamily `json:"subfamily"`
 }
@@ -179,4 +185,55 @@ type GetWorldProgressResponse struct {
 	DeadPopulation int     `json:"dead_population"`
 	Progress       float64 `json:"progress"`
 	Duration       string  `json:"duration"`
+}
+
+type GetLanguagesResponse struct {
+	Data  []*Language `json:"data"`
+	Total int         `json:"total"`
+}
+
+type PostCreateLanguageRequest struct {
+	Name      string             `json:"name"`
+	Subfamily *LanguageSubfamily `json:"subfamily"`
+	WordBase  *WordBase          `json:"word_base,omitempty"`
+	IsLiving  bool               `json:"is_living" default:"true"`
+}
+
+type PostCreateLanguageResponse struct {
+	Data *Language `json:"data"`
+}
+
+type WordBase struct {
+	FemaleOwnNames []string `json:"female_own_names"`
+	MaleOwnNames   []string `json:"male_own_names"`
+	Words          []string `json:"words"`
+	Name           string   `json:"name"`
+	Min            int      `json:"min"`
+	Max            int      `json:"max"`
+	Dupl           string   `json:"dupl"`
+	M              float64  `json:"m"`
+}
+
+type World struct {
+	ID                        uuid.UUID           `json:"id"`
+	Size                      int                 `json:"size"`
+	MaxPersonsNumberPerLoc    int                 `json:"max_persons_number_per_loc"`
+	MaxDistanceValue          float64             `json:"max_distance_value"`
+	Year                      int                 `json:"year"`
+	CulturesIDs               []uuid.UUID         `json:"cultures_ids"`
+	ReligionsIDs              []uuid.UUID         `json:"religions_ids"`
+	CultureReligionReferences []*CultureReference `json:"culture_religion_references"`
+	PopulationNumber          int                 `json:"population_number"`
+	DeadPopulationNumber      int                 `json:"dead_population_number"`
+	Duration                  string              `json:"duration"`
+}
+
+type CultureReference struct {
+	ReligionID uuid.UUID `json:"religion_id"`
+	CultureID  uuid.UUID `json:"culture_id"`
+}
+
+type GetWorldsResponse struct {
+	Data  []*World `json:"data"`
+	Total int      `json:"total"`
 }

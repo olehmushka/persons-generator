@@ -12,11 +12,11 @@ import (
 )
 
 func (o *Orchestrator) CreateReligion(c *culture.Culture) (*religion.Religion, error) {
-	return religion.New(religion.Config{StorageFolderName: o.storageFolderName}, c)
+	return religion.New(religion.Config{}, c)
 }
 
 func (o *Orchestrator) CreateReligions(amount int, preferred []*religion.Preference) ([]*religion.Religion, error) {
-	return religion.NewManyByPreferred(religion.Config{StorageFolderName: o.storageFolderName}, amount, preferred)
+	return religion.NewManyByPreferred(religion.Config{}, amount, preferred)
 }
 
 func (o *Orchestrator) SaveReligion(ctx context.Context, r *religion.Religion) error {

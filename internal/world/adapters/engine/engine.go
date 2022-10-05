@@ -3,6 +3,7 @@ package engine
 import (
 	"context"
 	"persons_generator/config"
+	"persons_generator/core/storage"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/religion"
@@ -19,10 +20,9 @@ type adapter struct {
 
 func New(cfg *config.Config) (Adapter, error) {
 	e, err := orchestrator.New(orchestrator.Config{
-		StorageFolderName: cfg.JSONStorage.StorageFolder,
-		RedisURL:          cfg.Redis.URL,
-		RedisUsername:     cfg.Redis.Username,
-		RedisPassword:     cfg.Redis.Password,
+		RedisURL:      cfg.Redis.URL,
+		RedisUsername: cfg.Redis.Username,
+		RedisPassword: cfg.Redis.Password,
 
 		MongoDBURL:              cfg.MongoDB.URL,
 		MongoDBUsername:         cfg.MongoDB.Username,
@@ -100,4 +100,12 @@ func (a *adapter) DeleteWorldByID(ctx context.Context, id uuid.UUID) error {
 
 func (a *adapter) DeleteAllWorlds(ctx context.Context) error {
 	return a.engine.DeleteAllWorlds(ctx)
+}
+
+func (a *adapter) ReadWorlds(ctx context.Context, opts storage.PaginationSortingOpts) ([]*world.SerializedWorld, error) {
+	return a.engine.ReadWorlds(ctx, opts)
+}
+
+func (a *adapter) CountWorlds(ctx context.Context, opts storage.PaginationSortingOpts) (int, error) {
+	return a.engine.CountWorlds(ctx, opts)
 }

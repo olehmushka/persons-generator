@@ -10,8 +10,7 @@ const RunGenerateWorldCommand = "generate_world"
 
 func runGenerateWorldCommand() error {
 	o, err := orchestrator.New(orchestrator.Config{
-		StorageFolderName: "tmp",
-		RedisURL:          "redis://localhost:6379",
+		RedisURL: "redis://localhost:6379",
 
 		MongoDBURL:              "mongodb://localhost:27017",
 		MongoDBUsername:         "root",

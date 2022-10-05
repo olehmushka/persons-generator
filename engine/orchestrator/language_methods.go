@@ -15,6 +15,14 @@ func (o *Orchestrator) QueryDefaultLanguages(q string, opts storage.PaginationSo
 	return tools.Paginate(language.GetLanguageByName(q), opts.Pagination.Offset, opts.Pagination.Limit), nil
 }
 
+func (o *Orchestrator) CountDefaultLanguages(q string) (int, error) {
+	if q == "" {
+		return len(language.AllLanguages), nil
+	}
+
+	return len((language.GetLanguageByName(q))), nil
+}
+
 func (o *Orchestrator) GetDefaultLanguages(opts storage.PaginationSortingOpts) []*language.Language {
 	return tools.Paginate(language.AllLanguages, opts.Pagination.Offset, opts.Pagination.Limit)
 }
@@ -33,6 +41,9 @@ func (o *Orchestrator) ReadLanguagesByName(ctx context.Context, name string, opt
 	findOpt := parseFindOpts(opts)
 	// findOpts.Set
 	filters := bson.M{"name": name}
+	if name == "" {
+		filters = bson.M{}
+	}
 	cursor, err := o.mongodb.Find(ctx, o.dbName, LanguagesCollName, filters, findOpt)
 	if err != nil {
 		return nil, err
@@ -54,6 +65,19 @@ func (o *Orchestrator) ReadLanguagesByName(ctx context.Context, name string, opt
 	}
 
 	return results, nil
+}
+
+func (o *Orchestrator) CountLanguagesByName(ctx context.Context, name string) (int, error) {
+	filters := bson.M{"name": name}
+	if name == "" {
+		filters = bson.M{}
+	}
+	count, err := o.mongodb.CountDocuments(ctx, o.dbName, LanguagesCollName, filters)
+	if err != nil {
+		return 0, wrapped_error.NewInternalServerError(err, "can not count language by name")
+	}
+
+	return count, nil
 }
 
 func (o *Orchestrator) DeleteLanguageByID(ctx context.Context, id uuid.UUID) error {

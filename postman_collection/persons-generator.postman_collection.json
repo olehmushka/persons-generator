@@ -197,6 +197,114 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "GET/api/languages/default",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8000/api/languages/default?offset=0&limit=10&q=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"languages",
+						"default"
+					],
+					"query": [
+						{
+							"key": "offset",
+							"value": "0",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "limit",
+							"value": "10",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "q",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/api/languages",
+			"request": {
+				"url": "http://localhost:8000/api/languages",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/api/languages/{id}",
+			"request": {
+				"url": "http://localhost:8000/api/languages/xxx",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST/api/languages",
+			"request": {
+				"url": "http://localhost:8000/api/languages",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"\",\n\t\"subfamily\": {\n\t\t\"name\": \"\",\n\t\t\"family_name\": \"\",\n\t\t\"extended_subfamily\": null,\n\t\t\"is_living\": true\n\t},\n\t\"word_base\": {},\n\t\"is_living\": true\n}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET/api/languages",
+			"request": {
+				"url": "http://localhost:8000/api/languages",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET/api/worlds",
+			"request": {
+				"url": "http://localhost:8000/api/worlds",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }

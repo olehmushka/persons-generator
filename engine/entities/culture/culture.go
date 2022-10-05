@@ -25,8 +25,6 @@ type Culture struct {
 	Traditions      []*Tradition       `json:"traditions" bson:"traditions"`
 	GenderDominance *g.Dominance       `json:"gender_dominance" bson:"gender_dominance"`
 	MartialCustom   g.Acceptance       `json:"martial_custom" bson:"martial_custom"`
-
-	storageFolderName string
 }
 
 func New(cfg Config, preferred *Preference) (*Culture, error) {
@@ -103,8 +101,6 @@ func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
 	c := &Culture{
 		ID:    uuid.New(),
 		Proto: proto,
-
-		storageFolderName: cfg.StorageFolderName,
 	}
 	gd, err := getGenderDominance(c.Proto)
 	if err != nil {

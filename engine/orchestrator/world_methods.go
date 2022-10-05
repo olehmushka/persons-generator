@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"persons_generator/core/storage"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/entities/religion"
@@ -20,7 +21,7 @@ func (o *Orchestrator) CreateWorld(
 	religions []*religion.Religion,
 	refs []*religion.CultureReference,
 ) (*world.World, error) {
-	return world.New(world.Config{StorageFolderName: o.storageFolderName}, size, cultures, religions, refs)
+	return world.New(world.Config{}, size, cultures, religions, refs)
 }
 
 func getWorldRunningProgressChannelName(worldID uuid.UUID) string {
@@ -151,6 +152,13 @@ func (o *Orchestrator) DeleteWorldByID(ctx context.Context, id uuid.UUID) error 
 		return wrapped_error.NewInternalServerError(err, "can not delete world by id")
 	}
 
+	populationFilter := bson.M{
+		"world_id": id,
+	}
+	if _, err := o.mongodb.DeleteOne(ctx, o.dbName, PersonsCollName, populationFilter); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete persons by world_id")
+	}
+
 	return nil
 }
 
@@ -160,4 +168,38 @@ func (o *Orchestrator) DeleteAllWorlds(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (o *Orchestrator) ReadWorlds(ctx context.Context, opts storage.PaginationSortingOpts) ([]*world.SerializedWorld, error) {
+	findOpt := parseFindOpts(opts)
+	cursor, err := o.mongodb.Find(ctx, o.dbName, WorldsCollName, bson.M{}, findOpt)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var results []*world.SerializedWorld
+	for cursor.Next(ctx) {
+		var elem world.SerializedWorld
+
+		if err = cursor.Decode(&elem); err != nil {
+			return nil, err
+		}
+		results = append(results, &elem)
+	}
+
+	if err = cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
+func (o *Orchestrator) CountWorlds(ctx context.Context, opts storage.PaginationSortingOpts) (int, error) {
+	count, err := o.mongodb.CountDocuments(ctx, o.dbName, WorldsCollName, bson.M{})
+	if err != nil {
+		return 0, wrapped_error.NewInternalServerError(err, "can not count worlds")
+	}
+
+	return count, nil
 }

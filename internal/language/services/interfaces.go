@@ -9,9 +9,9 @@ import (
 )
 
 type Language interface {
-	QueryDefaultLanguages(q string, opts storage.PaginationSortingOpts) ([]*entities.Language, error)
+	QueryDefaultLanguages(q string, opts storage.PaginationSortingOpts) ([]*entities.Language, int, error)
 	CreateLanguage(ctx context.Context, in *entities.Language) (uuid.UUID, error)
-	ReadLanguagesByName(ctx context.Context, name string, opts storage.PaginationSortingOpts) ([]*entities.Language, error)
+	ReadLanguagesByName(ctx context.Context, name string, opts storage.PaginationSortingOpts) ([]*entities.Language, int, error)
 	DeleteLanguageByID(ctx context.Context, id uuid.UUID) error
 	DeleteAllLanguages(ctx context.Context) error
 }

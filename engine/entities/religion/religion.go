@@ -25,8 +25,6 @@ type Religion struct {
 	Doctrine        *Doctrine    `json:"doctrine" bson:"doctrine"`
 	Attributes      *Attributes  `json:"attributes" bson:"attributes"`
 	Theology        *Theology    `json:"theology" bson:"theology"`
-
-	storageFolderName string `json:"-" bson:"-"`
 }
 
 func New(cfg Config, c *culture.Culture) (*Religion, error) {
@@ -57,8 +55,6 @@ func New(cfg Config, c *culture.Culture) (*Religion, error) {
 		},
 
 		ID: uuid.New(),
-
-		storageFolderName: cfg.StorageFolderName,
 	}
 	name, err := c.Language.GetReligionName()
 	if err != nil {
@@ -206,7 +202,7 @@ func newRefForCultureNumberGreater(cfg Config, amount int, cultures []*culture.C
 	)
 
 	for _, chunk := range culturesChunks {
-		hybridCulture, err := culture.NewWithProto(culture.Config{StorageFolderName: cfg.StorageFolderName}, chunk)
+		hybridCulture, err := culture.NewWithProto(culture.Config{}, chunk)
 		if err != nil {
 			return nil, err
 		}
@@ -250,7 +246,7 @@ func getCulture(cfg Config, preferred *Preference) (*culture.Culture, error) {
 	}
 
 	return culture.NewHybrid(
-		culture.Config{StorageFolderName: cfg.StorageFolderName},
+		culture.Config{},
 		amount,
 		prefCultures,
 	)

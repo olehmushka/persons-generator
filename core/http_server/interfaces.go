@@ -26,6 +26,13 @@ type Handlers interface {
 
 	CreateWorld(w http.ResponseWriter, r *http.Request)
 	GetWorldProgress(w http.ResponseWriter, r *http.Request)
+	GetWorlds(w http.ResponseWriter, r *http.Request)
 	DeleteWorldByID(w http.ResponseWriter, r *http.Request)
 	DeleteAllWorlds(w http.ResponseWriter, r *http.Request)
+
+	CreateLanguage(w http.ResponseWriter, r *http.Request)
+	GetLanguages(w http.ResponseWriter, r *http.Request)
+	GetDefaultLanguages(w http.ResponseWriter, r *http.Request)
+	DeleteLanguageByID(w http.ResponseWriter, r *http.Request)
+	DeleteAllLanguages(w http.ResponseWriter, r *http.Request)
 }

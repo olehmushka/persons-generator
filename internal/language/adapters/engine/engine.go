@@ -20,6 +20,10 @@ type adapter struct {
 
 func New(cfg *config.Config) (Adapter, error) {
 	e, err := orchestrator.New(orchestrator.Config{
+		RedisURL:      cfg.Redis.URL,
+		RedisUsername: cfg.Redis.Username,
+		RedisPassword: cfg.Redis.Password,
+
 		MongoDBURL:              cfg.MongoDB.URL,
 		MongoDBUsername:         cfg.MongoDB.Username,
 		MongoDBPassword:         cfg.MongoDB.Password,
@@ -50,6 +54,10 @@ func (a *adapter) QueryDefaultLanguages(q string, opts storage.PaginationSorting
 	return serializeLanguages(langs), nil
 }
 
+func (a *adapter) CountDefaultLanguages(q string) (int, error) {
+	return a.engine.CountDefaultLanguages(q)
+}
+
 func (a *adapter) CreateLanguage(ctx context.Context, in *entities.Language) (uuid.UUID, error) {
 	return a.engine.CreateLanguage(ctx, deserializeLanguage(in))
 }
@@ -61,6 +69,10 @@ func (a *adapter) ReadLanguagesByName(ctx context.Context, name string, opts sto
 	}
 
 	return serializeLanguages(langs), nil
+}
+
+func (a *adapter) CountLanguagesByName(ctx context.Context, name string) (int, error) {
+	return a.engine.CountLanguagesByName(ctx, name)
 }
 
 func (a *adapter) DeleteLanguageByID(ctx context.Context, id uuid.UUID) error {

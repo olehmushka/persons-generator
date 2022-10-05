@@ -7,14 +7,14 @@ import (
 )
 
 type SerializedPreWorld struct {
-	ID                        uuid.UUID
-	Size                      int
-	MaxPersonsNumberPerLoc    int
-	MaxDistanceValue          float64
-	Year                      int
-	CulturesIDs               []uuid.UUID
-	ReligionsIDs              []uuid.UUID
-	CultureReligionReferences []*religion.SerializedCultureReference
+	ID                        uuid.UUID                              `json:"id" bson:"id"`
+	Size                      int                                    `json:"size" bson:"size"`
+	MaxPersonsNumberPerLoc    int                                    `json:"max_persons_number_per_loc" bson:"max_persons_number_per_loc"`
+	MaxDistanceValue          float64                                `json:"max_distance_value" bson:"max_distance_value"`
+	Year                      int                                    `json:"year" bson:"year"`
+	CulturesIDs               []uuid.UUID                            `json:"cultures_ids" bson:"cultures_ids"`
+	ReligionsIDs              []uuid.UUID                            `json:"religions_ids" bson:"religions_ids"`
+	CultureReligionReferences []*religion.SerializedCultureReference `json:"culture_religion_references" bson:"culture_religion_references"`
 }
 
 func (w *World) SerializePreworld() *SerializedPreWorld {
@@ -41,4 +41,18 @@ func (w *World) SerializePreworld() *SerializedPreWorld {
 		ReligionsIDs:              religionsIDs,
 		CultureReligionReferences: cultureReligionReferences,
 	}
+}
+
+type SerializedWorld struct {
+	ID                        uuid.UUID                              `json:"id" bson:"id"`
+	Size                      int                                    `json:"size" bson:"size"`
+	MaxPersonsNumberPerLoc    int                                    `json:"max_persons_number_per_loc" bson:"max_persons_number_per_loc"`
+	MaxDistanceValue          float64                                `json:"max_distance_value" bson:"max_distance_value"`
+	Year                      int                                    `json:"year" bson:"year"`
+	CulturesIDs               []uuid.UUID                            `json:"cultures_ids" bson:"cultures_ids"`
+	ReligionsIDs              []uuid.UUID                            `json:"religions_ids" bson:"religions_ids"`
+	CultureReligionReferences []*religion.SerializedCultureReference `json:"culture_religion_references" bson:"culture_religion_references"`
+	PopulationNumber          int                                    `json:"population_number" bson:"population_number"`
+	DeadPopulationNumber      int                                    `json:"dead_population_number" bson:"dead_population_number"`
+	Duration                  string                                 `json:"duration" bson:"duration"`
 }

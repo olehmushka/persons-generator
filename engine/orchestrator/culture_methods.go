@@ -13,7 +13,7 @@ import (
 )
 
 func (o *Orchestrator) CreateCultures(amount int, preferred []*culture.Preference) ([]*culture.Culture, error) {
-	return culture.NewMany(culture.Config{StorageFolderName: o.storageFolderName}, amount, preferred)
+	return culture.NewMany(culture.Config{}, amount, preferred)
 }
 
 func (o *Orchestrator) SearchCultures(search string) ([]*culture.Culture, error) {
@@ -29,7 +29,7 @@ func (o *Orchestrator) HybridCultures(cultures []*culture.Culture) (*culture.Cul
 		return nil, errors.New("base cultures can not be empty")
 	}
 
-	return culture.NewWithProto(culture.Config{StorageFolderName: o.storageFolderName}, cultures)
+	return culture.NewWithProto(culture.Config{}, cultures)
 }
 
 func (o *Orchestrator) SaveCulture(ctx context.Context, c *culture.Culture) error {

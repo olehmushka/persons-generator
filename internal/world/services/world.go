@@ -2,10 +2,12 @@ package services
 
 import (
 	"context"
+	"persons_generator/core/storage"
 	"persons_generator/core/wrapped_error"
 	engineWorld "persons_generator/engine/entities/world"
 	"persons_generator/internal/world/adapters/engine"
 	"persons_generator/internal/world/adapters/mq"
+	"persons_generator/internal/world/entities"
 
 	"github.com/google/uuid"
 	"go.uber.org/fx"
@@ -74,4 +76,22 @@ func (s *world) DeleteWorldByID(ctx context.Context, id uuid.UUID) error {
 
 func (s *world) DeleteAllWorlds(ctx context.Context) error {
 	return s.engineAdp.DeleteAllWorlds(ctx)
+}
+
+func (s *world) ReadWorlds(ctx context.Context, opts storage.PaginationSortingOpts) ([]*entities.World, int, error) {
+	worlds, err := s.engineAdp.ReadWorlds(ctx, opts)
+	if err != nil {
+		return nil, 0, wrapped_error.NewInternalServerError(err, "can not read worlds")
+	}
+	serializedWorlds, err := serializeSerializedWorlds(worlds)
+	if err != nil {
+		return nil, 0, wrapped_error.NewInternalServerError(err, "can not serialize worlds")
+	}
+
+	count, err := s.engineAdp.CountWorlds(ctx, opts)
+	if err != nil {
+		return nil, 0, wrapped_error.NewInternalServerError(err, "can not count worlds")
+	}
+
+	return serializedWorlds, count, nil
 }

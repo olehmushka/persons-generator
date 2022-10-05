@@ -62,6 +62,7 @@ func (s *server) Register() {
 	router.Delete("/api/religions", http_server_tools.NewHandlesChain(s.handlers.DeleteAllReligions))
 
 	router.Post("/api/worlds", http_server_tools.NewHandlesChain(s.handlers.CreateWorld))
+	router.Get("/api/worlds", http_server_tools.NewHandlesChain(s.handlers.GetWorlds))
 	router.Delete("/api/worlds/{id}", http_server_tools.NewHandlesChain(s.handlers.DeleteWorldByID))
 	router.Delete("/api/worlds", http_server_tools.NewHandlesChain(s.handlers.DeleteAllWorlds))
 
@@ -69,6 +70,12 @@ func (s *server) Register() {
 	router.Delete("/api/persons/{id}", http_server_tools.NewHandlesChain(s.handlers.DeletePersonByID))
 	router.Delete("/api/persons", http_server_tools.NewHandlesChain(s.handlers.DeleteAllPersons))
 	router.Get("/api/worlds/progress", http_server_tools.NewHandlesChain(s.handlers.GetWorldProgress))
+
+	router.Post("/api/languages", http_server_tools.NewHandlesChain(s.handlers.CreateLanguage))
+	router.Get("/api/languages/default", http_server_tools.NewHandlesChain(s.handlers.GetDefaultLanguages))
+	router.Get("/api/languages", http_server_tools.NewHandlesChain(s.handlers.GetLanguages))
+	router.Delete("/api/languages/{id}", http_server_tools.NewHandlesChain(s.handlers.DeleteLanguageByID))
+	router.Delete("/api/languages", http_server_tools.NewHandlesChain(s.handlers.DeleteAllLanguages))
 
 	srv := &http.Server{
 		Addr:              s.address,

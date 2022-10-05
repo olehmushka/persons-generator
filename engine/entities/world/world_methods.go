@@ -55,12 +55,12 @@ func (w *World) preparePreference(in *Preference) (*Preference, error) {
 			culturesAmount = 89
 			religionsAmount = 10
 		}
-		cultures, err := culture.NewMany(culture.Config{StorageFolderName: w.storageFolderName}, culturesAmount, nil)
+		cultures, err := culture.NewMany(culture.Config{}, culturesAmount, nil)
 		if err != nil {
 			return nil, err
 		}
 		references, err := religion.NewReferences(
-			religion.Config{StorageFolderName: w.storageFolderName},
+			religion.Config{},
 			religionsAmount,
 			cultures,
 		)

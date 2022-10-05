@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/internal/culture/entities"
+	languageEntities "persons_generator/internal/language/entities"
 	religionEntities "persons_generator/internal/religion/entities"
 
 	"github.com/google/uuid"
@@ -60,4 +61,40 @@ func deserializeReligionPreferences(in []*ReligionPreferred) ([]*religionEntitie
 	}
 
 	return out, nil
+}
+
+func deserializeLanguage(name string, sf *LanguageSubfamily, wb *WordBase, isLiving bool) (*languageEntities.Language, error) {
+	var wbOut *languageEntities.WordBase
+	if wb != nil {
+		wbOut = &languageEntities.WordBase{
+			FemaleOwnNames: wb.FemaleOwnNames,
+			MaleOwnNames:   wb.MaleOwnNames,
+			Words:          wb.Words,
+			Name:           wb.Name,
+			Min:            wb.Min,
+			Max:            wb.Max,
+			Dupl:           wb.Dupl,
+			M:              wb.M,
+		}
+	}
+
+	return &languageEntities.Language{
+		Name:      name,
+		Subfamily: deserializeSubfamily(sf),
+		WordBase:  wbOut,
+		IsLiving:  isLiving,
+	}, nil
+}
+
+func deserializeSubfamily(sf *LanguageSubfamily) *languageEntities.Subfamily {
+	if sf == nil {
+		return nil
+	}
+
+	return &languageEntities.Subfamily{
+		Name:              sf.Name,
+		FamilyName:        sf.FamilyName,
+		ExtendedSubfamily: deserializeSubfamily(sf.ExtendedSubfamily),
+		IsLiving:          sf.IsLiving,
+	}
 }
