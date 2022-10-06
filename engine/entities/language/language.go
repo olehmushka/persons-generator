@@ -85,6 +85,25 @@ func GetLanguageByName(name string) []*Language {
 	return tools.SearchMany(AllLanguages, func(l *Language) string { return l.Name }, name)
 }
 
+func FindLanguage(id, name string) *Language {
+	for _, lang := range AllLanguages {
+		isIDMatch := true
+		if id != "" && lang.ID != id {
+			isIDMatch = false
+		}
+
+		isNameMatch := true
+		if name != "" && lang.Name != name {
+			isNameMatch = false
+		}
+		if isIDMatch && isNameMatch {
+			return lang
+		}
+	}
+
+	return nil
+}
+
 func (l *Language) GetCultureName() (string, error) {
 	w, err := l.GetWord()
 	if err != nil {

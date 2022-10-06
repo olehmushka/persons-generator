@@ -466,25 +466,25 @@ var (
 		IsLiving:          true,
 	}
 	PermicSubfamily = &Subfamily{
-		Name:              "Permic_lang_subfamily",
+		Name:              "permic_lang_subfamily",
 		Family:            UralicFamily,
 		ExtendedSubfamily: FinnoPermicSubfamily,
 		IsLiving:          true,
 	}
 	BaltoFinnicSubfamily = &Subfamily{
-		Name:              "BaltoFinnic_lang_subfamily",
+		Name:              "balto_finnic_lang_subfamily",
 		Family:            UralicFamily,
 		ExtendedSubfamily: FinnoPermicSubfamily,
 		IsLiving:          true,
 	}
 	SamiSubfamily = &Subfamily{
-		Name:              "Sami_lang_subfamily",
+		Name:              "sami_lang_subfamily",
 		Family:            UralicFamily,
 		ExtendedSubfamily: FinnoPermicSubfamily,
 		IsLiving:          true,
 	}
 	MordvinSubfamily = &Subfamily{
-		Name:              "Mordvin_lang_subfamily",
+		Name:              "mordvin_lang_subfamily",
 		Family:            UralicFamily,
 		ExtendedSubfamily: FinnoPermicSubfamily,
 		IsLiving:          true,
@@ -1094,7 +1094,7 @@ var (
 		IsLiving: true,
 	}
 	Baga = &Subfamily{
-		Name:     "b'aga_lang_subfamily",
+		Name:     "b_aga_lang_subfamily",
 		Family:   NiloSaharanFamily,
 		IsLiving: false,
 	}

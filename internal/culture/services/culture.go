@@ -68,3 +68,7 @@ func (s *culture) DeleteCultureByID(ctx context.Context, id string) error {
 func (s *culture) DeleteAllCultures(ctx context.Context) error {
 	return s.engineAdp.DeleteAllCultures(ctx)
 }
+
+func (s *culture) UpdateCultureLanguage(ctx context.Context, cultureID, languageID string) error {
+	return s.engineAdp.UpdateCultureLanguage(ctx, cultureID, languageID)
+}

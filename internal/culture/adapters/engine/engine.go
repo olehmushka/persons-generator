@@ -78,3 +78,7 @@ func (a *adapter) DeleteCultureByID(ctx context.Context, id string) error {
 func (a *adapter) DeleteAllCultures(ctx context.Context) error {
 	return a.engine.DeleteAllCultures(ctx)
 }
+
+func (a *adapter) UpdateCultureLanguage(ctx context.Context, cultureID, languageID string) error {
+	return a.engine.UpdateCultureLanguage(ctx, cultureID, languageID)
+}

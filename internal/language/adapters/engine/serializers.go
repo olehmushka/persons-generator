@@ -42,6 +42,15 @@ func serializeLanguage(in *language.Language) *entities.Language {
 	}
 }
 
+func serializeSubfamilies(in []*language.Subfamily) []*entities.Subfamily {
+	out := make([]*entities.Subfamily, len(in))
+	for i := range out {
+		out[i] = serializeSubfamily(in[i])
+	}
+
+	return out
+}
+
 func serializeSubfamily(in *language.Subfamily) *entities.Subfamily {
 	if in == nil {
 		return nil

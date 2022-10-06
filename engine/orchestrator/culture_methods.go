@@ -9,6 +9,7 @@ import (
 	"persons_generator/engine/entities/culture"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func (o *Orchestrator) CreateCultures(amount int, preferred []*culture.Preference) ([]*culture.Culture, error) {
@@ -73,6 +74,33 @@ func (o *Orchestrator) DeleteCultureByID(ctx context.Context, id string) error {
 func (o *Orchestrator) DeleteAllCultures(ctx context.Context) error {
 	if err := o.mongodb.Truncate(ctx, o.dbName, CulturesCollName); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not delete all cultures")
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) UpdateCultureLanguage(ctx context.Context, cultureID, languageID string) error {
+	lang, err := o.ReadLanguageByID(ctx, languageID)
+	if err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not get language for updating culture")
+	}
+	if lang == nil {
+		return wrapped_error.NewNotFoundError(nil, fmt.Sprintf("can not find language by id for updating culture (lang_id=%s)", languageID))
+	}
+
+	filter := bson.M{
+		"id": cultureID,
+	}
+	update := bson.M{
+		"$set": bson.M{
+			"language": lang,
+		},
+	}
+	falseVal := false
+	opts := options.Update()
+	opts.Upsert = &falseVal
+	if _, err := o.mongodb.UpdateOne(ctx, o.dbName, CulturesCollName, filter, update, opts); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not update culture")
 	}
 
 	return nil

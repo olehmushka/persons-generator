@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"persons_generator/engine/entities/gender"
 	"strconv"
 
 	"github.com/go-chi/chi"
@@ -43,6 +44,21 @@ func ExtractIDFromPath(r *http.Request, key string) string {
 	}
 	if id, err := uuid.Parse(val); err == nil {
 		return id.String()
+	}
+
+	return ""
+}
+
+func ExtractSexFromReq(r *http.Request) gender.Sex {
+	val := r.URL.Query().Get("sex")
+	if val == "" {
+		return ""
+	}
+	switch val {
+	case "male":
+		return gender.MaleSex
+	case "female":
+		return gender.FemaleSex
 	}
 
 	return ""

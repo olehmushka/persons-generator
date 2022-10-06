@@ -104,6 +104,33 @@ func serializeLanguage(in *languageEntities.Language) (*Language, error) {
 	return &out, nil
 }
 
+func serializeLanguageSubfamilies(langs []*languageEntities.Subfamily) ([]*LanguageSubfamily, error) {
+	out := make([]*LanguageSubfamily, len(langs))
+	for i := range out {
+		var err error
+		out[i], err = serializeLanguageSubfamily(langs[i])
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can no serialize language  subfamilies")
+		}
+	}
+
+	return out, nil
+}
+
+func serializeLanguageSubfamily(in *languageEntities.Subfamily) (*LanguageSubfamily, error) {
+	b, err := json.Marshal(in)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not marshal in serialize language subfamily")
+	}
+
+	var out LanguageSubfamily
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not unmarshal in serialize language subfamily")
+	}
+
+	return &out, nil
+}
+
 func serializeWorlds(langs []*worldEntities.World) ([]*World, error) {
 	out := make([]*World, len(langs))
 	for i := range out {

@@ -1,6 +1,7 @@
 package language
 
 type SerializedLanguage struct {
+	ID        string                       `json:"id"`
 	Name      string                       `json:"name"`
 	Subfamily *SerailizedLanguageSubfamily `json:"subfamily"`
 }
@@ -11,6 +12,7 @@ func (l *Language) Serialize() *SerializedLanguage {
 	}
 
 	return &SerializedLanguage{
+		ID:        l.ID,
 		Name:      l.Name,
 		Subfamily: l.Subfamily.Serialize(),
 	}

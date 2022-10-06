@@ -188,6 +188,11 @@ type GetLanguagesResponse struct {
 	Total int         `json:"total"`
 }
 
+type GetLanguageSubfamiliesResponse struct {
+	Data  []*LanguageSubfamily `json:"data"`
+	Total int                  `json:"total"`
+}
+
 type PostCreateLanguageRequest struct {
 	Name      string             `json:"name"`
 	Subfamily *LanguageSubfamily `json:"subfamily"`
@@ -196,6 +201,10 @@ type PostCreateLanguageRequest struct {
 }
 
 type PostCreateLanguageResponse struct {
+	Data *Language `json:"data"`
+}
+
+type GetLanguageByIDResponse struct {
 	Data *Language `json:"data"`
 }
 
@@ -232,4 +241,8 @@ type CultureReference struct {
 type GetWorldsResponse struct {
 	Data  []*World `json:"data"`
 	Total int      `json:"total"`
+}
+
+type GetWordResponse struct {
+	Word string `json:"word"`
 }

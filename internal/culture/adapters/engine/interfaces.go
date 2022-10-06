@@ -13,4 +13,5 @@ type Adapter interface {
 	GetCultureByID(ctx context.Context, id string) (*culture.Culture, error)
 	DeleteCultureByID(ctx context.Context, id string) error
 	DeleteAllCultures(context.Context) error
+	UpdateCultureLanguage(ctx context.Context, cultureID, languageID string) error
 }
