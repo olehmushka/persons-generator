@@ -51,7 +51,7 @@ func (o *Orchestrator) RunAndSaveWorld(ctx context.Context, w *world.World, stop
 				return wrapped_error.NewInternalServerError(err, "can not set world running progress")
 			}
 
-			if progress.Progress == 100 {
+			if progress.Year == stopYear {
 				isFinished = true
 
 				break
@@ -61,12 +61,16 @@ func (o *Orchestrator) RunAndSaveWorld(ctx context.Context, w *world.World, stop
 			break
 		}
 	}
-	close(progressCh)
 	if err := o.saveProgress(ctx, prog, w.ID); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not set world running progress")
 	}
 
-	return o.SaveWorld(ctx, w, time.Since(startDate))
+	if err := o.SaveWorld(ctx, w, time.Since(startDate)); err != nil {
+		return err
+	}
+	close(progressCh)
+
+	return nil
 }
 
 func (o *Orchestrator) saveProgress(ctx context.Context, progress world.ProgressRunWorld, worldID string) error {

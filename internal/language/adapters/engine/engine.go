@@ -41,12 +41,12 @@ var Module = fx.Options(
 	fx.Provide(New),
 )
 
-func (a *adapter) QueryDefaultLanguages(q string, opts storage.PaginationSortingOpts) ([]*entities.Language, error) {
+func (a *adapter) QueryDefaultLanguages(ctx context.Context, q string, opts storage.PaginationSortingOpts) ([]*entities.Language, error) {
 	if q == "" {
-		return serializeLanguages(a.engine.GetDefaultLanguages(opts)), nil
+		return serializeLanguages(a.engine.GetDefaultLanguages(ctx, opts)), nil
 	}
 
-	langs, err := a.engine.QueryDefaultLanguages(q, opts)
+	langs, err := a.engine.QueryDefaultLanguages(ctx, q, opts)
 	if err != nil {
 		return nil, wrapped_error.NewInternalServerError(err, fmt.Sprintf("can not query default languages (query=%s)", q))
 	}
@@ -54,8 +54,8 @@ func (a *adapter) QueryDefaultLanguages(q string, opts storage.PaginationSorting
 	return serializeLanguages(langs), nil
 }
 
-func (a *adapter) CountDefaultLanguages(q string) (int, error) {
-	return a.engine.CountDefaultLanguages(q)
+func (a *adapter) CountDefaultLanguages(ctx context.Context, q string) (int, error) {
+	return a.engine.CountDefaultLanguages(ctx, q)
 }
 
 func (a *adapter) CreateLanguage(ctx context.Context, in *entities.Language) (string, error) {

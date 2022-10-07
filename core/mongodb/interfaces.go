@@ -20,6 +20,7 @@ type Connection interface {
 	UpdateOne(ctx context.Context, dbName string, collName string, filter, update any, opts ...*options.UpdateOptions) (*UpdateResult, error)
 	Truncate(ctx context.Context, dbName, collName string) error
 	DeleteOne(ctx context.Context, dbName string, collName string, filter any, opts ...*options.DeleteOptions) (int, error)
+	DeleteMany(ctx context.Context, dbName string, collName string, filter any, opts ...*options.DeleteOptions) (int, error)
 }
 
 type Client interface {

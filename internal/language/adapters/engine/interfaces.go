@@ -8,8 +8,8 @@ import (
 )
 
 type Adapter interface {
-	QueryDefaultLanguages(q string, opts storage.PaginationSortingOpts) ([]*entities.Language, error)
-	CountDefaultLanguages(q string) (int, error)
+	QueryDefaultLanguages(ctx context.Context, q string, opts storage.PaginationSortingOpts) ([]*entities.Language, error)
+	CountDefaultLanguages(ctx context.Context, q string) (int, error)
 	ReadDefaultLanguageSubfamilies(ctx context.Context, opts storage.PaginationSortingOpts) ([]*entities.Subfamily, error)
 	CountDefaultLanguageSubfamilies(ctx context.Context) (int, error)
 	CreateLanguage(ctx context.Context, in *entities.Language) (string, error)

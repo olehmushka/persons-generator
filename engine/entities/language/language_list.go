@@ -30,6 +30,7 @@ var AllLanguages = tools.Merge(
 // IndoEuropeanFamily
 var (
 	Albanian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "albanian",
 		Subfamily:   AlbanianSubfamily,
@@ -37,6 +38,7 @@ var (
 		WordBaseRef: AlbanianWordBaseRef,
 	}
 	Armenian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "armenian",
 		Subfamily:   ArmenianSubfamily,
@@ -45,6 +47,7 @@ var (
 	}
 	// Slavic
 	Ruthenian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ruthenian",
 		Subfamily:   RuthenianSubfamily,
@@ -52,6 +55,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef,
 	}
 	Belarusian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "belarusian",
 		Subfamily:   RuthenianSubfamily,
@@ -59,6 +63,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding belarusian to word bases
 	}
 	Ukrainian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ukrainian",
 		Subfamily:   RuthenianSubfamily,
@@ -66,6 +71,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding ukrainian to word bases
 	}
 	Russian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "russian",
 		Subfamily:   MoscovianSubfamily,
@@ -73,6 +79,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding russian to word bases
 	}
 	Slovenian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "slovenian",
 		Subfamily:   WesternSouthSlavicSubfamily,
@@ -80,6 +87,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding slovenian to word bases
 	}
 	Croatian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "croation",
 		Subfamily:   WesternSouthSlavicSubfamily,
@@ -87,6 +95,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding croation to word bases
 	}
 	Serbian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "serbian",
 		Subfamily:   WesternSouthSlavicSubfamily,
@@ -94,6 +103,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding serbian to word bases
 	}
 	Bosnian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bosnian",
 		Subfamily:   WesternSouthSlavicSubfamily,
@@ -101,6 +111,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding bosnian to word bases
 	}
 	Bulgarian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bulgarian",
 		Subfamily:   EasternSouthSlavicSubfamily,
@@ -108,6 +119,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding bulgarian to word bases
 	}
 	Macedonian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "macedonian",
 		Subfamily:   EasternSouthSlavicSubfamily,
@@ -115,6 +127,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding macedonian to word bases
 	}
 	Polish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "polish",
 		Subfamily:   LechiticSubfamily,
@@ -122,6 +135,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding polish to word bases
 	}
 	Silesian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "silesian",
 		Subfamily:   LechiticSubfamily,
@@ -129,6 +143,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding silesian to word bases
 	}
 	LowerSorbian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lower_sorbian",
 		Subfamily:   SorbianSubfamily,
@@ -136,6 +151,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding lower_sorbian to word bases
 	}
 	UpperSorbian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "upper_sorbian",
 		Subfamily:   SorbianSubfamily,
@@ -143,6 +159,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding upper_sorbian to word bases
 	}
 	Czech = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "czech",
 		Subfamily:   CzechSlovakSubfamily,
@@ -150,6 +167,7 @@ var (
 		WordBaseRef: RuthenianWordBaseRef, // @TODO can be changed after adding czech to word bases
 	}
 	Slovak = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "slovak",
 		Subfamily:   CzechSlovakSubfamily,
@@ -158,6 +176,7 @@ var (
 	}
 	// Baltic
 	Latvian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "latvian",
 		Subfamily:   EasternBalticSubfamily,
@@ -165,6 +184,7 @@ var (
 		WordBaseRef: LithuanianWordBaseRef, // @TODO can be changed after adding latvian to word bases
 	}
 	Latgalian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "latgalian",
 		Subfamily:   EasternBalticSubfamily,
@@ -172,6 +192,7 @@ var (
 		WordBaseRef: LithuanianWordBaseRef, // @TODO can be changed after adding latgalian to word bases
 	}
 	Lithuanian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lithuanian",
 		Subfamily:   EasternBalticSubfamily,
@@ -179,6 +200,7 @@ var (
 		WordBaseRef: LithuanianWordBaseRef,
 	}
 	Semigallian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "semigallian",
 		Subfamily:   EasternBalticSubfamily,
@@ -187,6 +209,7 @@ var (
 	}
 	// Celtic
 	Celtiberian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "celtiberian",
 		Subfamily:   CelticSubfamily,
@@ -194,6 +217,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	Gallaecian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gallaecian",
 		Subfamily:   CelticSubfamily,
@@ -201,6 +225,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	Noric = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "noric",
 		Subfamily:   CelticSubfamily,
@@ -208,6 +233,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	Pictish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pictish",
 		Subfamily:   BrittonicSubfamily,
@@ -215,6 +241,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	Cumbric = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "cumbric",
 		Subfamily:   BrittonicSubfamily,
@@ -222,6 +249,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	Welsh = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "welsh",
 		Subfamily:   WesternBrittonicSubfamily,
@@ -229,6 +257,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	Cornish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "cornish",
 		Subfamily:   SouthWesternBrittonicSubfamily,
@@ -236,6 +265,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	Breton = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "breton",
 		Subfamily:   SouthWesternBrittonicSubfamily,
@@ -243,6 +273,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	Irish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "irish",
 		Subfamily:   GoidelicSubfamily,
@@ -250,6 +281,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	Manx = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "manx",
 		Subfamily:   GoidelicSubfamily,
@@ -257,6 +289,7 @@ var (
 		WordBaseRef: CelticWordBaseRef,
 	}
 	ScottishGaelic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "scottish_gaelic",
 		Subfamily:   GoidelicSubfamily,
@@ -265,6 +298,7 @@ var (
 	}
 	// Dacian
 	Dacian = &Language{
+		Origin:    NativeOrigin,
 		ID:        uuid.New().String(),
 		Name:      "dacian",
 		Subfamily: DacianSubfamily,
@@ -272,6 +306,7 @@ var (
 	}
 	// Germanic
 	Danish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "danish",
 		Subfamily:   NorthGermanicSubfamily,
@@ -279,6 +314,7 @@ var (
 		WordBaseRef: NordicWordBaseRef, // @TODO can be changed after adding danish to word bases
 	}
 	Faroese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "faroese",
 		Subfamily:   NorthGermanicSubfamily,
@@ -286,6 +322,7 @@ var (
 		WordBaseRef: NordicWordBaseRef, // @TODO can be changed after adding faroese to word bases
 	}
 	Icelandic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "icelandic",
 		Subfamily:   NorthGermanicSubfamily,
@@ -293,6 +330,7 @@ var (
 		WordBaseRef: NordicWordBaseRef, // @TODO can be changed after adding icelandic to word bases
 	}
 	Norwegian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "norwegian",
 		Subfamily:   NorthGermanicSubfamily,
@@ -300,6 +338,7 @@ var (
 		WordBaseRef: NordicWordBaseRef, // @TODO can be changed after adding norwegian to word bases
 	}
 	Swedish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "swedish",
 		Subfamily:   NorthGermanicSubfamily,
@@ -307,6 +346,7 @@ var (
 		WordBaseRef: NordicWordBaseRef,
 	}
 	Dalecarlian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dalecarlian",
 		Subfamily:   NorthGermanicSubfamily,
@@ -314,6 +354,7 @@ var (
 		WordBaseRef: NordicWordBaseRef, // @TODO can be changed after adding dalecarlian to word bases
 	}
 	Gutnish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gutnish",
 		Subfamily:   NorthGermanicSubfamily,
@@ -321,6 +362,7 @@ var (
 		WordBaseRef: NordicWordBaseRef, // @TODO can be changed after adding gutnish to word bases
 	}
 	English = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "english",
 		Subfamily:   WestGermanicSubfamily,
@@ -328,6 +370,7 @@ var (
 		WordBaseRef: EnglishWordBaseRef,
 	}
 	Scots = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "scots",
 		Subfamily:   WestGermanicSubfamily,
@@ -335,6 +378,7 @@ var (
 		WordBaseRef: EnglishWordBaseRef, // @TODO can be changed after adding scots to word bases
 	}
 	Yola = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "yola",
 		Subfamily:   WestGermanicSubfamily,
@@ -342,6 +386,7 @@ var (
 		WordBaseRef: EnglishWordBaseRef, // @TODO can be changed after adding yola to word bases
 	}
 	Frisian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "frisian",
 		Subfamily:   WestGermanicSubfamily,
@@ -349,6 +394,7 @@ var (
 		WordBaseRef: EnglishWordBaseRef, // @TODO can be changed after adding frisian to word bases
 	}
 	German = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "german",
 		Subfamily:   WestGermanicSubfamily,
@@ -356,6 +402,7 @@ var (
 		WordBaseRef: GermanWordBaseRef,
 	}
 	Dutch = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dutch",
 		Subfamily:   WestGermanicSubfamily,
@@ -363,6 +410,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding dutch to word bases
 	}
 	Luxembourgish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "luxembourgish",
 		Subfamily:   WestGermanicSubfamily,
@@ -370,6 +418,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding luxembourgish to word bases
 	}
 	Yiddish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "yiddish",
 		Subfamily:   WestGermanicSubfamily,
@@ -377,6 +426,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding yiddish to word bases
 	}
 	Gothic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gothic",
 		Subfamily:   EastGermanicSubfamily,
@@ -384,6 +434,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding gothic to word bases
 	}
 	Vandalic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "vandalic",
 		Subfamily:   EastGermanicSubfamily,
@@ -391,6 +442,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding vandalic to word bases
 	}
 	Burgundian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "burgundian",
 		Subfamily:   EastGermanicSubfamily,
@@ -398,6 +450,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding burgundian to word bases
 	}
 	Alamannian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "alamannian",
 		Subfamily:   ElbeGermanicSubfamily,
@@ -405,6 +458,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding alamannian to word bases
 	}
 	Bavarian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bavarian",
 		Subfamily:   ElbeGermanicSubfamily,
@@ -412,6 +466,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding bavarian to word bases
 	}
 	Langobardian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lombardian",
 		Subfamily:   ElbeGermanicSubfamily,
@@ -419,6 +474,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding lombardian to word bases
 	}
 	Frankish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "frankish",
 		Subfamily:   WeserRhineGermanicSubfamily,
@@ -426,6 +482,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding frankish to word bases
 	}
 	Anglic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "anglic",
 		Subfamily:   NorthSeaGermanicSubfamily,
@@ -433,6 +490,7 @@ var (
 		WordBaseRef: GermanWordBaseRef, // @TODO can be changed after adding anglic to word bases
 	}
 	Saxon = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "saxon",
 		Subfamily:   NorthSeaGermanicSubfamily,
@@ -441,6 +499,7 @@ var (
 	}
 	// Greek
 	Greek = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "greek",
 		Subfamily:   GreekSubfamily,
@@ -449,6 +508,7 @@ var (
 	}
 	// Illyrian
 	Illyrian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "illyrian",
 		Subfamily:   IllyrianSubfamily,
@@ -457,6 +517,7 @@ var (
 	}
 	// IndoIranian
 	Pashai = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pashai",
 		Subfamily:   IndoAryanSubfamily,
@@ -464,6 +525,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Chitrali = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "chitrali",
 		Subfamily:   IndoAryanSubfamily,
@@ -471,6 +533,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Shina = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "shina",
 		Subfamily:   IndoAryanSubfamily,
@@ -478,6 +541,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Kohistani = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kohistani",
 		Subfamily:   IndoAryanSubfamily,
@@ -485,6 +549,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Kashmiri = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kashmiri",
 		Subfamily:   IndoAryanSubfamily,
@@ -492,6 +557,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Punjabi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "punjabi",
 		Subfamily:   IndoAryanSubfamily,
@@ -499,6 +565,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Sindhi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sindhi",
 		Subfamily:   IndoAryanSubfamily,
@@ -506,6 +573,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Rajasthani = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "rajasthani",
 		Subfamily:   IndoAryanSubfamily,
@@ -513,6 +581,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Gujarati = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gujarati",
 		Subfamily:   IndoAryanSubfamily,
@@ -520,6 +589,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Bhili = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bhili",
 		Subfamily:   IndoAryanSubfamily,
@@ -527,6 +597,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Khandeshi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khandeshi",
 		Subfamily:   IndoAryanSubfamily,
@@ -534,6 +605,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	HimachaliDogri = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "himachali_dogri",
 		Subfamily:   IndoAryanSubfamily,
@@ -541,6 +613,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	GirhwaliKumaoni = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "girhwali_kumaoni",
 		Subfamily:   IndoAryanSubfamily,
@@ -548,6 +621,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Nepali = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "nepali",
 		Subfamily:   IndoAryanSubfamily,
@@ -555,6 +629,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Hindi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hindi",
 		Subfamily:   IndoAryanSubfamily,
@@ -562,6 +637,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Bihari = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bihari",
 		Subfamily:   IndoAryanSubfamily,
@@ -569,6 +645,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	BengaliAssamese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bengali_assamese",
 		Subfamily:   IndoAryanSubfamily,
@@ -576,6 +653,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Odia = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "odia",
 		Subfamily:   IndoAryanSubfamily,
@@ -583,6 +661,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	Halbi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "halbi",
 		Subfamily:   IndoAryanSubfamily,
@@ -590,6 +669,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	MarathiKonkani = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "marathi_konkani",
 		Subfamily:   IndoAryanSubfamily,
@@ -597,6 +677,7 @@ var (
 		WordBaseRef: HindiWordBaseRef,
 	}
 	SinhalaMaldivian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sinhala_maldivian",
 		Subfamily:   IndoAryanSubfamily,
@@ -605,6 +686,7 @@ var (
 	}
 	// Iranian
 	Farsi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "farsi",
 		Subfamily:   IranianSubfamily,
@@ -612,6 +694,7 @@ var (
 		WordBaseRef: IranianWordBaseRef,
 	}
 	Avestan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "avestan",
 		Subfamily:   IranianSubfamily,
@@ -619,6 +702,7 @@ var (
 		WordBaseRef: IranianWordBaseRef,
 	}
 	Dari = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dari",
 		Subfamily:   IranianSubfamily,
@@ -626,6 +710,7 @@ var (
 		WordBaseRef: IranianWordBaseRef,
 	}
 	Tajik = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tajik",
 		Subfamily:   IranianSubfamily,
@@ -633,6 +718,7 @@ var (
 		WordBaseRef: IranianWordBaseRef,
 	}
 	Pashto = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pashto",
 		Subfamily:   IranianSubfamily,
@@ -640,6 +726,7 @@ var (
 		WordBaseRef: IranianWordBaseRef,
 	}
 	Kurdish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kurdish",
 		Subfamily:   IranianSubfamily,
@@ -647,6 +734,7 @@ var (
 		WordBaseRef: IranianWordBaseRef,
 	}
 	Luri = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "luri",
 		Subfamily:   IranianSubfamily,
@@ -654,6 +742,7 @@ var (
 		WordBaseRef: IranianWordBaseRef,
 	}
 	Balochi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "balochi",
 		Subfamily:   IranianSubfamily,
@@ -661,6 +750,7 @@ var (
 		WordBaseRef: IranianWordBaseRef,
 	}
 	Scythian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "scythian",
 		Subfamily:   IranianSubfamily,
@@ -669,12 +759,14 @@ var (
 	}
 	// Nuriastani
 	KamkataVari = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kamkata_vari",
 		Subfamily:   NuriastaniSubfamily,
 		WordBaseRef: KannadaWordBaseRef, // @TODO change it into KamkataVari when available
 	}
 	VasiVari = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "vasi_vari",
 		Subfamily:   NuriastaniSubfamily,
@@ -682,6 +774,7 @@ var (
 		IsLiving:    true,
 	}
 	Askunu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "askunu",
 		Subfamily:   NuriastaniSubfamily,
@@ -689,6 +782,7 @@ var (
 		IsLiving:    true,
 	}
 	Waigali = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "waigali",
 		Subfamily:   NuriastaniSubfamily,
@@ -696,6 +790,7 @@ var (
 		IsLiving:    true,
 	}
 	Tregami = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tregami",
 		Subfamily:   NuriastaniSubfamily,
@@ -703,6 +798,7 @@ var (
 		IsLiving:    true,
 	}
 	Zemiaki = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "zemiaki",
 		Subfamily:   NuriastaniSubfamily,
@@ -711,6 +807,7 @@ var (
 	}
 	// Italic
 	Venetic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "venetic",
 		Subfamily:   ItalicSubfamily,
@@ -718,6 +815,7 @@ var (
 		IsLiving:    false,
 	}
 	Sicel = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sicel",
 		Subfamily:   ItalicSubfamily,
@@ -725,6 +823,7 @@ var (
 		IsLiving:    false,
 	}
 	Lusitanian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lusitanian",
 		Subfamily:   ItalicSubfamily,
@@ -732,6 +831,7 @@ var (
 		IsLiving:    false,
 	}
 	Latin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "latin",
 		Subfamily:   LatinoFaliscanSubfamily,
@@ -739,6 +839,7 @@ var (
 		IsLiving:    true,
 	}
 	Faliscan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "faliscan",
 		Subfamily:   LatinoFaliscanSubfamily,
@@ -746,6 +847,7 @@ var (
 		IsLiving:    false,
 	}
 	Lanuvain = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lanuvain",
 		Subfamily:   LatinoFaliscanSubfamily,
@@ -753,6 +855,7 @@ var (
 		IsLiving:    false,
 	}
 	Venetian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "venetian",
 		Subfamily:   RomanceSubfamily,
@@ -760,6 +863,7 @@ var (
 		IsLiving:    true,
 	}
 	Sardinian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sardinian",
 		Subfamily:   RomanceSubfamily,
@@ -767,6 +871,7 @@ var (
 		IsLiving:    true,
 	}
 	Portuguese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "portuguese",
 		Subfamily:   IberoRomanceSubfamily,
@@ -774,6 +879,7 @@ var (
 		IsLiving:    true,
 	}
 	Galician = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "galician",
 		Subfamily:   IberoRomanceSubfamily,
@@ -781,6 +887,7 @@ var (
 		IsLiving:    true,
 	}
 	Asturleonese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "asturleonese",
 		Subfamily:   IberoRomanceSubfamily,
@@ -788,6 +895,7 @@ var (
 		IsLiving:    true,
 	}
 	Mirandese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mirandese",
 		Subfamily:   IberoRomanceSubfamily,
@@ -795,6 +903,7 @@ var (
 		IsLiving:    true,
 	}
 	Spanish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "spanish",
 		Subfamily:   IberoRomanceSubfamily,
@@ -802,6 +911,7 @@ var (
 		IsLiving:    true,
 	}
 	Aragonese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "aragonese",
 		Subfamily:   IberoRomanceSubfamily,
@@ -809,6 +919,7 @@ var (
 		IsLiving:    true,
 	}
 	Ladino = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ladino",
 		Subfamily:   IberoRomanceSubfamily,
@@ -816,6 +927,7 @@ var (
 		IsLiving:    true,
 	}
 	Catalan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "catalan",
 		Subfamily:   OccitanoRomanceSubfamily,
@@ -823,6 +935,7 @@ var (
 		IsLiving:    true,
 	}
 	Occitan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "occitan",
 		Subfamily:   OccitanoRomanceSubfamily,
@@ -830,6 +943,7 @@ var (
 		IsLiving:    true,
 	}
 	Gascon = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gascon",
 		Subfamily:   OccitanoRomanceSubfamily,
@@ -837,6 +951,7 @@ var (
 		IsLiving:    true,
 	}
 	French = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "french",
 		Subfamily:   GalloRomanceSubfamily,
@@ -844,6 +959,7 @@ var (
 		IsLiving:    true,
 	}
 	FrancoProvencal = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "franco_provencal",
 		Subfamily:   GalloRomanceSubfamily,
@@ -851,6 +967,7 @@ var (
 		IsLiving:    true,
 	}
 	Romansh = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "romansh",
 		Subfamily:   RhaetoRomanceSubfamily,
@@ -858,6 +975,7 @@ var (
 		IsLiving:    true,
 	}
 	Ladin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ladin",
 		Subfamily:   RhaetoRomanceSubfamily,
@@ -865,6 +983,7 @@ var (
 		IsLiving:    true,
 	}
 	Friulian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "friulian",
 		Subfamily:   RhaetoRomanceSubfamily,
@@ -872,6 +991,7 @@ var (
 		IsLiving:    true,
 	}
 	Piedmontense = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "piedmontense",
 		Subfamily:   GalloItalicSubfamily,
@@ -879,6 +999,7 @@ var (
 		IsLiving:    true,
 	}
 	Ligurian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ligurian",
 		Subfamily:   GalloItalicSubfamily,
@@ -886,6 +1007,7 @@ var (
 		IsLiving:    true,
 	}
 	Lombard = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lombard",
 		Subfamily:   GalloItalicSubfamily,
@@ -893,6 +1015,7 @@ var (
 		IsLiving:    true,
 	}
 	Emilian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "emilian",
 		Subfamily:   GalloItalicSubfamily,
@@ -900,6 +1023,7 @@ var (
 		IsLiving:    true,
 	}
 	Romagnol = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "romagnol",
 		Subfamily:   GalloItalicSubfamily,
@@ -907,6 +1031,7 @@ var (
 		IsLiving:    true,
 	}
 	Italian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "italian",
 		Subfamily:   ItaloDalmatianSubfamily,
@@ -914,6 +1039,7 @@ var (
 		IsLiving:    true,
 	}
 	Sicilian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sicilian",
 		Subfamily:   ItaloDalmatianSubfamily,
@@ -921,6 +1047,7 @@ var (
 		IsLiving:    true,
 	}
 	Neapolitan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "neapolitan",
 		Subfamily:   ItaloDalmatianSubfamily,
@@ -928,6 +1055,7 @@ var (
 		IsLiving:    true,
 	}
 	Dalmatian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dalmatian",
 		Subfamily:   ItaloDalmatianSubfamily,
@@ -935,6 +1063,7 @@ var (
 		IsLiving:    true,
 	}
 	Istriot = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "istriot",
 		Subfamily:   ItaloDalmatianSubfamily,
@@ -942,6 +1071,7 @@ var (
 		IsLiving:    true,
 	}
 	Romanian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "romanian",
 		Subfamily:   EasternRomanceSubfamily,
@@ -949,6 +1079,7 @@ var (
 		IsLiving:    true,
 	}
 	Aromanian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "aromanian",
 		Subfamily:   EasternRomanceSubfamily,
@@ -956,6 +1087,7 @@ var (
 		IsLiving:    true,
 	}
 	MaglenoRomanian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "magleno_romanian",
 		Subfamily:   EasternRomanceSubfamily,
@@ -963,6 +1095,7 @@ var (
 		IsLiving:    true,
 	}
 	IstroRomanian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "istro_romanian",
 		Subfamily:   EasternRomanceSubfamily,
@@ -970,6 +1103,7 @@ var (
 		IsLiving:    true,
 	}
 	Oscan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "oscan",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -977,6 +1111,7 @@ var (
 		IsLiving:    false,
 	}
 	Umbrian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "umbrian",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -984,6 +1119,7 @@ var (
 		IsLiving:    false,
 	}
 	Volscian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "volscian",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -991,6 +1127,7 @@ var (
 		IsLiving:    false,
 	}
 	Sabine = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sabine",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -998,6 +1135,7 @@ var (
 		IsLiving:    false,
 	}
 	SouthPicene = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "south_picene",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -1005,6 +1143,7 @@ var (
 		IsLiving:    false,
 	}
 	Marsian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "marsian",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -1012,6 +1151,7 @@ var (
 		IsLiving:    false,
 	}
 	Paeligni = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "paeligni",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -1019,6 +1159,7 @@ var (
 		IsLiving:    false,
 	}
 	Hernican = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hernican",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -1026,6 +1167,7 @@ var (
 		IsLiving:    false,
 	}
 	Marrucinian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "marrucinian",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -1033,6 +1175,7 @@ var (
 		IsLiving:    false,
 	}
 	PreSamnite = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pre_samnite",
 		Subfamily:   OscoUmbrianSubfamily,
@@ -1041,6 +1184,7 @@ var (
 	}
 	// Tysenian
 	Rhaetic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "rhaetic",
 		Subfamily:   TysenianSubfamily,
@@ -1048,6 +1192,7 @@ var (
 		IsLiving:    false,
 	}
 	Etruscan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "etruscan",
 		Subfamily:   TysenianSubfamily,
@@ -1056,6 +1201,7 @@ var (
 	}
 	// Tocharian
 	Tocharian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tocharian",
 		Subfamily:   TocharianSubfamily,
@@ -1216,6 +1362,7 @@ var AllIndoEuropeanLanguages = []*Language{
 // Basque
 var (
 	Basque = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "basque",
 		Subfamily:   BasqueSubfamily,
@@ -1228,6 +1375,7 @@ var AllBasqueLanguages = []*Language{Basque}
 // EastAsian
 var (
 	Japanese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "japanese",
 		Subfamily:   JaponicSubfamily,
@@ -1235,6 +1383,7 @@ var (
 		WordBaseRef: JapaneseWordBaseRef,
 	}
 	Korean = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "korean",
 		Subfamily:   KoreanicSubfamily,
@@ -1248,6 +1397,7 @@ var AllEastAsianLanguages = []*Language{Japanese, Korean}
 // Kartvelian
 var (
 	Georgian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "Georgian",
 		Subfamily:   KartoZanSubfamily,
@@ -1255,6 +1405,7 @@ var (
 		IsLiving:    true,
 	}
 	Mingrelian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "Mingrelian",
 		Subfamily:   KartoZanSubfamily,
@@ -1262,6 +1413,7 @@ var (
 		IsLiving:    true,
 	}
 	Laz = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "Laz",
 		Subfamily:   KartoZanSubfamily,
@@ -1269,6 +1421,7 @@ var (
 		IsLiving:    true,
 	}
 	Svan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "Svan",
 		Subfamily:   SvanSubfamily,
@@ -1288,6 +1441,7 @@ var AllKartvelianLanguages = []*Language{
 var (
 	// Sinitic
 	Chinese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "chinese",
 		Subfamily:   ChineseSubfamily,
@@ -1295,6 +1449,7 @@ var (
 		WordBaseRef: ChineseWordBaseRef,
 	}
 	Cantonese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "cantonese",
 		Subfamily:   ChineseSubfamily,
@@ -1302,6 +1457,7 @@ var (
 		WordBaseRef: CantoneseWordBaseRef,
 	}
 	Bai = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bai",
 		Subfamily:   GreaterBaiSubfamily,
@@ -1309,6 +1465,7 @@ var (
 		WordBaseRef: ChineseWordBaseRef,
 	}
 	Caijia = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "caijia",
 		Subfamily:   GreaterBaiSubfamily,
@@ -1316,6 +1473,7 @@ var (
 		WordBaseRef: ChineseWordBaseRef,
 	}
 	Longjia = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "longjia",
 		Subfamily:   GreaterBaiSubfamily,
@@ -1323,6 +1481,7 @@ var (
 		WordBaseRef: ChineseWordBaseRef,
 	}
 	Luren = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "luren",
 		Subfamily:   GreaterBaiSubfamily,
@@ -1331,6 +1490,7 @@ var (
 	}
 	// LoloBurmese
 	Muangphe = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "muangphe",
 		Subfamily:   MondzishSubfamily,
@@ -1338,6 +1498,7 @@ var (
 		IsLiving:    true,
 	}
 	Mango = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mango",
 		Subfamily:   MondzishSubfamily,
@@ -1345,6 +1506,7 @@ var (
 		IsLiving:    true,
 	}
 	Manga = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "manga",
 		Subfamily:   MondzishSubfamily,
@@ -1352,6 +1514,7 @@ var (
 		IsLiving:    true,
 	}
 	Maang = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "maang",
 		Subfamily:   MondzishSubfamily,
@@ -1359,6 +1522,7 @@ var (
 		IsLiving:    true,
 	}
 	Mondzi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mondzi",
 		Subfamily:   MondzishSubfamily,
@@ -1366,6 +1530,7 @@ var (
 		IsLiving:    true,
 	}
 	Maza = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "maza",
 		Subfamily:   MondzishSubfamily,
@@ -1373,6 +1538,7 @@ var (
 		IsLiving:    true,
 	}
 	Mauphu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mauphu",
 		Subfamily:   MondzishSubfamily,
@@ -1380,6 +1546,7 @@ var (
 		IsLiving:    true,
 	}
 	Motang = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "motang",
 		Subfamily:   MondzishSubfamily,
@@ -1387,6 +1554,7 @@ var (
 		IsLiving:    true,
 	}
 	Mongphu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mongphu",
 		Subfamily:   MondzishSubfamily,
@@ -1394,6 +1562,7 @@ var (
 		IsLiving:    true,
 	}
 	Burmese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "burmish",
 		Subfamily:   BurmishSubfamily,
@@ -1401,6 +1570,7 @@ var (
 		IsLiving:    true,
 	}
 	Jinuo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "jinuo",
 		Subfamily:   HanoishSubfamily,
@@ -1408,6 +1578,7 @@ var (
 		IsLiving:    true,
 	}
 	Sangkong = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sangkong",
 		Subfamily:   HanoishSubfamily,
@@ -1415,6 +1586,7 @@ var (
 		IsLiving:    true,
 	}
 	Bisu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bisu",
 		Subfamily:   HanoishSubfamily,
@@ -1422,6 +1594,7 @@ var (
 		IsLiving:    true,
 	}
 	Phunoi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "phunoi",
 		Subfamily:   HanoishSubfamily,
@@ -1429,6 +1602,7 @@ var (
 		IsLiving:    true,
 	}
 	Pyen = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pyen",
 		Subfamily:   HanoishSubfamily,
@@ -1436,6 +1610,7 @@ var (
 		IsLiving:    true,
 	}
 	Sila = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sila",
 		Subfamily:   HanoishSubfamily,
@@ -1443,6 +1618,7 @@ var (
 		IsLiving:    true,
 	}
 	Phana = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "phana",
 		Subfamily:   HanoishSubfamily,
@@ -1450,6 +1626,7 @@ var (
 		IsLiving:    true,
 	}
 	Akeu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "akeu",
 		Subfamily:   HanoishSubfamily,
@@ -1457,6 +1634,7 @@ var (
 		IsLiving:    true,
 	}
 	Hani = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hani",
 		Subfamily:   HanoishSubfamily,
@@ -1464,6 +1642,7 @@ var (
 		IsLiving:    true,
 	}
 	Piyo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "piyo",
 		Subfamily:   HanoishSubfamily,
@@ -1471,6 +1650,7 @@ var (
 		IsLiving:    true,
 	}
 	Enu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "enu",
 		Subfamily:   HanoishSubfamily,
@@ -1478,6 +1658,7 @@ var (
 		IsLiving:    true,
 	}
 	Mpi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mpi",
 		Subfamily:   HanoishSubfamily,
@@ -1485,6 +1666,7 @@ var (
 		IsLiving:    true,
 	}
 	Kaduo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kaduo",
 		Subfamily:   HanoishSubfamily,
@@ -1492,6 +1674,7 @@ var (
 		IsLiving:    true,
 	}
 	Laha = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "laha",
 		Subfamily:   LahoishSubfamily,
@@ -1499,6 +1682,7 @@ var (
 		IsLiving:    true,
 	}
 	Kucong = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kucong",
 		Subfamily:   LahoishSubfamily,
@@ -1506,6 +1690,7 @@ var (
 		IsLiving:    true,
 	}
 	Namuyi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "namuyi",
 		Subfamily:   NaxishSubfamily,
@@ -1513,6 +1698,7 @@ var (
 		IsLiving:    true,
 	}
 	Shixing = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "shixing",
 		Subfamily:   NaxishSubfamily,
@@ -1520,6 +1706,7 @@ var (
 		IsLiving:    true,
 	}
 	Naish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "naish",
 		Subfamily:   NaxishSubfamily,
@@ -1527,6 +1714,7 @@ var (
 		IsLiving:    true,
 	}
 	Nusu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "nusu",
 		Subfamily:   NusoishSubfamily,
@@ -1534,6 +1722,7 @@ var (
 		IsLiving:    true,
 	}
 	Zauzou = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "zauzou",
 		Subfamily:   NusoishSubfamily,
@@ -1541,6 +1730,7 @@ var (
 		IsLiving:    true,
 	}
 	Katso = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "katso",
 		Subfamily:   KazhuoishSubfamily,
@@ -1548,6 +1738,7 @@ var (
 		IsLiving:    true,
 	}
 	Samu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "samu",
 		Subfamily:   KazhuoishSubfamily,
@@ -1555,6 +1746,7 @@ var (
 		IsLiving:    true,
 	}
 	Sanie = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sanie",
 		Subfamily:   KazhuoishSubfamily,
@@ -1562,6 +1754,7 @@ var (
 		IsLiving:    true,
 	}
 	Sadu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sadu",
 		Subfamily:   KazhuoishSubfamily,
@@ -1569,6 +1762,7 @@ var (
 		IsLiving:    true,
 	}
 	Meuma = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "meuma",
 		Subfamily:   KazhuoishSubfamily,
@@ -1576,6 +1770,7 @@ var (
 		IsLiving:    true,
 	}
 	Lisu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lisu",
 		Subfamily:   LisoishSubfamily,
@@ -1583,6 +1778,7 @@ var (
 		IsLiving:    true,
 	}
 	Lolopo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lolopo",
 		Subfamily:   LisoishSubfamily,
@@ -1590,6 +1786,7 @@ var (
 		IsLiving:    true,
 	}
 	Tangut = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tangut",
 		Subfamily:   QiangicSubfamily,
@@ -1597,6 +1794,7 @@ var (
 		IsLiving:    true,
 	}
 	Tibetic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tibetic",
 		Subfamily:   BodishSubfamily,
@@ -1656,6 +1854,7 @@ var AllSinoTibetanLanguages = []*Language{
 // AustroasiaticFamily
 var (
 	Vietnamese = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "vietnamese",
 		Subfamily:   VietMuongSubfamily,
@@ -1663,6 +1862,7 @@ var (
 		WordBaseRef: VietnameseWordBaseRef,
 	}
 	Kri = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kri",
 		Subfamily:   VieticSubfamily,
@@ -1670,6 +1870,7 @@ var (
 		WordBaseRef: VietnameseWordBaseRef,
 	}
 	Khmer = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khmer",
 		Subfamily:   KhmericSubfamily,
@@ -1687,6 +1888,7 @@ var AllAustroasiaticLanguages = []*Language{
 // Uralic
 var (
 	Mari = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mari",
 		Subfamily:   FinnoPermicSubfamily,
@@ -1694,6 +1896,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Merya = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "merya",
 		Subfamily:   FinnoPermicSubfamily,
@@ -1701,6 +1904,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Komi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "komi",
 		Subfamily:   PermicSubfamily,
@@ -1708,6 +1912,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Permyak = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "permyak",
 		Subfamily:   PermicSubfamily,
@@ -1715,6 +1920,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Udmurt = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "udmurt",
 		Subfamily:   PermicSubfamily,
@@ -1722,6 +1928,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Meshchera = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "meshchera",
 		Subfamily:   PermicSubfamily,
@@ -1729,6 +1936,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Estonian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "estonian",
 		Subfamily:   BaltoFinnicSubfamily,
@@ -1736,6 +1944,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Livonian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "livonian",
 		Subfamily:   BaltoFinnicSubfamily,
@@ -1743,6 +1952,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Votic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "votic",
 		Subfamily:   BaltoFinnicSubfamily,
@@ -1750,6 +1960,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Finnish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "finnish",
 		Subfamily:   BaltoFinnicSubfamily,
@@ -1757,6 +1968,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Ingrian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ingrian",
 		Subfamily:   BaltoFinnicSubfamily,
@@ -1764,6 +1976,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Karelian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "karelian",
 		Subfamily:   BaltoFinnicSubfamily,
@@ -1771,6 +1984,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Ludic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ludic",
 		Subfamily:   BaltoFinnicSubfamily,
@@ -1778,6 +1992,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Veps = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "veps",
 		Subfamily:   BaltoFinnicSubfamily,
@@ -1785,6 +2000,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Sami = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sami",
 		Subfamily:   SamiSubfamily,
@@ -1792,6 +2008,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Erzya = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "erzya",
 		Subfamily:   MordvinSubfamily,
@@ -1799,6 +2016,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Moksha = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "moksha",
 		Subfamily:   MordvinSubfamily,
@@ -1806,6 +2024,7 @@ var (
 		WordBaseRef: FinnicWordBaseRef,
 	}
 	Hungarian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hungarian",
 		Subfamily:   UgricSubfamily,
@@ -1813,6 +2032,7 @@ var (
 		WordBaseRef: HungarianWordBaseRef,
 	}
 	Khanty = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khanty",
 		Subfamily:   UgricSubfamily,
@@ -1820,6 +2040,7 @@ var (
 		WordBaseRef: HungarianWordBaseRef,
 	}
 	Mansi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mansi",
 		Subfamily:   UgricSubfamily,
@@ -1854,6 +2075,7 @@ var AllUralicLanguages = []*Language{
 // Turkic
 var (
 	Gagauz = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gagauz",
 		Subfamily:   OghuzSubfamily,
@@ -1861,6 +2083,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Turkish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "turkish",
 		Subfamily:   OghuzSubfamily,
@@ -1868,6 +2091,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Azerbaijani = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "azerbaijani",
 		Subfamily:   OghuzSubfamily,
@@ -1875,6 +2099,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Turkmen = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "turkmen",
 		Subfamily:   OghuzSubfamily,
@@ -1882,6 +2107,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Qashqai = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "qashqai",
 		Subfamily:   OghuzSubfamily,
@@ -1889,6 +2115,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Chaharmahali = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "chaharmahali",
 		Subfamily:   OghuzSubfamily,
@@ -1896,6 +2123,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Khorasani = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khorasani",
 		Subfamily:   OghuzSubfamily,
@@ -1903,6 +2131,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Salar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "salar",
 		Subfamily:   OghuzSubfamily,
@@ -1910,6 +2139,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Bashkir = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bashkir",
 		Subfamily:   KipchakSubfamily,
@@ -1917,6 +2147,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Tatar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tatar",
 		Subfamily:   KipchakSubfamily,
@@ -1924,6 +2155,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	CrimeanTatar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "crimean_tatar",
 		Subfamily:   KipchakSubfamily,
@@ -1931,6 +2163,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	KarachayBalkar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "karachay_balkar",
 		Subfamily:   KipchakSubfamily,
@@ -1938,6 +2171,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Kumyk = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kumyk",
 		Subfamily:   KipchakSubfamily,
@@ -1945,6 +2179,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Karaim = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "karaim",
 		Subfamily:   KipchakSubfamily,
@@ -1952,6 +2187,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Krymchak = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "krymchak",
 		Subfamily:   KipchakSubfamily,
@@ -1959,6 +2195,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Urum = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "urum",
 		Subfamily:   KipchakSubfamily,
@@ -1966,6 +2203,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Kazakh = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kazakh",
 		Subfamily:   KipchakSubfamily,
@@ -1973,6 +2211,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Karakalpak = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "karakalpak",
 		Subfamily:   KipchakSubfamily,
@@ -1980,6 +2219,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Nogai = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "nogai",
 		Subfamily:   KipchakSubfamily,
@@ -1987,6 +2227,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	SiberianTatar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "siberian_tatar",
 		Subfamily:   KipchakSubfamily,
@@ -1994,6 +2235,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Baraba = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "baraba",
 		Subfamily:   KipchakSubfamily,
@@ -2001,6 +2243,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	SouthernAltai = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "southern_altai",
 		Subfamily:   KipchakSubfamily,
@@ -2008,6 +2251,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Teleut = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "teleut",
 		Subfamily:   KipchakSubfamily,
@@ -2015,6 +2259,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Kyrgyz = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kyrgyz",
 		Subfamily:   KipchakSubfamily,
@@ -2022,6 +2267,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Uzbek = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "uzbek",
 		Subfamily:   KarlukSubfamily,
@@ -2029,6 +2275,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Uyghur = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "uyghur",
 		Subfamily:   KarlukSubfamily,
@@ -2036,6 +2283,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Aynu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "aynu",
 		Subfamily:   KarlukSubfamily,
@@ -2043,6 +2291,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Ili = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ili",
 		Subfamily:   KarlukSubfamily,
@@ -2050,6 +2299,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Khalaj = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khalaj",
 		Subfamily:   ShazTurkicSubfamily,
@@ -2057,6 +2307,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Chuvash = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "chuvash",
 		Subfamily:   OghuzSubfamily,
@@ -2064,6 +2315,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Bulgar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bulgar",
 		Subfamily:   OghuzSubfamily,
@@ -2071,6 +2323,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Sabir = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sabir",
 		Subfamily:   OghuzSubfamily,
@@ -2078,6 +2331,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Khazar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khazar",
 		Subfamily:   OghuzSubfamily,
@@ -2085,6 +2339,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Hunnic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hunnic",
 		Subfamily:   OghuzSubfamily,
@@ -2092,6 +2347,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Tuoba = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tuoba",
 		Subfamily:   OghuzSubfamily,
@@ -2099,6 +2355,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Avar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "avar",
 		Subfamily:   OghuzSubfamily,
@@ -2106,6 +2363,7 @@ var (
 		WordBaseRef: TurkishWordBaseRef,
 	}
 	Cuman = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "cuman",
 		Subfamily:   KipchakSubfamily,
@@ -2157,6 +2415,7 @@ var AllTurkicLanguages = []*Language{
 // Mongolic
 var (
 	Dagur = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dagur",
 		Subfamily:   DagurSubfamily,
@@ -2164,6 +2423,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Moghol = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "moghol",
 		Subfamily:   MogholSubfamily,
@@ -2171,6 +2431,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Khamnigan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khamnigan",
 		Subfamily:   CentralMongolicSubfamily,
@@ -2178,6 +2439,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Buryat = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "buryat",
 		Subfamily:   CentralMongolicSubfamily,
@@ -2185,6 +2447,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Mongolian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mongolian",
 		Subfamily:   CentralMongolicSubfamily,
@@ -2192,6 +2455,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Khalkha = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khalkha",
 		Subfamily:   CentralMongolicSubfamily,
@@ -2199,6 +2463,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Chakhar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "chakhar",
 		Subfamily:   CentralMongolicSubfamily,
@@ -2206,6 +2471,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Khorchin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khorchin",
 		Subfamily:   CentralMongolicSubfamily,
@@ -2213,6 +2479,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Ordos = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ordos",
 		Subfamily:   CentralMongolicSubfamily,
@@ -2220,6 +2487,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Oirat = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "oirat",
 		Subfamily:   CentralMongolicSubfamily,
@@ -2227,6 +2495,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Monguor = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "monguor",
 		Subfamily:   SouthernMongolicSubfamily,
@@ -2234,6 +2503,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Bonan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bonan",
 		Subfamily:   SouthernMongolicSubfamily,
@@ -2241,6 +2511,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Santa = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "santa",
 		Subfamily:   SouthernMongolicSubfamily,
@@ -2248,6 +2519,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Kangjia = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kangjia",
 		Subfamily:   SouthernMongolicSubfamily,
@@ -2255,6 +2527,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Khitan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "khitan",
 		Subfamily:   KhitanSubfamily,
@@ -2285,6 +2558,7 @@ var AllMongolicLanguages = []*Language{
 
 var (
 	Manchu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "manchu",
 		Subfamily:   JurchenicSubfamily,
@@ -2292,6 +2566,7 @@ var (
 		WordBaseRef: MongolianWordBaseRef,
 	}
 	Xibe = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "xibe",
 		Subfamily:   JurchenicSubfamily,
@@ -2305,6 +2580,7 @@ var AllTungusicLanguages = []*Language{Manchu, Xibe}
 // Dravidian
 var (
 	Tamil = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tamil",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2312,6 +2588,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Malayalam = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "malayalam",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2319,6 +2596,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Irula = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "irula",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2326,6 +2604,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Kodava = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kodava",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2333,6 +2612,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Kurumba = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kurumba",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2340,6 +2620,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Toda = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "toda",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2347,6 +2628,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Kota = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kota",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2354,6 +2636,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Kannada = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kannada",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2361,6 +2644,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Badaga = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "badaga",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2368,6 +2652,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Telugu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "telugu",
 		Subfamily:   SouthCentralDravidianSubfamily,
@@ -2375,6 +2660,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Chenchu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "chenchu",
 		Subfamily:   SouthCentralDravidianSubfamily,
@@ -2382,6 +2668,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Konda = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "konda",
 		Subfamily:   SouthCentralDravidianSubfamily,
@@ -2389,6 +2676,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	MukhaDora = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mukha_dora",
 		Subfamily:   SouthDravidianSubfamily,
@@ -2396,6 +2684,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Manda = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "manda",
 		Subfamily:   SouthCentralDravidianSubfamily,
@@ -2403,6 +2692,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Pengo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pengo",
 		Subfamily:   SouthCentralDravidianSubfamily,
@@ -2410,6 +2700,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Kuvi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kuvi",
 		Subfamily:   SouthCentralDravidianSubfamily,
@@ -2417,6 +2708,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Kui = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kui",
 		Subfamily:   SouthCentralDravidianSubfamily,
@@ -2424,6 +2716,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Gondi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gondi",
 		Subfamily:   SouthCentralDravidianSubfamily,
@@ -2431,6 +2724,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Kolami = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kolami",
 		Subfamily:   CentralDravidianSubfamily,
@@ -2438,6 +2732,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Naiki = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "naiki",
 		Subfamily:   CentralDravidianSubfamily,
@@ -2445,6 +2740,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Gadaba = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gadaba",
 		Subfamily:   CentralDravidianSubfamily,
@@ -2452,6 +2748,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Ollari = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ollari",
 		Subfamily:   CentralDravidianSubfamily,
@@ -2459,6 +2756,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Kondekor = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kondekor",
 		Subfamily:   CentralDravidianSubfamily,
@@ -2466,6 +2764,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Duruwa = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "duruwa",
 		Subfamily:   CentralDravidianSubfamily,
@@ -2473,6 +2772,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Oraon = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "oraon",
 		Subfamily:   NorthernDravidianSubfamily,
@@ -2480,6 +2780,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Kisan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kisan",
 		Subfamily:   NorthernDravidianSubfamily,
@@ -2487,6 +2788,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	KumarbhagPaharia = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kumarbhag_paharia",
 		Subfamily:   NorthernDravidianSubfamily,
@@ -2494,6 +2796,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	SauriaPaharia = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sauria_paharia",
 		Subfamily:   NorthernDravidianSubfamily,
@@ -2501,6 +2804,7 @@ var (
 		WordBaseRef: KannadaWordBaseRef,
 	}
 	Brahui = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "brahui",
 		Subfamily:   NorthernDravidianSubfamily,
@@ -2544,6 +2848,7 @@ var AllDravidianLanguages = []*Language{
 // African
 var (
 	Kru = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kru",
 		Subfamily:   KruSubfamily,
@@ -2551,6 +2856,7 @@ var (
 		WordBaseRef: NigerianWordBaseRef,
 	}
 	Kwa = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kwa",
 		Subfamily:   VoltaCongoSubfamily,
@@ -2558,6 +2864,7 @@ var (
 		WordBaseRef: NigerianWordBaseRef,
 	}
 	Gur = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gur",
 		Subfamily:   VoltaCongoSubfamily,
@@ -2565,6 +2872,7 @@ var (
 		WordBaseRef: NigerianWordBaseRef,
 	}
 	Soninke = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "soninke",
 		Subfamily:   MandeSubfamily,
@@ -2572,6 +2880,7 @@ var (
 		WordBaseRef: NigerianWordBaseRef,
 	}
 	Manding = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "manding",
 		Subfamily:   MandeSubfamily,
@@ -2579,6 +2888,7 @@ var (
 		WordBaseRef: NigerianWordBaseRef,
 	}
 	Senegambian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "senegambian",
 		Subfamily:   AtlanticCongoSubfamily,
@@ -2586,6 +2896,7 @@ var (
 		WordBaseRef: NigerianWordBaseRef,
 	}
 	Swahili = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "swahili",
 		Subfamily:   AtlanticCongoSubfamily,
@@ -2593,6 +2904,7 @@ var (
 		WordBaseRef: SwahiliWordBaseRef,
 	}
 	Tebu = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tebu",
 		Subfamily:   SaharanSubfamily,
@@ -2600,6 +2912,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Hausa = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hausa",
 		Subfamily:   WestChadicSubfamily,
@@ -2607,6 +2920,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Nobiin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "nobiin",
 		Subfamily:   NubianSubfamily,
@@ -2614,6 +2928,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Kenzi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kenzi",
 		Subfamily:   NubianSubfamily,
@@ -2621,6 +2936,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Midob = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "midob",
 		Subfamily:   NubianSubfamily,
@@ -2628,6 +2944,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Birgid = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "birgid",
 		Subfamily:   NubianSubfamily,
@@ -2635,6 +2952,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	HillNubian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hill_nubian",
 		Subfamily:   NubianSubfamily,
@@ -2642,6 +2960,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Daju = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "daju",
 		Subfamily:   DajuSubfamily,
@@ -2649,6 +2968,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Somali = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "somali",
 		Subfamily:   SomalicSubfamily,
@@ -2657,6 +2977,7 @@ var (
 	}
 	// Songhay
 	Korandje = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "korandje",
 		Subfamily:   SonghaySubfamily,
@@ -2664,6 +2985,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	KoyraChiini = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "koyra_chiini",
 		Subfamily:   SonghaySubfamily,
@@ -2671,6 +2993,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Tadaksahak = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tadaksahak",
 		Subfamily:   SonghaySubfamily,
@@ -2678,6 +3001,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Tasawaq = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tasawaq",
 		Subfamily:   SonghaySubfamily,
@@ -2685,6 +3009,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Tagdal = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tagdal",
 		Subfamily:   SonghaySubfamily,
@@ -2692,6 +3017,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	TondiSongwayKiini = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tondi_songway_kiini",
 		Subfamily:   SonghaySubfamily,
@@ -2699,6 +3025,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	HumburiSenni = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "humburi_senni",
 		Subfamily:   SonghaySubfamily,
@@ -2706,6 +3033,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	KoyraboroSenni = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "koyraboro_senni",
 		Subfamily:   SonghaySubfamily,
@@ -2713,6 +3041,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Zarma = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "zarma",
 		Subfamily:   SonghaySubfamily,
@@ -2720,6 +3049,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	SonghoyboroCiine = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "songhoyboro_ciine",
 		Subfamily:   SonghaySubfamily,
@@ -2727,6 +3057,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Dendi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dendi",
 		Subfamily:   SonghaySubfamily,
@@ -2768,6 +3099,7 @@ var AllAfricanLanguages = []*Language{
 // UtoAztecan
 var (
 	Oodham = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "oodham",
 		Subfamily:   TepimanSubfamily,
@@ -2775,6 +3107,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	PimaBajo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pima_bajo",
 		Subfamily:   TepimanSubfamily,
@@ -2782,6 +3115,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Tepehuan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tepehuan",
 		Subfamily:   TepimanSubfamily,
@@ -2789,6 +3123,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Southern = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "southern",
 		Subfamily:   TepimanSubfamily,
@@ -2796,6 +3131,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Tepecano = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tepecano",
 		Subfamily:   TepimanSubfamily,
@@ -2803,6 +3139,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Tarahumara = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tarahumara",
 		Subfamily:   TarahumaranSubfamily,
@@ -2810,6 +3147,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	UpriverGuarijio = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "upriver_guarijio",
 		Subfamily:   TarahumaranSubfamily,
@@ -2817,6 +3155,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	DownriverGuarijio = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "downriver_guarijio",
 		Subfamily:   TarahumaranSubfamily,
@@ -2824,6 +3163,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Tubar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tubar",
 		Subfamily:   TarahumaranSubfamily,
@@ -2831,6 +3171,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Yaqui = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "yaqui",
 		Subfamily:   CahitaSubfamily,
@@ -2838,6 +3179,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Mayo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mayo",
 		Subfamily:   CahitaSubfamily,
@@ -2845,6 +3187,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Opata = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "opata",
 		Subfamily:   OpatanSubfamily,
@@ -2852,6 +3195,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Eudeve = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "eudeve",
 		Subfamily:   OpatanSubfamily,
@@ -2859,6 +3203,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Cora = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "Cora",
 		Subfamily:   CoracholSubfamily,
@@ -2866,6 +3211,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Huichol = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "Huichol",
 		Subfamily:   CoracholSubfamily,
@@ -2873,6 +3219,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Pochutec = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pochutec",
 		Subfamily:   AztecanSubfamily,
@@ -2880,6 +3227,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Pipil = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pipil",
 		Subfamily:   AztecanSubfamily,
@@ -2887,6 +3235,7 @@ var (
 		WordBaseRef: NahuatlWordBaseRef,
 	}
 	Nahuatl = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "nahuatl",
 		Subfamily:   AztecanSubfamily,
@@ -2918,6 +3267,7 @@ var AllUtoAztecanLanguages = []*Language{
 
 // EskimoAleut
 var Inuit = &Language{
+	Origin:      NativeOrigin,
 	Name:        "inuit",
 	Subfamily:   EskimoSubfamily,
 	IsLiving:    true,
@@ -2929,6 +3279,7 @@ var AllEskimoAleutLanguages = []*Language{Inuit}
 // Austonesian
 var (
 	Hawaiian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hawaiian",
 		Subfamily:   MarquesicSubfamily,
@@ -2942,6 +3293,7 @@ var AllAustonesianLanguages = []*Language{Hawaiian}
 // Quechua
 var (
 	Ancash = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "Ancash",
 		Subfamily:   QuechuaIISubfamily,
@@ -2949,6 +3301,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	AltoPativilcaAltoMaranonAltoHuallaga = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "alto_pativilca_alto_maranon_alto_huallaga",
 		Subfamily:   QuechuaISubfamily,
@@ -2956,6 +3309,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Yaru = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "yaru",
 		Subfamily:   QuechuaISubfamily,
@@ -2963,6 +3317,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Wanka = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "wanka",
 		Subfamily:   QuechuaISubfamily,
@@ -2970,6 +3325,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	YauyosChincha = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "yauyos_chincha",
 		Subfamily:   QuechuaISubfamily,
@@ -2977,6 +3333,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Pacaraos = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "pacaraos",
 		Subfamily:   QuechuaISubfamily,
@@ -2984,6 +3341,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Lambayeque = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lambayeque",
 		Subfamily:   QuechuaIISubfamily,
@@ -2991,6 +3349,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Cajamarca = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "cajamarca",
 		Subfamily:   QuechuaIISubfamily,
@@ -2998,6 +3357,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Lincha = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "lincha",
 		Subfamily:   QuechuaIISubfamily,
@@ -3005,6 +3365,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Laraos = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "laraos",
 		Subfamily:   QuechuaIISubfamily,
@@ -3012,6 +3373,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Ayacucho = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ayacucho",
 		Subfamily:   QuechuaIISubfamily,
@@ -3019,6 +3381,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Cusco = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "cusco",
 		Subfamily:   QuechuaIISubfamily,
@@ -3026,6 +3389,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	Puno = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "puno",
 		Subfamily:   QuechuaIISubfamily,
@@ -3033,6 +3397,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	NorthernBolivian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "northern_bolivian",
 		Subfamily:   QuechuaIISubfamily,
@@ -3040,6 +3405,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	SouthernBolivia = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "southern_bolivia",
 		Subfamily:   QuechuaIISubfamily,
@@ -3047,6 +3413,7 @@ var (
 		WordBaseRef: QuechuaWordBaseRef,
 	}
 	SantiagoDelEstero = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "santiago_del_estero",
 		Subfamily:   QuechuaIISubfamily,
@@ -3078,6 +3445,7 @@ var AllQuechuaLanguages = []*Language{
 var (
 	// Berber
 	Kabyle = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kabyle",
 		Subfamily:   BerberSubfamily,
@@ -3085,6 +3453,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Tamazight = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tamazight",
 		Subfamily:   BerberSubfamily,
@@ -3092,6 +3461,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Shilha = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "shilha",
 		Subfamily:   BerberSubfamily,
@@ -3099,6 +3469,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	SenhajaDeSrair = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "senhaja_de_srair",
 		Subfamily:   BerberSubfamily,
@@ -3106,6 +3477,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Ghomara = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ghomara",
 		Subfamily:   BerberSubfamily,
@@ -3113,6 +3485,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Riffian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "riffian",
 		Subfamily:   BerberSubfamily,
@@ -3120,6 +3493,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	AytSeghrouchen = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ayt_seghrouchen",
 		Subfamily:   BerberSubfamily,
@@ -3127,6 +3501,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	AytWarayn = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ayt_warayn",
 		Subfamily:   BerberSubfamily,
@@ -3134,6 +3509,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Shenwa = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "shenwa",
 		Subfamily:   BerberSubfamily,
@@ -3141,6 +3517,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Shawiya = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "shawiya",
 		Subfamily:   BerberSubfamily,
@@ -3148,6 +3525,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Zenaga = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "zenaga",
 		Subfamily:   BerberSubfamily,
@@ -3155,6 +3533,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Siwi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "siwi",
 		Subfamily:   BerberSubfamily,
@@ -3162,6 +3541,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Nafusi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "nafusi",
 		Subfamily:   BerberSubfamily,
@@ -3169,6 +3549,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Sokna = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sokna",
 		Subfamily:   BerberSubfamily,
@@ -3176,6 +3557,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Ghadames = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ghadames",
 		Subfamily:   BerberSubfamily,
@@ -3183,6 +3565,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Awjila = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "awjila",
 		Subfamily:   BerberSubfamily,
@@ -3190,6 +3573,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Tuareg = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tuareg",
 		Subfamily:   BerberSubfamily,
@@ -3197,6 +3581,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Numidian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "numidian",
 		Subfamily:   BerberSubfamily,
@@ -3205,6 +3590,7 @@ var (
 	}
 	// Cushitic
 	Beja = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "beja",
 		Subfamily:   CushiticSubfamily,
@@ -3212,6 +3598,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Awngi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "awngi",
 		Subfamily:   AgawSubfamily,
@@ -3219,6 +3606,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Bilen = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bilen",
 		Subfamily:   AgawSubfamily,
@@ -3226,6 +3614,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Qimant = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "qimant",
 		Subfamily:   AgawSubfamily,
@@ -3233,6 +3622,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Xamtanga = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "xamtanga",
 		Subfamily:   AgawSubfamily,
@@ -3240,6 +3630,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Gawwada = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gawwada",
 		Subfamily:   DullaySubfamily,
@@ -3247,6 +3638,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Tsamai = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tsamai",
 		Subfamily:   DullaySubfamily,
@@ -3254,6 +3646,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Dihina = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dihina",
 		Subfamily:   DullaySubfamily,
@@ -3261,6 +3654,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Dobase = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dobase",
 		Subfamily:   DullaySubfamily,
@@ -3268,6 +3662,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Burji = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "burji",
 		Subfamily:   HighlandEastCushiticSubfamily,
@@ -3275,6 +3670,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Sidamo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sidamo",
 		Subfamily:   HighlandEastCushiticSubfamily,
@@ -3282,6 +3678,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Gedeo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gedeo",
 		Subfamily:   HighlandEastCushiticSubfamily,
@@ -3289,6 +3686,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	HadiyyaLibido = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hadiyya_libido",
 		Subfamily:   HighlandEastCushiticSubfamily,
@@ -3296,6 +3694,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	KambaataAlaba = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kambaata_alaba",
 		Subfamily:   HighlandEastCushiticSubfamily,
@@ -3303,6 +3702,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	SahoAfar = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "saho_afar",
 		Subfamily:   LowlandEastCushiticSubfamily,
@@ -3310,6 +3710,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	OmoTana = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "omo_tana",
 		Subfamily:   LowlandEastCushiticSubfamily,
@@ -3317,6 +3718,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Oromoid = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "oromoid",
 		Subfamily:   LowlandEastCushiticSubfamily,
@@ -3324,6 +3726,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Dullay = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dullay",
 		Subfamily:   LowlandEastCushiticSubfamily,
@@ -3331,6 +3734,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Yaaku = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "yaaku",
 		Subfamily:   LowlandEastCushiticSubfamily,
@@ -3338,6 +3742,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Gorowa = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gorowa",
 		Subfamily:   SouthCushiticSubfamily,
@@ -3345,6 +3750,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Iraqw = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "iraqw",
 		Subfamily:   SouthCushiticSubfamily,
@@ -3352,6 +3758,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Alagwa = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "alagwa",
 		Subfamily:   SouthCushiticSubfamily,
@@ -3359,6 +3766,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Burunge = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "burunge",
 		Subfamily:   SouthCushiticSubfamily,
@@ -3366,6 +3774,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Aasax = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "aasax",
 		Subfamily:   SouthCushiticSubfamily,
@@ -3373,6 +3782,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Kwadza = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kwadza",
 		Subfamily:   SouthCushiticSubfamily,
@@ -3380,6 +3790,7 @@ var (
 		WordBaseRef: BerberWordBaseRef,
 	}
 	Egyptian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "egyptian",
 		Subfamily:   EgyptianSubfamily,
@@ -3388,6 +3799,7 @@ var (
 	}
 	// semitic
 	Akkadian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "akkadian",
 		Subfamily:   EastSemiticSubfamily,
@@ -3395,6 +3807,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Eblaite = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "eblaite",
 		Subfamily:   EastSemiticSubfamily,
@@ -3402,6 +3815,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Kishite = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "kishite",
 		Subfamily:   EastSemiticSubfamily,
@@ -3409,6 +3823,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Ashkenazi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ashkenazi",
 		Subfamily:   HebrewSubfamily,
@@ -3416,6 +3831,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Sephardi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sephardi",
 		Subfamily:   HebrewSubfamily,
@@ -3423,6 +3839,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Hebrew = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hebrew",
 		Subfamily:   HebrewSubfamily,
@@ -3430,6 +3847,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Samaritan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "samaritan",
 		Subfamily:   HebrewSubfamily,
@@ -3437,6 +3855,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Ammonite = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "ammonite",
 		Subfamily:   CanaaniteSubfamily,
@@ -3444,6 +3863,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Edomite = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "edomite",
 		Subfamily:   CanaaniteSubfamily,
@@ -3451,6 +3871,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Moabite = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "moabite",
 		Subfamily:   CanaaniteSubfamily,
@@ -3458,6 +3879,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Phoenician = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "phoenician",
 		Subfamily:   CanaaniteSubfamily,
@@ -3465,6 +3887,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Punic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "punic",
 		Subfamily:   CanaaniteSubfamily,
@@ -3472,6 +3895,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Samalian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "samalian",
 		Subfamily:   CanaaniteSubfamily,
@@ -3479,6 +3903,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Aramaic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "aramaic",
 		Subfamily:   AramaicSubfamily,
@@ -3486,6 +3911,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Nabataean = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "nabataean",
 		Subfamily:   AramaicSubfamily,
@@ -3493,6 +3919,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Amorite = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "amorite",
 		Subfamily:   AramaicSubfamily,
@@ -3500,6 +3927,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Himyaritic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "himyaritic",
 		Subfamily:   AramaicSubfamily,
@@ -3507,6 +3935,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Sutean = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sutean",
 		Subfamily:   AramaicSubfamily,
@@ -3514,6 +3943,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Syriac = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "syriac",
 		Subfamily:   AramaicSubfamily,
@@ -3521,6 +3951,7 @@ var (
 		WordBaseRef: MesopotamianWordBaseRef,
 	}
 	Arabic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "arabic",
 		Subfamily:   ArabicSubfamily,
@@ -3528,6 +3959,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Geez = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "geez",
 		Subfamily:   EthiopicSubfamily,
@@ -3535,6 +3967,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Tigrinya = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "tigrinya",
 		Subfamily:   EthiopicSubfamily,
@@ -3542,6 +3975,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Amharic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "amharic",
 		Subfamily:   EthiopicSubfamily,
@@ -3549,6 +3983,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Argobba = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "argobba",
 		Subfamily:   EthiopicSubfamily,
@@ -3556,6 +3991,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Harari = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "harari",
 		Subfamily:   EthiopicSubfamily,
@@ -3563,6 +3999,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Gafat = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gafat",
 		Subfamily:   EthiopicSubfamily,
@@ -3570,6 +4007,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Soddo = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "soddo",
 		Subfamily:   EthiopicSubfamily,
@@ -3577,6 +4015,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Mesmes = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mesmes",
 		Subfamily:   EthiopicSubfamily,
@@ -3584,6 +4023,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Muher = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "muher",
 		Subfamily:   EthiopicSubfamily,
@@ -3591,6 +4031,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	WestGurage = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "west_gurage",
 		Subfamily:   EthiopicSubfamily,
@@ -3598,6 +4039,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Mesqan = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mesqan",
 		Subfamily:   EthiopicSubfamily,
@@ -3605,6 +4047,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	SebatBet = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sebat_bet",
 		Subfamily:   EthiopicSubfamily,
@@ -3612,6 +4055,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Baṭḥari = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bathari",
 		IsLiving:    true,
@@ -3619,6 +4063,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Harsusi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "harsusi",
 		IsLiving:    true,
@@ -3626,6 +4071,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Hobyot = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hobyot",
 		IsLiving:    true,
@@ -3633,6 +4079,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Mehri = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mehri",
 		IsLiving:    true,
@@ -3640,6 +4087,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Shehri = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "shehri",
 		IsLiving:    true,
@@ -3647,6 +4095,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Soqotri = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "soqotri",
 		IsLiving:    true,
@@ -3654,6 +4103,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Faifi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "faifi",
 		IsLiving:    true,
@@ -3661,6 +4111,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Hadramautic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "hadramautic",
 		IsLiving:    true,
@@ -3668,6 +4119,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Minaean = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "minaean",
 		IsLiving:    true,
@@ -3675,6 +4127,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Qatabanian = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "qatabanian",
 		IsLiving:    true,
@@ -3682,6 +4135,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Razihi = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "razihi",
 		IsLiving:    true,
@@ -3689,6 +4143,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Sabaean = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sabaean",
 		IsLiving:    true,
@@ -3697,6 +4152,7 @@ var (
 	}
 	// Omotic
 	SouthOmotic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "south_omotic",
 		IsLiving:    true,
@@ -3704,6 +4160,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Mao = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "mao",
 		IsLiving:    true,
@@ -3711,6 +4168,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Dizoid = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dizoid",
 		IsLiving:    true,
@@ -3718,6 +4176,7 @@ var (
 		WordBaseRef: ArabicWordBaseRef,
 	}
 	Gonga = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "gonga",
 		IsLiving:    true,
@@ -3820,6 +4279,7 @@ var AllAfroAsiaticLanguages = []*Language{
 // Fantasy Languages
 var (
 	CommonEldarin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "common_eldarin",
 		Subfamily:   QuendianSubfamily,
@@ -3827,6 +4287,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef, // @TODO can be changed after adding common_eldarin to word bases
 	}
 	Quenya = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "quenya",
 		Subfamily:   QuendianSubfamily,
@@ -3834,6 +4295,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef, // @TODO can be changed after adding quenya to word bases
 	}
 	Quendya = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "quendya",
 		Subfamily:   QuendianSubfamily,
@@ -3841,6 +4303,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef, // @TODO can be changed after adding quendya to word bases
 	}
 	ExilicQuendya = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "exilic_quendya",
 		Subfamily:   QuendianSubfamily,
@@ -3848,6 +4311,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef, // @TODO can be changed after adding exilic_quendya to word bases
 	}
 	CommonTelerin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "common_telerin",
 		Subfamily:   QuendianSubfamily,
@@ -3855,6 +4319,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef, // @TODO can be changed after adding common_telerin to word bases
 	}
 	Telerin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "telerin",
 		Subfamily:   QuendianSubfamily,
@@ -3862,6 +4327,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef, // @TODO can be changed after adding telerin to word bases
 	}
 	Sindarin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "sindarin",
 		Subfamily:   QuendianSubfamily,
@@ -3869,6 +4335,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef,
 	}
 	Nandorin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "nandorin",
 		Subfamily:   QuendianSubfamily,
@@ -3876,6 +4343,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef, // @TODO can be changed after adding nandorin to word bases
 	}
 	Avarin = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "avarin",
 		Subfamily:   QuendianSubfamily,
@@ -3883,6 +4351,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef, // @TODO can be changed after adding avarin to word bases
 	}
 	Aldmeris = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "aldmeris",
 		Subfamily:   AldmerisSubfamily,
@@ -3890,6 +4359,7 @@ var (
 		WordBaseRef: SindarinWordBaseRef, // @TODO can be changed after adding aldmeris to word bases
 	}
 	Dunmeris = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dunmeris",
 		Subfamily:   AldmerisSubfamily,
@@ -3897,6 +4367,7 @@ var (
 		WordBaseRef: DunmerisWordBaseRef,
 	}
 	Bosmeris = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "bosmeris",
 		Subfamily:   AldmerisSubfamily,
@@ -3904,6 +4375,7 @@ var (
 		WordBaseRef: DunmerisWordBaseRef, // @TODO can be changed after adding bosmeris to word bases
 	}
 	Dwemeris = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "dwemeris",
 		Subfamily:   DwermerisSubfamily,
@@ -3911,6 +4383,7 @@ var (
 		WordBaseRef: DwemerisWordBaseRef,
 	}
 	Goblins = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "goblins",
 		Subfamily:   OrcishSubfamily,
@@ -3918,6 +4391,7 @@ var (
 		WordBaseRef: GoblinsWordBaseRef,
 	}
 	Orcish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "orcish",
 		Subfamily:   OrcishSubfamily,
@@ -3925,6 +4399,7 @@ var (
 		WordBaseRef: OrcWordBaseRef,
 	}
 	Giantish = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "giantish",
 		Subfamily:   GiantishSubfamily,
@@ -3932,6 +4407,7 @@ var (
 		WordBaseRef: GiantWordBaseRef,
 	}
 	Draconic = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "draconic",
 		Subfamily:   DraconicSubfamily,
@@ -3939,6 +4415,7 @@ var (
 		WordBaseRef: DraconicWordBaseRef,
 	}
 	Arachnid = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "arachnid",
 		Subfamily:   ArachnidSubfamily,
@@ -3946,6 +4423,7 @@ var (
 		WordBaseRef: ArachnidWordBaseRef,
 	}
 	Serpents = &Language{
+		Origin:      NativeOrigin,
 		ID:          uuid.New().String(),
 		Name:        "serpents",
 		Subfamily:   SerpentsSubfamily,

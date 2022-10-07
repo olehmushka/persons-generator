@@ -8,7 +8,7 @@ import (
 )
 
 type Language interface {
-	QueryDefaultLanguages(q string, opts storage.PaginationSortingOpts) ([]*entities.Language, int, error)
+	QueryDefaultLanguages(ctx context.Context, q string, opts storage.PaginationSortingOpts) ([]*entities.Language, int, error)
 	ReadDefaultLanguageSubfamilies(ctx context.Context, opts storage.PaginationSortingOpts) ([]*entities.Subfamily, int, error)
 	CreateLanguage(ctx context.Context, in *entities.Language) (string, error)
 	ReadLanguagesByName(ctx context.Context, name string, opts storage.PaginationSortingOpts) ([]*entities.Language, int, error)

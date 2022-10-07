@@ -17,7 +17,7 @@ func (h *handlers) GetDefaultLanguages(w http.ResponseWriter, r *http.Request) {
 		offset = ExtractOffsetFromReq(r)
 	)
 
-	langs, total, err := h.languageSrv.QueryDefaultLanguages(q, storage.PaginationSortingOpts{
+	langs, total, err := h.languageSrv.QueryDefaultLanguages(ctx, q, storage.PaginationSortingOpts{
 		Pagination: &storage.Pagination{
 			Limit:  limit,
 			Offset: offset,

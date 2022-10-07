@@ -17,6 +17,7 @@ type Language struct {
 	WordBaseRef *WordBaseRef `json:"word_base_ref" bson:"word_base_ref,omitempty"`
 	WordBase    *WordBase    `json:"word_base" bson:"word_base,omitempty"`
 	IsLiving    bool         `json:"is_living" bson:"is_living"`
+	Origin      Origin       `json:"origin" bson:"origin"`
 }
 
 func New(preferred []string) (*Language, error) {

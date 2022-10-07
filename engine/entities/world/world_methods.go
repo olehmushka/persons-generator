@@ -148,16 +148,17 @@ func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh c
 	}
 
 	now := time.Now()
-	for year := 0; year < stopYear; year++ {
+	for year := 1; year <= stopYear; year++ {
 		if err := w.RunYear(); err != nil {
 			errCh <- wrapped_error.NewInternalServerError(err, "can not run year in run world")
 			return
 		}
+
 		progressCh <- ProgressRunWorld{
-			Year:           year + 1,
+			Year:           year,
 			Population:     w.PopulationNumber,
 			DeadPopulation: w.DeadPopulationNumber,
-			Progress:       math.Ceil(100 * (float64(year) / float64(stopYear))),
+			Progress:       calcProgress(year, stopYear),
 			Duration:       time.Since(now).String(),
 		}
 
@@ -167,6 +168,15 @@ func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh c
 	}
 
 	errCh <- nil
+}
+
+func calcProgress(year, stopYear int) float64 {
+	out := math.Floor(100 * (float64(year) / float64(stopYear)))
+	if year == stopYear {
+		out = 100
+	}
+
+	return out
 }
 
 func (w *World) RunYear() error {

@@ -88,3 +88,8 @@ func (a *adapter) DeleteOne(ctx context.Context, dbName string, collName string,
 	filter any, opts ...*options.DeleteOptions) (int, error) {
 	return a.conn.DeleteOne(ctx, dbName, collName, filter, opts...)
 }
+
+func (a *adapter) DeleteMany(ctx context.Context, dbName string, collName string,
+	filter any, opts ...*options.DeleteOptions) (int, error) {
+	return a.conn.DeleteMany(ctx, dbName, collName, filter, opts...)
+}

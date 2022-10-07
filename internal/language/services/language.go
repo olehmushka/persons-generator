@@ -23,12 +23,12 @@ var Module = fx.Options(
 	fx.Provide(New),
 )
 
-func (s *persons) QueryDefaultLanguages(q string, opts storage.PaginationSortingOpts) ([]*entities.Language, int, error) {
-	langs, err := s.engineAdp.QueryDefaultLanguages(q, opts)
+func (s *persons) QueryDefaultLanguages(ctx context.Context, q string, opts storage.PaginationSortingOpts) ([]*entities.Language, int, error) {
+	langs, err := s.engineAdp.QueryDefaultLanguages(ctx, q, opts)
 	if err != nil {
 		return nil, 0, wrapped_error.NewInternalServerError(err, "can not query default languages")
 	}
-	count, err := s.engineAdp.CountDefaultLanguages(q)
+	count, err := s.engineAdp.CountDefaultLanguages(ctx, q)
 	if err != nil {
 		return nil, 0, wrapped_error.NewInternalServerError(err, "can not count default languages")
 	}

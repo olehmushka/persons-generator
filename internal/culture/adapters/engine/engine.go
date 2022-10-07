@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"persons_generator/config"
-	"persons_generator/core/tools"
+	"persons_generator/core/storage"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 	"persons_generator/engine/orchestrator"
@@ -55,16 +55,17 @@ func (a *adapter) CreateCultures(ctx context.Context, amount int, preferred []*e
 	return cultures, nil
 }
 
-func (a *adapter) GetProtoCultures(ctx context.Context, q string, limit, offset int) ([]*culture.Culture, int, error) {
-	c, err := a.engine.SearchCultures(q)
+func (a *adapter) GetProtoCultures(ctx context.Context, q string, opts storage.PaginationSortingOpts) ([]*culture.Culture, int, error) {
+	out, err := a.engine.FindNativeCultures(ctx, q, opts)
 	if err != nil {
 		return nil, 0, err
 	}
-	if len(c) == 0 {
-		return []*culture.Culture{}, 0, nil
+	count, err := a.engine.CountNativeCultures(ctx, q)
+	if err != nil {
+		return nil, 0, err
 	}
 
-	return tools.Paginate(c, offset, limit), len(c), nil
+	return out, count, nil
 }
 
 func (a *adapter) GetCultureByID(ctx context.Context, id string) (*culture.Culture, error) {

@@ -4,11 +4,15 @@ import (
 	g "persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/influence"
 	"persons_generator/engine/entities/language"
+
+	"github.com/google/uuid"
 )
 
 // Akan
 var (
 	AkanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "akan_akan",
 		Abstuct:         AbsMedievalAkan,
 		Root:            AfricanRoot,
@@ -19,6 +23,8 @@ var (
 		Traditions:      []*Tradition{BushHuntingTradition, MatriarchalTradition, MysticalAncestorsTradition, ParochialismTradition},
 	}
 	GuanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "akan_guan",
 		Abstuct:         AbsMedievalAkan,
 		Root:            AfricanRoot,
@@ -29,6 +35,8 @@ var (
 		Traditions:      []*Tradition{BushHuntingTradition, DrylandDwellersTradition, FrequentFestivitiesTradition, StrongBelieversTradition},
 	}
 	KruCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "akan_kru",
 		Abstuct:         AbsMedievalAkan,
 		Root:            AfricanRoot,
@@ -45,6 +53,8 @@ var AllAkanCultures = []*Culture{AkanCulture, GuanCulture, KruCulture}
 // Arabic
 var (
 	ArabicBedouinCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "arabic_bedouin",
 		Abstuct:         AbsAncientArabian,
 		Root:            SemiticRoot,
@@ -55,6 +65,8 @@ var (
 		Traditions:      []*Tradition{CaravaneersTradition, DesertTravelersTradition, MubarizunTradition, TribalUnityTradition},
 	}
 	ArabicEgyptianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "arabic_egyptian",
 		Abstuct:         AbsAncientArabian,
 		Root:            SemiticRoot,
@@ -65,6 +77,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, MubarizunTradition, PhilosopherCultureTradition, StrongBelieversTradition},
 	}
 	ArabicMaghrebiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Proto:           []*Culture{ArabicBedouinCulture, BaranisCulture},
 		Name:            "arabic_maghrebi",
 		Abstuct:         AbsAncientArabian,
@@ -76,6 +90,8 @@ var (
 		Traditions:      []*Tradition{AfricanToleranceTradition, DexterousFishermenTradition, DrylandDwellersTradition, MubarizunTradition, XenophilicTradition},
 	}
 	ArabicMashriqiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Proto:           []*Culture{ArabicBedouinCulture},
 		Name:            "arabic_mashriqi",
 		Abstuct:         AbsAncientArabian,
@@ -87,6 +103,8 @@ var (
 		Traditions:      []*Tradition{DrylandDwellersTradition, MedicinalHerbalistsTradition, MubarizunTradition, PhilosopherCultureTradition},
 	}
 	ArabicYemeniCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "arabic_yemeni",
 		Abstuct:         AbsAncientArabian,
 		Root:            SemiticRoot,
@@ -103,6 +121,8 @@ var AllArabicCultures = []*Culture{ArabicBedouinCulture, ArabicEgyptianCulture, 
 // Baltic
 var (
 	LatgalianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "baltic_latgalian",
 		Abstuct:         AbsMedievalBaltic,
 		Root:            EuropeContinentalRoot,
@@ -113,6 +133,8 @@ var (
 		Traditions:      []*Tradition{ForestWardensTradition, SacredGrovesTradition, StaunchTraditionalistsTradition},
 	}
 	LithuanianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "baltic_lithuanian",
 		Abstuct:         AbsMedievalBaltic,
 		Root:            EuropeContinentalRoot,
@@ -123,6 +145,8 @@ var (
 		Traditions:      []*Tradition{ForestWardensTradition, HitAndRunTacticiansTradition, SacredGrovesTradition, StrongBelieversTradition},
 	}
 	PrussianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "baltic_prussian",
 		Abstuct:         AbsMedievalBaltic,
 		Root:            EuropeContinentalRoot,
@@ -139,6 +163,8 @@ var AllBalticCultures = []*Culture{LatgalianCulture, LithuanianCulture, Prussian
 // BaltoFinnic
 var (
 	EstonianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "balto_finnic_estonian",
 		Abstuct:         AbsMedievalBaltoFinnic,
 		Root:            EuropeContinentalRoot,
@@ -149,6 +175,8 @@ var (
 		Traditions:      []*Tradition{MusicalTheoristsTradition, CoastalWarriorsTradition, HirdsTradition, StaunchTraditionalistsTradition},
 	}
 	FinnishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "balto_finnic_finnish",
 		Abstuct:         AbsMedievalBaltoFinnic,
 		Root:            EuropeContinentalRoot,
@@ -159,6 +187,8 @@ var (
 		Traditions:      []*Tradition{DexterousFishermenTradition, ForestWardensTradition, IsolationistTradition},
 	}
 	KarelianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "balto_finnic_karelian",
 		Abstuct:         AbsMedievalBaltoFinnic,
 		Root:            EuropeContinentalRoot,
@@ -169,6 +199,8 @@ var (
 		Traditions:      []*Tradition{ForestWardensTradition, StalwartDefendersTradition, SwordsForHireTradition},
 	}
 	SamiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "balto_finnic_sami",
 		Abstuct:         AbsMedievalBaltoFinnic,
 		Root:            EuropeContinentalRoot,
@@ -179,6 +211,8 @@ var (
 		Traditions:      []*Tradition{AdaptiveSkirmishersTradition, ForestWardensTradition, WinterWarriorsTradition},
 	}
 	VepsianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "balto_finnic_vepsian",
 		Abstuct:         AbsMedievalBaltoFinnic,
 		Root:            EuropeContinentalRoot,
@@ -195,6 +229,8 @@ var AllBaltoFinnicCultures = []*Culture{EstonianCulture, FinnishCulture, Karelia
 // Berber
 var (
 	BaranisCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "berber_baranis",
 		Abstuct:         AbsMedievalBerber,
 		Root:            BerberRoot,
@@ -205,6 +241,8 @@ var (
 		Traditions:      []*Tradition{AfricanToleranceTradition, FamilyBusinessTradition, MountainHerdingTradition},
 	}
 	ButrCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "berber_butr",
 		Abstuct:         AbsMedievalBerber,
 		Root:            BerberRoot,
@@ -215,6 +253,8 @@ var (
 		Traditions:      []*Tradition{AfricanToleranceTradition, DesertRibatsTradition, EqualInheritanceTradition, SaharanNomadsTradition},
 	}
 	GuancheCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "berber_guanche",
 		Abstuct:         AbsMedievalBerber,
 		Root:            BerberRoot,
@@ -225,6 +265,8 @@ var (
 		Traditions:      []*Tradition{StalwartDefendersTradition, MysticalAncestorsTradition, IsolationistTradition},
 	}
 	ZaghawaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "berber_zaghawa",
 		Abstuct:         AbsMedievalBerber,
 		Root:            BerberRoot,
@@ -241,6 +283,8 @@ var AllBerberCultures = []*Culture{BaranisCulture, ButrCulture, GuancheCulture, 
 // Brythonic
 var (
 	BretonCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "brythonic_breton",
 		Abstuct:         AbsMedievalBrythonic,
 		Root:            EuropeContinentalRoot,
@@ -251,6 +295,8 @@ var (
 		Traditions:      []*Tradition{ChansonDeGesteTradition, DexterousFishermenTradition, StorytellersTradition, SwordsForHireTradition},
 	}
 	CornishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "brythonic_cornish",
 		Abstuct:         AbsMedievalBrythonic,
 		Root:            EuropeContinentalRoot,
@@ -261,6 +307,8 @@ var (
 		Traditions:      []*Tradition{AncientMinersTradition, DexterousFishermenTradition, StorytellersTradition},
 	}
 	CumbrianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "brythonic_cumbrian",
 		Abstuct:         AbsMedievalBrythonic,
 		Root:            EuropeContinentalRoot,
@@ -271,6 +319,8 @@ var (
 		Traditions:      []*Tradition{ConcubinesTradition, HighlandWarriorsTradition, RefinedPoetryTradition, StalwartDefendersTradition},
 	}
 	PictishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "brythonic_pictish",
 		Abstuct:         AbsMedievalBrythonic,
 		Root:            EuropeContinentalRoot,
@@ -281,6 +331,8 @@ var (
 		Traditions:      []*Tradition{ConcubinesTradition, HighlandWarriorsTradition, HillDwellersTradition, RefinedPoetryTradition},
 	}
 	WelshCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "brythonic_welsh",
 		Abstuct:         AbsMedievalBrythonic,
 		Root:            EuropeContinentalRoot,
@@ -297,6 +349,8 @@ var AllBrythonicCultures = []*Culture{BretonCulture, CornishCulture, CumbrianCul
 // Burman
 var (
 	BurmeseCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "burman_burmese",
 		Abstuct:         AbsMedievalBurman,
 		Root:            IndianRoot,
@@ -307,6 +361,8 @@ var (
 		Traditions:      []*Tradition{FerventTempleBuildersTradition, FrequentFestivitiesTradition, ReligionBlendingTradition, RoyalArmyTradition},
 	}
 	MonCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "burman_mon",
 		Abstuct:         AbsMedievalBurman,
 		Root:            IndianRoot,
@@ -323,6 +379,8 @@ var AllBurmanCultures = []*Culture{BurmeseCulture, MonCulture}
 // Byzantine
 var (
 	AlanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "byzantine_alan",
 		Abstuct:         AbsMedievalByzantine,
 		Root:            TurkicRoot,
@@ -333,6 +391,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, MaritalCeremoniesTradition, MountaineersTradition, SteppeToleranceTradition},
 	}
 	ArmenianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "byzantine_armenian",
 		Abstuct:         AbsMedievalByzantine,
 		Root:            CaucasianRoot,
@@ -343,6 +403,8 @@ var (
 		Traditions:      []*Tradition{FerventTempleBuildersTradition, HighlandWarriorsTradition, HillDwellersTradition, StrongBelieversTradition},
 	}
 	GeorgianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "byzantine_georgian",
 		Abstuct:         AbsMedievalByzantine,
 		Root:            CaucasianRoot,
@@ -353,6 +415,8 @@ var (
 		Traditions:      []*Tradition{CastleKeepersTradition, CaucasianWolvesTradition, HereditaryHierarchyTradition, MetalworkersTradition},
 	}
 	GreekCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "byzantine_greek",
 		Abstuct:         AbsMedievalByzantine,
 		Root:            MediterraneanRoot,
@@ -363,6 +427,8 @@ var (
 		Traditions:      []*Tradition{FormationFightingExpertsTradition, LegalisticTradition},
 	}
 	SyriacCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "byzantine_syriac",
 		Abstuct:         AbsMedievalByzantine,
 		Root:            SemiticRoot,
@@ -379,6 +445,8 @@ var AllByzantineCultures = []*Culture{AlanCulture, ArmenianCulture, GeorgianCult
 // CentralAfrican
 var (
 	HausaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_hausa",
 		Abstuct:         AbsMedievalCentralAfrican,
 		Root:            AfricanRoot,
@@ -389,6 +457,8 @@ var (
 		Traditions:      []*Tradition{CaravaneersTradition, FamilyBusinessTradition, ParochialismTradition},
 	}
 	KanuriCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_kanuri",
 		Abstuct:         AbsMedievalCentralAfrican,
 		Root:            AfricanRoot,
@@ -399,6 +469,8 @@ var (
 		Traditions:      []*Tradition{HitAndRunTacticiansTradition, QuarrelsomeTradition},
 	}
 	NupeCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_nupe",
 		Abstuct:         AbsMedievalCentralAfrican,
 		Root:            AfricanRoot,
@@ -409,6 +481,8 @@ var (
 		Traditions:      []*Tradition{MusicalTheoristsTradition, ParochialismTradition},
 	}
 	SaoCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_sao",
 		Abstuct:         AbsMedievalCentralAfrican,
 		Root:            AfricanRoot,
@@ -425,6 +499,8 @@ var AllCentralAfricanCultures = []*Culture{HausaCulture, KanuriCulture, NupeCult
 // CentralGermanic
 var (
 	BavarianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_bavarian",
 		Abstuct:         AbsMedievalCentralGermanic,
 		Root:            EuropeContinentalRoot,
@@ -435,6 +511,8 @@ var (
 		Traditions:      []*Tradition{HereditaryHierarchyTradition, StandAndFightTradition, StrongBelieversTradition},
 	}
 	DutchCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_dutch",
 		Proto:           []*Culture{FrisianCulture, FrankishCulture},
 		Abstuct:         AbsMedievalCentralGermanic,
@@ -446,6 +524,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, MaritimeMercantilismTradition, ParochialismTradition, PoldersTradition},
 	}
 	FranconianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_franconian",
 		Proto:           []*Culture{FrankishCulture},
 		Abstuct:         AbsMedievalCentralGermanic,
@@ -457,6 +537,8 @@ var (
 		Traditions:      []*Tradition{AstuteDiplomatsTradition, CastleKeepersTradition, HereditaryHierarchyTradition},
 	}
 	FrisianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_frisian",
 		Abstuct:         AbsMedievalCentralGermanic,
 		Root:            EuropeContinentalRoot,
@@ -467,6 +549,8 @@ var (
 		Traditions:      []*Tradition{BattlefieldLootersTradition, DexterousFishermenTradition, StrongBelieversTradition},
 	}
 	GermanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_german",
 		Abstuct:         AbsMedievalCentralGermanic,
 		Root:            EuropeContinentalRoot,
@@ -477,6 +561,8 @@ var (
 		Traditions:      []*Tradition{AstuteDiplomatsTradition, HereditaryHierarchyTradition, StandAndFightTradition},
 	}
 	LangobardCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_langobard",
 		Abstuct:         AbsMedievalCentralGermanic,
 		Root:            EuropeContinentalRoot,
@@ -487,6 +573,8 @@ var (
 		Traditions:      []*Tradition{IsolationistTradition, MartialAdmirationTradition, StandAndFightTradition, MalleableInvadersTradition},
 	}
 	SaxonCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_saxon",
 		Proto:           []*Culture{OldSaxonCulture},
 		Abstuct:         AbsMedievalCentralGermanic,
@@ -498,6 +586,8 @@ var (
 		Traditions:      []*Tradition{ReligiousPatronageTradition, RulingCasteTradition, StandAndFightTradition},
 	}
 	SwabianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_swabian",
 		Abstuct:         AbsMedievalCentralGermanic,
 		Root:            EuropeContinentalRoot,
@@ -513,6 +603,8 @@ var AllCentralGermanicCultures = []*Culture{BavarianCulture, DutchCulture, Franc
 
 // Chinese
 var HanCulture = &Culture{
+	ID:              uuid.NewString(),
+	Origin:          NativeOrigin,
 	Name:            "chinese_han",
 	Abstuct:         AbsMedievalChinese,
 	Root:            ChineseRoot,
@@ -529,6 +621,8 @@ var AllChineseCultures = []*Culture{HanCulture}
 
 var (
 	GondCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "dravidian_gond",
 		Abstuct:         AbsAncientDravidian,
 		Root:            IndianRoot,
@@ -539,6 +633,8 @@ var (
 		Traditions:      []*Tradition{JungleWarriorsTradition, SacredGrovesTradition, CultureBlendingTradition},
 	}
 	KannadaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "dravidian_kannada",
 		Abstuct:         AbsAncientDravidian,
 		Root:            IndianRoot,
@@ -549,6 +645,8 @@ var (
 		Traditions:      []*Tradition{FerventTempleBuildersTradition, GarudaWarriorsTradition, RefinedPoetryTradition, RulingCasteTradition},
 	}
 	TamilCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "dravidian_tamil",
 		Abstuct:         AbsAncientDravidian,
 		Root:            IndianRoot,
@@ -559,6 +657,8 @@ var (
 		Traditions:      []*Tradition{MetalworkersTradition, ParochialismTradition, SeafarersTradition},
 	}
 	TeluguCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "dravidian_telugu",
 		Abstuct:         AbsAncientDravidian,
 		Root:            IndianRoot,
@@ -575,6 +675,8 @@ var AllDravidianCultures = []*Culture{GondCulture, KannadaCulture, TamilCulture,
 // EastAfrican
 var (
 	DajuCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_daju",
 		Abstuct:         AbsMedievalEastAfrican,
 		Root:            AfricanRoot,
@@ -585,6 +687,8 @@ var (
 		Traditions:      []*Tradition{DrylandDwellersTradition, WarriorCultureTradition, WarriorQueensTradition},
 	}
 	EthiopianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_ethiopian",
 		Abstuct:         AbsMedievalEastAfrican,
 		Root:            AfricanRoot,
@@ -595,6 +699,8 @@ var (
 		Traditions:      []*Tradition{FerventTempleBuildersTradition, IsolationistTradition, StrongBelieversTradition},
 	}
 	NubianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_nubian",
 		Abstuct:         AbsMedievalEastAfrican,
 		Root:            AfricanRoot,
@@ -605,6 +711,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, AstuteDiplomatsTradition, LandOfTheBowTradition, WarriorQueensTradition, XenophilicTradition},
 	}
 	WelaytaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_welayta",
 		Abstuct:         AbsMedievalEastAfrican,
 		Root:            AfricanRoot,
@@ -621,6 +729,8 @@ var AllEastAfricanCultures = []*Culture{DajuCulture, EthiopianCulture, NubianCul
 // EastSlavic
 var (
 	IlmenianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_ilmenian",
 		Abstuct:         AbsMedievalEastSlavic,
 		Root:            EuropeContinentalRoot,
@@ -631,6 +741,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, DruzhinaTradition, ForestFolkTradition, HitAndRunTacticiansTradition},
 	}
 	RuthenianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_ruthenian",
 		Abstuct:         AbsMedievalEastSlavic,
 		Root:            EuropeContinentalRoot,
@@ -641,6 +753,8 @@ var (
 		Traditions:      []*Tradition{DruzhinaTradition, AgrarianTradition, CharismaticTradition, CityKeepersTradition},
 	}
 	MoscovianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_moscovian",
 		Abstuct:         AbsMedievalEastSlavic,
 		Root:            EuropeContinentalRoot,
@@ -651,6 +765,8 @@ var (
 		Traditions:      []*Tradition{DruzhinaTradition, MendicantMysticsTradition, ForestFolkTradition},
 	}
 	SeverianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_severian",
 		Proto:           []*Culture{RuthenianCulture},
 		Abstuct:         AbsMedievalEastSlavic,
@@ -662,6 +778,8 @@ var (
 		Traditions:      []*Tradition{DruzhinaTradition, ForestFolkTradition, SacredGrovesTradition},
 	}
 	VolhynianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_volhynian",
 		Proto:           []*Culture{RuthenianCulture},
 		Abstuct:         AbsMedievalEastSlavic,
@@ -679,6 +797,8 @@ var AllEastSlavicCultures = []*Culture{IlmenianCulture, RuthenianCulture, Moscov
 // Frankish
 var (
 	FrankishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "frankish_frankish",
 		Abstuct:         AbsMedievalFrankish,
 		Root:            EuropeContinentalRoot,
@@ -689,6 +809,8 @@ var (
 		Traditions:      []*Tradition{HereditaryHierarchyTradition, StandAndFightTradition, WarriorCultureTradition},
 	}
 	FrenchCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "frankish_french",
 		Proto:           []*Culture{FrankishCulture},
 		Abstuct:         AbsMedievalFrankish,
@@ -700,6 +822,8 @@ var (
 		Traditions:      []*Tradition{ChansonDeGesteTradition, ChivalryTradition, HereditaryHierarchyTradition},
 	}
 	NormanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "frankish_norman",
 		Proto:           []*Culture{FrenchCulture, NorseCulture},
 		Abstuct:         AbsMedievalFrankish,
@@ -711,6 +835,8 @@ var (
 		Traditions:      []*Tradition{ChansonDeGesteTradition, HereditaryHierarchyTradition, StandAndFightTradition},
 	}
 	OccitanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "frankish_occitan",
 		Abstuct:         AbsMedievalFrankish,
 		Root:            EuropeContinentalRoot,
@@ -727,6 +853,8 @@ var AllFrankishCultures = []*Culture{FrankishCulture, FrenchCulture, NormanCultu
 // Goidelic
 var (
 	GaelicCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "goidelic_gaelic",
 		Proto:           []*Culture{IrishCulture, PictishCulture},
 		Abstuct:         AbsMedievalGoidelic,
@@ -738,6 +866,8 @@ var (
 		Traditions:      []*Tradition{ConcubinesTradition, DexterousFishermenTradition, HighlandWarriorsTradition, HillDwellersTradition, StrongKinshipTradition},
 	}
 	IrishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "goidelic_irish",
 		Abstuct:         AbsMedievalGoidelic,
 		Root:            EuropeContinentalRoot,
@@ -754,6 +884,8 @@ var AllGoidelicCultures = []*Culture{GaelicCulture, IrishCulture}
 // GuineanUplander
 var (
 	BoboCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "guinean_bobo",
 		Abstuct:         AbsMedievalGuineanUplander,
 		Root:            AfricanRoot,
@@ -764,6 +896,8 @@ var (
 		Traditions:      []*Tradition{StalwartDefendersTradition, UplandSkirmishingTradition, SorcerousMetallurgyTradition},
 	}
 	GurCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "guinean_gur",
 		Abstuct:         AbsMedievalGuineanUplander,
 		Root:            AfricanRoot,
@@ -774,6 +908,8 @@ var (
 		Traditions:      []*Tradition{AncientMinersTradition, UplandSkirmishingTradition, SorcerousMetallurgyTradition},
 	}
 	MalinkeCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "guinean_malinke",
 		Abstuct:         AbsMedievalGuineanUplander,
 		Root:            AfricanRoot,
@@ -784,6 +920,8 @@ var (
 		Traditions:      []*Tradition{CharitableTradition, UplandSkirmishingTradition, SorcerousMetallurgyTradition},
 	}
 	MarkaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "guinean_marka",
 		Abstuct:         AbsMedievalGuineanUplander,
 		Root:            AfricanRoot,
@@ -794,6 +932,8 @@ var (
 		Traditions:      []*Tradition{MusicalTheoristsTradition, UplandSkirmishingTradition, WarriorsOfTheDryTradition},
 	}
 	MelCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "guinean_mel",
 		Abstuct:         AbsMedievalGuineanUplander,
 		Root:            AfricanRoot,
@@ -810,6 +950,8 @@ var AllGuineanUplanderCultures = []*Culture{BoboCulture, GurCulture, MalinkeCult
 // HornAfrican
 var (
 	AfarCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_afar",
 		Abstuct:         AbsMedievalHornAfrican,
 		Root:            AfricanRoot,
@@ -820,6 +962,8 @@ var (
 		Traditions:      []*Tradition{EyeForAnEyeTradition, MonogamousTradition, MountainSkirmishingTradition, WarriorCultureTradition},
 	}
 	BejaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_beja",
 		Abstuct:         AbsMedievalHornAfrican,
 		Root:            AfricanRoot,
@@ -830,6 +974,8 @@ var (
 		Traditions:      []*Tradition{DesertTravelersTradition, IsolationistTradition, MountainSkirmishingTradition, WarriorsOfTheDryTradition},
 	}
 	SomaliCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "african_somali",
 		Abstuct:         AbsMedievalHornAfrican,
 		Root:            AfricanRoot,
@@ -846,6 +992,8 @@ var AllHornAfricanCultures = []*Culture{AfarCulture, BejaCulture, SomaliCulture}
 // Iberian
 var (
 	AndalusianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_andalusian",
 		Proto:           []*Culture{VisigothicCulture, ArabicBedouinCulture},
 		Abstuct:         AbsMedievalIberian,
@@ -864,6 +1012,8 @@ var (
 		},
 	}
 	AragoneseCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_aragonese",
 		Proto:           []*Culture{BasqueCulture, CatalanCulture},
 		Abstuct:         AbsMedievalIberian,
@@ -882,6 +1032,8 @@ var (
 		},
 	}
 	AsturleoneseCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_asturleonese",
 		Proto:           []*Culture{VisigothicCulture},
 		Abstuct:         AbsMedievalIberian,
@@ -893,6 +1045,8 @@ var (
 		Traditions:      []*Tradition{FerventTempleBuildersTradition, HitAndRunTacticiansTradition, MountaineersTradition, RitualizedFriendshipTradition},
 	}
 	BasqueCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_basque",
 		Abstuct:         AbsMedievalIberian,
 		Root:            MediterraneanRoot,
@@ -903,6 +1057,8 @@ var (
 		Traditions:      []*Tradition{MaritalCeremoniesTradition, MountaineersTradition, VisigothicCodesTradition, RitualizedFriendshipTradition},
 	}
 	CastilianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_castilian",
 		Proto:           []*Culture{VisigothicCulture},
 		Abstuct:         AbsMedievalIberian,
@@ -921,6 +1077,8 @@ var (
 		},
 	}
 	CatalanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_catalan",
 		Proto:           []*Culture{VisigothicCulture, OccitanCulture},
 		Abstuct:         AbsMedievalIberian,
@@ -938,6 +1096,8 @@ var (
 		},
 	}
 	GalicianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_galician",
 		Proto:           []*Culture{VisigothicCulture},
 		Abstuct:         AbsMedievalIberian,
@@ -949,6 +1109,8 @@ var (
 		Traditions:      []*Tradition{MonasticCommunitiesTradition, DexterousFishermenTradition, HighlandWarriorsTradition, RitualizedFriendshipTradition},
 	}
 	PortugueseCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_portuguese",
 		Abstuct:         AbsMedievalIberian,
 		Root:            MediterraneanRoot,
@@ -959,6 +1121,8 @@ var (
 		Traditions:      []*Tradition{ChivalryTradition, FerventTempleBuildersTradition, MartialAdmirationTradition, RitualizedFriendshipTradition},
 	}
 	SuebiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_suebi",
 		Abstuct:         AbsMedievalIberian,
 		Root:            MediterraneanRoot,
@@ -969,6 +1133,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, StandAndFightTradition},
 	}
 	VisigothicCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iberian_visigothic",
 		Abstuct:         AbsMedievalIberian,
 		Root:            MediterraneanRoot,
@@ -996,6 +1162,8 @@ var AllIberianCultures = []*Culture{
 // IndoAryan
 var (
 	BengaliCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_bengali",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1006,6 +1174,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, PhilosopherCultureTradition, ReligiousPatronageTradition},
 	}
 	GujaratiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_gujarati",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1016,6 +1186,8 @@ var (
 		Traditions:      []*Tradition{ExpertArtisansTradition, ReligionBlendingTradition, SeafarersTradition, VegetariansTradition},
 	}
 	KamrupiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_kamrupi",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1026,6 +1198,8 @@ var (
 		Traditions:      []*Tradition{CollectiveLandsTradition, JungleWarriorsTradition, CultureBlendingTradition},
 	}
 	KannaujiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_kannauji",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1036,6 +1210,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, CityKeepersTradition, CourtEunuchsTradition, RulingCasteTradition},
 	}
 	KashmiriCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_kashmiri",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1046,6 +1222,8 @@ var (
 		Traditions:      []*Tradition{EqualInheritanceTradition, HimalayanSettlersTradition, RefinedPoetryTradition},
 	}
 	MalviCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_malvi",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1056,6 +1234,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, FerventTempleBuildersTradition, KhadgaPujaTradition, MysticalAncestorsTradition},
 	}
 	MarathiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_marathi",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1066,6 +1246,8 @@ var (
 		Traditions:      []*Tradition{IndustriousTradition, ModestTradition, PastorialistsTradition},
 	}
 	NepaliCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_nepali",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1076,6 +1258,8 @@ var (
 		Traditions:      []*Tradition{HimalayanSettlersTradition, MartialAdmirationTradition, ReligiousPatronageTradition},
 	}
 	OriyaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_oriya",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1086,6 +1270,8 @@ var (
 		Traditions:      []*Tradition{CulinaryArtistsTradition, LordsOfTheElephantTradition, SeafarersTradition},
 	}
 	PunjabiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_punjabi",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1096,6 +1282,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, MaritalCeremoniesTradition, StorytellersTradition},
 	}
 	RajasthaniCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_rajasthani",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1106,6 +1294,8 @@ var (
 		Traditions:      []*Tradition{KhadgaPujaTradition, MysticalAncestorsTradition, QuarrelsomeTradition, WarriorCultureTradition},
 	}
 	SindhiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_sindhi",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1116,6 +1306,8 @@ var (
 		Traditions:      []*Tradition{MendicantMysticsTradition, RefinedPoetryTradition, SeafarersTradition},
 	}
 	SinhalaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "indo_aryan_sinhala",
 		Abstuct:         AbsMedievalIndoAryan,
 		Root:            IndianRoot,
@@ -1146,6 +1338,8 @@ var AllIndoAryanCultures = []*Culture{
 // Iranian
 var (
 	AfghanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iranian_afghan",
 		Abstuct:         AbsMedievalIranian,
 		Root:            PersianRoot,
@@ -1156,6 +1350,8 @@ var (
 		Traditions:      []*Tradition{EsteemedHospitalityTradition, FutuwaaTradition, LoyalSubjectsTradition, MountainHomesTradition},
 	}
 	BalochCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iranian_baloch",
 		Abstuct:         AbsMedievalIranian,
 		Root:            PersianRoot,
@@ -1166,6 +1362,8 @@ var (
 		Traditions:      []*Tradition{DesertTravelersTradition, FutuwaaTradition, EsteemedHospitalityTradition, IsolationistTradition},
 	}
 	DaylamiteCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iranian_daylamite",
 		Abstuct:         AbsMedievalIranian,
 		Root:            PersianRoot,
@@ -1176,6 +1374,8 @@ var (
 		Traditions:      []*Tradition{FutuwaaTradition, MountaineersTradition, StalwartDefendersTradition, SwordsForHireTradition},
 	}
 	KhwarezmianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iranian_khwarezmian",
 		Abstuct:         AbsMedievalIranian,
 		Root:            PersianRoot,
@@ -1186,6 +1386,8 @@ var (
 		Traditions:      []*Tradition{CaravaneersTradition, DrylandDwellersTradition, FutuwaaTradition, IsolationistTradition},
 	}
 	KurdishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iranian_kurdish",
 		Abstuct:         AbsMedievalIranian,
 		Root:            PersianRoot,
@@ -1196,6 +1398,8 @@ var (
 		Traditions:      []*Tradition{EyeForAnEyeTradition, FutuwaaTradition, MountainHomesTradition, SwordsForHireTradition},
 	}
 	PersianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iranian_persian",
 		Abstuct:         AbsMedievalIranian,
 		Root:            PersianRoot,
@@ -1212,6 +1416,8 @@ var (
 		},
 	}
 	SakaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iranian_saka",
 		Abstuct:         AbsMedievalIranian,
 		Root:            PersianRoot,
@@ -1222,6 +1428,8 @@ var (
 		Traditions:      []*Tradition{CaravaneersTradition, DrylandDwellersTradition, ExpertArtisansTradition, HorseLordsTradition},
 	}
 	SogdianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iranian_sogdian",
 		Abstuct:         AbsMedievalIranian,
 		Root:            PersianRoot,
@@ -1232,6 +1440,8 @@ var (
 		Traditions:      []*Tradition{CaravaneersTradition, FutuwaaTradition, ParochialismTradition, ReligionBlendingTradition},
 	}
 	TajikCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "iranian_tajik",
 		Abstuct:         AbsMedievalIranian,
 		Root:            PersianRoot,
@@ -1248,6 +1458,8 @@ var AllIranianCultures = []*Culture{AfghanCulture, BalochCulture, DaylamiteCultu
 // Israelite
 var (
 	AshkenaziCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "israelite_ashkenazi",
 		Abstuct:         AbsMedievalIsraelite,
 		Root:            SemiticRoot,
@@ -1264,6 +1476,8 @@ var (
 		},
 	}
 	KochinimCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "israelite_kochinim",
 		Proto:           []*Culture{SephardiCulture, TamilCulture},
 		Abstuct:         AbsMedievalIsraelite,
@@ -1280,6 +1494,8 @@ var (
 		},
 	}
 	RadhaniteCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "israelite_radhanite",
 		Abstuct:         AbsMedievalIsraelite,
 		Root:            SemiticRoot,
@@ -1296,6 +1512,8 @@ var (
 		},
 	}
 	SephardiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "israelite_sephardi",
 		Abstuct:         AbsMedievalIsraelite,
 		Root:            SemiticRoot,
@@ -1318,6 +1536,8 @@ var AllIsraeliteCultures = []*Culture{AshkenaziCulture, KochinimCulture, Radhani
 // Latin
 var (
 	CisalpineCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "latin_cisalpine",
 		Proto:           []*Culture{LombardCulture, FrankishCulture},
 		Abstuct:         AbsMedievalLatin,
@@ -1329,6 +1549,8 @@ var (
 		Traditions:      []*Tradition{MaritimeMercantilismTradition, MountainHomesTradition, RepublicanLegacyTradition},
 	}
 	ItalianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "latin_italian",
 		Proto:           []*Culture{RomanCulture},
 		Abstuct:         AbsMedievalLatin,
@@ -1340,6 +1562,8 @@ var (
 		Traditions:      []*Tradition{FormationFightingExpertsTradition, RefinedPoetryTradition, RepublicanLegacyTradition},
 	}
 	LombardCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "latin_lombard",
 		Proto:           []*Culture{ItalianCulture, LangobardCulture},
 		Abstuct:         AbsMedievalLatin,
@@ -1351,6 +1575,8 @@ var (
 		Traditions:      []*Tradition{IsolationistTradition, MartialAdmirationTradition, RepublicanLegacyTradition, StandAndFightTradition},
 	}
 	RomanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "latin_roman",
 		Abstuct:         AbsMedievalLatin,
 		Root:            MediterraneanRoot,
@@ -1361,6 +1587,8 @@ var (
 		Traditions:      []*Tradition{FormationFightingExpertsTradition, HereditaryHierarchyTradition, LegalisticTradition, RefinedPoetryTradition},
 	}
 	SardinianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "latin_sardinian",
 		Proto:           []*Culture{RomanCulture},
 		Abstuct:         AbsMedievalLatin,
@@ -1372,6 +1600,8 @@ var (
 		Traditions:      []*Tradition{IsolationistTradition, StalwartDefendersTradition},
 	}
 	SicilianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "latin_sicilian",
 		Proto:           []*Culture{LombardCulture, GreekCulture},
 		Abstuct:         AbsMedievalLatin,
@@ -1389,6 +1619,8 @@ var AllLatinCultures = []*Culture{CisalpineCulture, ItalianCulture, LombardCultu
 // Magyar
 var (
 	HungarianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "magyar_hungarian",
 		Proto:           []*Culture{MogyerCulture},
 		Abstuct:         AbsMedievalMagyar,
@@ -1400,6 +1632,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, KonniRaidsTradition, StrongBelieversTradition},
 	}
 	MogyerCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "magyar_mogyer",
 		Abstuct:         AbsMedievalMagyar,
 		Root:            MediterraneanRoot,
@@ -1416,6 +1650,8 @@ var AllMagyarCultures = []*Culture{HungarianCulture, MogyerCulture}
 // Mongolic
 var (
 	BuryatCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "mongolic_buryat",
 		Abstuct:         AbsMedievalMongolic,
 		Root:            MongolianRoot,
@@ -1426,6 +1662,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, MysticalAncestorsTradition, SacredMountainsTradition, SteppeToleranceTradition},
 	}
 	JurchenCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "mongolic_jurchen",
 		Abstuct:         AbsMedievalMongolic,
 		Root:            MongolianRoot,
@@ -1436,6 +1674,8 @@ var (
 		Traditions:      []*Tradition{AgrarianTradition, HorseBreedersTradition, HorseLordsTradition, MalleableInvadersTradition},
 	}
 	KeraitCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "mongolic_kerait",
 		Abstuct:         AbsMedievalMongolic,
 		Root:            MongolianRoot,
@@ -1446,6 +1686,8 @@ var (
 		Traditions:      []*Tradition{HorseBreedersTradition, HorseLordsTradition, ProlificHuntersTradition, SteppeToleranceTradition},
 	}
 	KhitanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "mongolic_khitan",
 		Abstuct:         AbsMedievalMongolic,
 		Root:            MongolianRoot,
@@ -1456,6 +1698,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, PastorialistsTradition, SacredHuntsTradition, MalleableInvadersTradition},
 	}
 	MongolCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "mongolic_mongol",
 		Abstuct:         AbsMedievalMongolic,
 		Root:            MongolianRoot,
@@ -1466,6 +1710,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, ProlificHuntersTradition, SteppeToleranceTradition, MalleableInvadersTradition},
 	}
 	NaimanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "mongolic_naiman",
 		Abstuct:         AbsMedievalMongolic,
 		Root:            MongolianRoot,
@@ -1476,6 +1722,8 @@ var (
 		Traditions:      []*Tradition{CharismaticTradition, HorseLordsTradition, PastorialistsTradition, SteppeToleranceTradition},
 	}
 	OiratCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "mongolic_oirat",
 		Abstuct:         AbsMedievalMongolic,
 		Root:            MongolianRoot,
@@ -1486,6 +1734,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, LoyalSubjectsTradition, ProlificHuntersTradition, StrongBelieversTradition},
 	}
 	OngudCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "mongolic_ongud",
 		Proto:           []*Culture{ShatuoCulture},
 		Abstuct:         AbsMedievalMongolic,
@@ -1497,6 +1747,8 @@ var (
 		Traditions:      []*Tradition{AstuteDiplomatsTradition, HorseLordsTradition, StalwartDefendersTradition, SteppeToleranceTradition},
 	}
 	TuyuhunCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "mongolic_tuyuhun",
 		Abstuct:         AbsMedievalMongolic,
 		Root:            MongolianRoot,
@@ -1513,6 +1765,8 @@ var AllMongolicCultures = []*Culture{BuryatCulture, JurchenCulture, KeraitCultur
 // NigerDelta
 var (
 	EdoCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "niger_delta_edo",
 		Abstuct:         AbsMedievalNigerDelta,
 		Root:            AfricanRoot,
@@ -1523,6 +1777,8 @@ var (
 		Traditions:      []*Tradition{BushHuntingTradition, HiddenCitiesTradition, ParochialismTradition},
 	}
 	EweCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "niger_delta_ewe",
 		Abstuct:         AbsMedievalNigerDelta,
 		Root:            AfricanRoot,
@@ -1533,6 +1789,8 @@ var (
 		Traditions:      []*Tradition{BushHuntingTradition, LegalisticTradition, ReligionBlendingTradition},
 	}
 	IgboCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "niger_delta_igbo",
 		Abstuct:         AbsMedievalNigerDelta,
 		Root:            AfricanRoot,
@@ -1543,6 +1801,8 @@ var (
 		Traditions:      []*Tradition{BushHuntingTradition, HiddenCitiesTradition, RecognitionOfTalentTradition},
 	}
 	YorubaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "niger_delta_yoruba",
 		Abstuct:         AbsMedievalNigerDelta,
 		Root:            AfricanRoot,
@@ -1559,6 +1819,8 @@ var AllNigerDeltaCultures = []*Culture{EdoCulture, EweCulture, IgboCulture, Yoru
 // NorthGermanic
 var (
 	DanishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_danish",
 		Abstuct:         AbsMedievalNorthGermanic,
 		Root:            NordicEuropeRoot,
@@ -1576,6 +1838,8 @@ var (
 		},
 	}
 	NorseCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_norse",
 		Abstuct:         AbsMedievalNorthGermanic,
 		Root:            NordicEuropeRoot,
@@ -1595,6 +1859,8 @@ var (
 		},
 	}
 	NorwegianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_norwegian",
 		Abstuct:         AbsMedievalNorthGermanic,
 		Root:            NordicEuropeRoot,
@@ -1612,6 +1878,8 @@ var (
 		},
 	}
 	SwedishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_swedish",
 		Proto:           []*Culture{NorseCulture},
 		Abstuct:         AbsMedievalNorthGermanic,
@@ -1635,6 +1903,8 @@ var AllNorthGermanicCultures = []*Culture{DanishCulture, NorseCulture, Norwegian
 // Qiangic
 var (
 	QiangCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "qiangic_qiang",
 		Abstuct:         AbsMedievalQiangic,
 		Root:            MongolianRoot,
@@ -1645,6 +1915,8 @@ var (
 		Traditions:      []*Tradition{EqualInheritanceTradition, HimalayanSettlersTradition, MedicinalHerbalistsTradition, SacredMountainsTradition},
 	}
 	TangutCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "qiangic_tangut",
 		Abstuct:         AbsMedievalQiangic,
 		Root:            MongolianRoot,
@@ -1661,6 +1933,8 @@ var AllQiangicCultures = []*Culture{QiangCulture, TangutCulture}
 // Sahelian
 var (
 	BozoCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "sahelian_bozo",
 		Abstuct:         AbsMedievalSahelian,
 		Root:            AfricanRoot,
@@ -1671,6 +1945,8 @@ var (
 		Traditions:      []*Tradition{IsolationistTradition, ReligionBlendingTradition, WetlandersTradition},
 	}
 	GawCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "sahelian_gaw",
 		Abstuct:         AbsMedievalSahelian,
 		Root:            AfricanRoot,
@@ -1681,6 +1957,8 @@ var (
 		Traditions:      []*Tradition{CaravaneersTradition, DrylandDwellersTradition},
 	}
 	MossiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "sahelian_mossi",
 		Abstuct:         AbsMedievalSahelian,
 		Root:            AfricanRoot,
@@ -1691,6 +1969,8 @@ var (
 		Traditions:      []*Tradition{AdaptiveSkirmishersTradition, HereditaryHierarchyTradition, RulingCasteTradition},
 	}
 	SonghaiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "sahelian_songhai",
 		Abstuct:         AbsMedievalSahelian,
 		Root:            AfricanRoot,
@@ -1701,6 +1981,8 @@ var (
 		Traditions:      []*Tradition{DrylandDwellersTradition, RulingCasteTradition, WarriorCultureTradition},
 	}
 	SoninkeCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "sahelian_soninke",
 		Abstuct:         AbsMedievalSahelian,
 		Root:            AfricanRoot,
@@ -1711,6 +1993,8 @@ var (
 		Traditions:      []*Tradition{CaravaneersTradition, CityKeepersTradition, DrylandDwellersTradition, StrongBelieversTradition},
 	}
 	SorkoCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "sahelian_sorko",
 		Abstuct:         AbsMedievalSahelian,
 		Root:            AfricanRoot,
@@ -1727,6 +2011,8 @@ var AllSahelianCultures = []*Culture{BozoCulture, GawCulture, MossiCulture, Song
 // Senegambian
 var (
 	PulaarCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "senegambian_pulaar",
 		Abstuct:         AbsMedievalSenegambian,
 		Root:            AfricanRoot,
@@ -1737,6 +2023,8 @@ var (
 		Traditions:      []*Tradition{CharismaticTradition, ForebearingTradition},
 	}
 	SererCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "senegambian_serer",
 		Abstuct:         AbsMedievalSenegambian,
 		Root:            AfricanRoot,
@@ -1747,6 +2035,8 @@ var (
 		Traditions:      []*Tradition{HereditaryHierarchyTradition, StalwartDefendersTradition, StrongBelieversTradition},
 	}
 	WolofCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "senegambian_wolof",
 		Abstuct:         AbsMedievalSenegambian,
 		Root:            AfricanRoot,
@@ -1763,6 +2053,8 @@ var AllSenegambianCultures = []*Culture{PulaarCulture, SererCulture, WolofCultur
 // SouthSlavic
 var (
 	BosnianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_bosnian",
 		Proto:           []*Culture{CroatianCulture, SerbianCulture},
 		Abstuct:         AbsMedievalSouthSlavic,
@@ -1774,6 +2066,8 @@ var (
 		Traditions:      []*Tradition{IsolationistTradition, MendicantMysticsTradition, MonasticCommunitiesTradition},
 	}
 	BulgarianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_bulgarian",
 		Proto:           []*Culture{CroatianCulture, BolgharCulture},
 		Abstuct:         AbsMedievalSouthSlavic,
@@ -1785,6 +2079,8 @@ var (
 		Traditions:      []*Tradition{KonniRaidsTradition, MercifulBlindingsTradition, RulingCasteTradition, StandAndFightTradition},
 	}
 	CroatianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_croatian",
 		Abstuct:         AbsMedievalSouthSlavic,
 		Root:            EuropeContinentalRoot,
@@ -1795,6 +2091,8 @@ var (
 		Traditions:      []*Tradition{AstuteDiplomatsTradition, KonniRaidsTradition, HereditaryHierarchyTradition},
 	}
 	SerbianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_serbian",
 		Abstuct:         AbsMedievalSouthSlavic,
 		Root:            EuropeContinentalRoot,
@@ -1811,6 +2109,8 @@ var AllSouthSlavicCultures = []*Culture{BosnianCulture, BulgarianCulture, Croati
 // Tibetan
 var (
 	BodpaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "tibetian_bodpa",
 		Abstuct:         AbsMedievalTibetan,
 		Root:            IndianRoot,
@@ -1821,6 +2121,8 @@ var (
 		Traditions:      []*Tradition{HimalayanSettlersTradition, HorseBreedersTradition, ReligiousPatronageTradition},
 	}
 	KiratiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "tibetian_kirati",
 		Abstuct:         AbsMedievalTibetan,
 		Root:            IndianRoot,
@@ -1831,6 +2133,8 @@ var (
 		Traditions:      []*Tradition{HimalayanSettlersTradition, ReligionBlendingTradition},
 	}
 	LhomonCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "tibetian_lhomon",
 		Abstuct:         AbsMedievalTibetan,
 		Root:            IndianRoot,
@@ -1841,6 +2145,8 @@ var (
 		Traditions:      []*Tradition{HimalayanSettlersTradition, MedicinalHerbalistsTradition, MysticalAncestorsTradition},
 	}
 	SumpaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "tibetian_sumpa",
 		Abstuct:         AbsMedievalTibetan,
 		Root:            IndianRoot,
@@ -1851,6 +2157,8 @@ var (
 		Traditions:      []*Tradition{EqualInheritanceTradition, HimalayanSettlersTradition, MountaineersTradition},
 	}
 	TsangpaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "tibetian_tsangpa",
 		Abstuct:         AbsMedievalTibetan,
 		Root:            IndianRoot,
@@ -1861,6 +2169,8 @@ var (
 		Traditions:      []*Tradition{HimalayanSettlersTradition, ReligiousPatronageTradition, SacredMountainsTradition},
 	}
 	ZhangzhungCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "tibetian_zhangzhung",
 		Abstuct:         AbsMedievalTibetan,
 		Root:            IndianRoot,
@@ -1876,6 +2186,8 @@ var AllTibetanCultures = []*Culture{BodpaCulture, KiratiCulture, LhomonCulture, 
 
 // Tocharian
 var TocharianCulture = &Culture{
+	ID:              uuid.NewString(),
+	Origin:          NativeOrigin,
 	Name:            "tocharian",
 	Abstuct:         AbsMedievalTocharian,
 	Root:            PersianRoot,
@@ -1891,6 +2203,8 @@ var AllTocharianCultures = []*Culture{TocharianCulture}
 // Turkic
 var (
 	AvarCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_avar",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -1901,6 +2215,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, RecognitionOfTalentTradition, RulingCasteTradition, CultureBlendingTradition},
 	}
 	BashkirCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_bashkir",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -1911,6 +2227,8 @@ var (
 		Traditions:      []*Tradition{ForestFolkTradition, HorseLordsTradition, SacredMountainsTradition, MalleableInvadersTradition},
 	}
 	BolgharCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_bolghar",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -1921,6 +2239,8 @@ var (
 		Traditions:      []*Tradition{AstuteDiplomatsTradition, HorseLordsTradition, RulingCasteTradition, MalleableInvadersTradition},
 	}
 	ChuvashCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_chuvash",
 		Proto:           []*Culture{BolgharCulture},
 		Abstuct:         AbsMedievalTurkic,
@@ -1932,6 +2252,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, SacredHuntsTradition, StrongBelieversTradition},
 	}
 	CumanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_cuman",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -1942,6 +2264,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, SwordsForHireTradition, WarriorCultureTradition, MalleableInvadersTradition},
 	}
 	KarlukCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_karluk",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -1952,6 +2276,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, SacredMountainsTradition, SteppeToleranceTradition, MalleableInvadersTradition},
 	}
 	KhazarCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_khazar",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -1962,6 +2288,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, StandAndFightTradition, SteppeToleranceTradition},
 	}
 	KimekCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_kimek",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -1972,6 +2300,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, PastorialistsTradition, ProlificHuntersTradition, StalwartDefendersTradition},
 	}
 	KipchakCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_kipchak",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -1982,6 +2312,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, ProlificHuntersTradition, QuarrelsomeTradition, SwordsForHireTradition},
 	}
 	KirghizCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_kirghiz",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -1992,6 +2324,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, ProlificHuntersTradition, QuarrelsomeTradition},
 	}
 	LaktanCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_laktan",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -2002,6 +2336,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, ForestFolkTradition, ProlificHuntersTradition, StalwartDefendersTradition},
 	}
 	OghuzCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_oghuz",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -2012,6 +2348,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, RulingCasteTradition, SwordsForHireTradition, WarriorCultureTradition},
 	}
 	PechenegCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_pecheneg",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -2022,6 +2360,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, QuarrelsomeTradition, SwordsForHireTradition, WarriorCultureTradition},
 	}
 	ShatuoCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_shatuo",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -2032,6 +2372,8 @@ var (
 		Traditions:      []*Tradition{CourtEunuchsTradition, RulingCasteTradition, MalleableInvadersTradition},
 	}
 	UriankhaiCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_uriankhai",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -2042,6 +2384,8 @@ var (
 		Traditions:      []*Tradition{HorseLordsTradition, ForestFolkTradition, MendicantMysticsTradition, ProlificHuntersTradition},
 	}
 	UyghurCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_uyghur",
 		Abstuct:         AbsMedievalTurkic,
 		Root:            TurkicRoot,
@@ -2052,6 +2396,8 @@ var (
 		Traditions:      []*Tradition{CaravaneersTradition, CharitableTradition, ReligiousPatronageTradition, SteppeToleranceTradition, XenophilicTradition},
 	}
 	YughurCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "turkic_yughur",
 		Proto:           []*Culture{UyghurCulture},
 		Abstuct:         AbsMedievalTurkic,
@@ -2087,6 +2433,8 @@ var AllTurkicCultures = []*Culture{
 // UgroPermian
 var (
 	BjarmianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ugro_permian_bjarmian",
 		Abstuct:         AbsMedievalUgroPermian,
 		Root:            EuropeContinentalRoot,
@@ -2097,6 +2445,8 @@ var (
 		Traditions:      []*Tradition{CaravaneersTradition, CharismaticTradition, ForestWardensTradition, XenophilicTradition},
 	}
 	OstyakCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ugro_permian_ostyak",
 		Abstuct:         AbsMedievalUgroPermian,
 		Root:            EuropeContinentalRoot,
@@ -2107,6 +2457,8 @@ var (
 		Traditions:      []*Tradition{IsolationistTradition, StrongBelieversTradition},
 	}
 	PermianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ugro_permian_permian",
 		Abstuct:         AbsMedievalUgroPermian,
 		Root:            EuropeContinentalRoot,
@@ -2122,6 +2474,8 @@ var AllUgroPermianCultures = []*Culture{BjarmianCulture, OstyakCulture, PermianC
 
 // Vlach
 var VlachCulture = &Culture{
+	ID:              uuid.NewString(),
+	Origin:          NativeOrigin,
 	Name:            "vlach",
 	Proto:           []*Culture{RomanCulture},
 	Abstuct:         AbsMedievalVlach,
@@ -2138,6 +2492,8 @@ var AllVlachCultures = []*Culture{VlachCulture}
 // VolgaFinnic
 var (
 	MariCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "volga_finnic_mari",
 		Abstuct:         AbsMedievalVolgaFinnic,
 		Root:            EuropeContinentalRoot,
@@ -2148,6 +2504,8 @@ var (
 		Traditions:      []*Tradition{FrequentFestivitiesTradition, MusicalTheoristsTradition},
 	}
 	MeryaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "volga_finnic_merya",
 		Abstuct:         AbsMedievalVolgaFinnic,
 		Root:            EuropeContinentalRoot,
@@ -2158,6 +2516,8 @@ var (
 		Traditions:      []*Tradition{StorytellersTradition, CultureBlendingTradition},
 	}
 	MeshcheraCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "volga_finnic_meshchera",
 		Abstuct:         AbsMedievalVolgaFinnic,
 		Root:            EuropeContinentalRoot,
@@ -2168,6 +2528,8 @@ var (
 		Traditions:      []*Tradition{MusicalTheoristsTradition, ReligionBlendingTradition, CultureBlendingTradition},
 	}
 	MordvinCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "volga_finnic_mordvin",
 		Abstuct:         AbsMedievalVolgaFinnic,
 		Root:            EuropeContinentalRoot,
@@ -2178,6 +2540,8 @@ var (
 		Traditions:      []*Tradition{FrequentFestivitiesTradition, MusicalTheoristsTradition, ReligionBlendingTradition},
 	}
 	MuromaCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "volga_finnic_muroma",
 		Abstuct:         AbsMedievalVolgaFinnic,
 		Root:            EuropeContinentalRoot,
@@ -2194,6 +2558,8 @@ var AllVolgaFinnicCultures = []*Culture{MariCulture, MeryaCulture, MeshcheraCult
 // WestGermanic
 var (
 	AngloSaxonCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_anglo_saxon",
 		Proto:           []*Culture{OldSaxonCulture},
 		Abstuct:         AbsMedievalWestGermanic,
@@ -2205,6 +2571,8 @@ var (
 		Traditions:      []*Tradition{CityKeepersTradition, HirdsTradition, TheWitenagemotTradition},
 	}
 	EnglishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_english",
 		Abstuct:         AbsMedievalWestGermanic,
 		Root:            EuropeContinentalRoot,
@@ -2215,6 +2583,8 @@ var (
 		Traditions:      []*Tradition{CastleKeepersTradition, ChivalryTradition, HereditaryHierarchyTradition, LongbowCompetitionsTradition},
 	}
 	OldSaxonCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_old_saxon",
 		Abstuct:         AbsMedievalWestGermanic,
 		Root:            EuropeContinentalRoot,
@@ -2225,6 +2595,8 @@ var (
 		Traditions:      []*Tradition{HirdsTradition, SeafarersTradition, TingMeetTradition, MalleableInvadersTradition},
 	}
 	ScotsCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "germanic_scots",
 		Proto:           []*Culture{AngloSaxonCulture, CumbrianCulture},
 		Abstuct:         AbsMedievalWestGermanic,
@@ -2242,6 +2614,8 @@ var AllWestGermanicCultures = []*Culture{AngloSaxonCulture, EnglishCulture, OldS
 // WestSlavic
 var (
 	CarantanianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_carantanian",
 		Abstuct:         AbsMedievalWestSlavic,
 		Root:            EuropeContinentalRoot,
@@ -2252,6 +2626,8 @@ var (
 		Traditions:      []*Tradition{MartialAdmirationTradition, MountaineerRuralismTradition},
 	}
 	CzechCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_czech",
 		Abstuct:         AbsMedievalWestSlavic,
 		Root:            EuropeContinentalRoot,
@@ -2262,6 +2638,8 @@ var (
 		Traditions:      []*Tradition{CastleKeepersTradition, IndustriousTradition, LifeIsJustAJokeTradition, MountaineerRuralismTradition},
 	}
 	PolabianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_polabian",
 		Abstuct:         AbsMedievalWestSlavic,
 		Root:            EuropeContinentalRoot,
@@ -2272,6 +2650,8 @@ var (
 		Traditions:      []*Tradition{HereditaryHierarchyTradition, KonniRaidsTradition, StalwartDefendersTradition},
 	}
 	PolishCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_polish",
 		Abstuct:         AbsMedievalWestSlavic,
 		Root:            EuropeContinentalRoot,
@@ -2282,6 +2662,8 @@ var (
 		Traditions:      []*Tradition{KonniRaidsTradition, XenophilicTradition, StaunchTraditionalistsTradition},
 	}
 	PomeranianCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_pomeranian",
 		Abstuct:         AbsMedievalWestSlavic,
 		Root:            EuropeContinentalRoot,
@@ -2292,6 +2674,8 @@ var (
 		Traditions:      []*Tradition{KonniRaidsTradition, MaritimeMercantilismTradition, StaunchTraditionalistsTradition},
 	}
 	SlovienCulture = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "slavic_slovien",
 		Abstuct:         AbsMedievalWestSlavic,
 		Root:            EuropeContinentalRoot,

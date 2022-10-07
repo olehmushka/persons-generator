@@ -2,9 +2,10 @@ package orchestrator
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
+	"persons_generator/core/storage"
+	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/culture"
 
@@ -16,25 +17,51 @@ func (o *Orchestrator) CreateCultures(amount int, preferred []*culture.Preferenc
 	return culture.NewMany(culture.Config{}, amount, preferred)
 }
 
-func (o *Orchestrator) SearchCultures(search string) ([]*culture.Culture, error) {
+func (o *Orchestrator) FindNativeCultures(ctx context.Context, search string, opts storage.PaginationSortingOpts) ([]*culture.Culture, error) {
 	if search == "" {
-		return culture.AllCultures, nil
+		return tools.Paginate(culture.AllCultures, opts.Pagination.Offset, opts.Pagination.Limit), nil
 	}
 
-	return culture.GetCulturesByName(search, culture.AllCultures), nil
+	return tools.Paginate(
+		culture.GetCulturesByName(search, culture.AllCultures),
+		opts.Pagination.Offset,
+		opts.Pagination.Limit,
+	), nil
 }
 
-func (o *Orchestrator) HybridCultures(cultures []*culture.Culture) (*culture.Culture, error) {
-	if len(cultures) == 0 {
-		return nil, errors.New("base cultures can not be empty")
+func (o *Orchestrator) CountNativeCultures(ctx context.Context, search string) (int, error) {
+	if search == "" {
+		return len(culture.AllCultures), nil
 	}
 
-	return culture.NewWithProto(culture.Config{}, cultures)
+	return len(culture.GetCulturesByName(search, culture.AllCultures)), nil
 }
 
 func (o *Orchestrator) SaveCulture(ctx context.Context, c *culture.Culture) error {
 	if _, err := o.mongodb.InsertOne(ctx, o.dbName, CulturesCollName, c); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not save culture")
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) SeedNativeCultures(ctx context.Context) error {
+	chunks := tools.Chunk(100, tools.SliceToAnySlice(culture.AllCultures))
+	for i := 0; i < len(chunks); i++ {
+		if _, err := o.mongodb.InsertMany(ctx, o.dbName, CulturesCollName, chunks[i]); err != nil {
+			return wrapped_error.NewInternalServerError(err, "can not insert sevaral native cultures to db")
+		}
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) RefreshNativeCultures(ctx context.Context) error {
+	if err := o.DeleteNativeCultures(ctx); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete all native cultures")
+	}
+	if err := o.SeedNativeCultures(ctx); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not seed native cultures")
 	}
 
 	return nil
@@ -74,6 +101,17 @@ func (o *Orchestrator) DeleteCultureByID(ctx context.Context, id string) error {
 func (o *Orchestrator) DeleteAllCultures(ctx context.Context) error {
 	if err := o.mongodb.Truncate(ctx, o.dbName, CulturesCollName); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not delete all cultures")
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) DeleteNativeCultures(ctx context.Context) error {
+	filter := bson.M{
+		"origin": culture.NativeOrigin.String(),
+	}
+	if _, err := o.mongodb.DeleteMany(ctx, o.dbName, CulturesCollName, filter); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete native cultures")
 	}
 
 	return nil

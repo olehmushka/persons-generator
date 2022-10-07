@@ -16,6 +16,9 @@ run_generate_religion:
 run_generate_world:
 	go run main.go generate_world
 
+run_refresh_data:
+	go run main.go refresh_data
+
 test:
 	go test ./cli/... ./config/... ./core/... ./engine/... ./handlers/... ./internal/...
 

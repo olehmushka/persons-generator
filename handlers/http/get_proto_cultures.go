@@ -7,6 +7,7 @@ import (
 	cont "persons_generator/core/context"
 	hs "persons_generator/core/http_server"
 	"persons_generator/core/http_server_tools"
+	"persons_generator/core/storage"
 )
 
 func (h *handlers) GetProtoCultures(w http.ResponseWriter, r *http.Request) {
@@ -17,7 +18,12 @@ func (h *handlers) GetProtoCultures(w http.ResponseWriter, r *http.Request) {
 		offset = ExtractOffsetFromReq(r)
 	)
 
-	cultures, total, err := h.cultureSrv.GetProtoCultures(ctx, q, limit, offset)
+	cultures, total, err := h.cultureSrv.GetProtoCultures(ctx, q, storage.PaginationSortingOpts{
+		Pagination: &storage.Pagination{
+			Limit:  limit,
+			Offset: offset,
+		},
+	})
 	if err != nil {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return

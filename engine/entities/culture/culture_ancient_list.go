@@ -5,6 +5,8 @@ import (
 	g "persons_generator/engine/entities/gender"
 	"persons_generator/engine/entities/influence"
 	"persons_generator/engine/entities/language"
+
+	"github.com/google/uuid"
 )
 
 // Antique
@@ -209,6 +211,8 @@ var (
 	// Umbrian
 	// Venetic
 	AncientEtruscan = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_etruscan",
 		Abstuct:         AbsAncientItalic,
 		Root:            MediterraneanRoot,
@@ -226,6 +230,8 @@ var (
 	}
 	// Rhaetian
 	AncientRoman = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_roman",
 		Abstuct:         AbsAncientItalic,
 		Root:            MediterraneanRoot,
@@ -242,6 +248,8 @@ var (
 		},
 	}
 	AncientSabellian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_sabellian",
 		Abstuct:         AbsAncientItalic,
 		Root:            MediterraneanRoot,
@@ -263,6 +271,8 @@ var AllAncientItalicCultures = []*Culture{
 var (
 	// -- levantine
 	AncientDacian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_dacian",
 		Abstuct:         AbsAncientDacian,
 		Root:            EuropeContinentalRoot,
@@ -279,6 +289,8 @@ var AllAncientDacianCultures = []*Culture{AncientDacian}
 var (
 	// -- greek
 	AncientAchaean = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_achaean",
 		Abstuct:         AbsAncientHellenistic,
 		Root:            MediterraneanRoot,
@@ -293,6 +305,8 @@ var (
 	// Aetolian
 	// Arcadian
 	AncientAthenian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_athenian",
 		Abstuct:         AbsAncientHellenistic,
 		Root:            MediterraneanRoot,
@@ -310,6 +324,8 @@ var (
 	}
 	// Boeotian
 	AncientCypriot = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_cypriot",
 		Abstuct:         AbsAncientHellenistic,
 		Root:            MediterraneanRoot,
@@ -321,6 +337,8 @@ var (
 	}
 	// Euboean
 	AncientHellenistic = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_hellenistic",
 		Abstuct:         AbsAncientHellenistic,
 		Root:            MediterraneanRoot,
@@ -331,6 +349,8 @@ var (
 		Traditions:      []*Tradition{PhilosopherCultureTradition, ParochialismTradition, CultureBlendingTradition, FormationFightingExpertsTradition},
 	}
 	AncientIonian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_ionian",
 		Abstuct:         AbsAncientHellenistic,
 		Root:            MediterraneanRoot,
@@ -349,6 +369,8 @@ var (
 	// Pontic
 	// Propontic
 	AncientTroan = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_troan",
 		Abstuct:         AbsAncientHellenistic,
 		Root:            MediterraneanRoot,
@@ -364,6 +386,8 @@ var (
 	}
 	// Argolian
 	AncientLacedaemonian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_lacedaemonian",
 		Abstuct:         AbsAncientHellenistic,
 		Root:            MediterraneanRoot,
@@ -386,6 +410,8 @@ var (
 	// Italiotian
 	// Siceliote
 	AncientMacedonian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_macedonian",
 		Abstuct:         AbsAncientHellenistic,
 		Root:            MediterraneanRoot,
@@ -413,6 +439,8 @@ var AllAncientHellenisticCultures = []*Culture{
 var (
 	// -- illyrian
 	AncientIllyrian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_illyrian",
 		Abstuct:         AbsAncientIllyrian,
 		Root:            MediterraneanRoot,
@@ -429,6 +457,8 @@ var AllAncientIllyrianCultures = []*Culture{AncientIllyrian}
 var (
 	// -- north_african
 	AncientBerber = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_berber",
 		Abstuct:         AbsAncientNumidian,
 		Root:            AfricanRoot,
@@ -441,6 +471,8 @@ var (
 	// Gaetulian
 	// Garamantic
 	AncientLibyan = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_libyan",
 		Abstuct:         AbsAncientNumidian,
 		Root:            AfricanRoot,
@@ -453,6 +485,8 @@ var (
 	// Massaesylian
 	// Massylian
 	AncientMaurian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_maurian",
 		Abstuct:         AbsAncientNumidian,
 		Root:            AfricanRoot,
@@ -463,6 +497,8 @@ var (
 		Traditions:      []*Tradition{DrylandDwellersTradition, AfricanToleranceTradition},
 	}
 	AncientNumidian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_numidian",
 		Abstuct:         AbsAncientNumidian,
 		Root:            AfricanRoot,
@@ -485,6 +521,8 @@ var AllAncientNumidianCultures = []*Culture{AncientBerber, AncientLibyan, Ancien
 // AncientLevantine
 var (
 	AncientPunic = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_punic",
 		Abstuct:         AbsAncientLevantine,
 		Proto:           []*Culture{AncientPhoenician},
@@ -501,6 +539,8 @@ var (
 		},
 	}
 	AncientHebrew = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_hebrew",
 		Abstuct:         AbsAncientLevantine,
 		Root:            SemiticRoot,
@@ -518,6 +558,8 @@ var (
 		},
 	}
 	AncientPhoenician = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_phoenician",
 		Abstuct:         AbsAncientLevantine,
 		Root:            SemiticRoot,
@@ -535,6 +577,8 @@ var (
 		},
 	}
 	AncientNabatean = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_nabatean",
 		Abstuct:         AbsAncientLevantine,
 		Root:            SemiticRoot,
@@ -581,6 +625,8 @@ var AllAncientArabianCultures = []*Culture{}
 var (
 	// -- egyptian
 	AncientEgyptian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_egyptian",
 		Abstuct:         AbsAncientEgyptian,
 		Root:            EgyptianRoot,
@@ -613,6 +659,8 @@ var AllAncientNubianCultures = []*Culture{}
 var (
 	// -- anatolian
 	AncientArmenian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_armenian",
 		Abstuct:         AbsAncientAnatolian,
 		Root:            CaucasianRoot,
@@ -654,6 +702,8 @@ var AllAncientAnatolianCultures = []*Culture{AncientArmenian}
 var (
 	// -- levantine
 	AncientAramaic = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_aramaic",
 		Abstuct:         AbsAncientAramaic,
 		Root:            MesopotamianRoot,
@@ -664,6 +714,8 @@ var (
 		Traditions:      []*Tradition{CultureBlendingTradition, StrongBelieversTradition, ConcubinesTradition},
 	}
 	AncientAssyrian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_assyrian",
 		Abstuct:         AbsAncientAramaic,
 		Root:            MesopotamianRoot,
@@ -674,6 +726,8 @@ var (
 		Traditions:      []*Tradition{WarriorCultureTradition, BattlefieldLootersTradition, QuarrelsomeTradition, ConcubinesTradition},
 	}
 	AncientBabylonian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_babylonian",
 		Abstuct:         AbsAncientAramaic,
 		Root:            MesopotamianRoot,
@@ -739,6 +793,8 @@ var (
 	// Carmanian
 	// Parthian
 	AncientPersian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_persian",
 		Abstuct:         AbsAncientIranian,
 		Root:            PersianRoot,
@@ -770,6 +826,8 @@ var (
 	// Thyssagetian
 	// Dahae
 	AncientSarmatian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_sarmatian",
 		Abstuct:         AbsAncientScythian,
 		Root:            PersianRoot,
@@ -786,6 +844,8 @@ var (
 		},
 	}
 	AncientScythian = &Culture{
+		ID:              uuid.NewString(),
+		Origin:          NativeOrigin,
 		Name:            "ancient_scythian",
 		Abstuct:         AbsAncientScythian,
 		Root:            PersianRoot,

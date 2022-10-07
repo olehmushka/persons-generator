@@ -13,11 +13,11 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (o *Orchestrator) QueryDefaultLanguages(q string, opts storage.PaginationSortingOpts) ([]*language.Language, error) {
+func (o *Orchestrator) QueryDefaultLanguages(ctx context.Context, q string, opts storage.PaginationSortingOpts) ([]*language.Language, error) {
 	return tools.Paginate(language.GetLanguageByName(q), opts.Pagination.Offset, opts.Pagination.Limit), nil
 }
 
-func (o *Orchestrator) CountDefaultLanguages(q string) (int, error) {
+func (o *Orchestrator) CountDefaultLanguages(ctx context.Context, q string) (int, error) {
 	if q == "" {
 		return len(language.AllLanguages), nil
 	}
@@ -25,11 +25,11 @@ func (o *Orchestrator) CountDefaultLanguages(q string) (int, error) {
 	return len((language.GetLanguageByName(q))), nil
 }
 
-func (o *Orchestrator) GetDefaultLanguages(opts storage.PaginationSortingOpts) []*language.Language {
+func (o *Orchestrator) GetDefaultLanguages(ctx context.Context, opts storage.PaginationSortingOpts) []*language.Language {
 	return tools.Paginate(language.AllLanguages, opts.Pagination.Offset, opts.Pagination.Limit)
 }
 
-func (o *Orchestrator) FindDefaultLanguage(id, name string) *language.Language {
+func (o *Orchestrator) FindDefaultLanguage(ctx context.Context, id, name string) *language.Language {
 	if id == "" && name == "" {
 		return nil
 	}
@@ -116,6 +116,7 @@ func (o *Orchestrator) GetRandomReligionNameByLanguageID(ctx context.Context, id
 func (o *Orchestrator) CreateLanguage(ctx context.Context, in *language.Language) (string, error) {
 	id := uuid.New().String()
 	in.ID = id
+	in.Origin = language.CustomOrigin
 	if _, err := o.mongodb.InsertOne(ctx, o.dbName, LanguagesCollName, in); err != nil {
 		return "", wrapped_error.NewInternalServerError(err, "can not insert sevaral persons to db")
 	}
@@ -123,12 +124,58 @@ func (o *Orchestrator) CreateLanguage(ctx context.Context, in *language.Language
 	return id, nil
 }
 
+func (o *Orchestrator) SeedNativeLanguages(ctx context.Context) error {
+	chunks := tools.Chunk(100, tools.SliceToAnySlice(language.AllLanguages))
+	for i := 0; i < len(chunks); i++ {
+		if _, err := o.mongodb.InsertMany(ctx, o.dbName, LanguagesCollName, chunks[i]); err != nil {
+			return wrapped_error.NewInternalServerError(err, "can not insert sevaral native languages to db")
+		}
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) RefreshNativeLanguages(ctx context.Context) error {
+	if err := o.DeleteNativeLanguages(ctx); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete all native languages")
+	}
+	if err := o.SeedNativeLanguages(ctx); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not seed native languages")
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) SeedNativeLanguageSubfamilies(ctx context.Context) error {
+	chunks := tools.Chunk(100, tools.SliceToAnySlice(language.AllSubfamilies))
+	for i := 0; i < len(chunks); i++ {
+		if _, err := o.mongodb.InsertMany(ctx, o.dbName, LanguageSubfamiliesCollName, chunks[i]); err != nil {
+			return wrapped_error.NewInternalServerError(err, "can not insert sevaral native language subfamilies to db")
+		}
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) RefreshNativeLanguageSubfamilies(ctx context.Context) error {
+	if err := o.DeleteNativeLanguageSubfamilies(ctx); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete all native language subfamilies")
+	}
+	if err := o.SeedNativeLanguageSubfamilies(ctx); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not seed native language subfamilies")
+	}
+
+	return nil
+}
+
 func (o *Orchestrator) ReadLanguagesByName(ctx context.Context, name string, opts storage.PaginationSortingOpts) ([]*language.Language, error) {
 	findOpt := parseFindOpts(opts)
 	// findOpts.Set
-	filters := bson.M{"name": name}
-	if name == "" {
-		filters = bson.M{}
+	filters := bson.M{
+		"origin": language.CustomOrigin.String(),
+	}
+	if name != "" {
+		filters["name"] = name
 	}
 	cursor, err := o.mongodb.Find(ctx, o.dbName, LanguagesCollName, filters, findOpt)
 	if err != nil {
@@ -162,11 +209,13 @@ func (o *Orchestrator) ReadLanguage(ctx context.Context, id, name string) (*lang
 		return nil, nil
 	}
 
-	if lang := o.FindDefaultLanguage(id, name); lang != nil {
+	if lang := o.FindDefaultLanguage(ctx, id, name); lang != nil {
 		return lang, nil
 	}
 
-	filter := bson.M{}
+	filter := bson.M{
+		"origin": language.CustomOrigin.String(),
+	}
 	if id != "" {
 		filter["id"] = id
 	}
@@ -208,6 +257,28 @@ func (o *Orchestrator) DeleteLanguageByID(ctx context.Context, id string) error 
 	}
 	if _, err := o.mongodb.DeleteOne(ctx, o.dbName, LanguagesCollName, filter); err != nil {
 		return wrapped_error.NewInternalServerError(err, "can not delete language by id")
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) DeleteNativeLanguages(ctx context.Context) error {
+	filter := bson.M{
+		"origin": language.NativeOrigin.String(),
+	}
+	if _, err := o.mongodb.DeleteMany(ctx, o.dbName, LanguagesCollName, filter); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete native languages")
+	}
+
+	return nil
+}
+
+func (o *Orchestrator) DeleteNativeLanguageSubfamilies(ctx context.Context) error {
+	filter := bson.M{
+		"origin": language.NativeOrigin.String(),
+	}
+	if _, err := o.mongodb.DeleteMany(ctx, o.dbName, LanguageSubfamiliesCollName, filter); err != nil {
+		return wrapped_error.NewInternalServerError(err, "can not delete native languages")
 	}
 
 	return nil

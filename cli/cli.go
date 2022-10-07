@@ -26,6 +26,10 @@ func Execute(args []string) error {
 		if err := runGenerateWorldCommand(); err != nil {
 			return err
 		}
+	case RunRefreshDataCommand:
+		if err := runRefreshDataCommand(); err != nil {
+			return err
+		}
 	default:
 		return fmt.Errorf("cli.Execute: not found command = %s", args[0])
 	}

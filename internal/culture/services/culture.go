@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 
+	"persons_generator/core/storage"
 	c "persons_generator/engine/entities/culture"
 	"persons_generator/internal/culture/adapters/engine"
 	"persons_generator/internal/culture/entities"
@@ -38,8 +39,8 @@ func (s *culture) CreateCultures(ctx context.Context, amount int, preferred []*e
 	return out, nil
 }
 
-func (s *culture) GetProtoCultures(ctx context.Context, q string, limit, offset int) ([]*c.SerializedCulture, int, error) {
-	protos, total, err := s.engineAdp.GetProtoCultures(ctx, q, limit, offset)
+func (s *culture) GetProtoCultures(ctx context.Context, q string, opts storage.PaginationSortingOpts) ([]*c.SerializedCulture, int, error) {
+	protos, total, err := s.engineAdp.GetProtoCultures(ctx, q, opts)
 	if err != nil {
 		return nil, 0, err
 	}
