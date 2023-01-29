@@ -129,7 +129,7 @@ func NewWithProto(cfg Config, proto []*Culture) (*Culture, error) {
 		return nil, err
 	}
 	c.Ethos = e
-	t, err := getTraditions(c.Proto)
+	t, err := getTraditions(c.Proto, e)
 	if err != nil {
 		return nil, err
 	}

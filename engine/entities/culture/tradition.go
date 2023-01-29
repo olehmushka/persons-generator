@@ -2,7 +2,6 @@ package culture
 
 import (
 	"fmt"
-
 	"persons_generator/core/tools"
 	pm "persons_generator/engine/probability_machine"
 )
@@ -46,19 +45,30 @@ func (c *Culture) PrintTraditions() {
 	}
 }
 
-func getTraditions(proto []*Culture) ([]*Tradition, error) {
-	ts := make([]*Tradition, 0, len(proto))
-	var traditionsAmount int
+func getTraditions(proto []*Culture, ethos *Ethos) ([]*Tradition, error) {
+	out := make([]*Tradition, 0, len(proto))
+	allTraditions := make([]*Tradition, 0, len(proto))
 	for _, p := range proto {
-		ts = append(ts, p.Traditions...)
-		traditionsAmount += len(p.Traditions)
+		for _, t := range p.Traditions {
+			for _, e := range t.PreferredEthoses {
+				if e.Name == ethos.Name {
+					out = append(out, t)
+					break
+				}
+			}
+			allTraditions = append(allTraditions, t)
+		}
+	}
+	randomTraditions, err := tools.RandomValuesOfSlice(
+		pm.RandFloat64,
+		UniqueTraditions(allTraditions),
+		len(allTraditions)/len(proto),
+	)
+	if err != nil {
+		return nil, err
 	}
 
-	return tools.RandomValuesOfSlice(
-		pm.RandFloat64,
-		UniqueTraditions(ts),
-		traditionsAmount/len(proto),
-	)
+	return UniqueTraditions(append(out, randomTraditions...)), nil
 }
 
 func UniqueTraditions(ts []*Tradition) []*Tradition {
