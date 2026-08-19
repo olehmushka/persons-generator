@@ -10,7 +10,7 @@ type SerializedHuman struct {
 	EyesColor         color.Color `json:"eyes_color" bson:"eyes_color"`
 	EyesType          string      `json:"eyes_type" bson:"eyes_type"`
 	EarsType          string      `json:"ears_type" bson:"ears_type"`
-	NoseType          string      `json:"mose_type" bson:"mose_type"`
+	NoseType          string      `json:"nose_type" bson:"nose_type"`
 	LipsType          string      `json:"lips_type" bson:"lips_type"`
 	HairColor         color.Color `json:"hair_color" bson:"hair_color"`
 	ScalpHairTexture  string      `json:"scalp_hair_texture" bson:"scalp_hair_texture"`

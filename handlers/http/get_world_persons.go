@@ -30,8 +30,13 @@ func (h *handlers) GetWorldPersons(w http.ResponseWriter, r *http.Request) {
 		http_server_tools.SendErrorResp(ctx, w, err)
 		return
 	}
+	data, err := serializePersons(persons)
+	if err != nil {
+		http_server_tools.SendErrorResp(ctx, w, err)
+		return
+	}
 	respJSON, err := json.Marshal(GetWorldPersonsResponse{
-		Data:  serializePersons(persons),
+		Data:  data,
 		Total: total,
 	})
 	if err != nil {
@@ -41,6 +46,6 @@ func (h *handlers) GetWorldPersons(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set(hs.TraceIDHeader, cont.GetTraceID(ctx))
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write(respJSON)
 }

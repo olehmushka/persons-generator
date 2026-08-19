@@ -35,6 +35,6 @@ func (h *handlers) GetLanguageByID(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set(hs.TraceIDHeader, cont.GetTraceID(ctx))
-	w.WriteHeader(http.StatusCreated)
+	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write(respJSON)
 }
