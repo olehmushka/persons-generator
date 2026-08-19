@@ -1,29 +1,21 @@
 package cli
 
 import (
-	"persons_generator/engine/orchestrator"
+	"persons_generator/engine/entities/culture"
+	"persons_generator/engine/entities/religion"
 )
 
 const RunGenerateReligionCommand = "generate_religion"
 
+// runGenerateReligionCommand generates a culture and a matching religion
+// entirely in memory. Both culture.NewMany and religion.New are pure,
+// DB-free functions, so this command needs no MongoDB/Redis connection.
 func runGenerateReligionCommand() error {
-	o, err := orchestrator.New(orchestrator.Config{
-		RedisURL: "redis://localhost:6379",
-
-		MongoDBURL:              "mongodb://localhost:27017",
-		MongoDBUsername:         "root",
-		MongoDBPassword:         "rootPassword",
-		MongoDBMaxBulkItemsSize: 500,
-		MongoDBDBName:           "persons_generator_db",
-	})
+	c, err := culture.NewMany(culture.Config{}, 1, nil)
 	if err != nil {
 		return err
 	}
-	c, err := o.CreateCultures(1, nil)
-	if err != nil {
-		return err
-	}
-	r, err := o.CreateReligion(c[0])
+	r, err := religion.New(religion.Config{}, c[0])
 	if err != nil {
 		return err
 	}
