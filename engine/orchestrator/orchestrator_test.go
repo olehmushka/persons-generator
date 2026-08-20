@@ -2,7 +2,6 @@ package orchestrator
 
 import (
 	"os"
-	"path/filepath"
 	"testing"
 
 	"persons_generator/engine/entities/culture"
@@ -10,30 +9,12 @@ import (
 	"persons_generator/engine/entities/religion"
 )
 
-// TestMain chdirs into the repo root before running tests. Word-base loading
-// (language.SetWordBases, used by culture/religion name generation) reads
-// files via a path relative to the repo root, but `go test` always runs with
-// the package's own directory as the working directory -- so tests in this
-// package can't call it successfully without first walking up to find
-// go.mod, same as main.go implicitly relies on being run from the repo root.
+// TestMain loads word bases once before running tests. language.SetWordBases
+// (needed by culture/religion name generation) used to read files via a
+// path relative to the repo root, which broke under `go test`'s per-package
+// working directory -- word_base_ref.go now reads from an embedded FS
+// instead, so this is a plain call with no chdir workaround needed.
 func TestMain(m *testing.M) {
-	dir, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-	for {
-		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
-			break
-		}
-		parent := filepath.Dir(dir)
-		if parent == dir {
-			panic("could not find repo root (go.mod) above " + dir)
-		}
-		dir = parent
-	}
-	if err := os.Chdir(dir); err != nil {
-		panic(err)
-	}
 	if err := language.SetWordBases(); err != nil {
 		panic(err)
 	}
