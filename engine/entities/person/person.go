@@ -1,3 +1,10 @@
+// Package person models an individual within a world: their phenotype
+// (engine/entities/person/human, built from a body/face/hair/size/skin/
+// temperament/psycho preset chosen by the owning culture -- see
+// human/presets.GetPresetByCulture), family relationships, and life events
+// (chronology.go). New builds a Person from an already-generated Human;
+// NewBase additionally generates the Human itself from the given culture's
+// preset.
 package person
 
 import (
@@ -14,6 +21,9 @@ import (
 	"github.com/google/uuid"
 )
 
+// Person is a single generated individual. Father/Mother/Spouces link to
+// other in-memory Persons directly (not by ID) -- see Serialize for the
+// ID-referencing form used for API responses and persistence.
 type Person struct {
 	ID         string                 `json:"id"`
 	OwnName    string                 `json:"own_name"`

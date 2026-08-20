@@ -141,6 +141,10 @@ type ProgressRunWorld struct {
 	Duration       string  `json:"duration"`
 }
 
+// RunWorld calls RunYear until stopYear, sending a ProgressRunWorld update
+// after each year on progressCh and the final error (nil on success) on
+// errCh. Intended to run in its own goroutine: the caller drains both
+// channels until errCh fires.
 func (w *World) RunWorld(stopYear int, progressCh chan ProgressRunWorld, errCh chan error) {
 	if stopYear <= 0 {
 		errCh <- wrapped_error.NewInternalServerError(nil, "can not run world for 0 or less stop year")
@@ -179,6 +183,9 @@ func calcProgress(year, stopYear int) float64 {
 	return out
 }
 
+// RunYear advances every location's population by one year: aging, marriage
+// (via seekPartners across the whole grid), births, and deaths, then moves
+// anyone who died into DeathWorldLocations.
 func (w *World) RunYear() error {
 	w.Year++
 

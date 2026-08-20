@@ -1,0 +1,132 @@
+Religion (name=Aqbinahism)
+Type=polytheism(monolatry)
+Dominated gender=male(moderate)
+Doctrine (religion=Aqbinahism)
+HighGoals (religion_name=Aqbinahism):
+ - stop_reincarnation
+ - produce_children
+ - fight_against_evil
+Deity(s) is/are good and level of it is middle
+Deity Traits (religion_name=Aqbinahism):
+ - is_just
+ - is_world_creator
+ - is_immortal
+ - communicate_with_humans
+Human is evil and level of it is minor
+Human Traits (religion_name=Aqbinahism):
+ - has_soul
+Social Traits (religion_name=Aqbinahism):
+ - purity
+ - live_is_sacred
+ - sanctity_of_nature
+ - sacred_childbirth
+ - agoge
+Source of moral law is deity
+Afterlife exists (religion=Aqbinahism)
+Afterlife for top believers is good
+Afterlife for believers is good
+Afterlife for untrue believers is depends
+Afterlife for atheists is bad
+Attributes (religion_name=Aqbinahism):
+Attributes Traits (religion_name=Aqbinahism):
+ - religion_music
+ - religion_theatre
+ - idols
+No clerics (religion_name=Aqbinahism):
+HolyScripture Traits (religion_name=Aqbinahism):
+ - devotional_code
+ - divine_law
+ - magic_books
+Temples (religion_name=Aqbinahism):
+Has not HasSacredPlaces (religion_name=Aqbinahism):
+Temples Traits (religion_name=Aqbinahism):
+ - has_seminaries
+ - has_libraries
+ - has_gymnasium_schools
+ - has_shelters
+Theology (religion_name=Aqbinahism):
+Theology Traits (religion_name=Aqbinahism):
+ - messiah
+ - prophets
+ - religious_law
+ - reincarnation
+ - sanctioned_false_conversions
+Cults (religion_name=Aqbinahism):
+ - god_of_war
+ - patron_saint_of_merchants
+ - god_of_death
+ - god_of_wisdom
+ - god_of_sea
+ - god_of_love
+ - god_of_wine
+ - god_of_thunder
+ - holy_plants
+ - holy_fungus
+ - ancestor_worship
+ - trickster
+ - spirits_of_death
+Rules (religion_name=Aqbinahism):
+ - tithe
+ - be_humble
+ - learn_key_scriptures
+ - tax_nonbelievers
+Taboos (religion_name=Aqbinahism):
+ - raising_animals (accepted)
+ - raising_plants (accepted)
+ - raising_fungus (accepted)
+ - eat_animals (accepted)
+ - eat_some_animals (accepted)
+ - eat_insects (accepted)
+ - eat_fungus (accepted)
+ - cannibalism (shunned)
+ - drinking_blood (shunned)
+ - drinking_strong_alcohol (accepted)
+ - drinking_not_strong_alcohol (shunned)
+ - use_nicotine (shunned)
+ - use_cannabis (accepted)
+ - use_hallucinogens (accepted)
+ - use_cns_stimulants (shunned)
+ - use_opium (accepted)
+ - same_sex_relations (criminal)
+ - male_adultery (shunned)
+ - female_adultery (accepted)
+ - sexual_deviancy (shunned)
+ - prostitution (shunned)
+ - kill_anyone (shunned)
+ - kill_animals (shunned)
+ - kill_holly_animals (shunned)
+ - kill_humans (shunned)
+ - kinslaying (accepted)
+ - suicide (accepted)
+ - tattoos (shunned)
+ - witchcraft (accepted)
+ - nudism (shunned)
+Rituals (religion_name=Aqbinahism):
+ - initial_tattoo
+ - initiation_by_fire
+ - underground_burials
+ - ritual_suicide
+ - animal_sacrifice
+ - hecatombs
+ - gladiator_duel
+Holydays (religion_name=Aqbinahism):
+ - samhain
+ - mysteries
+ - summer_solstice
+ - winter_solstice
+ - calendar_of_feasts
+ - new_year
+ - dance_party
+ - drum_party
+Conversion (religion_name=Aqbinahism):
+ - master
+ - initiation_with_fire
+ - witchcraft
+MarriageTradition (religion_name=Aqbinahism):
+MarriageKind=consorts_and_concubines, Bastardry=legitimization, Consanguinity=close_kin_taboo, Divorce=must_be_approved
+
+
+Metadata:
+&{Naturalistic:9.347495361209429 SexualActive:1.2637633160464241 SexualStrictness:0 Chthonic:7.704511429337253 Plutocratic:2.2245875333539993 Altruistic:3.09590916425575 Lawful:5.996835165749043 Educational:5.010596954809394 Aggressive:4.341240431094372 Pacifistic:1.621152065051561 Hedonistic:2.1741508575204693 Ascetic:0.7576443388372718 Authoritaristic:5.290205317964189 Liberal:0.819729239223606 Individualistic:5.520265220414584 Collectivistic:4.433138756330047 Simple:6.314284652760675 Complicated:0.7520634996157847}
+=====================
+
