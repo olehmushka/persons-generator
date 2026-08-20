@@ -6,8 +6,8 @@ import (
 	"persons_generator/config"
 	"persons_generator/core/http_server_tools"
 
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/sirupsen/logrus"
 	"go.uber.org/fx"

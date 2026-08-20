@@ -18,8 +18,8 @@ func newTestPerson(t *testing.T) *Person {
 	t.Helper()
 
 	h, err := human.New(gender.FemaleSex, human.NewGene(
-		bodyPresets.NordicBodyPreset,
-		psychoPresets.NordicPsychoPreset,
+		bodyPresets.DeltaBodyPreset,
+		psychoPresets.DeltaPsychoPreset,
 	), nil, nil)
 	if err != nil {
 		t.Fatalf("can not build test human: %+v", err)
