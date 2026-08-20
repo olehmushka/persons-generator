@@ -1,0 +1,7 @@
+.git
+.github
+_local-dbs
+.env
+*.md
+examples
+postman_collection

@@ -15,3 +15,22 @@ services:
     container_name: persons-generator-redis
     ports:
       - "6379:6379"
+
+  app:
+    build: .
+    container_name: persons-generator-app
+    depends_on:
+      - pg-mongo
+      - redis
+    ports:
+      - "8000:8000"
+    environment:
+      HTTP_SERVER_ADDRESS: ":8000"
+      MONGODB_URL: "mongodb://pg-mongo:27017"
+      MONGODB_DB_NAME: "persons_generator_db"
+      MONGODB_USERNAME: "root"
+      MONGODB_PASSWORD: "rootPassword"
+      MONGODB_MAX_BULK_ITEMS_SIZE: "500"
+      REDIS_URL: "redis://redis:6379"
+      REDIS_CH_NAME_RUN_AND_SAVE_WORLD: "run_and_save_world"
+      REDIS_CH_CONCURRENCY_RUN_AND_SAVE_WORLD: "1"

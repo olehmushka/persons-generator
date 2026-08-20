@@ -50,6 +50,8 @@ func (s *server) Register() {
 		MaxAge:           1000,
 	}))
 
+	router.Get("/healthz", http_server_tools.NewHandlesChain(s.handlers.GetHealthz))
+
 	router.Post("/api/cultures", http_server_tools.NewHandlesChain(s.handlers.CreateCultures))
 	router.Get("/api/cultures/{id}", http_server_tools.NewHandlesChain(s.handlers.GetCultureByID))
 	router.Get("/api/cultures/proto", http_server_tools.NewHandlesChain(s.handlers.GetProtoCultures))
