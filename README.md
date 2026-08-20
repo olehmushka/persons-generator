@@ -108,8 +108,11 @@ make docker_run    # docker run --rm -p 8000:8000 persons-generator
 ## Known limitations
 
 - `World.seekPartners` re-scans the whole location grid for every unmarried
-  person, every simulated year — fine for small worlds, not optimized for
-  scale.
+  person, every simulated year. Measured with `go test -bench=. ./engine/entities/world/...`:
+  one simulated year takes ~15ms on a 2×2 world (~40 people), ~39ms at 4×4
+  (~160 people), and ~287ms at 8×8 (~640 people) — population goes up 16x
+  from the smallest to the largest, time goes up ~19x. Fine for small worlds,
+  not optimized for scale.
 - Test coverage currently favors pure/leaf logic (generation algorithms,
   serialization) over handler- and orchestrator-level coverage.
 - The person-generation phenotype presets (`engine/entities/person/*/presets`)
