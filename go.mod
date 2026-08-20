@@ -11,7 +11,7 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/sirupsen/logrus v1.10.1
 	go.mongodb.org/mongo-driver v1.17.9
-	go.uber.org/fx v1.18.1
+	go.uber.org/fx v1.24.0
 	golang.org/x/exp v0.0.0-20260820142414-ca536658362e
 	golang.org/x/text v0.41.0
 	gonum.org/v1/gonum v0.17.0
