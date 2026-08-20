@@ -1,9 +1,27 @@
 # Persons Generator
 
+[![CI](https://github.com/olehmushka/persons-generator/actions/workflows/ci.yml/badge.svg)](https://github.com/olehmushka/persons-generator/actions/workflows/ci.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/olehmushka/persons-generator)](https://goreportcard.com/report/github.com/olehmushka/persons-generator)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/olehmushka/persons-generator)](go.mod)
+[![Latest Release](https://img.shields.io/github/v/release/olehmushka/persons-generator)](https://github.com/olehmushka/persons-generator/releases)
+[![Go Reference](https://pkg.go.dev/badge/persons_generator.svg)](https://pkg.go.dev/persons_generator)
+[![License](https://img.shields.io/github/license/olehmushka/persons-generator)](LICENSE)
+
 A procedural worldbuilding engine written in Go. It generates cultures, religions,
 languages, and individual people — complete with phenotype presets, temperament,
 family relationships, and a year-by-year population simulation (aging, marriage,
 births, deaths) across a coordinate grid ("world").
+
+## Contents
+
+- [What it does](#what-it-does)
+- [Architecture](#architecture)
+- [Quick start (no infrastructure required)](#quick-start-no-infrastructure-required)
+- [Full demo — one command](#full-demo--one-command)
+- [Development](#development)
+- [Known limitations](#known-limitations)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## What it does
 
@@ -22,18 +40,14 @@ births, deaths) across a coordinate grid ("world").
 
 ## Architecture
 
-```
-cli/ , handlers/http/  ──▶  internal/{culture,language,persons,religion,world}/
-                             (fx-wired services → adapters → engine)
-                                          │
-                                          ▼
-                             engine/orchestrator
-                                          │
-                                          ▼
-                     engine/entities/{culture,religion,language,person,world}
-                                          │
-                                          ▼
-                          core/{mongodb,redis}  (persistence, pub/sub)
+```mermaid
+flowchart TD
+    CLI["cli/"] --> Internal
+    HTTP["handlers/http/"] --> Internal
+    Internal["internal/{culture,language,persons,religion,world}\n(fx-wired services → adapters → engine)"] --> Orchestrator
+    Orchestrator["engine/orchestrator"] --> Entities
+    Entities["engine/entities/{culture,religion,language,person,world}\n(pure generation logic, mostly DB-free)"] --> Core
+    Core["core/{mongodb,redis}\n(persistence, pub/sub)"]
 ```
 
 `engine/entities/*` holds the actual generation logic (pure, mostly DB-free) and
@@ -44,7 +58,7 @@ for dependency injection; `handlers/http` and `cli` are the two entrypoints.
 
 ## Quick start (no infrastructure required)
 
-`generate_religion` runs entirely in memory — no MongoDB or Redis needed:
+`generate_religion` runs entirely in memory — no MongoDB, Redis, or Docker needed:
 
 ```sh
 go run main.go generate_religion
@@ -57,20 +71,27 @@ Dominated gender=male(moderate)
 ...
 ```
 
-## Full demo (HTTP API + persistent worlds)
+## Full demo — one command
 
 ```sh
-cp .env.sample .env
-docker-compose up -d          # starts MongoDB
-make run_http_server          # go run main.go http_server_run
+docker-compose up -d --build
+curl localhost:8000/healthz
+curl localhost:8000/api/worlds
 ```
+
+This starts the whole stack — the app, MongoDB, and Redis — together. No manual
+`.env` setup needed; `docker-compose.yml` passes the app's environment directly.
 
 See [`postman_collection/persons-generator.postman_collection.json`](postman_collection/persons-generator.postman_collection.json)
 for the full request/response catalogue.
 
-`generate_world` (the CLI equivalent of running a world simulation end to end)
-additionally needs Redis for progress tracking — see `core/redis` and
-`engine/orchestrator/world_methods.go`'s `saveProgress`.
+Prefer running the app directly on the host instead of in a container?
+
+```sh
+cp .env.sample .env
+docker-compose up -d pg-mongo redis
+make run_http_server          # go run main.go http_server_run
+```
 
 ## Development
 
@@ -80,6 +101,8 @@ make test          # go test ./...
 make test_coverage # go test -cover ./...
 make lint          # golangci-lint run
 make fmt           # go fmt ./...
+make docker_build  # docker build -t persons-generator .
+make docker_run    # docker run --rm -p 8000:8000 persons-generator
 ```
 
 ## Known limitations
@@ -92,6 +115,13 @@ make fmt           # go fmt ./...
 - The person-generation phenotype presets (`engine/entities/person/*/presets`)
   use codename-based categories (terrain/biome names) rather than real-world
   demographic labels, by design.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to set up a dev environment, run
+tests/lint, and submit a change. Please also read the
+[Code of Conduct](CODE_OF_CONDUCT.md). Questions or ideas that aren't quite a bug
+report? Use [Discussions](https://github.com/olehmushka/persons-generator/discussions).
 
 ## License
 

@@ -1,0 +1,48 @@
+name: Bug report
+description: Something isn't working as expected
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Command(s) run, request made, etc.
+      placeholder: |
+        1. go run main.go ...
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: go-version
+    attributes:
+      label: Go version
+      placeholder: go version
+  - type: dropdown
+    id: how-run
+    attributes:
+      label: How are you running the project?
+      options:
+        - go run / go build directly
+        - docker-compose up
+        - docker build / docker run
+        - Other (describe in "What happened?")
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      render: shell
