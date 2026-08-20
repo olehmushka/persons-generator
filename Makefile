@@ -37,5 +37,11 @@ fmt:
 tidy:
 	go mod tidy
 
+docker_build:
+	docker build -t persons-generator .
+
+docker_run:
+	docker run --rm -p 8000:8000 persons-generator
+
 lint:
 	golangci-lint run --timeout 60m

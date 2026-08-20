@@ -9,6 +9,8 @@ type Server interface {
 }
 
 type Handlers interface {
+	GetHealthz(w http.ResponseWriter, r *http.Request)
+
 	CreateCultures(w http.ResponseWriter, r *http.Request)
 	GetProtoCultures(w http.ResponseWriter, r *http.Request)
 	GetCultureByID(w http.ResponseWriter, r *http.Request)
