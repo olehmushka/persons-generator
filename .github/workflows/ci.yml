@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+          cache: true
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Build
+        run: go build ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./... -race -cover
+
+      - name: Install golangci-lint
+        run: |
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.12.2
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      # Only fail on issues introduced by this change, not the repo's
+      # pre-existing lint debt (~50 findings as of the .golangci.yml v2
+      # migration -- see PR description).
+      - name: Lint (new issues only)
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            golangci-lint run --timeout=10m --new-from-rev="origin/${{ github.base_ref }}"
+          else
+            golangci-lint run --timeout=10m --new-from-rev=HEAD~1
+          fi
