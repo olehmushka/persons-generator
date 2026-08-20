@@ -111,7 +111,7 @@ func (w *World) GetPersons() []*person.Person {
 	out := make([]*person.Person, 0, w.Size*w.Size)
 	for y := 0; y < w.Size; y++ {
 		for x := 0; x < w.Size; x++ {
-			if w.Locations[y][x] != nil || len(w.Locations[y][x].Population) > 0 {
+			if w.Locations[y][x] != nil && len(w.Locations[y][x].Population) > 0 {
 				out = append(out, w.Locations[y][x].Population...)
 			}
 		}
@@ -124,7 +124,7 @@ func (w *World) CalculatePersonsNumber() int {
 	var out int
 	for y := 0; y < w.Size; y++ {
 		for x := 0; x < w.Size; x++ {
-			if w.Locations[y][x] != nil || len(w.Locations[y][x].Population) > 0 {
+			if w.Locations[y][x] != nil && len(w.Locations[y][x].Population) > 0 {
 				out += len(w.Locations[y][x].Population)
 			}
 		}

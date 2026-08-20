@@ -2,6 +2,8 @@ package services
 
 import (
 	"context"
+	"persons_generator/core/storage"
+	"persons_generator/core/wrapped_error"
 	"persons_generator/internal/persons/adapters/engine"
 	"persons_generator/internal/persons/entities"
 
@@ -21,7 +23,28 @@ var Module = fx.Options(
 )
 
 func (s *persons) GetPersonsByWorldID(ctx context.Context, worldID string, offset, limit int) ([]*entities.Person, int, error) {
-	return nil, 0, nil
+	opts := storage.PaginationSortingOpts{
+		Pagination: &storage.Pagination{
+			Limit:  limit,
+			Offset: offset,
+		},
+	}
+
+	persons, err := s.engineAdp.ReadPersonsByWorldID(ctx, worldID, opts)
+	if err != nil {
+		return nil, 0, wrapped_error.NewInternalServerError(err, "can not read persons by world id")
+	}
+	serializedPersons, err := serializeSerializedPeople(persons)
+	if err != nil {
+		return nil, 0, wrapped_error.NewInternalServerError(err, "can not serialize persons")
+	}
+
+	count, err := s.engineAdp.CountPersonsByWorldID(ctx, worldID)
+	if err != nil {
+		return nil, 0, wrapped_error.NewInternalServerError(err, "can not count persons by world id")
+	}
+
+	return serializedPersons, count, nil
 }
 
 func (s *persons) DeletePersonByID(ctx context.Context, id string) error {

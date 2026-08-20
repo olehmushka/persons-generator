@@ -64,17 +64,31 @@ func serializeReligion(in *religion.SerializedReligion) (*SerializedReligion, er
 	return &out, nil
 }
 
-func serializePersons(in []*personsEntities.Person) []*Person {
+func serializePersons(in []*personsEntities.Person) ([]*Person, error) {
 	out := make([]*Person, len(in))
 	for i := range out {
-		out[i] = serializePerson(in[i])
+		var err error
+		out[i], err = serializePerson(in[i])
+		if err != nil {
+			return nil, wrapped_error.NewInternalServerError(err, "can no serialize persons")
+		}
 	}
 
-	return out
+	return out, nil
 }
 
-func serializePerson(in *personsEntities.Person) *Person {
-	return &Person{}
+func serializePerson(in *personsEntities.Person) (*Person, error) {
+	b, err := json.Marshal(in)
+	if err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not marshal in serialize person")
+	}
+
+	var out Person
+	if err := json.Unmarshal(b, &out); err != nil {
+		return nil, wrapped_error.NewInternalServerError(err, "can not unmarshal in serialize person")
+	}
+
+	return &out, nil
 }
 
 func serializeLanguages(langs []*languageEntities.Language) ([]*Language, error) {

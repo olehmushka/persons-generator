@@ -2,6 +2,7 @@ package orchestrator
 
 import (
 	"context"
+	"persons_generator/core/storage"
 	"persons_generator/core/tools"
 	"persons_generator/core/wrapped_error"
 	"persons_generator/engine/entities/person"
@@ -40,4 +41,44 @@ func (o *Orchestrator) DeleteAllPersons(ctx context.Context) error {
 	}
 
 	return nil
+}
+
+func (o *Orchestrator) ReadPersonsByWorldID(ctx context.Context, worldID string, opts storage.PaginationSortingOpts) ([]*person.SerializedPerson, error) {
+	findOpt := parseFindOpts(opts)
+	filter := bson.M{
+		"world_id": worldID,
+	}
+	cursor, err := o.mongodb.Find(ctx, o.dbName, PersonsCollName, filter, findOpt)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var results []*person.SerializedPerson
+	for cursor.Next(ctx) {
+		var elem person.SerializedPerson
+
+		if err = cursor.Decode(&elem); err != nil {
+			return nil, err
+		}
+		results = append(results, &elem)
+	}
+
+	if err = cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
+func (o *Orchestrator) CountPersonsByWorldID(ctx context.Context, worldID string) (int, error) {
+	filter := bson.M{
+		"world_id": worldID,
+	}
+	count, err := o.mongodb.CountDocuments(ctx, o.dbName, PersonsCollName, filter)
+	if err != nil {
+		return 0, wrapped_error.NewInternalServerError(err, "can not count persons by world id")
+	}
+
+	return count, nil
 }
