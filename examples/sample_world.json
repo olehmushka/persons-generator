@@ -1,0 +1,22 @@
+{
+  "id": "46972e6c-f405-423d-bc36-f0e7ddc9df8f",
+  "size": 2,
+  "max_persons_number_per_loc": 750,
+  "max_distance_value": 2.8284271247461903,
+  "year": 5,
+  "cultures_ids": [
+    "6d66ada6-7f07-404e-9627-8258bb53224d"
+  ],
+  "religions_ids": [
+    "d00bb322-561e-4203-8e9e-08b39b28f3dc"
+  ],
+  "culture_religion_references": [
+    {
+      "religion_id": "d00bb322-561e-4203-8e9e-08b39b28f3dc",
+      "culture_id": "6d66ada6-7f07-404e-9627-8258bb53224d"
+    }
+  ],
+  "population_number": 40,
+  "dead_population_number": 4,
+  "duration": "42.317µs"
+}

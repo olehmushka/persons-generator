@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   pg-mongo:
     image: mongo
@@ -11,3 +9,9 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootPassword
+
+  redis:
+    image: redis:7-alpine
+    container_name: persons-generator-redis
+    ports:
+      - "6379:6379"

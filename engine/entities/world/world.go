@@ -1,3 +1,8 @@
+// Package world models the year-by-year population simulation: a square
+// grid of Locations, each seeded with a starting population and an initial
+// culture/religion. RunYear advances every location's Population by one
+// year -- aging, marriage, births, and deaths -- and RunWorld drives that
+// loop until a target stop year, reporting progress on a channel.
 package world
 
 import (
@@ -9,6 +14,9 @@ import (
 	"github.com/google/uuid"
 )
 
+// World is a Size x Size grid of Locations. Locations holds the living
+// population; DeathWorldLocations mirrors it 1:1 and accumulates anyone who
+// has died, keyed by the same coordinates they died at.
 type World struct {
 	ID                        string
 	Size                      int
