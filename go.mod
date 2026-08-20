@@ -1,6 +1,6 @@
 module persons_generator
 
-go 1.18
+go 1.26.0
 
 require (
 	github.com/go-chi/chi v1.5.4
@@ -12,8 +12,8 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 	go.mongodb.org/mongo-driver v1.10.2
 	go.uber.org/fx v1.18.1
-	golang.org/x/exp v0.0.0-20220608143224-64259d1afd70
-	golang.org/x/text v0.3.7
+	golang.org/x/exp v0.0.0-20260820142414-ca536658362e
+	golang.org/x/text v0.41.0
 	gonum.org/v1/gonum v0.12.0
 )
 
@@ -29,12 +29,11 @@ require (
 	github.com/xdg-go/scram v1.1.1 // indirect
 	github.com/xdg-go/stringprep v1.0.3 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20181117223130-1be2e3e5546d // indirect
-	go.uber.org/atomic v1.6.0 // indirect
-	go.uber.org/dig v1.15.0 // indirect
-	go.uber.org/multierr v1.5.0 // indirect
-	go.uber.org/zap v1.16.0 // indirect
-	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
-	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
-	golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8 // indirect
+	go.uber.org/dig v1.19.0 // indirect
+	go.uber.org/multierr v1.11.0 // indirect
+	go.uber.org/zap v1.28.0 // indirect
+	golang.org/x/crypto v0.55.0 // indirect
+	golang.org/x/sync v0.22.0 // indirect
+	golang.org/x/sys v0.47.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
