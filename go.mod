@@ -10,7 +10,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/redis/go-redis/v9 v9.22.0
 	github.com/sirupsen/logrus v1.10.2
-	go.mongodb.org/mongo-driver v1.17.9
+	go.mongodb.org/mongo-driver v1.17.10
 	go.uber.org/fx v1.24.0
 	golang.org/x/exp v0.0.0-20260820142414-ca536658362e
 	golang.org/x/text v0.41.0
