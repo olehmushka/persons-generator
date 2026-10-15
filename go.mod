@@ -3,7 +3,7 @@ module persons_generator
 go 1.26.0
 
 require (
-	github.com/go-chi/chi/v5 v5.3.2
+	github.com/go-chi/chi/v5 v5.4.0
 	github.com/go-chi/cors v1.2.2
 	github.com/google/uuid v1.6.0
 	github.com/jinzhu/configor v1.2.2
@@ -13,7 +13,7 @@ require (
 	go.mongodb.org/mongo-driver v1.17.10
 	go.uber.org/fx v1.24.0
 	golang.org/x/exp v0.0.0-20260820142414-ca536658362e
-	golang.org/x/text v0.42.0
+	golang.org/x/text v0.43.0
 	gonum.org/v1/gonum v0.17.0
 )
 
@@ -32,7 +32,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.28.0 // indirect
 	golang.org/x/crypto v0.55.0 // indirect
-	golang.org/x/sync v0.23.0 // indirect
+	golang.org/x/sync v0.24.0 // indirect
 	golang.org/x/sys v0.48.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
